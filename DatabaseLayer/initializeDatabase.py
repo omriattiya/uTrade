@@ -52,7 +52,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Reviews(
           reviewId INTEGER PRIMARY KEY ,
-          writerId INTEGER REFERENCES RegisteredUsers(username),
+          writerId CHAR(30) REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id),
           description TEXT,
           rank INTEGER
