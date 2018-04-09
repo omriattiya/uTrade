@@ -11,3 +11,4 @@ def searchItemsByName(item_name):
                 WHERE name = {}
               """.format(item_name))
     return c.fetchall()
+
