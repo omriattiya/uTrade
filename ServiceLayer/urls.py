@@ -9,11 +9,13 @@ users_urlpatterns = [
 ]
 
 search_urlpatterns = [
-    path('search/item/', search.search_item)
+    path('search/item/', search.search_item),
+    path('search/shop/', search.search_shop),
+    path('search/itemsInShop/', search.search_item_in_shop)
 ]
 
 items_urlpatterns = [
-    path('items/add_item',items.add_item)
+    path('items/add_item', items.add_item)
 ]
 
 urlpatterns = users_urlpatterns + search_urlpatterns + items_urlpatterns# add more here using '+'

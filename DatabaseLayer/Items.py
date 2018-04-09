@@ -11,3 +11,33 @@ def searchItemsByName(item_name):
                 WHERE name = {}
               """.format(item_name))
     return c.fetchall()
+
+
+def searchItemInShop(item_name,shop_name):
+    c = conn.cursor()
+    c.execute("""
+                SELECT *
+                FROM Items,Shops
+                WHERE Items.name = {}  AND Shops.name = {} AND Items.shopId = Shops.id
+              """.format(item_name, shop_name))
+    return c.fetchall()
+
+
+def searchItemsByCategory(item_category):
+    c = conn.cursor()
+    c.execute("""
+                SELECT *
+                FROM Items
+                WHERE name = {}
+              """.format(item_category))
+    return c.fetchall()
+
+
+def searchItemsByKeywords(item_keyword):
+    c = conn.cursor()
+    c.execute("""
+                SELECT *
+                FROM Items
+                WHERE name = {}
+              """.format(item_keyword))
+    return c.fetchall()
