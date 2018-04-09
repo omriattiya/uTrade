@@ -10,3 +10,9 @@ def search_item(request):
         if search_by == 'name':
             items = Search.search_by_name(request.GET.get('name'))
             return render(request, 'SearchView.html')
+        if search_by == 'category':
+            items = Search.search_by_category(request.GET.get('category'))
+            return render(request, 'SearchView.html')
+        if search_by == 'keywords':
+            items = Search.search_by_keywords(request.GET.get('keywords'))
+            return render(request, 'SearchView.html')
