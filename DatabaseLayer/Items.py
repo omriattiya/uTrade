@@ -1,10 +1,7 @@
-import sqlite3
-
-conn = sqlite3.connect('../db.sqlite3')
-
+from DatabaseLayer.getConn import getConn
 
 def searchItemsByName(item_name):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -12,12 +9,13 @@ def searchItemsByName(item_name):
               """.format(item_name))
     return c.fetchall()
 
+
 def add_item_to_shop(item):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
-                INSERT INTO Items [(id, shopid, name,
+                INSERT INTO Items (id, shopid, name,
                  category, keyWords,
-                  rank, price, quantity)]  
+                  rank, price, quantity)  
 VALUES ({}, {}, {}, {}, {}, {}, {}, {});
               """.format(item.id, item.shop_id,
                          item.name, item.category,
@@ -27,7 +25,7 @@ VALUES ({}, {}, {}, {}, {}, {}, {}, {});
 
 
 def remove_item_from_shop(item_id):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
                 DELETE FROM Items
                 WHERE id = {}
@@ -35,8 +33,8 @@ def remove_item_from_shop(item_id):
     return c.fetchall()
 
 
-def searchItemInShop(item_name,shop_name):
-    c = conn.cursor()
+def searchItemInShop(item_name, shop_name):
+    c = getConn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items,Shops
@@ -46,7 +44,7 @@ def searchItemInShop(item_name,shop_name):
 
 
 def searchItemsByCategory(item_category):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -56,7 +54,7 @@ def searchItemsByCategory(item_category):
 
 
 def searchItemsByKeywords(item_keyword):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items

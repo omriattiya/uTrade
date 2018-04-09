@@ -1,10 +1,7 @@
-import sqlite3
-
-conn = sqlite3.connect('../db.sqlite3')
-
+from DatabaseLayer.getConn import getConn
 
 def searchShop(shop_name):
-    c = conn.cursor()
+    c = getConn().cursor()
     c.execute("""
                 SELECT *
                 FROM Shops

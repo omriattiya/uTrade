@@ -13,15 +13,18 @@ def connectToDatabase(databasePath):
 
 def initTables(conn, tables):
     c = conn.cursor()
-    for table in tables:
-        c.execute(table)
-    pass
+    try:
+        for table in tables:
+            c.execute(table)
+    except Error as e:
+        print(e)
 
 
 def init(databasePath, tables):
     conn = connectToDatabase(databasePath)
     if conn is not None:
         initTables(conn, tables)
+    conn.commit()
 
 
 tables_sql = [
@@ -32,7 +35,7 @@ tables_sql = [
     )""",
 
     """CREATE TABLE IF NOT EXISTS Items(
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT ,
         shopId INTEGER REFERENCES Shops(id),
         name TEXT NOT NULL,
         category TEXT NOT NULL,
@@ -43,7 +46,7 @@ tables_sql = [
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
-          id INTEGER PRIMARY KEY,
+          id INTEGER PRIMARY KEY AUTOINCREMENT ,
           title CHAR(30) NOT NULL,
           rank REAL,
           status TEXT
@@ -51,7 +54,7 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS Reviews(
-          reviewId INTEGER PRIMARY KEY ,
+          reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id),
           description TEXT,
@@ -60,11 +63,17 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS PurchasedItems(
-          purchaseId INTEGER PRIMARY KEY,
+          purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           PurchasedItem INTEGER REFERENCES Items(id),
           purchasedData TEXT
         )
     """
 ]
 
-init('../db.sqlite3', tables_sql)
+
+def init_database(path):
+    init(path, tables_sql)
+    print('database initialized')
+
+
+init_database('../db.sqlite3')
