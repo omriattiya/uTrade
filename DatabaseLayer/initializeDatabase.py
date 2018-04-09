@@ -64,6 +64,14 @@ tables_sql = [
           PurchasedItem INTEGER REFERENCES Items(id),
           purchasedData TEXT
         )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingCartItems(
+          userID CHAR(30) REFERENCES RegisteredUsers(username),
+          itemID INTEGER REFERENCES Items(id),
+          quantity INTEGER,
+          PRIMARY KEY(userID, itemID) 
+        )
     """
 ]
 
