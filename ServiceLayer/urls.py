@@ -1,4 +1,3 @@
-from django.conf.urls import url
 
 from ServiceLayer.services import users,search,items
 from django.urls import path

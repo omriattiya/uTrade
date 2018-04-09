@@ -12,7 +12,6 @@ def add_user(request):
 @csrf_exempt
 def remove_user(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         return HttpResponse('user removed')
 
 
