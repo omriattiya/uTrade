@@ -77,7 +77,7 @@ tables_sql = [
           purchasedData TEXT,
           userId CHAR(30) REFERENCES RegisteredUsers(username)
         )
-    """,+
+    """,
     """
         CREATE TABLE IF NOT EXISTS OwnersOfShops(
           userId CHAR(30) REFERENCES RegisteredUsers(username),
@@ -91,6 +91,14 @@ tables_sql = [
           MessageFrom CHAR(30),
           MessageTo CHAR(30),
           Content TEXT
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingCart(
+          userName CHAR(30) REFERENCES RegisteredUsers(username),
+          itemId INTEGER REFERENCES Items(id),
+          itemQuantity INTEGER,
+          PRIMARY KEY(userName,itemId)
         )
     """
 ]

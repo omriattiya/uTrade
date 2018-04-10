@@ -17,3 +17,7 @@ def edit_profile(user):
         if len(user.password) > min_password_len:
             return RegisteredUsers.editUserPassword(user)
     return False
+
+def login(user):
+    if user.username is not None and user.password is not None:
+        return RegisteredUsers.login(user)

@@ -32,3 +32,11 @@ def edit_profile(request):
         if status:
             return HttpResponse('updated successfully')
         return HttpResponse('failed')
+
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = RegisteredUser(username,password)
+        return Users.login(user)

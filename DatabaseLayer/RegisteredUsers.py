@@ -50,3 +50,19 @@ def getUser(username):
         return user
     except Error as e:
         return False
+
+def login(user):
+    conn = getConn()
+    sql = """
+            SELECT *
+            FROM RegisteredUsers
+            WHERE username = '{}' AND password = '{}'
+            """.format(user.username,user.password)
+    try:
+        c = conn.cursor()
+        c.execute(sql)
+        user = c.fetchOne()
+        conn.close()
+        return True
+    except Error as e:
+        return False
