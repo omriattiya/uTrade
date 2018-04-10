@@ -1,6 +1,6 @@
 from sqlite3 import Error
 
-from DatabaseLayer.getConn import get_conn, commit_command
+from DatabaseLayer.getConn import commit_command
 
 
 def add_owner(shop_id, receiver_user_id):

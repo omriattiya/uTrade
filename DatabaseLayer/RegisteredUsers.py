@@ -47,12 +47,11 @@ def get_user(username):
         c = conn.cursor()
         c.execute(sql)
         user = c.fetchone()
-        user = RegisteredUser(user[0], user[1], user[2])
+        user = RegisteredUser(user[0], user[1])
         conn.close()
         return user
     except Error as e:
         return False
-
 
 def login(user):
     conn = get_conn()
@@ -60,7 +59,7 @@ def login(user):
             SELECT *
             FROM RegisteredUsers
             WHERE username = '{}' AND password = '{}'
-            """.format(user.username, user.password)
+            """.format(user.username,user.password)
     try:
         c = conn.cursor()
         c.execute(sql)
