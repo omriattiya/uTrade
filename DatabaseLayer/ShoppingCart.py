@@ -7,7 +7,7 @@ def remove_item_shopping_cart(username, item_id):
     c = get_conn().cursor()
     c.execute("""
                 DELETE FROM ShoppingCart
-                WHERE userName = {} AND itemId = {}
+                WHERE userName = '{}' AND itemId = '{}'
               """.format(username, item_id))
     return c.fetchall()
 
@@ -17,7 +17,7 @@ def browse_shopping_cart(username):
     c.execute("""
                 SELECT *
                 FROM ShoppingCart
-                WHERE userName = {}
+                WHERE userName = '{}'
               """.format(username))
     return c.fetchall()
 
@@ -28,7 +28,7 @@ def add_item(user_id, item_id, quantity):
 
     c.execute("""
                 INSERT INTO ShoppingCart (userName, itemId, itemQuantity) 
-                VALUES ({},{},{})
+                VALUES ('{}','{}','{}')
               """.format(user_id, item_id, quantity))
     try:
         conn.commit()

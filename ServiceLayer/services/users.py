@@ -9,7 +9,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        status = UsersLogic.register(RegisteredUser(username,password))
+        status = UsersLogic.register(RegisteredUser(username, password))
         if status:
             return HttpResponse('added successfully')
         else:
@@ -57,3 +57,17 @@ def add_owner(request):
         shop_id = request.POST.get('shop_id')
         target_id = request.POST.get('target_id')
         return UsersLogic.add_owner(username, shop_id, target_id)
+
+
+@csrf_exempt
+def add_manager(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        shop_id = request.POST.get('shop_id')
+        target_id = request.POST.get('target_id')
+        permissions = {"addItemPermission": request.POST.get('addItemPermission'),
+                       "editItemPermission": request.POST.get('editItemPermission'),
+                       "replyMessagePermission": request.POST.get('replyMessagePermission'),
+                       "getAllMessagePermission": request.POST.get('getAllMessagePermission'),
+                       "getPurchaseHistoryPermission": request.POST.get('getPurchaseHistoryPermission')}
+        return UsersLogic.add_manager(username, shop_id, target_id, permissions)

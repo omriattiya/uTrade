@@ -6,7 +6,7 @@ def searchItemsByName(item_name):
     c.execute("""
                 SELECT *
                 FROM Items
-                WHERE name = {}
+                WHERE name = '{}'
               """.format(item_name))
     return c.fetchall()
 
@@ -17,7 +17,7 @@ def add_item_to_shop(item):
                 INSERT INTO Items (id, shopid, name,
                  category, keyWords,
                   rank, price, quantity)  
-VALUES ({}, {}, {}, {}, {}, {}, {}, {});
+VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
               """.format(item.id, item.shop_id,
                          item.name, item.category,
                          item.keyWords, item.rank,
@@ -29,7 +29,7 @@ def remove_item_from_shop(item_id):
     c = get_conn().cursor()
     c.execute("""
                 DELETE FROM Items
-                WHERE id = {}
+                WHERE id = '{}'
               """.format(item_id))
     return c.fetchall()
 
@@ -39,7 +39,7 @@ def searchItemInShop(item_name, shop_name):
     c.execute("""
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name = {}  AND Shops.name = {} AND Items.shopId = Shops.id
+                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shopId = Shops.id
               """.format(item_name, shop_name))
     return c.fetchall()
 
@@ -49,7 +49,7 @@ def searchItemsByCategory(item_category):
     c.execute("""
                 SELECT *
                 FROM Items
-                WHERE name = {}
+                WHERE name = '{}'
               """.format(item_category))
     return c.fetchall()
 
@@ -59,7 +59,7 @@ def searchItemsByKeywords(item_keyword):
     c.execute("""
                 SELECT *
                 FROM Items
-                WHERE name = {}
+                WHERE name = '{}'
               """.format(item_keyword))
     return c.fetchall()
 
@@ -69,7 +69,7 @@ def add_review_on_item(writer_id, item_id, description, rank):
     c.execute("""
                 INSERT INTO ReviewsOnItems (writerId, itemId, description,
                  rank)  
-VALUES ({}, {}, {}, {});
+VALUES ('{}', '{}', '{}', '{}');
               """.format(writer_id, item_id,
                          description, rank))
     return c.fetchall()
