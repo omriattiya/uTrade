@@ -11,6 +11,6 @@ def browse_cart(username):
         return ShoppingCart.browse_cart(username)
 
 
-def add_item_to_cart(user_id, item_id, quantity):
+def add_item(user_id, item_id, quantity):
     if user_id is not None and item_id is not None and quantity > 0:
-        return ShoppingCart.add_item_to_cart(user_id, item_id, quantity)
+        return ShoppingCart.add_item(user_id, item_id, quantity)
