@@ -1,0 +1,33 @@
+from django.views.decorators.csrf import csrf_exempt
+from DomainLayer import Items
+from SharedClasses import Shop
+from DatabaseLayer import Shops
+
+@csrf_exempt
+def create_shop(request):
+    if request.method == 'POST':
+        # return HttpResponse('item added')
+        shop_id = request.POST.get('id')
+        shop_title = request.POST.get('title')
+        shop_rank = request.POST.get('rank')
+        shop_status = request.POST.get('status')
+        user_id = request.POST.get('user_id')
+        shop = Shop(shop_id, shop_title, shop_rank, shop_status)
+        Shops.create_shop(shop,user_id)
+
+@csrf_exempt
+def remove_item(request):
+    if request.method == 'POST':
+        # return HttpResponse('item added')
+        item_id = request.POST.get('item_id')
+        Items.remove_item_from_shop(item_id)
+
+@csrf_exempt
+def add_review_on_shop(request):
+    if request.method == 'POST':
+        # return HttpResponse('item added')
+        writer_id = request.POST.get('writer_id')
+        shop_id = request.POST.get('shop_id')
+        description = request.POST.get('description')
+        rank = request.POST.get('rank')
+        Shops.add_review_on_shop(writer_id, shop_id, description,rank)
