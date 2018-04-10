@@ -36,9 +36,10 @@ messages_urlpatterns = [
     path('messages/get_all_messages/', messages.get_all_messages),
 ]
 
-messages_urlpatterns = [
+shoppingcart_urlpatterns = [
     path('shoppingcart/remove_item_from_cart/', shoppingcart.remove_item_from_cart),
     path('shoppingcart/browse_cart/', shoppingcart.browse_cart),
+    path('shoppingcart/add', shoppingcart.add_item)
 ]
 
-urlpatterns = users_urlpatterns + search_urlpatterns + items_urlpatterns + shops_urlpatterns + customer_urlpatterns + messages_urlpatterns# add more here using '+'
+urlpatterns = users_urlpatterns + search_urlpatterns + items_urlpatterns + shops_urlpatterns + customer_urlpatterns + messages_urlpatterns + shoppingcart_urlpatterns # add more here using '+'
