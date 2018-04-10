@@ -19,3 +19,21 @@ def get_all_messages(id):
                 WHERE MessageTo = '{}'
               """.format(id))
     return c.fetchall()
+
+
+def get_all_shop_messages(shop_id):
+    # TODO: tomer -> notice that in the 'messages'
+    # TODO:         table the fields 'MessageFrom' and 'MessageTo'
+    # TODO:         are both char(30) and here you are getting an Integer
+
+    return True
+
+
+def send_message_from_shop(message, shop_id, to):
+    # TODO: tomer -> notice that in the 'messages'
+    # TODO:         table the fields 'MessageFrom' and 'MessageTo'
+    # TODO:         are both char(30) and here you are getting an Integer
+
+    # TODO: also the 'to' parameter can be a shopId or a username
+
+    return True

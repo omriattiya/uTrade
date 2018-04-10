@@ -1,8 +1,24 @@
-from DatabaseLayer.getConn import get_conn,commit_command
+from DatabaseLayer.getConn import get_conn, commit_command
+from SharedClasses.Item import Item
+
+
+def get_item(item_id):
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("""
+                SELECT *
+                FROM Items
+                Where id = '{}'
+            """.format(item_id))
+    item = c.fetchone()
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7])
+    conn.close()
+    return item
 
 
 def searchItemsByName(item_name):
-    c = get_conn().cursor()
+    conn = get_conn()
+    c = conn.cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -76,10 +92,10 @@ VALUES ('{}', '{}', '{}', '{}');
 
 
 def updateItem(item_id, field_name, new_value):
-    sql =   """
+    sql = """
             UPDATE Items
             SET {} = '{}'
             WHERE id = '{}'
-            """.format(field_name,new_value,item_id)
+            """.format(field_name, new_value, item_id)
 
     return commit_command(sql)

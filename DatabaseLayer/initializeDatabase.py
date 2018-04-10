@@ -120,6 +120,7 @@ tables_sql = [
           username char(30) REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id),
           addItemPermission INTEGER NOT NULL,
+          removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,
           replyMessagePermission INTEGER NOT NULL,
           getAllMessagePermission INTEGER NOT NULL,

@@ -1,25 +1,41 @@
-from DatabaseLayer import Items,StoreManagers
+from DatabaseLayer import Items, StoreManagers, Customers, Shops
 
 
-def add_item_to_shop(item, shop_id):
-    if item is not None and shop_id is not None:
-        return Items.add_item_to_shop(item)
+def add_item_to_shop(item, shop_id, username):
+    if item is not None and shop_id is not None and username is not None:
+        manager = StoreManagers.getStoreManager(username, shop_id)
+        if manager is not False:
+            add_item_permission = manager[2]
+            if add_item_permission > 0:
+                return Items.add_item_to_shop(item)
+    return False
 
 
-def remove_item_from_shop(item_id):
+def remove_item_from_shop(item_id, shop_id, username):
     if item_id is not None:
-        return Items.remove_item_from_shop(item_id)
+        manager = StoreManagers.getStoreManager(username, shop_id)
+        if manager is not False:
+            remove_item_permission = manager[3]
+            if remove_item_permission > 0:
+                return Items.remove_item_from_shop(item_id)
+    return False
 
 
 def add_review_on_item(writer_id, item_id, description, rank):
     if writer_id is not None and item_id is not None and description is not None and rank is not None:
-        return Items.add_review_on_shop(writer_id, item_id, description, rank)
+        return Shops.add_review_on_shop(writer_id, item_id, description, rank)
 
 
-def edit_item(username, item_id, field_name, new_value):
-    result = StoreManagers.getStoreManager(username)
+def edit_shop_item(username, item_id, field_name, new_value):
+    item = Items.get_item(item_id)
+    result = StoreManagers.getStoreManager(username, item.shop_id)
     if result is not False:
-        edit_item_permission = result[3]
+        edit_item_permission = result[4]
         if edit_item_permission > 0:
-            return Items.updateItem(item_id,field_name,new_value)
+            return Items.updateItem(item_id, field_name, new_value)
     return False
+
+
+def get_purchase_history(user_id):
+    if user_id is not None:
+        return Customers.get_purchase_history(user_id)

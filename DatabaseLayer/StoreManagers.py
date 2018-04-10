@@ -2,12 +2,12 @@ from DatabaseLayer.getConn import get_conn,commit_command
 from sqlite3 import Error
 
 
-def getStoreManager(username):
+def getStoreManager(username,shop_id):
     sql = """
                 SELECT *
                 FROM StoreManagers
-                WHERE username = '{}'
-            """
+                WHERE username = '{}' AND shopId = '{}'
+            """.format(username,shop_id)
     try:
         conn = get_conn()
         c = conn.cursor()

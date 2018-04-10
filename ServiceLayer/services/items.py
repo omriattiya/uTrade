@@ -4,9 +4,8 @@ from DomainLayer import ItemsLogic
 from SharedClasses.Item import Item
 
 @csrf_exempt
-def add_item(request):
+def add_item_to_shop(request):
     if request.method == 'POST':
-        # return HttpResponse('item added')
         item_id = request.POST.get('id')
         item_name = request.POST.get('name')
         item_category = request.POST.get('category')
@@ -16,14 +15,17 @@ def add_item(request):
         item_quantity = request.POST.get('quantity')
         shop_id = request.POST.get('shop_id')
         item = Item(item_id, shop_id, item_name, item_category, item_keywords, item_rank, item_price, item_quantity)
-        ItemsLogic.add_item_to_shop(item, shop_id)
+        username = request.POST.get('username')
+        ItemsLogic.add_item_to_shop(item, shop_id, username)
 
 @csrf_exempt
-def remove_item(request):
+def remove_item_from_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
-        ItemsLogic.remove_item_from_shop(item_id)
+        username = request.POST.get('username')
+        shop_id = request.POST.get('shop_id')
+        ItemsLogic.remove_item_from_shop(item_id, shop_id, username)
 
 
 @csrf_exempt
@@ -38,13 +40,13 @@ def add_review_on_item(request):
 
 
 @csrf_exempt
-def edit_item(request):
+def edit_shop_item(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         item_id = request.POST.get('item_id')
         field_name = request.POST.get('field_name')
         new_value = request.POST.get('new_value')
-        status = ItemsLogic.edit_item(username,item_id,field_name,new_value)
+        status = ItemsLogic.edit_shop_item(username, item_id, field_name, new_value)
         if status:
             return HttpResponse('item edited successfully')
         else:

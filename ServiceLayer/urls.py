@@ -21,11 +21,11 @@ search_urlpatterns = [
 ]
 
 items_urlpatterns = [
-    path('items/add_item/', items.add_item),
-    path('items/add_item_shopping_cartto_shop/', items.add_item),
-    path('items/remove_item_from_shop/', items.remove_item),
+    path('items/add_item_to_shop/', items.add_item_to_shop),
+    path('items/add_item_shopping_cartto_shop/', items.add_item_to_shop),
+    path('items/remove_item_from_shop/', items.remove_item_from_shop),
     path('items/add_review_on_item/', items.add_review_on_item),
-    path('items/edit_item',items.edit_item)
+    path('items/edit_shop_item', items.edit_shop_item)
 ]
 
 shops_urlpatterns = [
@@ -40,7 +40,9 @@ customer_urlpatterns = [
 
 messages_urlpatterns = [
     path('messages/send_message/', messages.send_message),
+    path('messages/send_message_from_shop', messages.send_message_from_shop),
     path('messages/get_all_messages/', messages.get_all_messages),
+    path('messages/get_all_shop_messages', messages.get_all_shop_messages)
 ]
 
 shoppingcart_urlpatterns = [
