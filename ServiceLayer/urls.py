@@ -1,5 +1,5 @@
 
-from ServiceLayer.services import users,search,items,shops
+from ServiceLayer.services import users,search,items,shops,customer
 from django.urls import path
 
 users_urlpatterns = [
@@ -22,9 +22,13 @@ items_urlpatterns = [
     path('items/add_review_on_item/', items.add_review_on_item),
 ]
 
-customer_urlpatterns = [
+shops_urlpatterns = [
     path('shops/create_shop/', shops.create_shop),
     path('shops/add_review_on_shop/', shops.add_review_on_shop),
 ]
 
-urlpatterns = users_urlpatterns + search_urlpatterns + items_urlpatterns + customer_urlpatterns# add more here using '+'
+customer_urlpatterns = [
+    path('customer/get_purchase_history/', customer.get_purchase_history),
+]
+
+urlpatterns = users_urlpatterns + search_urlpatterns + items_urlpatterns + shops_urlpatterns# add more here using '+'

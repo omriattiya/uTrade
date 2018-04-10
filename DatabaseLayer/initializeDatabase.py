@@ -74,7 +74,8 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS PurchasedItems(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           PurchasedItem INTEGER REFERENCES Items(id),
-          purchasedData TEXT
+          purchasedData TEXT,
+          userId CHAR(30) REFERENCES RegisteredUsers(username)
         )
     """,+
     """
