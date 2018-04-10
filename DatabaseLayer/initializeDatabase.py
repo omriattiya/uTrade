@@ -113,6 +113,18 @@ tables_sql = [
           username char(30) REFERENCES RegisteredUsers(username),
           PRIMARY KEY(username)
         )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS StoreManagers(
+          username char(30) REFERENCES RegisteredUsers(username),
+          shopId INTEGER REFERENCES Shops(id),
+          addItemPermission INTEGER NOT NULL,
+          editItemPermission INTEGER NOT NULL,
+          replyMessagePermission INTEGER NOT NULL,
+          getAllMessagePermission INTEGER NOT NULL,
+          getPurchaseHistoryPermission INTEGER NOT NULL,
+          PRIMARY KEY(username,shopId)
+        )
     """
 ]
 

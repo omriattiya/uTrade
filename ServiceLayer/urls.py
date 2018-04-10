@@ -20,6 +20,7 @@ items_urlpatterns = [
     path('items/add_item_shopping_cartto_shop/',items.add_item),
     path('items/remove_item_from_shop/', items.remove_item),
     path('items/add_review_on_item/', items.add_review_on_item),
+    path('items/edit_item')
 ]
 
 shops_urlpatterns = [

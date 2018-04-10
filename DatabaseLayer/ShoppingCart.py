@@ -1,10 +1,10 @@
 from sqlite3 import Error
 
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 
 
 def remove_item_shopping_cart(username, item_id):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 DELETE FROM ShoppingCart
                 WHERE userName = {} AND itemId = {}
@@ -13,7 +13,7 @@ def remove_item_shopping_cart(username, item_id):
 
 
 def browse_shopping_cart(username):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM ShoppingCart
@@ -23,7 +23,7 @@ def browse_shopping_cart(username):
 
 
 def add_item(user_id, item_id, quantity):
-    conn = getConn()
+    conn = get_conn()
     c = conn.cursor()
 
     c.execute("""

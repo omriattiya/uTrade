@@ -1,10 +1,10 @@
 from sqlite3 import Error
 
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 
 
 def add_owner(shop_id, receiver_user_id):
-    conn = getConn()
+    conn = get_conn()
     sql = """
             INSERT INTO Owners (userId, shopId)
             VALUES ({},{})

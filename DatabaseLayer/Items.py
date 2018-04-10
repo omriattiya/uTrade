@@ -1,8 +1,8 @@
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 
 
 def searchItemsByName(item_name):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -12,7 +12,7 @@ def searchItemsByName(item_name):
 
 
 def add_item_to_shop(item):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 INSERT INTO Items (id, shopid, name,
                  category, keyWords,
@@ -26,7 +26,7 @@ VALUES ({}, {}, {}, {}, {}, {}, {}, {});
 
 
 def remove_item_from_shop(item_id):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 DELETE FROM Items
                 WHERE id = {}
@@ -35,7 +35,7 @@ def remove_item_from_shop(item_id):
 
 
 def searchItemInShop(item_name, shop_name):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items,Shops
@@ -45,7 +45,7 @@ def searchItemInShop(item_name, shop_name):
 
 
 def searchItemsByCategory(item_category):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -55,7 +55,7 @@ def searchItemsByCategory(item_category):
 
 
 def searchItemsByKeywords(item_keyword):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM Items
@@ -65,7 +65,7 @@ def searchItemsByKeywords(item_keyword):
 
 
 def add_review_on_item(writer_id, item_id, description, rank):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 INSERT INTO ReviewsOnItems (writerId, itemId, description,
                  rank)  
