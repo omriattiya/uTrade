@@ -1,10 +1,10 @@
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 from sqlite3 import Error
 from SharedClasses.RegisteredUser import RegisteredUser
 
 
 def addUser(user):
-    conn = getConn()
+    conn = get_conn()
     sql = """
             INSERT INTO RegisteredUsers(username,password)
             VALUES ('{}','{}')
@@ -20,7 +20,7 @@ def addUser(user):
 
 
 def editUserPassword(user):
-    conn = getConn()
+    conn = get_conn()
     sql = """
             UPDATE RegisteredUsers
             SET password = '{}'
@@ -37,7 +37,7 @@ def editUserPassword(user):
 
 
 def get_user(username):
-    conn = getConn()
+    conn = get_conn()
     sql = """
             SELECT *
             FROM RegisteredUsers
@@ -55,7 +55,7 @@ def get_user(username):
 
 
 def login(user):
-    conn = getConn()
+    conn = get_conn()
     sql = """
             SELECT *
             FROM RegisteredUsers

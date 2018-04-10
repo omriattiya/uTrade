@@ -1,8 +1,8 @@
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 
 
 def get_purchase_history(user_id):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM PurchasedItems

@@ -1,8 +1,8 @@
-from DatabaseLayer.getConn import getConn
+from DatabaseLayer.getConn import get_conn
 
 
 def searchShop(shop_name):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 SELECT *
                 FROM Shops
@@ -12,7 +12,7 @@ def searchShop(shop_name):
 
 
 def create_shop(shop):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 INSERT INTO Shops (id, title, rank,
                  status)  
@@ -23,7 +23,7 @@ VALUES ({}, {}, {}, {});
 
 
 def connect_shop_to_owner(shop, user_id):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 INSERT INTO Owners (userId, shopId)  
 VALUES ({}, {});
@@ -32,7 +32,7 @@ VALUES ({}, {});
 
 
 def add_review_on_shop(writer_id, shop_id, description, rank):
-    c = getConn().cursor()
+    c = get_conn().cursor()
     c.execute("""
                 INSERT INTO ReviewsOnShops (writerId, shopId, description,
                  rank)  

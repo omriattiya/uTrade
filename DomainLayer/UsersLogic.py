@@ -24,8 +24,24 @@ def login(user):
         return RegisteredUsers.login(user)
 
 
-def add_owner(user, shop_id, receiver_user_id):
-    if user.username is not None and \
-            RegisteredUsers.get_user(user.username) is not False and\
-            receiver_user_id is not None and shop_id is not None:
-        return Owners.add_owner(shop_id, receiver_user_id)
+#    _____
+#   / ___ \
+#  | |   | | _ _ _  ____    ____   ____   ___
+#  | |   | || | | ||  _ \  / _  ) / ___) /___)
+#  | |___| || | | || | | |( (/ / | |    |___ |
+#   \_____/  \____||_| |_| \____)|_|    (___/
+#
+
+def add_owner(username, shop_id, target_user_id):
+    if username is not None and \
+            RegisteredUsers.get_user(username) is not False and \
+            target_user_id is not None and shop_id is not None:
+        return Owners.add_owner(shop_id, target_user_id)
+
+
+def add_manager(username, shop_id, target_user_id):
+    if username is not None and \
+            RegisteredUsers.get_user(username) is not False and \
+            target_user_id is not None and shop_id is not None:
+        return Owners.add_manager(shop_id, target_user_id)
+
