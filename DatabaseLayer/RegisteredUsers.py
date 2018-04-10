@@ -53,13 +53,14 @@ def get_user(username):
     except Error as e:
         return False
 
+
 def login(user):
     conn = get_conn()
     sql = """
             SELECT *
             FROM RegisteredUsers
             WHERE username = '{}' AND password = '{}'
-            """.format(user.username,user.password)
+            """.format(user.username, user.password)
     try:
         c = conn.cursor()
         c.execute(sql)
@@ -69,3 +70,12 @@ def login(user):
     except Error as e:
         return False
 
+
+def remove_user(registered_user):
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("""
+                DELETE FROM RegisteredUsers
+                WHERE username = {}
+              """.format(registered_user))
+    return c.fetchall()  # TODO: yoni that is not what you should return here. (True or False is)

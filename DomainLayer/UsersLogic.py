@@ -24,6 +24,12 @@ def login(user):
         return RegisteredUsers.login(user)
 
 
+def remove_user(username, registered_user):
+    # TODO: yoni -> I don't know why but for some reason your implementation of
+    # TODO:         this function has been removed... just search for it on github
+    return RegisteredUsers.remove_user(registered_user)
+
+
 #    _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___
@@ -34,15 +40,15 @@ def login(user):
 
 def add_owner(username, shop_id, target_user_id):
     if username is not None and \
-            RegisteredUsers.get_user(username) is not False and \
-            RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
+                    RegisteredUsers.get_user(username) is not False and \
+                    RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
         return Owners.add_owner(shop_id, target_user_id)
 
 
 def add_manager(username, shop_id, target_user_id, permissions):
     if username is not None and \
-            RegisteredUsers.get_user(username) is not False and \
-            RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
+                    RegisteredUsers.get_user(username) is not False and \
+                    RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
         return StoreManagers.add_manager(shop_id, target_user_id, permissions)
 
 
