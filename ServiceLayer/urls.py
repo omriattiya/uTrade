@@ -7,7 +7,7 @@ users_urlpatterns = [
     path('users/edit_profile/', users.edit_profile),
     path('users/login/', users.login),
 
-    path('users/owner/add_owner', )
+    #path('users/owner/add_owner', )
 ]
 
 search_urlpatterns = [
@@ -21,12 +21,13 @@ items_urlpatterns = [
     path('items/add_item_shopping_cartto_shop/', items.add_item),
     path('items/remove_item_from_shop/', items.remove_item),
     path('items/add_review_on_item/', items.add_review_on_item),
-    path('items/edit_item')
+    path('items/edit_item',items.edit_item)
 ]
 
 shops_urlpatterns = [
     path('shops/create_shop/', shops.create_shop),
     path('shops/add_review_on_shop/', shops.add_review_on_shop),
+    path('shops/get_purchase_history', shops.get_shop_purchase_history)
 ]
 
 customer_urlpatterns = [

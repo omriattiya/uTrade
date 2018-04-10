@@ -1,4 +1,4 @@
-from DatabaseLayer.getConn import get_conn
+from DatabaseLayer.getConn import get_conn,commit_command
 
 
 def searchItemsByName(item_name):
@@ -73,3 +73,13 @@ VALUES ({}, {}, {}, {});
               """.format(writer_id, item_id,
                          description, rank))
     return c.fetchall()
+
+
+def updateItem(item_id, field_name, new_value):
+    sql =   """
+            UPDATE Items
+            SET {} = '{}'
+            WHERE id = '{}'
+            """.format(field_name,new_value,item_id)
+
+    return commit_command(sql)

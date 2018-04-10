@@ -35,3 +35,17 @@ def add_review_on_item(request):
         description = request.POST.get('description')
         rank = request.POST.get('rank')
         ItemsLogic.add_review_on_item(writer_id, item_id, description, rank)
+
+
+@csrf_exempt
+def edit_item(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        item_id = request.POST.get('item_id')
+        field_name = request.POST.get('field_name')
+        new_value = request.POST.get('new_value')
+        status = ItemsLogic.edit_item(username,item_id,field_name,new_value)
+        if status:
+            return HttpResponse('item edited successfully')
+        else:
+            return HttpResponse('failed')
