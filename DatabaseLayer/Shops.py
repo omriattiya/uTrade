@@ -45,6 +45,16 @@ VALUES ('{}', '{}', '{}', '{}');
 def close_shop(shop_id):
     sql = """
             UPDATE Shops 
-            SET status='{}'
+            SET status='INACTIVE'
+            WHERE id='{}'
+            """.format(shop_id)
+    return commit_command(sql)
+
+
+def re_open_shop(shop_id):
+    sql = """
+            UPDATE Shops 
+            SET status='ACTIVE'
+            WHERE id='{}'
             """.format(shop_id)
     return commit_command(sql)

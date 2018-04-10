@@ -71,3 +71,23 @@ def add_manager(request):
                        "getAllMessagePermission": request.POST.get('getAllMessagePermission'),
                        "getPurchaseHistoryPermission": request.POST.get('getPurchaseHistoryPermission')}
         return UsersLogic.add_manager(username, shop_id, target_id, permissions)
+
+
+@csrf_exempt
+def close_shop(request):
+    if request.method == 'POST':
+        shop_id = request.POST.get('shop_id')
+        return UsersLogic.close_shop(shop_id)
+
+
+def re_open_shop(request):
+    if request.method == 'POST':
+        shop_id = request.POST.get('shop_id')
+        return UsersLogic.re_open_shop(shop_id)
+
+
+def modify_notifications(request):
+    if request.method == 'POST':
+        should_notify = request.POST.get('modify_notifications')
+        owner_id = request.POST.get('modify_notifications')
+        return UsersLogic.modify_notifications(owner_id, should_notify)

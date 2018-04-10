@@ -1,4 +1,4 @@
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops
 
 min_password_len = 6
 
@@ -45,3 +45,14 @@ def add_manager(username, shop_id, target_user_id, permissions):
             RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
         return StoreManagers.add_manager(shop_id, target_user_id, permissions)
 
+
+def close_shop(shop_id):
+    return Shops.close_shop(shop_id)
+
+
+def re_open_shop(shop_id):
+    return Shops.re_open_shop(shop_id)
+
+
+def modify_notifications(owner_id, should_notify):
+    return Owners.modify_notifications(owner_id, should_notify)

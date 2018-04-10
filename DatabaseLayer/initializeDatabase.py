@@ -81,6 +81,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS Owners(
           userId CHAR(30) REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id), 
+          shouldNotify INTEGER DEFAULT 1,
           PRIMARY KEY(userId,shopId)
         )
     """,
