@@ -1,5 +1,7 @@
 from DatabaseLayer import RegisteredUsers
+
 min_password_len = 6
+
 
 def register(user):
     if user.username is not None and user.password is not None:

@@ -53,10 +53,19 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS Reviews(
+        CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id),
+          description TEXT,
+          rank INTEGER
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ReviewsOnItems(
+          reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
+          writerId INTEGER REFERENCES RegisteredUsers(username),
+          itemId INTEGER REFERENCES Items(id),
           description TEXT,
           rank INTEGER
         )
@@ -66,6 +75,13 @@ tables_sql = [
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           PurchasedItem INTEGER REFERENCES Items(id),
           purchasedData TEXT
+        )
+    """,+
+    """
+        CREATE TABLE IF NOT EXISTS OwnersOfShops(
+          userId INTEGER REFERENCES RegisteredUsers(username),
+          shopId INTEGER REFERENCES Shops(id), 
+          PRIMARY KEY(userId,shopId)
         )
     """
 ]

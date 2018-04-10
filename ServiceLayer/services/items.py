@@ -24,3 +24,14 @@ def remove_item(request):
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
         Items.remove_item_from_shop(item_id)
+
+
+@csrf_exempt
+def add_review_on_item(request):
+    if request.method == 'POST':
+        # return HttpResponse('item added')
+        writer_id = request.POST.get('writer_id')
+        item_id = request.POST.get('item_id')
+        description = request.POST.get('description')
+        rank = request.POST.get('rank')
+        Items.add_review_on_item(writer_id, item_id,description,rank)
