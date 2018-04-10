@@ -36,7 +36,7 @@ def editUserPassword(user):
     return True
 
 
-def get_user(username):
+def getUser(username):
     conn = getConn()
     sql = """
             SELECT *
@@ -47,12 +47,11 @@ def get_user(username):
         c = conn.cursor()
         c.execute(sql)
         user = c.fetchone()
-        user = RegisteredUser(user[0], user[1], user[2])
+        user = RegisteredUser(user[0], user[1])
         conn.close()
         return user
     except Error as e:
         return False
-
 
 def login(user):
     conn = getConn()
@@ -60,7 +59,7 @@ def login(user):
             SELECT *
             FROM RegisteredUsers
             WHERE username = '{}' AND password = '{}'
-            """.format(user.username, user.password)
+            """.format(user.username,user.password)
     try:
         c = conn.cursor()
         c.execute(sql)
@@ -69,4 +68,3 @@ def login(user):
         return True
     except Error as e:
         return False
-

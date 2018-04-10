@@ -10,7 +10,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        status = UsersLogic.register(RegisteredUser(username, password, None))
+        status = UsersLogic.register(RegisteredUser(username,password))
         if status:
             return HttpResponse('added successfully')
         else:
@@ -28,7 +28,7 @@ def edit_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         new_password = request.POST.get('new_password')
-        status = UsersLogic.edit_profile(RegisteredUser(username, new_password, None))
+        status = UsersLogic.edit_profile(RegisteredUser(username, new_password))
         if status:
             return HttpResponse('updated successfully')
         return HttpResponse('failed')
