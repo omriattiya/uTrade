@@ -80,9 +80,17 @@ tables_sql = [
     """,+
     """
         CREATE TABLE IF NOT EXISTS OwnersOfShops(
-          userId INTEGER REFERENCES RegisteredUsers(username),
+          userId CHAR(30) REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id), 
           PRIMARY KEY(userId,shopId)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS Messages(
+          MessageId INTEGER PRIMARY KEY AUTOINCREMENT,
+          MessageFrom CHAR(30),
+          MessageTo CHAR(30),
+          Content TEXT
         )
     """
 ]
