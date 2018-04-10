@@ -9,7 +9,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        status = Users.register(RegisteredUser(username,password))
+        status = Users.register(RegisteredUser(username,password,None))
         if status:
             return HttpResponse('added successfully')
         else:
@@ -26,7 +26,7 @@ def edit_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         new_password = request.POST.get('new_password')
-        status = Users.edit_profile(RegisteredUser(username, new_password))
+        status = Users.edit_profile(RegisteredUser(username, new_password,None))
         if status:
             return HttpResponse('updated successfully')
         return HttpResponse('failed')

@@ -1,6 +1,6 @@
 from DatabaseLayer.getConn import getConn
 from sqlite3 import Error
-
+from SharedClasses.RegisteredUser import RegisteredUser
 
 def addUser(user):
     conn = getConn()
@@ -45,7 +45,8 @@ def getUser(username):
     try:
         c = conn.cursor()
         c.execute(sql)
-        user = c.fetchOne()
+        user = c.fetchone()
+        user = RegisteredUser(user[0], user[1],user[2])
         conn.close()
         return user
     except Error as e:
