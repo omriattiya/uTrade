@@ -1,19 +1,19 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import ShoppingCart
+from DomainLayer import ShoppingLogic
 
 
-def remove_item_from_cart(request):
+def remove_item_shopping_cart(request):
     if request.method == 'GET':
         username = request.GET.get('username')
         item_id = request.GET.get('itemId')
-        ShoppingCart.remove_item_from_cart(username, item_id)
+        ShoppingLogic.remove_item_shopping_cart(username, item_id)
 
 
-def browse_cart(request):
+def browse_shopping_cart(request):
     if request.method == 'GET':
         username = request.GET.get('username')
-        ShoppingCart.browse_cart(username)
+        ShoppingLogic.browse_shopping_cart(username)
 
 
 @csrf_exempt
@@ -22,5 +22,5 @@ def add_item(request):
         user_id = request.POST.get("user_id")
         item_id = request.POST.get("item_id")
         quantity = request.POST.get("quantity")
-        ShoppingCart.add_item(user_id, item_id, quantity)
+        ShoppingLogic.add_item(user_id, item_id, quantity)
         return HttpResponse('item added to cart')

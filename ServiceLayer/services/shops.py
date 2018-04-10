@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import Items
+from DomainLayer import ItemsLogic
 from SharedClasses import Shop
 from DatabaseLayer import Shops
 
@@ -20,7 +20,7 @@ def remove_item(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
-        Items.remove_item_from_shop(item_id)
+        ItemsLogic.remove_item_from_shop(item_id)
 
 @csrf_exempt
 def add_review_on_shop(request):

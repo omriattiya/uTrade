@@ -1,7 +1,7 @@
 import unittest, os
 from DatabaseLayer.initializeDatabase import init_database
-from DatabaseLayer.RegisteredUsers import getUser
-from DomainLayer.Users import register, edit_profile
+from DatabaseLayer.RegisteredUsers import get_user
+from DomainLayer.UsersLogic import register, edit_profile
 from SharedClasses.RegisteredUser import RegisteredUser
 
 
@@ -11,7 +11,7 @@ class UsersTest(unittest.TestCase):
 
     def test_add_user(self):
         register(RegisteredUser('Shahar', '123456',None))
-        user = getUser('Shahar')
+        user = get_user('Shahar')
         self.assertEqual(user.username,'Shahar')
         self.assertEqual(user.password,'123456')
         self.assertEqual(user.role,'Customer')
@@ -33,11 +33,11 @@ class UsersTest(unittest.TestCase):
 
     def test_edit_profile(self):
         register(RegisteredUser('TomerLev', 'tomer6969', None))
-        old_user = getUser('TomerLev')
+        old_user = get_user('TomerLev')
         user = RegisteredUser(old_user.username,'new_pass1234',None)
         status = edit_profile(user)
         self.assertTrue(status)
-        new_user = getUser('TomerLev')
+        new_user = get_user('TomerLev')
         self.assertEqual(new_user.username, 'TomerLev')
         self.assertEqual(new_user.password, 'new_pass1234')
         self.assertEqual(new_user.role, 'Customer')

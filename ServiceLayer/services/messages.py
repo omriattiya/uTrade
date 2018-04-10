@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import Messages
+from DomainLayer import MessagingLogic
 
 
 @csrf_exempt
@@ -9,11 +9,11 @@ def send_message(request):
         message_from = request.POST.get('from')
         message_to = request.POST.get('to')
         content = request.POST.get('content')
-        Messages.send_message(message_from, message_to, content)
+        MessagingLogic.send_message(message_from, message_to, content)
 
 
 def get_all_messages(request):
     if request.method == 'GET':
         # return HttpResponse('item added')
         id = request.GET.get('id')
-        Messages.get_all_messages(id)
+        MessagingLogic.get_all_messages(id)

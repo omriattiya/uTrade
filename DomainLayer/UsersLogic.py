@@ -1,4 +1,4 @@
-from DatabaseLayer import RegisteredUsers
+from DatabaseLayer import RegisteredUsers, Owners
 
 min_password_len = 6
 
@@ -18,6 +18,14 @@ def edit_profile(user):
             return RegisteredUsers.editUserPassword(user)
     return False
 
+
 def login(user):
     if user.username is not None and user.password is not None:
         return RegisteredUsers.login(user)
+
+
+def add_owner(user, shop_id, receiver_user_id):
+    if user.username is not None and \
+            RegisteredUsers.get_user(user.username) is not False and\
+            receiver_user_id is not None and shop_id is not None:
+        return Owners.add_owner(shop_id, receiver_user_id)

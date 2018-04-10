@@ -25,7 +25,7 @@ VALUES ({}, {}, {}, {});
 def connect_shop_to_owner(shop, user_id):
     c = getConn().cursor()
     c.execute("""
-                INSERT INTO OwnersOfShops (userId, shopId)  
+                INSERT INTO Owners (userId, shopId)  
 VALUES ({}, {});
               """.format(user_id, shop.id))
     return c.fetchall()

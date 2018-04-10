@@ -79,7 +79,7 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS OwnersOfShops(
+        CREATE TABLE IF NOT EXISTS Owners(
           userId CHAR(30) REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id), 
           PRIMARY KEY(userId,shopId)
