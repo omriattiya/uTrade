@@ -1,5 +1,6 @@
 from DatabaseLayer.getConn import getConn
 
+
 def searchItemsByName(item_name):
     c = getConn().cursor()
     c.execute("""
@@ -60,4 +61,15 @@ def searchItemsByKeywords(item_keyword):
                 FROM Items
                 WHERE name = {}
               """.format(item_keyword))
+    return c.fetchall()
+
+
+def add_review_on_item(writer_id, item_id, description, rank):
+    c = getConn().cursor()
+    c.execute("""
+                INSERT INTO ReviewsOnItems (writerId, itemId, description,
+                 rank)  
+VALUES ({}, {}, {}, {});
+              """.format(writer_id, item_id,
+                         description, rank))
     return c.fetchall()

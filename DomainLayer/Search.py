@@ -1,4 +1,4 @@
-from DatabaseLayer import Items
+from DatabaseLayer import Items,Shops
 
 
 def search_by_name(item_name):

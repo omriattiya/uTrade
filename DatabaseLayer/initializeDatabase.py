@@ -53,7 +53,7 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS Reviews(
+        CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
           shopId INTEGER REFERENCES Shops(id),
@@ -62,10 +62,43 @@ tables_sql = [
         )
     """,
     """
+        CREATE TABLE IF NOT EXISTS ReviewsOnItems(
+          reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
+          writerId INTEGER REFERENCES RegisteredUsers(username),
+          itemId INTEGER REFERENCES Items(id),
+          description TEXT,
+          rank INTEGER
+        )
+    """,
+    """
         CREATE TABLE IF NOT EXISTS PurchasedItems(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           PurchasedItem INTEGER REFERENCES Items(id),
-          purchasedData TEXT
+          purchasedData TEXT,
+          userId CHAR(30) REFERENCES RegisteredUsers(username)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS OwnersOfShops(
+          userId CHAR(30) REFERENCES RegisteredUsers(username),
+          shopId INTEGER REFERENCES Shops(id), 
+          PRIMARY KEY(userId,shopId)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS Messages(
+          MessageId INTEGER PRIMARY KEY AUTOINCREMENT,
+          MessageFrom CHAR(30),
+          MessageTo CHAR(30),
+          Content TEXT
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingCart(
+          userName CHAR(30) REFERENCES RegisteredUsers(username),
+          itemId INTEGER REFERENCES Items(id),
+          itemQuantity INTEGER,
+          PRIMARY KEY(userName,itemId)
         )
     """
 ]
