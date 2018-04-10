@@ -15,7 +15,8 @@ def remove_user(request):
     if request.method == 'POST':
         # return HttpResponse('user removed')
         username = request.POST.get('username')
-        Users.remove_user(username)
+        registered_user = request.POST.get('registered_user')
+        Users.remove_user(username, registered_user)
 
 
 @csrf_exempt

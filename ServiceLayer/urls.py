@@ -17,7 +17,7 @@ search_urlpatterns = [
 
 items_urlpatterns = [
     path('items/add_item', items.add_item),
-    path('items/add_item_to_shop',items.add_item),
+    path('items/add_item_to_shop', items.add_item),
     path('items/remove_item_from_shop', items.remove_item),
 ]
 
