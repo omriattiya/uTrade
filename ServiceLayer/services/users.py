@@ -9,7 +9,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        status = UsersLogic.register(RegisteredUser(username,password))
+        status = UsersLogic.register(RegisteredUser(username, password))
         if status:
             return HttpResponse('added successfully')
         else:
@@ -57,3 +57,37 @@ def add_owner(request):
         shop_id = request.POST.get('shop_id')
         target_id = request.POST.get('target_id')
         return UsersLogic.add_owner(username, shop_id, target_id)
+
+
+@csrf_exempt
+def add_manager(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        shop_id = request.POST.get('shop_id')
+        target_id = request.POST.get('target_id')
+        permissions = {"addItemPermission": request.POST.get('addItemPermission'),
+                       "editItemPermission": request.POST.get('editItemPermission'),
+                       "replyMessagePermission": request.POST.get('replyMessagePermission'),
+                       "getAllMessagePermission": request.POST.get('getAllMessagePermission'),
+                       "getPurchaseHistoryPermission": request.POST.get('getPurchaseHistoryPermission')}
+        return UsersLogic.add_manager(username, shop_id, target_id, permissions)
+
+
+@csrf_exempt
+def close_shop(request):
+    if request.method == 'POST':
+        shop_id = request.POST.get('shop_id')
+        return UsersLogic.close_shop(shop_id)
+
+
+def re_open_shop(request):
+    if request.method == 'POST':
+        shop_id = request.POST.get('shop_id')
+        return UsersLogic.re_open_shop(shop_id)
+
+
+def modify_notifications(request):
+    if request.method == 'POST':
+        should_notify = request.POST.get('modify_notifications')
+        owner_id = request.POST.get('modify_notifications')
+        return UsersLogic.modify_notifications(owner_id, should_notify)

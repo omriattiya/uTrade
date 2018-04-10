@@ -6,6 +6,6 @@ def get_purchase_history(user_id):
     c.execute("""
                 SELECT *
                 FROM PurchasedItems
-                WHERE userId = {}
+                WHERE userId = '{}'
               """.format(user_id))
     return c.fetchall()

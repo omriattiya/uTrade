@@ -7,7 +7,11 @@ users_urlpatterns = [
     path('users/edit_profile/', users.edit_profile),
     path('users/login/', users.login),
 
-    #path('users/owner/add_owner', )
+    path('users/owner/add_owner', users.add_owner),
+    path('users/owner/add_manager', users.add_manager),
+    path('users/owner/close_shop', users.close_shop),
+    path('users/owner/re_open_shop', users.re_open_shop),
+    path('users/owner/modify_notifications', users.modify_notifications),
 ]
 
 search_urlpatterns = [
