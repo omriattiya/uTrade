@@ -77,12 +77,12 @@ def update_item(item_id, field_name, new_value):
             SET {} = '{}'
             WHERE id = '{}'
             """.format(field_name, new_value, item_id)
-
     return commit_command(sql)
 
-# def get_all_purchased_items():
-#    sql_query = """
-#                SELECT *
-#               FROM Items
-#              """
-#    return select_commit(sql_query)
+
+def get_all_purchased_items():
+    sql_query = """
+                SELECT *
+               FROM Items
+              """
+    return select_command(sql_query)
