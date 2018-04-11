@@ -44,7 +44,7 @@ def remove_item_from_shop(item_id):
     return commit_command(sql_query)
 
 
-def search_item_in_shop(item_name, shop_name):
+def search_item_in_shop(shop_name, item_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
@@ -57,7 +57,7 @@ def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
                 FROM Items
-                WHERE name = '{}'
+                WHERE category = '{}'
               """.format(item_category)
     return select_command(sql_query)
 
@@ -66,7 +66,7 @@ def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
                 FROM Items
-                WHERE name = '{}'
+                WHERE keyWords = '{}'
               """.format(item_keyword)
     return select_command(sql_query)
 

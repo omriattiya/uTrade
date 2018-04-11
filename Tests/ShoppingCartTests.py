@@ -46,3 +46,18 @@ class ShoppingCartTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+ #   def test_get_cart_items(self):
+  #      username = 'Tomer'
+  #      item_id1 = 1
+  #      quantity1 = 20
+   #     item_id2 = 2
+    #    quantity2 = 2
+    #    ShoppingCart.add_item_shopping_cart(username, item_id1, quantity1)
+     #   ShoppingCart.add_item_shopping_cart(username, item_id2, quantity2)
+     #   cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
+     #   self.assertEqual(len(cart_items), 1)
+      #  self.assertEqual(cart_items[0][0], username)
+      #  self.assertEqual(cart_items[0][1], item_id1)
+      #  self.assertEqual(cart_items[0][2], quantity1)
+      #  print(3)
