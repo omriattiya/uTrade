@@ -13,10 +13,10 @@ def add_item_to_shop(request):
         item_rank = request.POST.get('rank')
         item_price = request.POST.get('price')
         item_quantity = request.POST.get('quantity')
-        shop_id = request.POST.get('shop_id')
-        item = Item(item_id, shop_id, item_name, item_category, item_keywords, item_rank, item_price, item_quantity)
+        shop_name = request.POST.get('shop_name')
+        item = Item(item_id, shop_name, item_name, item_category, item_keywords, item_rank, item_price, item_quantity)
         username = request.POST.get('username')
-        ItemsLogic.add_item_to_shop(item, shop_id, username)
+        ItemsLogic.add_item_to_shop(item, shop_name, username)
 
 @csrf_exempt
 def remove_item_from_shop(request):
@@ -24,8 +24,8 @@ def remove_item_from_shop(request):
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
         username = request.POST.get('username')
-        shop_id = request.POST.get('shop_id')
-        ItemsLogic.remove_item_from_shop(item_id, shop_id, username)
+        shop_name = request.POST.get('shop_name')
+        ItemsLogic.remove_item_from_shop(item_id, shop_name, username)
 
 
 @csrf_exempt

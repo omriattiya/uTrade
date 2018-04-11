@@ -3,13 +3,13 @@ from DatabaseLayer.getConn import get_conn, commit_command
 from sqlite3 import Error
 
 
-def get_purchased_items_by_shop(shop_id):
+def get_purchased_items_by_shop(shop_name):
     conn = get_conn()
     sql = """
                 SELECT Items.*, PurchasedItems.*
                 FROM PurchasedItems, Items, Shops
-                WHERE Items.shopId = '{}' AND PurchasedItems.PurchasedItem = Items.id
-            """.format(shop_id)
+                WHERE Items.shop_name = '{}' AND PurchasedItems.PurchasedItem = Items.id
+            """.format(shop_name)
     try:
         c = conn.cursor()
         c.execute(sql)

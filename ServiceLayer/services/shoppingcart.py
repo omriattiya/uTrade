@@ -19,10 +19,10 @@ def browse_shopping_cart(request):
 @csrf_exempt
 def add_item_shopping_cart(request):
     if request.method == 'POST':
-        user_id = request.POST.get("user_id")
+        username = request.POST.get("username")
         item_id = request.POST.get("item_id")
         quantity = request.POST.get("quantity")
-        ShoppingLogic.add_item_shopping_cart(user_id, item_id, quantity)
+        ShoppingLogic.add_item_shopping_cart(username, item_id, quantity)
         return HttpResponse('item added to cart')
 
 

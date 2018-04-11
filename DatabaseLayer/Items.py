@@ -30,11 +30,11 @@ def searchItemsByName(item_name):
 def add_item_to_shop(item):
     c = get_conn().cursor()
     c.execute("""
-                INSERT INTO Items (id, shopId, name,
+                INSERT INTO Items (id, shop_name, name,
                  category, keyWords,
                   rank, price, quantity)  
 VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
-              """.format(item.id, item.shop_id,
+              """.format(item.id, item.shop_name,
                          item.name, item.category,
                          item.keyWords, item.rank,
                          item.price, item.quantity))
@@ -55,7 +55,7 @@ def searchItemInShop(item_name, shop_name):
     c.execute("""
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shopId = Shops.id
+                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = Shops.id
               """.format(item_name, shop_name))
     return c.fetchall()
 

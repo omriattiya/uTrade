@@ -21,7 +21,7 @@ def get_all_messages(id):
     return c.fetchall()
 
 
-def get_all_shop_messages(shop_id):
+def get_all_shop_messages(shop_name):
     # TODO: tomer -> notice that in the 'messages'
     # TODO:         table the fields 'MessageFrom' and 'MessageTo'
     # TODO:         are both char(30) and here you are getting an Integer
@@ -29,11 +29,11 @@ def get_all_shop_messages(shop_id):
     return True
 
 
-def send_message_from_shop(message, shop_id, to):
+def send_message_from_shop(message, shop_name, to):
     # TODO: tomer -> notice that in the 'messages'
     # TODO:         table the fields 'MessageFrom' and 'MessageTo'
     # TODO:         are both char(30) and here you are getting an Integer
 
-    # TODO: also the 'to' parameter can be a shopId or a username
+    # TODO: also the 'to' parameter can be a shop_name or a username
 
     return True

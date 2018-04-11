@@ -22,20 +22,20 @@ def browse_shopping_cart(username):
     return c.fetchall()
 
 
-def add_item_shopping_cart(user_id, item_id, quantity):
+def add_item_shopping_cart(username, item_id, quantity):
     sql = """
                 INSERT INTO ShoppingCart (userName, itemId, itemQuantity) 
                 VALUES ('{}','{}','{}')
-              """.format(user_id, item_id, quantity)
+              """.format(username, item_id, quantity)
     return commit_command(sql)
 
 
-def get_cart_items(user_id):
+def get_cart_items(username):
     conn = get_conn()
     c = conn.cursor()
     sql = """
         SELECT * FROM ShoppingCart WHERE userName LIKE '{}'
-    """.format(user_id)
+    """.format(username)
     c.execute(sql)
     results = c.fetchall()
     conn.close()

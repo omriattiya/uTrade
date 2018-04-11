@@ -1,14 +1,14 @@
 from DatabaseLayer import Items, StoreManagers, Shops, Owners
 
 
-def add_item_to_shop(item, shop_id, username):
-    if item is not None and shop_id is not None and username is not None:
-        is_manager = StoreManagers.getStoreManager(username, shop_id)
+def add_item_to_shop(item, shop_name, username):
+    if item is not None and shop_name is not None and username is not None:
+        is_manager = StoreManagers.getStoreManager(username, shop_name)
         if is_manager is not False:
             add_item_permission = is_manager[2]
             if add_item_permission > 0:
                 return Items.add_item_to_shop(item)
-        if Owners.get_owner(username, shop_id) is not False:
+        if Owners.get_owner(username, shop_name) is not False:
             return Items.add_item_to_shop(item)
     return False
 
@@ -16,7 +16,7 @@ def add_item_to_shop(item, shop_id, username):
 def remove_item_from_shop(item_id, username):
     if item_id is not None:
         item = Items.get_item(item_id)
-        manager = StoreManagers.getStoreManager(username, item.shop_id)
+        manager = StoreManagers.getStoreManager(username, item.shop_name)
         if manager is not False:
             remove_item_permission = manager[3]
             if remove_item_permission > 0:
@@ -31,7 +31,7 @@ def add_review_on_item(writer_id, item_id, description, rank):
 
 def edit_shop_item(username, item_id, field_name, new_value):
     item = Items.get_item(item_id)
-    result = StoreManagers.getStoreManager(username, item.shop_id)
+    result = StoreManagers.getStoreManager(username, item.shop_name)
     if result is not False:
         edit_item_permission = result[4]
         if edit_item_permission > 0:

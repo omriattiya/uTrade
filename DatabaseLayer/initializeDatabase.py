@@ -35,7 +35,7 @@ tables_sql = [
 
     """CREATE TABLE IF NOT EXISTS Items(
         id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shop_title INTEGER REFERENCES Shops(title),
+        shop_name INTEGER REFERENCES Shops(title),
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
@@ -54,7 +54,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
-          shop_title INTEGER REFERENCES Shops(title),
+          shop_name INTEGER REFERENCES Shops(title),
           description TEXT,
           rank INTEGER
         )
@@ -73,15 +73,15 @@ tables_sql = [
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           PurchasedItem INTEGER REFERENCES Items(id),
           purchasedData TEXT,
-          userId CHAR(30) REFERENCES RegisteredUsers(username)
+          username CHAR(30) REFERENCES RegisteredUsers(username)
         )
     """,
     """
         CREATE TABLE IF NOT EXISTS Owners(
-          userId CHAR(30) REFERENCES RegisteredUsers(username),
-          shop_title INTEGER REFERENCES Shops(title), 
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          shop_name INTEGER REFERENCES Shops(title), 
           shouldNotify INTEGER DEFAULT 1,
-          PRIMARY KEY(userId,shop_title)
+          PRIMARY KEY(username,shop_name)
         )
     """,
     """
@@ -117,14 +117,14 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
           username char(30) REFERENCES RegisteredUsers(username),
-          shop_title INTEGER REFERENCES Shops(title),
+          shop_name INTEGER REFERENCES Shops(title),
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,
           replyMessagePermission INTEGER NOT NULL,
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
-          PRIMARY KEY(username,shop_title)
+          PRIMARY KEY(username,shop_name)
         )
     """
 ]

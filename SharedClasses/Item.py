@@ -1,7 +1,7 @@
 class Item:
-    def __init__(self, id, shop_id, name, category, keywords, rank, price, quantity):
+    def __init__(self, id, shop_name, name, category, keywords, rank, price, quantity):
         self.id = id
-        self.shop_id = shop_id
+        self.shop_name = shop_name
         self.name = name
         self.category = category
         self.keyWords = keywords

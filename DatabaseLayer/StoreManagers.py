@@ -2,12 +2,12 @@ from DatabaseLayer.getConn import get_conn,commit_command
 from sqlite3 import Error
 
 
-def getStoreManager(username,shop_id):
+def getStoreManager(username,shop_name):
     sql = """
                 SELECT *
                 FROM StoreManagers
-                WHERE username = '{}' AND shopId = '{}'
-            """.format(username,shop_id)
+                WHERE username = '{}' AND shop_name = '{}'
+            """.format(username,shop_name)
     try:
         conn = get_conn()
         c = conn.cursor()
@@ -21,16 +21,16 @@ def getStoreManager(username,shop_id):
         return False
 
 
-def add_manager(shop_id, target_user_id, permissions):
+def add_manager(shop_name, target_username, permissions):
     sql = """
-            INSERT INTO StoreManagers (username, shopId, 
+            INSERT INTO StoreManagers (username, shop_name, 
                                         addItemPermission,
                                         editItemPermission,
                                         replyMessagePermission, 
                                         getAllMessagePermission,
                                         getPurchaseHistoryPermission)
             VALUES ('{}','{}','{}','{}','{}','{}','{}')
-            """.format(target_user_id, shop_id,
+            """.format(target_username, shop_name,
                        permissions.addItemPermission,
                        permissions.editItemPermission,
                        permissions.replyMessagePermission,

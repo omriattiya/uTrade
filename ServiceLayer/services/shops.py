@@ -10,12 +10,12 @@ from DatabaseLayer import Shops
 def create_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
-        shop_title = request.POST.get('title')
+        shop_name = request.POST.get('title')
         shop_rank = request.POST.get('rank')
         shop_status = request.POST.get('status')
-        user_id = request.POST.get('user_id')
-        shop = Shop(shop_title, shop_rank, shop_status)
-        Shops.create_shop(shop, user_id)
+        username = request.POST.get('username')
+        shop = Shop(shop_name, shop_rank, shop_status)
+        Shops.create_shop(shop, username)
 
 
 @csrf_exempt
@@ -32,10 +32,10 @@ def add_review_on_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
         writer_id = request.POST.get('writer_id')
-        shop_id = request.POST.get('shop_id')
+        shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        Shops.add_review_on_shop(writer_id, shop_id, description, rank)
+        Shops.add_review_on_shop(writer_id, shop_name, description, rank)
 
 
 def get_shop_purchase_history(request):
@@ -47,6 +47,6 @@ def get_shop_purchase_history(request):
 def close_shop_permanently(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        shop_id = request.POST.get('shop_id')
+        shop_name = request.POST.get('shop_name')
         # return HttpResponse('no GUI yet')
-        ShopLogic.close_shop_permanently(username, shop_id)
+        ShopLogic.close_shop_permanently(username, shop_name)

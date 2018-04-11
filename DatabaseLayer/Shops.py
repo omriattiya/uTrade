@@ -3,12 +3,12 @@ from sqlite3 import Error
 from SharedClasses.Shop import Shop
 
 
-def get_shop(shop_id):
+def get_shop(shop_name):
     sql = """
                 SELECT *
                 FROM Shops
                 WHERE title = '{}'
-            """.format(shop_id)
+            """.format(shop_name)
     try:
         conn = get_conn()
         c = conn.cursor()
@@ -41,48 +41,48 @@ def create_shop(shop):
     return commit_command(sql)
 
 
-def connect_shop_to_owner(shop, shop_title):
+def connect_shop_to_owner(shop, shop_name):
     c = get_conn().cursor()
     c.execute("""
-                INSERT INTO Owners (userId, shop_title)  
+                INSERT INTO Owners (username, shop_name)  
 VALUES ('{}', '{}');
-              """.format(shop_title, shop.title))
+              """.format(shop_name, shop.title))
     return c.fetchall()
 
 
-def add_review_on_shop(writer_id, shop_title, description, rank):
+def add_review_on_shop(writer_id, shop_name, description, rank):
     c = get_conn().cursor()
     c.execute("""
-                INSERT INTO ReviewsOnShops (writerId, shop_title, description,
+                INSERT INTO ReviewsOnShops (writerId, shop_name, description,
                  rank)
 VALUES ('{}', '{}', '{}', '{}');
-              """.format(writer_id, shop_title,
+              """.format(writer_id, shop_name,
                          description, rank))
     return c.fetchall()
 
 
-def close_shop(shop_title):
+def close_shop(shop_name):
     sql = """
             UPDATE Shops 
             SET status='INACTIVE'
             WHERE title='{}'
-            """.format(shop_title)
+            """.format(shop_name)
     return commit_command(sql)
 
 
-def re_open_shop(shop_title):
+def re_open_shop(shop_name):
     sql = """
             UPDATE Shops 
             SET status='ACTIVE'
             WHERE title='{}'
-            """.format(shop_title)
+            """.format(shop_name)
     return commit_command(sql)
 
 
-def close_shop_permanently(shop_title):
+def close_shop_permanently(shop_name):
     sql = """
             UPDATE Shops 
             SET status='CLOSED'
             WHERE title='{}'
-            """.format(shop_title)
+            """.format(shop_name)
     return commit_command(sql)

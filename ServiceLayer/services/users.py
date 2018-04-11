@@ -7,8 +7,8 @@ from DomainLayer import UsersLogic
 def get_purchase_history(request):
     if request.method == 'GET':
         # return HttpResponse('item added')
-        user_id = request.GET.get('user_id')
-        return UsersLogic.get_purchase_history(user_id)
+        username = request.GET.get('username')
+        return UsersLogic.get_purchase_history(username)
 
 
 @csrf_exempt
@@ -64,36 +64,36 @@ def login(request):
 def add_owner(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        shop_id = request.POST.get('shop_id')
+        shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
-        return UsersLogic.add_owner(username, shop_id, target_id)
+        return UsersLogic.add_owner(username, shop_name, target_id)
 
 
 @csrf_exempt
 def add_manager(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        shop_id = request.POST.get('shop_id')
+        shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
         permissions = {"addItemPermission": request.POST.get('addItemPermission'),
                        "editItemPermission": request.POST.get('editItemPermission'),
                        "replyMessagePermission": request.POST.get('replyMessagePermission'),
                        "getAllMessagePermission": request.POST.get('getAllMessagePermission'),
                        "getPurchaseHistoryPermission": request.POST.get('getPurchaseHistoryPermission')}
-        return UsersLogic.add_manager(username, shop_id, target_id, permissions)
+        return UsersLogic.add_manager(username, shop_name, target_id, permissions)
 
 
 @csrf_exempt
 def close_shop(request):
     if request.method == 'POST':
-        shop_id = request.POST.get('shop_id')
-        return UsersLogic.close_shop(shop_id)
+        shop_name = request.POST.get('shop_name')
+        return UsersLogic.close_shop(shop_name)
 
 
 def re_open_shop(request):
     if request.method == 'POST':
-        shop_id = request.POST.get('shop_id')
-        return UsersLogic.re_open_shop(shop_id)
+        shop_name = request.POST.get('shop_name')
+        return UsersLogic.re_open_shop(shop_name)
 
 
 def modify_notifications(request):

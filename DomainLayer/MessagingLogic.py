@@ -11,21 +11,21 @@ def get_all_messages(username):
         return Messages.get_all_messages(username)
 
 
-def get_all_shop_messages(username, shop_id):
-    manager = StoreManagers.getStoreManager(username, shop_id)
+def get_all_shop_messages(username, shop_name):
+    manager = StoreManagers.getStoreManager(username, shop_name)
     if manager is not False:
         get_all_shop_messages_permission = manager[6]
         if get_all_shop_messages_permission > 0:
-            return Messages.get_all_shop_messages(shop_id)
+            return Messages.get_all_shop_messages(shop_name)
 
     return False
 
 
-def send_message_from_shop(username, message, shop_id, to):
-    manager = StoreManagers.getStoreManager(username, shop_id)
+def send_message_from_shop(username, message, shop_name, to):
+    manager = StoreManagers.getStoreManager(username, shop_name)
     if manager is not False:
         reply_message_permission = manager[5]
         if reply_message_permission > 0:
-            Messages.send_message_from_shop(message, shop_id, to)
+            Messages.send_message_from_shop(message, shop_name, to)
 
     return False

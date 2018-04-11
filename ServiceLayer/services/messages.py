@@ -21,16 +21,16 @@ def get_all_messages(request):
 def get_all_shop_messages(request):
     if request.method == 'GET':
         username = request.GET.get('username')
-        shop_id = request.GET.get('shop_id')
-        MessagingLogic.get_all_shop_messages(username, shop_id)
+        shop_name = request.GET.get('shop_name')
+        MessagingLogic.get_all_shop_messages(username, shop_name)
 
 
 def send_message_from_shop(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         message = request.POST.get('message')
-        shop_id = request.POST.get('shop_id')
+        shop_name = request.POST.get('shop_name')
         to = request.POST.get('to')
-        if MessagingLogic.send_message_from_shop(username,message,shop_id,to):
+        if MessagingLogic.send_message_from_shop(username,message,shop_name,to):
             return HttpResponse('sent successfully')
     return HttpResponse('failed')

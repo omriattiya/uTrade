@@ -34,9 +34,9 @@ def remove_user(username, registered_user):
     return False
 
 
-def get_purchase_history(user_id):
-    if user_id is not None:
-        return RegisteredUsers.get_purchase_history(user_id)
+def get_purchase_history(username):
+    if username is not None:
+        return RegisteredUsers.get_purchase_history(username)
 
 
 #    _____
@@ -47,26 +47,26 @@ def get_purchase_history(user_id):
 #   \_____/  \____||_| |_| \____)|_|    (___/
 #
 
-def add_owner(username, shop_id, target_user_id):
+def add_owner(username, shop_name, target_username):
     if username is not None and \
                     RegisteredUsers.get_user(username) is not False and \
-                    RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
-        return Owners.add_owner(shop_id, target_user_id)
+                    RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
+        return Owners.add_owner(shop_name, target_username)
 
 
-def add_manager(username, shop_id, target_user_id, permissions):
+def add_manager(username, shop_name, target_username, permissions):
     if username is not None and \
                     RegisteredUsers.get_user(username) is not False and \
-                    RegisteredUsers.get_user(target_user_id) is not False and shop_id is not None:
-        return StoreManagers.add_manager(shop_id, target_user_id, permissions)
+                    RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
+        return StoreManagers.add_manager(shop_name, target_username, permissions)
 
 
-def close_shop(shop_id):
-    return Shops.close_shop(shop_id)
+def close_shop(shop_name):
+    return Shops.close_shop(shop_name)
 
 
-def re_open_shop(shop_id):
-    return Shops.re_open_shop(shop_id)
+def re_open_shop(shop_name):
+    return Shops.re_open_shop(shop_name)
 
 
 def modify_notifications(owner_id, should_notify):
