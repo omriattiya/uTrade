@@ -47,7 +47,7 @@ class StoreManagersTests(unittest.TestCase):
             'getPurchaseHistoryPermission': 1
         })
         ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                         'toys', ['toys', 'kids'], 20, 300), 'TomerLev')
+                                         'toys', 'toys;kids', 20, 300), 'TomerLev')
         item = Items.get_item(1)
         keywords = item.keyWords
         self.assertEqual(item.shop_name,'myShop')

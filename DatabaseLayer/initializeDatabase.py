@@ -39,14 +39,12 @@ tables_sql = [
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
-        rank INTEGER,
         price REAL NOT NULL,
         quantity INTEGER
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
           name CHAR(30) PRIMARY KEY NOT NULL,
-          rank REAL DEFAULT NULL,
           status TEXT
         )
     """,

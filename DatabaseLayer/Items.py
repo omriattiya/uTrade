@@ -28,7 +28,7 @@ def search_items_by_name(item_name):
 def add_item_to_shop(item):
     sql_query = """
                 INSERT INTO Items (shop_name, name, category, keyWords, price, quantity)  
-                VALUES ('{}', '{}', '{}', '{}', '{}', '{}');
+                VALUES ('{}', '{}', '{}', '{}', {}, {});
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,

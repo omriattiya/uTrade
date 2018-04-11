@@ -11,10 +11,9 @@ def create_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
         shop_name = request.POST.get('name')
-        shop_rank = request.POST.get('rank')
         shop_status = request.POST.get('status')
         username = request.POST.get('username')
-        shop = Shop(shop_name, shop_rank, shop_status)
+        shop = Shop(shop_name, shop_status)
         ShopLogic.create_shop(shop, username)
 
 
