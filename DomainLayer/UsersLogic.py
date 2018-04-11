@@ -34,6 +34,11 @@ def remove_user(username, registered_user):
     return False
 
 
+def get_purchase_history(user_id):
+    if user_id is not None:
+        return RegisteredUsers.get_purchase_history(user_id)
+
+
 #    _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___

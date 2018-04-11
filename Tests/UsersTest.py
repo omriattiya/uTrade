@@ -60,6 +60,15 @@ class UsersTest(unittest.TestCase):
         status = remove_user(remover.username, user.username)
         self.assertFalse(status)
 
+    def test_get_purchased_history(self):
+        register(RegisteredUser('Yoni', '121212'))
+        user = get_user('Yoni')
+        # add an item to Shopping cart
+        # purchase
+        # get purchased history
+        # assertEqual(ans, [banana item])
+        self.assertEqual(user, user)
+
     def tearDown(self):
         os.remove('db.sqlite3')
 

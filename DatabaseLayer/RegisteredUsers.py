@@ -77,3 +77,13 @@ def remove_user(registered_user):
                 WHERE username = '{}'
               """.format(registered_user)
     return commit_command(sql)
+
+
+def get_purchase_history(user_id):
+    c = get_conn().cursor()
+    c.execute("""
+                SELECT *
+                FROM PurchasedItems
+                WHERE userId = '{}'
+              """.format(user_id))
+    return c.fetchall()

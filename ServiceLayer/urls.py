@@ -12,6 +12,7 @@ users_urlpatterns = [
     path('users/owner/close_shop', users.close_shop),
     path('users/owner/re_open_shop', users.re_open_shop),
     path('users/owner/modify_notifications', users.modify_notifications),
+    path('users/get_purchase_history/', users.get_purchase_history),
 ]
 
 search_urlpatterns = [
@@ -36,7 +37,7 @@ shops_urlpatterns = [
 ]
 
 customer_urlpatterns = [
-    path('customer/get_purchase_history/', customer.get_purchase_history),
+
 ]
 
 messages_urlpatterns = [

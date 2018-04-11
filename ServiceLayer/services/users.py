@@ -4,6 +4,13 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from DomainLayer import UsersLogic
 
 
+def get_purchase_history(request):
+    if request.method == 'GET':
+        # return HttpResponse('item added')
+        user_id = request.GET.get('user_id')
+        return UsersLogic.get_purchase_history(user_id)
+
+
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
