@@ -26,7 +26,7 @@ class UsersTest(unittest.TestCase):
         status = register(RegisteredUser('', 'asdsada'))
         self.assertFalse(status)
 
-    def test_add_exisiting_user(self):
+    def test_add_existing_user(self):
         register(RegisteredUser('Shahar', '123456'))
         status = register(RegisteredUser('Shahar', '11241324'))
         self.assertFalse(status)

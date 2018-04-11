@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
-from SharedClasses import Shop
+from SharedClasses.Shop import Shop
 from DatabaseLayer import Shops
 
 
@@ -10,12 +10,11 @@ from DatabaseLayer import Shops
 def create_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
-        shop_id = request.POST.get('id')
         shop_title = request.POST.get('title')
         shop_rank = request.POST.get('rank')
         shop_status = request.POST.get('status')
         user_id = request.POST.get('user_id')
-        shop = Shop(shop_id, shop_title, shop_rank, shop_status)
+        shop = Shop(shop_title, shop_rank, shop_status)
         Shops.create_shop(shop, user_id)
 
 

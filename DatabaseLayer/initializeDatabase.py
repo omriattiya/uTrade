@@ -35,7 +35,7 @@ tables_sql = [
 
     """CREATE TABLE IF NOT EXISTS Items(
         id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shopId INTEGER REFERENCES Shops(id),
+        shop_title INTEGER REFERENCES Shops(title),
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
@@ -45,9 +45,8 @@ tables_sql = [
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
-          id INTEGER PRIMARY KEY AUTOINCREMENT ,
           title CHAR(30) NOT NULL,
-          rank REAL,
+          rank REAL DEFAULT NULL,
           status TEXT
         )
     """,
@@ -55,7 +54,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
-          shopId INTEGER REFERENCES Shops(id),
+          shop_title INTEGER REFERENCES Shops(title),
           description TEXT,
           rank INTEGER
         )
@@ -80,9 +79,9 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Owners(
           userId CHAR(30) REFERENCES RegisteredUsers(username),
-          shopId INTEGER REFERENCES Shops(id), 
+          shop_title INTEGER REFERENCES Shops(title), 
           shouldNotify INTEGER DEFAULT 1,
-          PRIMARY KEY(userId,shopId)
+          PRIMARY KEY(userId,shop_title)
         )
     """,
     """
@@ -118,14 +117,14 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
           username char(30) REFERENCES RegisteredUsers(username),
-          shopId INTEGER REFERENCES Shops(id),
+          shop_title INTEGER REFERENCES Shops(title),
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,
           replyMessagePermission INTEGER NOT NULL,
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
-          PRIMARY KEY(username,shopId)
+          PRIMARY KEY(username,shop_title)
         )
     """
 ]
