@@ -1,14 +1,14 @@
 from DatabaseLayer import Items, StoreManagers, Shops, Owners, SystemManagers
 
 
-def add_item_to_shop(item, shop_name, username):
-    if item is not None and shop_name is not None and username is not None:
-        is_manager = StoreManagers.get_store_manager(username, shop_name)
+def add_item_to_shop(item, username):
+    if item is not None and item.shop_name is not None and username is not None:
+        is_manager = StoreManagers.get_store_manager(username, item.shop_name)
         if is_manager is not False:
             add_item_permission = is_manager[2]
             if add_item_permission > 0:
                 return Items.add_item_to_shop(item)
-        if Owners.get_owner(username, shop_name) is not False:
+        if Owners.get_owner(username, item.shop_name) is not False:
             return Items.add_item_to_shop(item)
     return False
 

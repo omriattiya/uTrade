@@ -6,7 +6,6 @@ from SharedClasses.Item import Item
 @csrf_exempt
 def add_item_to_shop(request):
     if request.method == 'POST':
-        item_id = request.POST.get('id')
         item_name = request.POST.get('name')
         item_category = request.POST.get('category')
         item_keywords = request.POST.get('keyWords')
@@ -14,9 +13,9 @@ def add_item_to_shop(request):
         item_price = request.POST.get('price')
         item_quantity = request.POST.get('quantity')
         shop_name = request.POST.get('shop_name')
-        item = Item(item_id, shop_name, item_name, item_category, item_keywords, item_rank, item_price, item_quantity)
+        item = Item(None, shop_name, item_name, item_category, item_keywords, item_rank, item_price, item_quantity)
         username = request.POST.get('username')
-        ItemsLogic.add_item_to_shop(item, shop_name, username)
+        ItemsLogic.add_item_to_shop(item, username)
 
 @csrf_exempt
 def remove_item_from_shop(request):

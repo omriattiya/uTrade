@@ -11,7 +11,8 @@ def search_shop(shop_name):
     shop = select_command(sql_query)
     if len(shop) == 0:
         return False
-    return Shop(shop[1], shop[2], shop[3])
+    shop = shop[0]
+    return Shop(shop[0], shop[1])
 
 
 def create_shop(shop):

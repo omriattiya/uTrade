@@ -12,7 +12,7 @@ def get_item(item_id):
     if len(results) == 0:
         return False
     item = results[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7])
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
     return item
 
 
@@ -27,11 +27,11 @@ def search_items_by_name(item_name):
 
 def add_item_to_shop(item):
     sql_query = """
-                INSERT INTO Items (id, shop_name, name, category, keyWords, rank, price, quantity)  
-                VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
-              """.format(item.id, item.shop_name,
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity)  
+                VALUES ('{}', '{}', '{}', '{}', '{}', '{}');
+              """.format(item.shop_name,
                          item.name, item.category,
-                         item.keyWords, item.rank,
+                         item.keyWords,
                          item.price, item.quantity)
     return commit_command(sql_query)
 
