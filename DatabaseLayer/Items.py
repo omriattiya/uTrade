@@ -30,7 +30,7 @@ def searchItemsByName(item_name):
 def add_item_to_shop(item):
     c = get_conn().cursor()
     c.execute("""
-                INSERT INTO Items (id, shopid, name,
+                INSERT INTO Items (id, shopId, name,
                  category, keyWords,
                   rank, price, quantity)  
 VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');

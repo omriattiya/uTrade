@@ -11,9 +11,10 @@ def add_item_to_shop(item, shop_id, username):
     return False
 
 
-def remove_item_from_shop(item_id, shop_id, username):
+def remove_item_from_shop(item_id, username):
     if item_id is not None:
-        manager = StoreManagers.getStoreManager(username, shop_id)
+        item = Items.get_item(item_id)
+        manager = StoreManagers.getStoreManager(username, item.shop_id)
         if manager is not False:
             remove_item_permission = manager[3]
             if remove_item_permission > 0:

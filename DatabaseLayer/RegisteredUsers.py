@@ -64,7 +64,7 @@ def login(user):
     try:
         c = conn.cursor()
         c.execute(sql)
-        user = c.fetchOne()
+        user = c.fetchone()
         conn.close()
         return True
     except Error as e:

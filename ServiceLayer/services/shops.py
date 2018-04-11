@@ -24,7 +24,8 @@ def remove_item(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
-        ItemsLogic.remove_item_from_shop(item_id)
+        username = request.POST.get('username')
+        ItemsLogic.remove_item_from_shop(item_id,username)
 
 
 @csrf_exempt
