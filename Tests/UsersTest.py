@@ -1,7 +1,7 @@
 import unittest, os
 from DatabaseLayer.initializeDatabase import init_database
 from DatabaseLayer.RegisteredUsers import get_user
-from DomainLayer.UsersLogic import register, edit_profile
+from DomainLayer.UsersLogic import register, edit_profile, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
 
 
@@ -39,6 +39,18 @@ class UsersTest(unittest.TestCase):
         new_user = get_user('TomerLev')
         self.assertEqual(new_user.username, 'TomerLev')
         self.assertEqual(new_user.password, 'new_pass1234')
+
+    def test_remove_user(self):
+        register(RegisteredUser('Yoni', '121212'))
+        user = get_user('Yoni')
+        self.assertEqual(user.username, 'Yoni')
+        register(RegisteredUser('Yonion', '123123123'))
+        remover = get_user('Yoni')
+        logged = login(remover)
+        status = False
+        if logged is True:
+            status = remove_user(remover.username, user.username)
+        self.assertTrue(status)
 
     def tearDown(self):
         os.remove('db.sqlite3')

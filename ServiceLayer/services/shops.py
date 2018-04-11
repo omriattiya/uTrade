@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic
+from DomainLayer import ShopLogic
 from SharedClasses import Shop
 from DatabaseLayer import Shops
 
@@ -40,3 +41,11 @@ def add_review_on_shop(request):
 def get_shop_purchase_history(request):
     if request.method == 'GET':
         return HttpResponse('no GUI yet')
+
+
+def close_shop_permanently(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        shop_id = request.POST.get('shop_id')
+        # return HttpResponse('no GUI yet')
+        ShopLogic.close_shop_permanently(username, shop_id)

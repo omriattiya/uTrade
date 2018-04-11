@@ -31,7 +31,8 @@ items_urlpatterns = [
 shops_urlpatterns = [
     path('shops/create_shop/', shops.create_shop),
     path('shops/add_review_on_shop/', shops.add_review_on_shop),
-    path('shops/get_purchase_history', shops.get_shop_purchase_history)
+    path('shops/get_purchase_history', shops.get_shop_purchase_history),
+    path('shops/close_shop_permanently', shops.close_shop_permanently),
 ]
 
 customer_urlpatterns = [

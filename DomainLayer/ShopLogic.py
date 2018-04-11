@@ -1,4 +1,4 @@
-from DatabaseLayer import Shops, StoreManagers, PurchasedItems
+from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers
 
 
 def create_shop(shop, user_id):
@@ -19,4 +19,13 @@ def get_shop_purchase_history(username, shop_id):
         get_purchase_history_permission = manager[7]
         if get_purchase_history_permission > 0:
             return PurchasedItems.get_purchased_items_by_shop(shop_id)
+    return False
+
+
+def close_shop_permanently(username, shop_id):
+    if username is not None and shop_id is not None:
+        sys_manager = SystemManagers.is_system_manager(username)
+        if sys_manager is not False:
+            return Shops.close_shop_permanently(shop_id)
+        return False
     return False

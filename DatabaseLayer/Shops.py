@@ -58,3 +58,12 @@ def re_open_shop(shop_id):
             WHERE id='{}'
             """.format(shop_id)
     return commit_command(sql)
+
+
+def close_shop_permanently(shop_id):
+    sql = """
+            UPDATE Shops 
+            SET status='CLOSED'
+            WHERE id='{}'
+            """.format(shop_id)
+    return commit_command(sql)
