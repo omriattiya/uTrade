@@ -13,9 +13,12 @@ class ShoppingCartTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
 
-        register(RegisteredUser('Omri', '123456'))  # register user
-        ShopLogic.create_shop(Shop.Shop('My New Shop', 1, 'ACTIVE'), 'Omri')  # add shop
-        ItemsLogic.add_item_to_shop(Item.Item(1, 1, 'milk', 'milk', 'keywords', 1, 12, 100), 1, 'Omri')  # add item
+        username = 'Omri'
+        shop_name = 'My New Shop'
+        register(RegisteredUser(username, '123456'))  # register user
+        ShopLogic.create_shop(Shop.Shop(shop_name, 1, 'ACTIVE'), username)  # add shop
+        ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 1, 12, 100),
+                                    shop_name, username)
 
     def test_add_item_to_cart(self):
         username = 'Omri'
@@ -30,7 +33,7 @@ class ShoppingCartTests(unittest.TestCase):
 
     def test_remove_item_from_cart(self):
         username = 'Omri'
-        item_id = 0
+        item_id = 1
         quantity = 20
         ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
         ShoppingCart.remove_item_shopping_cart(username, item_id)

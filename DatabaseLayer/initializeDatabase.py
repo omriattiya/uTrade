@@ -45,7 +45,7 @@ tables_sql = [
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
-          name CHAR(30) NOT NULL,
+          name CHAR(30) PRIMARY KEY NOT NULL,
           rank REAL DEFAULT NULL,
           status TEXT
         )

@@ -19,7 +19,7 @@ def modify_notifications(owner_id, should_notify):
 
 def get_owner(username, shop_name):
     sql_query = """
-        SELECT * FROM Owners WHERE username LIKE '{}' and shop_name = {}
+        SELECT * FROM Owners WHERE username LIKE '{}' and shop_name = '{}'
     """.format(username, shop_name)
     results = select_command(sql_query)
     if len(results) == 1:
