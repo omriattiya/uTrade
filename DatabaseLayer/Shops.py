@@ -1,88 +1,57 @@
-from DatabaseLayer.getConn import get_conn, commit_command
-from sqlite3 import Error
+from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.Shop import Shop
 
 
-def get_shop(shop_name):
-    sql = """
+def search_shop(shop_name):
+    sql_query = """
                 SELECT *
                 FROM Shops
-                WHERE title = '{}'
-            """.format(shop_name)
-    try:
-        conn = get_conn()
-        c = conn.cursor()
-        c.execute(sql)
-        shop = c.fetchone()
-        if shop is None:
-            return False
-        shop = Shop( shop[1], shop[2], shop[3])
-        conn.close()
-        return shop
-    except Error as e:
+                WHERE name = '{}'
+              """.format(shop_name)
+    shop = select_command(sql_query)
+    if len(shop) == 0:
         return False
-
-
-def searchShop(shop_name):
-    c = get_conn().cursor()
-    c.execute("""
-                SELECT *
-                FROM Shops
-                WHERE title = '{}'
-              """.format(shop_name))
-    return c.fetchall()
+    return Shop(shop[1], shop[2], shop[3])
 
 
 def create_shop(shop):
-    sql = """
-                INSERT INTO Shops (title, status)  
-    VALUES ('{}', '{}');
-              """.format(shop.title, shop.status)
-    return commit_command(sql)
+    sql_query = """
+                INSERT INTO Shops (name, status)  
+                VALUES ('{}', '{}');
+              """.format(shop.name, shop.status)
+    return commit_command(sql_query)
 
 
 def connect_shop_to_owner(shop, shop_name):
-    c = get_conn().cursor()
-    c.execute("""
+    sql_query = """
                 INSERT INTO Owners (username, shop_name)  
-VALUES ('{}', '{}');
-              """.format(shop_name, shop.title))
-    return c.fetchall()
-
-
-def add_review_on_shop(writer_id, shop_name, description, rank):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO ReviewsOnShops (writerId, shop_name, description,
-                 rank)
-VALUES ('{}', '{}', '{}', '{}');
-              """.format(writer_id, shop_name,
-                         description, rank))
-    return c.fetchall()
+                VALUES ('{}', '{}')
+              """.format(shop_name, shop.name)
+    return commit_command(sql_query)
 
 
 def close_shop(shop_name):
-    sql = """
+    sql_query = """
             UPDATE Shops 
             SET status='INACTIVE'
-            WHERE title='{}'
+            WHERE name='{}'
             """.format(shop_name)
-    return commit_command(sql)
+    return commit_command(sql_query)
 
 
 def re_open_shop(shop_name):
-    sql = """
+    sql_query = """
             UPDATE Shops 
             SET status='ACTIVE'
-            WHERE title='{}'
+            WHERE name='{}'
             """.format(shop_name)
-    return commit_command(sql)
+    return commit_command(sql_query)
 
 
 def close_shop_permanently(shop_name):
-    sql = """
+    sql_query = """
             UPDATE Shops 
             SET status='CLOSED'
-            WHERE title='{}'
+            WHERE name='{}'
             """.format(shop_name)
-    return commit_command(sql)
+    return commit_command(sql_query)

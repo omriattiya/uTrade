@@ -1,25 +1,12 @@
-from DatabaseLayer.getConn import get_conn, commit_command
+from DatabaseLayer.getConn import commit_command, select_command
 
 
-# TODO: c = get_conn() and CLOSE THE CONNECTION!!
 def remove_item_shopping_cart(username, item_id):
-    c = get_conn().cursor()
-    c.execute("""
+    sql_query = """
                 DELETE FROM ShoppingCart
                 WHERE userName = '{}' AND itemId = '{}'
-              """.format(username, item_id))
-    return c.fetchall()
-
-
-# TODO: c = get_conn() and CLOSE THE CONNECTION!!
-def browse_shopping_cart(username):
-    c = get_conn().cursor()
-    c.execute("""
-                SELECT *
-                FROM ShoppingCart
-                WHERE userName = '{}'
-              """.format(username))
-    return c.fetchall()
+              """.format(username, item_id)
+    return commit_command(sql_query)
 
 
 def add_item_shopping_cart(username, item_id, quantity):
@@ -31,23 +18,17 @@ def add_item_shopping_cart(username, item_id, quantity):
 
 
 def get_cart_items(username):
-    conn = get_conn()
-    c = conn.cursor()
-    sql = """
+    sql_query = """
         SELECT * FROM ShoppingCart WHERE userName LIKE '{}'
     """.format(username)
-    c.execute(sql)
-    results = c.fetchall()
-    conn.close()
-    return results
+    return select_command(sql_query)
 
 
 def check_empty(username):
-    c = get_conn().cursor()
-    c.execute("""
+    sql_query = """
                 SELECT *
                 FROM ShoppingCart
                 WHERE userName = '{}'
-              """.format(username))
-    lst = c.fetchall()
-    return len(lst) == 0
+              """.format(username)
+    items = select_command(sql_query)
+    return len(items) == 0
