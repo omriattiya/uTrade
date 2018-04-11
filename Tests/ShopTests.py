@@ -1,12 +1,14 @@
 import os
 import unittest
 
-from DatabaseLayer import Shops, ReviewsOnShops
+from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic
 from DomainLayer.ShopLogic import close_shop_permanently, create_shop
 from DomainLayer.UsersLogic import register
+from SharedClasses.Item import Item
+from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
@@ -30,6 +32,14 @@ class ShopTest(unittest.TestCase):
         ShopLogic.create_shop(shop, 'Tomer')
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
+
+    def test_review_on_item(self):
+        register(RegisteredUser('Tomer', '12345678'))
+        user = get_user('Tomer')
+        item = Item('Tomer', 'My Shop', 'Banana', 'Fruit', 'Bad', 5, 5)
+        item_review = ItemReview('Tomer', 'Good', 3, 1)
+        ReviewsOnItems.add_review_on_item('Tomer', item.id, 'Best', 10)
+        self.assertTrue(True)
 
     def test_review_on_shop(self):
         register(RegisteredUser('Tomer', '12345678'))

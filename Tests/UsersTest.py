@@ -61,8 +61,8 @@ class UsersTest(unittest.TestCase):
         self.assertFalse(status)
 
     def test_get_purchased_history(self):
-        register(RegisteredUser('Yoni', '121212'))
-        user = get_user('Yoni')
+        register(RegisteredUser('Tomer', '121212'))
+        user = get_user('Tomer')
         # add an item to Shopping cart
         # purchase
         # get purchased history
