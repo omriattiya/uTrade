@@ -51,3 +51,9 @@ def edit_shop_item(request):
             return HttpResponse('item edited successfully')
         else:
             return HttpResponse('failed')
+
+
+def get_all_purchased_items(request):
+    if request.method == 'GET':
+        username = request.GET.get('username')
+        return ItemsLogic.get_all_purchased_items(username)
