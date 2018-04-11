@@ -34,7 +34,7 @@ def add_review_on_shop(request):
         shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        Shops.add_review_on_shop(writer_id, shop_name, description, rank)
+        ShopLogic.add_review_on_shop(writer_id, shop_name, description, rank)
 
 
 def search_shop_purchase_history(request):
