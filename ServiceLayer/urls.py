@@ -1,4 +1,4 @@
-from ServiceLayer.services import users, search, items, shops,  messages, shoppingcart
+from ServiceLayer.services import users, search, items, shops, customer, messages, shoppingcart
 from django.urls import path
 
 users_urlpatterns = [
@@ -48,10 +48,11 @@ messages_urlpatterns = [
 ]
 
 shoppingcart_urlpatterns = [
-    path('shoppingcart/remove_item_shopping_cart/', shoppingcart.remove_item_shopping_cart),
-    path('shoppingcart/browse_shopping_cart/', shoppingcart.browse_shopping_cart),
-    path('shoppingcart/add', shoppingcart.add_item),
-    path('shoppingcart/pay_all', shoppingcart.pay_all)
+    path('shopping_cart/add_item_shopping_cart', shoppingcart.add_item_shopping_cart),
+    path('shopping_cart/remove_item_shopping_cart/', shoppingcart.remove_item_shopping_cart),
+    path('shopping_cart/browse_shopping_cart/', shoppingcart.browse_shopping_cart),
+    path('shopping-cart/pay_all', shoppingcart.pay_all)
+
 ]
 
 urlpatterns = users_urlpatterns + \

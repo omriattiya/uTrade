@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
-from SharedClasses.Shop import Shop
+from SharedClasses import Shop
 from DatabaseLayer import Shops
 
 

@@ -1,11 +1,9 @@
-from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers
+from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners
 
 
 def create_shop(shop, user_id):
     if shop is not None and user_id is not None:
-        Shops.create_shop(shop)
-        Shops.connect_shop_to_owner(user_id, shop)
-        return True
+        return Shops.create_shop(shop) and Owners.add_owner(shop.id, user_id)
 
 
 def add_review_on_shop(writer_id, shop_id, description, rank):

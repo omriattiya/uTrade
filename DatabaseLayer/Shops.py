@@ -33,15 +33,12 @@ def searchShop(shop_name):
     return c.fetchall()
 
 
-def create_shop(shop,user_id):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO Shops (title, rank,
-                 status)  
-VALUES ('{}', '{}', '{}');
-              """.format(shop.title,
-                         shop.rank, shop.status))
-    return c.fetchall()
+def create_shop(shop):
+    sql = """
+                INSERT INTO Shops (title, status)  
+    VALUES ('{}', '{}');
+              """.format(shop.title, shop.status)
+    return commit_command(sql)
 
 
 def connect_shop_to_owner(shop, shop_title):
