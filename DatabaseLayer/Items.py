@@ -80,17 +80,6 @@ def searchItemsByKeywords(item_keyword):
     return c.fetchall()
 
 
-def add_review_on_item(writer_id, item_id, description, rank):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO ReviewsOnItems (writerId, itemId, description,
-                 rank)  
-VALUES ('{}', '{}', '{}', '{}');
-              """.format(writer_id, item_id,
-                         description, rank))
-    return c.fetchall()
-
-
 def updateItem(item_id, field_name, new_value):
     sql = """
             UPDATE Items

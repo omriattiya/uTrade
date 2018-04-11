@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
-from SharedClasses import Shop
+from SharedClasses.Shop import Shop
 from DatabaseLayer import Shops
 
 
@@ -15,7 +15,7 @@ def create_shop(request):
         shop_status = request.POST.get('status')
         username = request.POST.get('username')
         shop = Shop(shop_name, shop_rank, shop_status)
-        Shops.create_shop(shop, username)
+        ShopLogic.create_shop(shop, username)
 
 
 @csrf_exempt

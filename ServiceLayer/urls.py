@@ -36,10 +36,6 @@ shops_urlpatterns = [
     path('shops/close_shop_permanently', shops.close_shop_permanently),
 ]
 
-customer_urlpatterns = [
-
-]
-
 messages_urlpatterns = [
     path('messages/send_message/', messages.send_message),
     path('messages/send_message_from_shop', messages.send_message_from_shop),
@@ -59,6 +55,5 @@ urlpatterns = users_urlpatterns + \
               search_urlpatterns + \
               items_urlpatterns + \
               shops_urlpatterns + \
-              customer_urlpatterns + \
               messages_urlpatterns + \
               shoppingcart_urlpatterns  # add more here using '+'

@@ -41,23 +41,12 @@ def create_shop(shop):
     return commit_command(sql)
 
 
-def connect_shop_to_owner(shop, shop_name):
+def connect_shop_to_owner(shop_name, username):
     c = get_conn().cursor()
     c.execute("""
                 INSERT INTO Owners (username, shop_name)  
 VALUES ('{}', '{}');
-              """.format(shop_name, shop.title))
-    return c.fetchall()
-
-
-def add_review_on_shop(writer_id, shop_name, description, rank):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO ReviewsOnShops (writerId, shop_name, description,
-                 rank)
-VALUES ('{}', '{}', '{}', '{}');
-              """.format(writer_id, shop_name,
-                         description, rank))
+              """.format(username, shop_name))
     return c.fetchall()
 
 
