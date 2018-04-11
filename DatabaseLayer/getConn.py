@@ -3,8 +3,11 @@ from sqlite3 import Error
 
 
 def get_conn():
-    return sqlite3.connect('db.sqlite3')
-
+    conn = sqlite3.connect('db.sqlite3')
+    conn.execute("""
+                      PRAGMA foreign_keys = ON
+              """)
+    return conn
 
 def commit_command(sql_query):
     try:

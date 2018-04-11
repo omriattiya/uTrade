@@ -28,6 +28,7 @@ def init(database_path, tables):
 
 
 tables_sql = [
+    "PRAGMA foreign_keys = ON",
     """CREATE TABLE IF NOT EXISTS RegisteredUsers(
         username CHAR(30) PRIMARY KEY,
         password TEXT NOT NULL
@@ -114,7 +115,7 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
-          username char(30) REFERENCES RegisteredUsers(username),
+          username char(30) ,
           shop_name INTEGER REFERENCES Shops(name),
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
@@ -122,6 +123,7 @@ tables_sql = [
           replyMessagePermission INTEGER NOT NULL,
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
+          FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
           PRIMARY KEY(username,shop_name)
         )
     """

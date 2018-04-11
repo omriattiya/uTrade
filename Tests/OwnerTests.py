@@ -15,7 +15,7 @@ class OwnerTests(unittest.TestCase):
 
         username = 'Omri'
         register(RegisteredUser(username, '123456'))  # register user
-        # ShopLogic.create_shop(Shop.Shop(shop_name, 1, 'ACTIVE'), username)  # add shop
+        # ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), username)  # add shop
         # ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 1, 12, 100),
         #                           shop_name, username)
 
@@ -53,8 +53,37 @@ class OwnerTests(unittest.TestCase):
                        'getAllMessagePermission': True,
                        'getPurchaseHistoryPermission': True
                        }
+        ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
         store_manager = StoreManagers.add_manager(shop_name, target_user_name, permissions)
         self.assertEqual(store_manager, True)
+
+    def test_add_manager_bad_username(self):
+        shop_name = 'bad shop name'
+        target_user_name = 'Naruto'
+        permissions = {'addItemPermission': True,
+                       'removeItemPermission': True,
+                       'editItemPermission': True,
+                       'replyMessagePermission': True,
+                       'getAllMessagePermission': True,
+                       'getPurchaseHistoryPermission': True
+                       }
+        store_manager = StoreManagers.add_manager(shop_name, target_user_name, permissions)
+        self.assertEqual(store_manager, False)
+
+    def test_add_manager_bad_shop(self):
+        shop_name = 'bad shop name'
+        target_user_name = 'Naruto'
+        register(RegisteredUser(target_user_name, '123456'))  # register user
+        permissions = {'addItemPermission': True,
+                       'removeItemPermission': True,
+                       'editItemPermission': True,
+                       'replyMessagePermission': True,
+                       'getAllMessagePermission': True,
+                       'getPurchaseHistoryPermission': True
+                       }
+        ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
+        store_manager = StoreManagers.add_manager(shop_name + '1', target_user_name, permissions)
+        self.assertEqual(False, store_manager)
 
     def tearDown(self):
         os.remove('db.sqlite3')

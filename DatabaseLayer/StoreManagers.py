@@ -8,7 +8,7 @@ def get_store_manager(username, shop_name):
                 WHERE username = '{}' AND shop_name = '{}'
             """.format(username, shop_name)
     manager = select_command(sql_query)
-    if len(manager) != 0:
+    if len(manager) == 1:
         return manager[0]
     else:
         return False
