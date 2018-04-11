@@ -24,7 +24,6 @@ def remove_item_from_shop(item_id, username):
     return False
 
 
-
 def add_review_on_item(writer_id, item_id, description, rank):
     if writer_id is not None and item_id is not None and description is not None and rank is not None:
         return Shops.add_review_on_shop(writer_id, item_id, description, rank)
