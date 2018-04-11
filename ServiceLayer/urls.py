@@ -1,4 +1,4 @@
-from ServiceLayer.services import users, search, items, shops, customer, messages, shoppingcart
+from ServiceLayer.services import users, search, items, shops,  messages, shoppingcart
 from django.urls import path
 
 users_urlpatterns = [
