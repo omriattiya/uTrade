@@ -1,11 +1,11 @@
 from DatabaseLayer.getConn import commit_command, select_command
 
 
-def add_owner(shop_name, receiver_username):
+def add_owner(user, shop):
     sql = """
             INSERT INTO Owners (username, shop_name)
             VALUES ('{}','{}')
-            """.format(receiver_username, shop_name)
+            """.format(user.username, shop.name)
     return commit_command(sql)
 
 

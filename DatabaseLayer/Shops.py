@@ -11,22 +11,23 @@ def search_shop(shop_name):
     shop = select_command(sql_query)
     if len(shop) == 0:
         return False
-    return Shop(shop[1], shop[2], shop[3])
+    shop = shop[0]
+    return Shop(shop[0], shop[1], shop[2])
 
 
 def create_shop(shop):
     sql_query = """
                 INSERT INTO Shops (name, status)  
                 VALUES ('{}', '{}');
-              """.format(shop.name, shop.status)
+              """.format(shop.name,shop.rank, shop.status)
     return commit_command(sql_query)
 
 
-def connect_shop_to_owner(shop, shop_name):
+def connect_shop_to_owner(username, shop):
     sql_query = """
                 INSERT INTO Owners (username, shop_name)  
                 VALUES ('{}', '{}')
-              """.format(shop_name, shop.name)
+              """.format(username, shop.name)
     return commit_command(sql_query)
 
 
