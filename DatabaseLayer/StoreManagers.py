@@ -25,13 +25,15 @@ def add_manager(shop_name, target_username, permissions):
     sql = """
             INSERT INTO StoreManagers (username, shop_name, 
                                         addItemPermission,
+                                        removeItemPermission,
                                         editItemPermission,
                                         replyMessagePermission, 
                                         getAllMessagePermission,
                                         getPurchaseHistoryPermission)
-            VALUES ('{}','{}','{}','{}','{}','{}','{}')
+            VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')
             """.format(target_username, shop_name,
                        permissions.addItemPermission,
+                       permissions.removeItemPermission,
                        permissions.editItemPermission,
                        permissions.replyMessagePermission,
                        permissions.getAllMessagePermission,
