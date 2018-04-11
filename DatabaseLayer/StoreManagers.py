@@ -9,7 +9,7 @@ def get_store_manager(username, shop_name):
             """.format(username, shop_name)
     manager = select_command(sql_query)
     if len(manager) != 0:
-        return manager
+        return manager[0]
     else:
         return False
 
@@ -25,10 +25,10 @@ def add_manager(shop_name, target_username, permissions):
                                         getPurchaseHistoryPermission)
             VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')
             """.format(target_username, shop_name,
-                       permissions.addItemPermission,
-                       permissions.removeItemPermission,
-                       permissions.editItemPermission,
-                       permissions.replyMessagePermission,
-                       permissions.getAllMessagePermission,
-                       permissions.getPurchaseHistoryPermission)
+                       permissions.get('addItemPermission'),
+                       permissions.get('removeItemPermission'),
+                       permissions.get('editItemPermission'),
+                       permissions.get('replyMessagePermission'),
+                       permissions.get('getAllMessagePermission'),
+                       permissions.get('getPurchaseHistoryPermission'))
     return commit_command(sql)

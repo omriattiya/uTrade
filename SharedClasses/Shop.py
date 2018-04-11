@@ -1,5 +1,4 @@
 class Shop:
-    def __init__(self, name, rank, status):
+    def __init__(self, name, status):
         self.name = name
-        self.rank = rank
         self.status = status
