@@ -1,86 +1,77 @@
-from DatabaseLayer.getConn import get_conn, commit_command
+from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.Item import Item
 
 
 def get_item(item_id):
-    conn = get_conn()
-    c = conn.cursor()
-    c.execute("""
+    sql_query = """
                 SELECT *
                 FROM Items
                 Where id = '{}'
-            """.format(item_id))
-    item = c.fetchone()
+            """.format(item_id)
+    results = select_command(sql_query)
+    if len(results) == 0:
+        return False
+    item = results[0]
     item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7])
-    conn.close()
     return item
 
 
-def searchItemsByName(item_name):
-    conn = get_conn()
-    c = conn.cursor()
-    c.execute("""
+def search_items_by_name(item_name):
+    sql_query = """
                 SELECT *
                 FROM Items
                 WHERE name = '{}'
-              """.format(item_name))
-    return c.fetchall()
+              """.format(item_name)
+    return select_command(sql_query)
 
 
 def add_item_to_shop(item):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO Items (id, shop_name, name,
-                 category, keyWords,
-                  rank, price, quantity)  
-VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
+    sql_query = """
+                INSERT INTO Items (id, shop_name, name, category, keyWords, rank, price, quantity)  
+                VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
               """.format(item.id, item.shop_name,
                          item.name, item.category,
                          item.keyWords, item.rank,
-                         item.price, item.quantity))
-    return c.fetchall()
+                         item.price, item.quantity)
+    return commit_command(sql_query)
 
 
 def remove_item_from_shop(item_id):
-    c = get_conn().cursor()
-    c.execute("""
+    sql_query = """
                 DELETE FROM Items
                 WHERE id = '{}'
-              """.format(item_id))
-    return c.fetchall()
+              """.format(item_id)
+    return commit_command(sql_query)
 
 
-def searchItemInShop(item_name, shop_name):
-    c = get_conn().cursor()
-    c.execute("""
+def search_item_in_shop(item_name, shop_name):
+    sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = Shops.id
-              """.format(item_name, shop_name))
-    return c.fetchall()
+                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = '{}'
+              """.format(item_name, shop_name, shop_name)
+    return select_command(sql_query)
 
 
-def searchItemsByCategory(item_category):
-    c = get_conn().cursor()
-    c.execute("""
+def search_items_by_category(item_category):
+    sql_query = """
                 SELECT *
                 FROM Items
                 WHERE name = '{}'
-              """.format(item_category))
-    return c.fetchall()
+              """.format(item_category)
+    return select_command(sql_query)
 
 
-def searchItemsByKeywords(item_keyword):
-    c = get_conn().cursor()
-    c.execute("""
+def search_items_by_keywords(item_keyword):
+    sql_query = """
                 SELECT *
                 FROM Items
                 WHERE name = '{}'
-              """.format(item_keyword))
-    return c.fetchall()
+              """.format(item_keyword)
+    return select_command(sql_query)
 
 
-def updateItem(item_id, field_name, new_value):
+def update_item(item_id, field_name, new_value):
     sql = """
             UPDATE Items
             SET {} = '{}'

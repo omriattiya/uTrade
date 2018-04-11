@@ -10,10 +10,10 @@ def remove_item_shopping_cart(request):
         ShoppingLogic.remove_item_shopping_cart(username, item_id)
 
 
-def browse_shopping_cart(request):
+def get_cart_items(request):
     if request.method == 'GET':
         username = request.GET.get('username')
-        ShoppingLogic.browse_shopping_cart(username)
+        ShoppingLogic.get_cart_items(username)
 
 
 @csrf_exempt

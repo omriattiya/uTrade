@@ -2,16 +2,16 @@ import sqlite3
 from sqlite3 import Error
 
 
-def connectToDatabase(databasePath):
+def connect_to_database(database_path):
     try:
-        conn = sqlite3.connect(databasePath)
+        conn = sqlite3.connect(database_path)
         return conn
     except Error as e:
         print(e)
         pass
 
 
-def initTables(conn, tables):
+def init_tables(conn, tables):
     c = conn.cursor()
     try:
         for table in tables:
@@ -20,10 +20,10 @@ def initTables(conn, tables):
         print(e)
 
 
-def init(databasePath, tables):
-    conn = connectToDatabase(databasePath)
+def init(database_path, tables):
+    conn = connect_to_database(database_path)
     if conn is not None:
-        initTables(conn, tables)
+        init_tables(conn, tables)
     conn.commit()
 
 
@@ -35,7 +35,7 @@ tables_sql = [
 
     """CREATE TABLE IF NOT EXISTS Items(
         id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shop_name INTEGER REFERENCES Shops(title),
+        shop_name INTEGER REFERENCES Shops(name),
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
@@ -45,7 +45,7 @@ tables_sql = [
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
-          title CHAR(30) NOT NULL,
+          name CHAR(30) NOT NULL,
           rank REAL DEFAULT NULL,
           status TEXT
         )
@@ -54,7 +54,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
           writerId INTEGER REFERENCES RegisteredUsers(username),
-          shop_name INTEGER REFERENCES Shops(title),
+          shop_name INTEGER REFERENCES Shops(name),
           description TEXT,
           rank INTEGER
         )
@@ -79,7 +79,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Owners(
           username CHAR(30) REFERENCES RegisteredUsers(username),
-          shop_name INTEGER REFERENCES Shops(title), 
+          shop_name INTEGER REFERENCES Shops(name), 
           shouldNotify INTEGER DEFAULT 1,
           PRIMARY KEY(username,shop_name)
         )
@@ -103,7 +103,7 @@ tables_sql = [
     # TODO: whoever does this part needs to add more fields to the table below
     """
         CREATE TABLE IF NOT EXISTS PurchasePolicy(
-          itemId INTEGER REFERENCES Items(itemId),
+          itemId INTEGER REFERENCES Items(id),
           purchasePolicy TEXT,
           PRIMARY KEY(itemId)
         )
@@ -117,7 +117,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
           username char(30) REFERENCES RegisteredUsers(username),
-          shop_name INTEGER REFERENCES Shops(title),
+          shop_name INTEGER REFERENCES Shops(name),
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,

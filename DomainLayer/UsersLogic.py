@@ -7,7 +7,7 @@ def register(user):
     if user.username is not None and user.password is not None:
         if len(user.username) > 0 and (user.username[0] > '9' or user.username[0] < '0'):
             if len(user.password) >= min_password_len:
-                return RegisteredUsers.addUser(user)
+                return RegisteredUsers.add_user(user)
     else:
         return False
 
@@ -15,7 +15,7 @@ def register(user):
 def edit_profile(user):
     if user.username is not None and user.password is not None:
         if len(user.password) > min_password_len:
-            return RegisteredUsers.editUserPassword(user)
+            return RegisteredUsers.edit_user_password(user)
     return False
 
 

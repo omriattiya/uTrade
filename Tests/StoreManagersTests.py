@@ -7,6 +7,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from DatabaseLayer import Shops
 
+
 class StoreManagersTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
@@ -15,9 +16,9 @@ class StoreManagersTests(unittest.TestCase):
         username = 'Shahar'
         UsersLogic.register(RegisteredUser(username, '123456'))
         shop = Shop('myShop', 0, 'Active')
-        ShopLogic.create_shop(shop,username)
-        shop = Shops.get_shop(1)
-        UsersLogic.add_manager(username,)
+        ShopLogic.create_shop(shop, username)
+        shop = Shops.search_shop(1)
+        UsersLogic.add_manager(username, )
 
     def tearDown(self):
         os.remove('db.sqlite3')

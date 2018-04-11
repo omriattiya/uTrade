@@ -10,7 +10,7 @@ from DatabaseLayer import Shops
 def create_shop(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
-        shop_name = request.POST.get('title')
+        shop_name = request.POST.get('name')
         shop_rank = request.POST.get('rank')
         shop_status = request.POST.get('status')
         username = request.POST.get('username')
@@ -38,7 +38,7 @@ def add_review_on_shop(request):
         Shops.add_review_on_shop(writer_id, shop_name, description, rank)
 
 
-def get_shop_purchase_history(request):
+def search_shop_purchase_history(request):
     if request.method == 'GET':
         return HttpResponse('no GUI yet')
 

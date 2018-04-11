@@ -1,4 +1,4 @@
-from DatabaseLayer.getConn import commit_command, get_conn
+from DatabaseLayer.getConn import commit_command, select_command
 
 
 def add_owner(shop_name, receiver_username):
@@ -18,14 +18,10 @@ def modify_notifications(owner_id, should_notify):
 
 
 def get_owner(username, shop_name):
-    conn = get_conn()
-    c = conn.cursor()
-    sql = """
+    sql_query = """
         SELECT * FROM Owners WHERE username LIKE '{}' and shop_name = {}
     """.format(username, shop_name)
-    c.execute(sql)
-    results = c.fetchall()
-    conn.close()
+    results = select_command(sql_query)
     if len(results) == 1:
         return results
     return False
