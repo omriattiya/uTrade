@@ -1,6 +1,7 @@
 import unittest, os
 from DatabaseLayer.initializeDatabase import init_database
 from DatabaseLayer.RegisteredUsers import get_user
+from DatabaseLayer.SystemManagers import add_system_manager
 from DomainLayer.UsersLogic import register, edit_profile, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
 
@@ -46,11 +47,27 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(user.username, 'Yoni')
         register(RegisteredUser('Yonion', '123123123'))
         remover = get_user('Yoni')
-        logged = login(remover)
-        status = False
-        if logged is True:
-            status = remove_user(remover.username, user.username)
+        add_system_manager(remover.username)
+        status = remove_user(remover.username, user.username)
         self.assertTrue(status)
+
+    def test_bad_remove_user(self):
+        register(RegisteredUser('Yoni', '121212'))
+        user = get_user('Yoni')
+        self.assertEqual(user.username, 'Yoni')
+        register(RegisteredUser('Yonion', '123123123'))
+        remover = get_user('Yoni')
+        status = remove_user(remover.username, user.username)
+        self.assertFalse(status)
+
+    def test_get_purchased_history(self):
+        register(RegisteredUser('Yoni', '121212'))
+        user = get_user('Yoni')
+        # add an item to Shopping cart
+        # purchase
+        # get purchased history
+        # assertEqual(ans, [banana item])
+        self.assertEqual(user, user)
 
     def tearDown(self):
         os.remove('db.sqlite3')

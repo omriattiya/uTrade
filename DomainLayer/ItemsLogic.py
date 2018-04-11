@@ -1,4 +1,4 @@
-from DatabaseLayer import Items, StoreManagers, Customers, Shops
+from DatabaseLayer import Items, StoreManagers, Shops
 
 
 def add_item_to_shop(item, shop_id, username):
@@ -37,6 +37,10 @@ def edit_shop_item(username, item_id, field_name, new_value):
     return False
 
 
-def get_purchase_history(user_id):
-    if user_id is not None:
-        return Customers.get_purchase_history(user_id)
+def check_in_stock(item_id, amount):
+    if item_id is not None and amount is not None and amount > 0:
+        item = Items.get_item(item_id)
+        if item is not None:
+            if item.quantity >= amount:
+                return True
+    return False
