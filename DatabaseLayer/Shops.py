@@ -23,11 +23,11 @@ def create_shop(shop):
     return commit_command(sql_query)
 
 
-def connect_shop_to_owner(shop, shop_name):
+def connect_shop_to_owner(username, shop_name):
     sql_query = """
                 INSERT INTO Owners (username, shop_name)  
                 VALUES ('{}', '{}')
-              """.format(shop_name, shop.name)
+              """.format(username, shop_name)
     return commit_command(sql_query)
 
 
