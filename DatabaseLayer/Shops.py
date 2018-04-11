@@ -12,14 +12,11 @@ def searchShop(shop_name):
 
 
 def create_shop(shop):
-    c = get_conn().cursor()
-    c.execute("""
-                INSERT INTO Shops (id, title, rank,
-                 status)  
-VALUES ('{}', '{}', '{}', '{}');
-              """.format(shop.id, shop.title,
-                         shop.rank, shop.status))
-    return c.fetchall()
+    sql = """
+                INSERT INTO Shops (title, status)  
+    VALUES ('{}', '{}');
+              """.format(shop.title, shop.status)
+    return commit_command(sql)
 
 
 def connect_shop_to_owner(shop, user_id):

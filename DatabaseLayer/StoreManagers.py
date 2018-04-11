@@ -13,7 +13,10 @@ def getStoreManager(username,shop_id):
         c = conn.cursor()
         c.execute(sql)
         manager = c.fetchone()
-        return manager
+        if manager is not None:
+            return manager
+        else:
+            return False
     except Error as e:
         return False
 
