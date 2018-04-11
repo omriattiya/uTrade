@@ -1,4 +1,4 @@
-from DatabaseLayer import Items, StoreManagers, Shops, Owners, SystemManagers
+from DatabaseLayer import Items, StoreManagers, ReviewsOnItems, Owners, SystemManagers
 
 
 def add_item_to_shop(item, username):
@@ -26,7 +26,7 @@ def remove_item_from_shop(item_id, username):
 
 def add_review_on_item(writer_id, item_id, description, rank):
     if writer_id is not None and item_id is not None and description is not None and rank is not None:
-        return Shops.add_review_on_shop(writer_id, item_id, description, rank)
+        return ReviewsOnItems.add_review_on_item(writer_id, item_id, description, rank)
 
 
 def edit_shop_item(username, item_id, field_name, new_value):

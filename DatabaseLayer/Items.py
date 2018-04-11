@@ -83,6 +83,8 @@ def update_item(item_id, field_name, new_value):
 def get_all_purchased_items():
     sql_query = """
                 SELECT *
-               FROM Items
+               FROM Items,PurchasedItems
+               WHERE Items.id = PurchasedItems.PurchasedItem
               """
+    # TODO: return something nicer here
     return select_command(sql_query)

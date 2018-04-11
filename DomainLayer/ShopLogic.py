@@ -1,4 +1,4 @@
-from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners
+from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
 
 
 def create_shop(shop, username):
@@ -8,7 +8,7 @@ def create_shop(shop, username):
 
 def add_review_on_shop(writer_id, shop_name, description, rank):
     if writer_id is not None and shop_name is not None and description is not None and rank is not None:
-        return Shops.add_review_on_shop(writer_id, shop_name, description, rank)
+        return ReviewsOnShops.add_review_on_shop(writer_id, shop_name, description, rank)
 
 
 def search_shop_purchase_history(username, shop_name):

@@ -12,7 +12,7 @@ def get_purchased_items_by_shop(shop_name):
     list_of_items = []
     for item in items:
         list_of_items.append({
-            'item': Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7]),
+            'item': Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]),
             'purchased_item': {item[8 : len(item)]}})
 
     return list_of_items
