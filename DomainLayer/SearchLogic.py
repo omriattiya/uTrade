@@ -25,7 +25,18 @@ def search_by_category(item_category):
 def search_by_keywords(item_keywords):
     if item_keywords is not None:
         keywords_array = item_keywords.split(';')
-        items_with_all_keywords = Items.search_items_by_category(keywords_array[0])
+        totalsum = list()
         for keyword in keywords_array:
-            items_with_all_keywords = items_with_all_keywords.intersection(Items.search_items_by_category(keyword))
-        return items_with_all_keywords
+            currentsum = list()
+            items_with_current_keyword = (Items.search_items_by_keywords(keyword))
+            for x in items_with_current_keyword:
+                currentsum.append(x[2])
+            totalsum.append(currentsum)
+        totalsum = totalsum[0]
+        aftherset = set()
+        for item in totalsum:
+            aftherset.add(item)
+        to_return_array = []
+        for item in aftherset:
+            to_return_array = to_return_array + search_by_name(item)
+        return to_return_array
