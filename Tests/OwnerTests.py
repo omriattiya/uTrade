@@ -22,7 +22,7 @@ class OwnerTests(unittest.TestCase):
     def test_add_owner(self):
         username = 'Omri'
         shop_name = 'My New Shop'
-        ShopLogic.create_shop(Shop.Shop(shop_name, 1, 'ACTIVE'), username)  # add shop
+        ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), username)  # add shop
         owner = Owners.get_owner(username, shop_name)
         self.assertEqual(len(owner), 1)
         self.assertEqual(owner[0][0], username)
@@ -31,14 +31,14 @@ class OwnerTests(unittest.TestCase):
     def test_add_owner_bad_owner(self):
         username = 'this username doesnt exist'
         shop_name = 'My New Shop'
-        ShopLogic.create_shop(Shop.Shop(shop_name, 1, 'ACTIVE'), 'Omri')  # add shop
+        ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
         owner = Owners.get_owner(username, shop_name)
         self.assertEqual(len(owner), 0)
 
     def test_add_owner_bad_shop(self):
         username = 'Omri'
         shop_name = 'bad shop name'
-        ShopLogic.create_shop(Shop.Shop('My New Shop', 1, 'ACTIVE'), username)  # add shop
+        ShopLogic.create_shop(Shop.Shop('My New Shop', 'ACTIVE'), username)  # add shop
         owner = Owners.get_owner(username, shop_name)
         self.assertEqual(len(owner), 0)
 

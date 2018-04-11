@@ -16,9 +16,8 @@ class ShoppingCartTests(unittest.TestCase):
         username = 'Omri'
         shop_name = 'My New Shop'
         register(RegisteredUser(username, '123456'))  # register user
-        ShopLogic.create_shop(Shop.Shop(shop_name, 1, 'ACTIVE'), username)  # add shop
-        ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 1, 12, 100),
-                                    shop_name, username)
+        ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), username)  # add shop
+        ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100), username)
 
     def test_add_item_to_cart(self):
         username = 'Omri'
