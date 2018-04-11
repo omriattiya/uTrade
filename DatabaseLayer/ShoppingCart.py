@@ -37,3 +37,14 @@ def add_item(user_id, item_id, quantity):
     except Error as e:
         return False
 
+
+def check_empty(username):
+    c = get_conn().cursor()
+    c.execute("""
+                SELECT *
+                FROM ShoppingCart
+                WHERE userName = '{}'
+              """.format(username))
+    lst = c.fetchall()
+    return len(lst) == 0
+

@@ -49,7 +49,8 @@ messages_urlpatterns = [
 shoppingcart_urlpatterns = [
     path('shoppingcart/remove_item_shopping_cart/', shoppingcart.remove_item_shopping_cart),
     path('shoppingcart/browse_shopping_cart/', shoppingcart.browse_shopping_cart),
-    path('shoppingcart/add', shoppingcart.add_item)
+    path('shoppingcart/add', shoppingcart.add_item),
+    path('shoppingcart/pay_all', shoppingcart.pay_all)
 ]
 
 urlpatterns = users_urlpatterns + \

@@ -43,6 +43,7 @@ def get_shop_purchase_history(request):
         return HttpResponse('no GUI yet')
 
 
+@csrf_exempt
 def close_shop_permanently(request):
     if request.method == 'POST':
         username = request.POST.get('username')
