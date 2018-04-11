@@ -1,4 +1,4 @@
-from DatabaseLayer import Items, StoreManagers, Customers, Shops, Owners
+from DatabaseLayer import Items, StoreManagers, Shops, Owners
 
 
 def add_item_to_shop(item, shop_id, username):
@@ -15,13 +15,14 @@ def add_item_to_shop(item, shop_id, username):
 
 def remove_item_from_shop(item_id, username):
     if item_id is not None:
-        shop_id = Items.get_item(item_id).shop_id
-        manager = StoreManagers.getStoreManager(username, shop_id)
+        item = Items.get_item(item_id)
+        manager = StoreManagers.getStoreManager(username, item.shop_id)
         if manager is not False:
             remove_item_permission = manager[3]
             if remove_item_permission > 0:
                 return Items.remove_item_from_shop(item_id)
     return False
+
 
 
 def add_review_on_item(writer_id, item_id, description, rank):
@@ -39,6 +40,10 @@ def edit_shop_item(username, item_id, field_name, new_value):
     return False
 
 
-def get_purchase_history(user_id):
-    if user_id is not None:
-        return Customers.get_purchase_history(user_id)
+def check_in_stock(item_id, amount):
+    if item_id is not None and amount is not None and amount > 0:
+        item = Items.get_item(item_id)
+        if item is not None:
+            if item.quantity >= amount:
+                return True
+    return False

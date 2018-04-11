@@ -24,3 +24,11 @@ def add_item_shopping_cart(request):
         quantity = request.POST.get("quantity")
         ShoppingLogic.add_item_shopping_cart(user_id, item_id, quantity)
         return HttpResponse('item added to cart')
+
+
+@csrf_exempt
+def pay_all(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        # return HttpResponse('item added to cart')
+        return ShoppingLogic.pay_all(username)

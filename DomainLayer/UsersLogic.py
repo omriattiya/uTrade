@@ -1,4 +1,4 @@
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers
 
 min_password_len = 6
 
@@ -26,8 +26,17 @@ def login(user):
 
 def remove_user(username, registered_user):
     if username is not None and registered_user is not None:
-        # if check_logged_in(username)
-        return RegisteredUsers.remove_user(registered_user)
+        sys_manager = SystemManagers.is_system_manager(username)
+        if sys_manager is not False:
+            # if check_logged_in(username)
+            return RegisteredUsers.remove_user(registered_user)
+        return False
+    return False
+
+
+def get_purchase_history(user_id):
+    if user_id is not None:
+        return RegisteredUsers.get_purchase_history(user_id)
 
 
 #    _____

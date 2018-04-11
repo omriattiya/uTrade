@@ -12,6 +12,7 @@ users_urlpatterns = [
     path('users/owner/close_shop', users.close_shop),
     path('users/owner/re_open_shop', users.re_open_shop),
     path('users/owner/modify_notifications', users.modify_notifications),
+    path('users/get_purchase_history/', users.get_purchase_history),
 ]
 
 search_urlpatterns = [
@@ -22,6 +23,7 @@ search_urlpatterns = [
 
 items_urlpatterns = [
     path('items/add_item_to_shop/', items.add_item_to_shop),
+    path('items/add_item_shopping_cartto_shop/', items.add_item_to_shop),
     path('items/remove_item_from_shop/', items.remove_item_from_shop),
     path('items/add_review_on_item/', items.add_review_on_item),
     path('items/edit_shop_item', items.edit_shop_item)
@@ -35,7 +37,7 @@ shops_urlpatterns = [
 ]
 
 customer_urlpatterns = [
-    path('customer/get_purchase_history/', customer.get_purchase_history),
+
 ]
 
 messages_urlpatterns = [
@@ -46,9 +48,11 @@ messages_urlpatterns = [
 ]
 
 shoppingcart_urlpatterns = [
+    path('shopping_cart/add_item_shopping_cart', shoppingcart.add_item_shopping_cart),
     path('shopping_cart/remove_item_shopping_cart/', shoppingcart.remove_item_shopping_cart),
     path('shopping_cart/browse_shopping_cart/', shoppingcart.browse_shopping_cart),
-    path('shopping_cart/add_item_shopping_cart', shoppingcart.add_item_shopping_cart)
+    path('shopping-cart/pay_all', shoppingcart.pay_all)
+
 ]
 
 urlpatterns = users_urlpatterns + \

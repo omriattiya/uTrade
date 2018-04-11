@@ -40,3 +40,14 @@ def get_cart_items(user_id):
     results = c.fetchall()
     conn.close()
     return results
+
+
+def check_empty(username):
+    c = get_conn().cursor()
+    c.execute("""
+                SELECT *
+                FROM ShoppingCart
+                WHERE userName = '{}'
+              """.format(username))
+    lst = c.fetchall()
+    return len(lst) == 0
