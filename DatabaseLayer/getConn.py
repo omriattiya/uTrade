@@ -18,9 +18,12 @@ def commit_command(sql_query):
 
 
 def select_command(sql_query):
-    conn = get_conn()
-    c = conn.cursor()
-    c.execute(sql_query)
-    results = c.fetchall()
-    conn.close()
-    return results
+    try:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute(sql_query)
+        results = c.fetchall()
+        conn.close()
+        return results
+    except Error as e:
+        return []
