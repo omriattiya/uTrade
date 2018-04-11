@@ -7,9 +7,9 @@ def remove_item_shopping_cart(username, item_id):
         return ShoppingCart.remove_item_shopping_cart(username, item_id)
 
 
-def browse_shopping_cart(username):
+def get_cart_items(username):
     if username is not None:
-        return ShoppingCart.browse_shopping_cart(username)
+        return ShoppingCart.get_cart_items(username)
 
 
 def add_item_shopping_cart(username, item_id, quantity):
@@ -23,7 +23,7 @@ def pay_all(username):
         empty = ShoppingCart.check_empty(username)
         if empty is not True:
             #  if so, check foreach item if the requested amount exist
-            cart_items = browse_shopping_cart(username)
+            cart_items = get_cart_items(username)
             for item_tuple in cart_items:
                 if ItemsLogic.check_in_stock(item_tuple[1], item_tuple[2]) is False:
                     return False

@@ -1,23 +1,16 @@
-from DatabaseLayer.getConn import get_conn,commit_command
-from sqlite3 import Error
+from DatabaseLayer.getConn import commit_command, select_command
 
 
-def getStoreManager(username,shop_name):
-    sql = """
+def get_store_manager(username, shop_name):
+    sql_query = """
                 SELECT *
                 FROM StoreManagers
                 WHERE username = '{}' AND shop_name = '{}'
-            """.format(username,shop_name)
-    try:
-        conn = get_conn()
-        c = conn.cursor()
-        c.execute(sql)
-        manager = c.fetchone()
-        if manager is not None:
-            return manager
-        else:
-            return False
-    except Error as e:
+            """.format(username, shop_name)
+    manager = select_command(sql_query)
+    if len(manager) != 0:
+        return manager
+    else:
         return False
 
 
@@ -25,13 +18,15 @@ def add_manager(shop_name, target_username, permissions):
     sql = """
             INSERT INTO StoreManagers (username, shop_name, 
                                         addItemPermission,
+                                        removeItemPermission,
                                         editItemPermission,
                                         replyMessagePermission, 
                                         getAllMessagePermission,
                                         getPurchaseHistoryPermission)
-            VALUES ('{}','{}','{}','{}','{}','{}','{}')
+            VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')
             """.format(target_username, shop_name,
                        permissions.addItemPermission,
+                       permissions.removeItemPermission,
                        permissions.editItemPermission,
                        permissions.replyMessagePermission,
                        permissions.getAllMessagePermission,

@@ -1,9 +1,11 @@
-import unittest, os
-from DatabaseLayer.initializeDatabase import init_database
+import os
+import unittest
 from DatabaseLayer.RegisteredUsers import get_user
+from DatabaseLayer.initializeDatabase import init_database
+from DomainLayer.ShopLogic import close_shop_permanently, create_shop
 from DomainLayer.UsersLogic import register
 from SharedClasses.RegisteredUser import RegisteredUser
-from DomainLayer.ShopLogic import close_shop_permanently, create_shop
+from SharedClasses.Shop import Shop
 
 
 class ShopTest(unittest.TestCase):
@@ -17,6 +19,13 @@ class ShopTest(unittest.TestCase):
         create_shop('1111', user.username)
         status = close_shop_permanently(user.username, '1111')
         self.assertTrue(status)
+
+    def test_create_shop(self):
+        register(RegisteredUser('Tomer', '12345678'))
+        user = get_user('Tomer')
+        shop = Shop(123, 'My Shop', 20, "Open")
+        create_shop(shop, user)
+        self.assertTrue(True)
 
     def tearDown(self):
         os.remove('db.sqlite3')

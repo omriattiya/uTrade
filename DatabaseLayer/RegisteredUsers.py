@@ -1,89 +1,57 @@
-from DatabaseLayer.getConn import get_conn, commit_command
-from sqlite3 import Error
+from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.RegisteredUser import RegisteredUser
 
 
-def addUser(user):
-    conn = get_conn()
-    sql = """
+def add_user(user):
+    sql_query = """
             INSERT INTO RegisteredUsers(username,password)
             VALUES ('{}','{}')
             """.format(user.username, user.password)
-    try:
-        c = conn.cursor()
-        c.execute(sql)
-        conn.commit()
-        conn.close()
-    except Error as e:
-        return False
-    return True
+    return commit_command(sql_query)
 
 
-def editUserPassword(user):
-    conn = get_conn()
-    sql = """
+def edit_user_password(user):
+    sql_query = """
             UPDATE RegisteredUsers
             SET password = '{}'
             WHERE username = '{}'
             """.format(user.password, user.username)
-    try:
-        c = conn.cursor()
-        c.execute(sql)
-        conn.commit()
-        conn.close()
-    except Error as e:
-        return False
-    return True
+    return commit_command(sql_query)
 
 
 def get_user(username):
-    conn = get_conn()
-    sql = """
+    sql_query = """
             SELECT *
             FROM RegisteredUsers
             WHERE username = '{}'
             """.format(username)
-    try:
-        c = conn.cursor()
-        c.execute(sql)
-        user = c.fetchone()
-        user = RegisteredUser(user[0], user[1])
-        conn.close()
-        return user
-    except Error as e:
+    results = select_command(sql_query)
+    if len(results) == 0:
         return False
+    return RegisteredUser(results[0][0], results[0][1])
 
 
 def login(user):
-    conn = get_conn()
-    sql = """
+    sql_query = """
             SELECT *
             FROM RegisteredUsers
             WHERE username = '{}' AND password = '{}'
             """.format(user.username, user.password)
-    try:
-        c = conn.cursor()
-        c.execute(sql)
-        user = c.fetchone()
-        conn.close()
-        return True
-    except Error as e:
-        return False
+    return len(select_command(sql_query)) == 1
 
 
 def remove_user(registered_user):
     sql = """
-                DELETE FROM Users
+                DELETE FROM RegisteredUsers
                 WHERE username = '{}'
               """.format(registered_user)
     return commit_command(sql)
 
 
 def get_purchase_history(username):
-    c = get_conn().cursor()
-    c.execute("""
+    sql_query = """
                 SELECT *
                 FROM PurchasedItems
                 WHERE username = '{}'
-              """.format(username))
-    return c.fetchall()
+              """.format(username)
+    return select_command(sql_query)
