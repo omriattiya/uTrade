@@ -3,7 +3,7 @@ from DatabaseLayer import Items, StoreManagers, Shops, Owners
 
 def add_item_to_shop(item, shop_name, username):
     if item is not None and shop_name is not None and username is not None:
-        is_manager = StoreManagers.getStoreManager(username, shop_name)
+        is_manager = StoreManagers.get_store_manager(username, shop_name)
         if is_manager is not False:
             add_item_permission = is_manager[2]
             if add_item_permission > 0:
@@ -16,7 +16,7 @@ def add_item_to_shop(item, shop_name, username):
 def remove_item_from_shop(item_id, username):
     if item_id is not None:
         item = Items.get_item(item_id)
-        manager = StoreManagers.getStoreManager(username, item.shop_name)
+        manager = StoreManagers.get_store_manager(username, item.shop_name)
         if manager is not False:
             remove_item_permission = manager[3]
             if remove_item_permission > 0:
@@ -31,11 +31,11 @@ def add_review_on_item(writer_id, item_id, description, rank):
 
 def edit_shop_item(username, item_id, field_name, new_value):
     item = Items.get_item(item_id)
-    result = StoreManagers.getStoreManager(username, item.shop_name)
+    result = StoreManagers.get_store_manager(username, item.shop_name)
     if result is not False:
         edit_item_permission = result[4]
         if edit_item_permission > 0:
-            return Items.updateItem(item_id, field_name, new_value)
+            return Items.update_item(item_id, field_name, new_value)
     return False
 
 

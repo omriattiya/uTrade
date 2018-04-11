@@ -14,7 +14,7 @@ class ShoppingCartTests(unittest.TestCase):
         init_database('db.sqlite3')
 
         register(RegisteredUser('Omri', '123456'))  # register user
-        ShopLogic.create_shop(Shop.Shop(1, 'My New Shop', 1, 'ACTIVE'), 'Omri')  # add shop
+        ShopLogic.create_shop(Shop.Shop('My New Shop', 1, 'ACTIVE'), 'Omri')  # add shop
         ItemsLogic.add_item_to_shop(Item.Item(1, 1, 'milk', 'milk', 'keywords', 1, 12, 100), 1, 'Omri')  # add item
 
     def test_add_item_to_cart(self):

@@ -6,7 +6,6 @@ from DomainLayer import UsersLogic
 
 def get_purchase_history(request):
     if request.method == 'GET':
-        # return HttpResponse('item added')
         username = request.GET.get('username')
         return UsersLogic.get_purchase_history(username)
 

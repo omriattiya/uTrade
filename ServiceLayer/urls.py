@@ -32,12 +32,8 @@ items_urlpatterns = [
 shops_urlpatterns = [
     path('shops/create_shop/', shops.create_shop),
     path('shops/add_review_on_shop/', shops.add_review_on_shop),
-    path('shops/get_purchase_history', shops.get_shop_purchase_history),
+    path('shops/get_purchase_history', shops.search_shop_purchase_history),
     path('shops/close_shop_permanently', shops.close_shop_permanently),
-]
-
-customer_urlpatterns = [
-
 ]
 
 messages_urlpatterns = [
@@ -50,7 +46,7 @@ messages_urlpatterns = [
 shoppingcart_urlpatterns = [
     path('shopping_cart/add_item_shopping_cart', shoppingcart.add_item_shopping_cart),
     path('shopping_cart/remove_item_shopping_cart/', shoppingcart.remove_item_shopping_cart),
-    path('shopping_cart/browse_shopping_cart/', shoppingcart.browse_shopping_cart),
+    path('shopping_cart/get_cart_items/', shoppingcart.get_cart_items),
     path('shopping-cart/pay_all', shoppingcart.pay_all)
 
 ]
@@ -59,6 +55,5 @@ urlpatterns = users_urlpatterns + \
               search_urlpatterns + \
               items_urlpatterns + \
               shops_urlpatterns + \
-              customer_urlpatterns + \
               messages_urlpatterns + \
               shoppingcart_urlpatterns  # add more here using '+'
