@@ -1,4 +1,4 @@
-from DatabaseLayer.getConn import get_conn
+from DatabaseLayer.getConn import get_conn, commit_command
 from sqlite3 import Error
 from SharedClasses.RegisteredUser import RegisteredUser
 
@@ -72,10 +72,8 @@ def login(user):
 
 
 def remove_user(registered_user):
-    conn = get_conn()
-    c = conn.cursor()
-    c.execute("""
-                DELETE FROM RegisteredUsers
-                WHERE username = {}
-              """.format(registered_user))
-    return c.fetchall()  # TODO: yoni that is not what you should return here. (True or False is)
+    sql = """
+                DELETE FROM Users
+                WHERE username = '{}'
+              """.format(registered_user)
+    return commit_command(sql)

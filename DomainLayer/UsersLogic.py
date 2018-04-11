@@ -25,9 +25,9 @@ def login(user):
 
 
 def remove_user(username, registered_user):
-    # TODO: yoni -> I don't know why but for some reason your implementation of
-    # TODO:         this function has been removed... just search for it on github
-    return RegisteredUsers.remove_user(registered_user)
+    if username is not None and registered_user is not None:
+        # if check_logged_in(username)
+        return RegisteredUsers.remove_user(registered_user)
 
 
 #    _____
