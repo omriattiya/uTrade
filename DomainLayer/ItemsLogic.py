@@ -1,3 +1,4 @@
+from DatabaseLayer import Items, StoreManagers, Shops, Owners, SystemManagers, PurchasedItems
 from DatabaseLayer import Items, StoreManagers, ReviewsOnItems, Owners, SystemManagers
 
 
@@ -51,6 +52,6 @@ def check_in_stock(item_id, amount):
 def get_all_purchased_items(username):
     sys_manager = SystemManagers.is_system_manager(username)
     if sys_manager is not False:
-        return Items.get_all_purchased_items()
+        return PurchasedItems.get_all_purchased_items()
     return False
 

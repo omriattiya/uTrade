@@ -11,6 +11,7 @@ from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
+from DatabaseLayer.SystemManagers import add_system_manager
 from SharedClasses.ShopReview import ShopReview
 
 
@@ -20,11 +21,32 @@ class ShopTest(unittest.TestCase):
 
     def test_close_shop_permanently(self):
         register(RegisteredUser('Yoni', '121212'))
-        # TODO set Yoni as Sys_Manager then try to close shop
-        user = get_user('Yoni')
-        create_shop('1111', user.username)
-        status = close_shop_permanently(user.username, '1111')
+        register(RegisteredUser('Toni', '121212'))
+        remover = get_user('Yoni')
+        owner = get_user('Toni')
+        add_system_manager(remover.username)
+        create_shop('1111', owner.username)
+        status = close_shop_permanently(remover.username, '1111')
         self.assertTrue(status)
+
+    def test_bad_sys_man_close_shop_permanently(self):
+        register(RegisteredUser('Yoni', '121212'))
+        register(RegisteredUser('Toni', '121212'))
+        remover = get_user('Yoni')
+        owner = get_user('Toni')
+        create_shop('1111', owner.username)
+        status = close_shop_permanently(remover.username, '1111')
+        self.assertFalse(status)
+
+    def test_bad_shop_close_shop_permanently(self):
+        register(RegisteredUser('Yoni', '121212'))
+        register(RegisteredUser('Toni', '121212'))
+        remover = get_user('Yoni')
+        owner = get_user('Toni')
+        add_system_manager(remover.username)
+        create_shop('1111', owner.username)
+        status = close_shop_permanently(remover.username, '2222')
+        self.assertFalse(status)
 
     def test_create_shop(self):
         register(RegisteredUser('Tomer', '12345678'))
