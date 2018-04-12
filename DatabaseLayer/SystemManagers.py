@@ -11,9 +11,9 @@ def is_system_manager(username):
     return len(results) == 1
 
 
-def add_system_manager(username):
+def add_system_manager(username, password):
     sql_query = """
-                INSERT INTO SystemManagers (username)
-                VALUES ('{}')
-                """.format(username)
+                INSERT INTO SystemManagers (username, password)
+                VALUES ('{}', '{}')
+                """.format(username, password)
     return commit_command(sql_query)

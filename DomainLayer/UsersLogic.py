@@ -1,10 +1,12 @@
+from struct import pack
+
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers
 
 min_password_len = 6
 
 
 def register(user):
-    if user.username is not None and user.password is not None:
+    if user.username is not None and user.password is not None and not SystemManagers.is_system_manager(user.username):
         if len(user.username) > 0 and (user.username[0] > '9' or user.username[0] < '0'):
             if len(user.password) >= min_password_len:
                 return RegisteredUsers.add_user(user)
@@ -50,22 +52,22 @@ def get_purchase_history(username):
 
 def add_owner(username, shop_name, target_username):
     if username is not None and \
-                    RegisteredUsers.get_user(username) is not False and \
-                    RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
+            RegisteredUsers.get_user(username) is not False and \
+            RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
         return Owners.add_owner(shop_name, target_username)
 
 
 def add_manager(username, shop_name, target_username, permissions):
     if username is not None and \
-                    RegisteredUsers.get_user(username) is not False and \
-                    RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
+            RegisteredUsers.get_user(username) is not False and \
+            RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
         return StoreManagers.add_manager(shop_name, target_username, permissions)
     else:
         return False
 
 
 def close_shop(username, shop_name):
-    owner_of_shop = Owners.get_owner(username,shop_name)
+    owner_of_shop = Owners.get_owner(username, shop_name)
     if owner_of_shop is not False:
         return Shops.close_shop(shop_name)
     else:
@@ -73,7 +75,7 @@ def close_shop(username, shop_name):
 
 
 def re_open_shop(username, shop_name):
-    owner_of_shop = Owners.get_owner(username,shop_name)
+    owner_of_shop = Owners.get_owner(username, shop_name)
     if owner_of_shop is not False:
         return Shops.re_open_shop(shop_name)
     else:
@@ -82,3 +84,10 @@ def re_open_shop(username, shop_name):
 
 def modify_notifications(owner_username, should_notify):
     return Owners.modify_notifications(owner_username, should_notify)
+
+
+def add_system_manager(username, password):
+    if RegisteredUsers.get_user(username) is False:
+        return SystemManagers.add_system_manager(username, password)
+    else:
+        return False

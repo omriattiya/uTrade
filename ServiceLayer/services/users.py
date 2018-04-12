@@ -100,3 +100,13 @@ def modify_notifications(request):
         should_notify = request.POST.get('modify_notifications')
         owner_id = request.POST.get('modify_notifications')
         return UsersLogic.modify_notifications(owner_id, should_notify)
+
+
+def add_system_manager(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        added_successfully = UsersLogic.add_system_manager(username, password)
+        if added_successfully:
+            return HttpResponse('added')
+    return HttpResponse('failed - probably username exist in RegisteredUsers or SystemManagers')

@@ -38,6 +38,7 @@ shops_urlpatterns = [
 
 system_manager_urlpatterns = [
     path('sys_manager/get_all_purchased_items', items.get_all_purchased_items),
+    path('sys_manager/add_system_manager', users.add_system_manager),
 ]
 
 messages_urlpatterns = [

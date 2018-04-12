@@ -28,7 +28,6 @@ def init(database_path, tables):
 
 
 tables_sql = [
-    "PRAGMA foreign_keys = ON",
     """CREATE TABLE IF NOT EXISTS RegisteredUsers(
         username CHAR(30) PRIMARY KEY,
         password TEXT NOT NULL
@@ -109,7 +108,8 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS SystemManagers(
-          username char(30) REFERENCES RegisteredUsers(username),
+          username char(30),
+          password TEXT NOT NULL,
           PRIMARY KEY(username)
         )
     """,
@@ -126,7 +126,19 @@ tables_sql = [
           FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
           PRIMARY KEY(username,shop_name)
         )
-    """
+    """,
+    #       _        ___            _         _       _
+    #      | |      / __)          | |_      (_)     (_)_
+    #    _ | | ____| |__ ____ _   _| | |_     _ ____  _| |_
+    #   / || |/ _  )  __) _  | | | | |  _)   | |  _ \| |  _)
+    #  ( (_| ( (/ /| | ( ( | | |_| | | |__   | | | | | | |__
+    #   \____|\____)_|  \_||_|\____|_|\___)  |_|_| |_|_|\___)
+    #
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Omri','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Shahar','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Tomer','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Yoni','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Kuti','ADMINISTRATOR'); """
 ]
 
 
