@@ -32,8 +32,6 @@ def get_cart_items(username):
 
     shop_carts_items = select_command(sql_query)
     shop_carts_items = parse_shopping_carts(shop_carts_items)
-    if len(shop_carts_items) == 0:
-        return False
     return shop_carts_items
 
 

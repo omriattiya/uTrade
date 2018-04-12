@@ -20,17 +20,16 @@ class ShoppingCartTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100), username)
         ItemsLogic.add_item_to_shop(Item.Item(2, shop_name, 'glue', 'glue', 'keywords', 12, 100), username)
 
-
     def test_add_item_to_cart(self):
         username = 'Omri'
         item_id = 1
         quantity = 20
         ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
-        cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
+        cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 1)
-        self.assertEqual(cart_items[0][0], username)
-        self.assertEqual(cart_items[0][1], item_id)
-        self.assertEqual(cart_items[0][2], quantity)
+        self.assertEqual(cart_items[0].username, username)
+        self.assertEqual(cart_items[0].item_id, item_id)
+        self.assertEqual(cart_items[0].item_quantity, quantity)
 
     def test_remove_item_from_cart(self):
         username = 'Omri'
@@ -38,7 +37,7 @@ class ShoppingCartTests(unittest.TestCase):
         quantity = 20
         ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
         ShoppingCart.remove_item_shopping_cart(username, item_id)
-        cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
+        cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 0)
 
     def test_get_cart_items(self):
@@ -49,11 +48,14 @@ class ShoppingCartTests(unittest.TestCase):
         quantity2 = 2
         ShoppingCart.add_item_shopping_cart(username, item_id1, quantity1)
         ShoppingCart.add_item_shopping_cart(username, item_id2, quantity2)
-        cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
+        cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 2)
-        self.assertEqual(cart_items[0][0], username)
-        self.assertEqual(cart_items[0][1], item_id1)
-        self.assertEqual(cart_items[0][2], quantity1)
+        self.assertEqual(username, cart_items[0].username)
+        self.assertEqual(item_id1, cart_items[0].item_id)
+        self.assertEqual(quantity1, cart_items[0].item_quantity)
+        self.assertEqual(username, cart_items[1].username)
+        self.assertEqual(item_id2, cart_items[1].item_id)
+        self.assertEqual(quantity2, cart_items[1].item_quantity)
 
     def tearDown(self):
         os.remove('db.sqlite3')
@@ -61,4 +63,3 @@ class ShoppingCartTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

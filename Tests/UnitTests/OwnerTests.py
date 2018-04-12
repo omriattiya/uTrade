@@ -16,9 +16,8 @@ class OwnerTests(unittest.TestCase):
     def test_add_owner(self):
         ShopLogic.create_shop(SHOP, USERNAME)
         owner = Owners.get_owner(USERNAME, SHOP.name)
-        self.assertEqual(len(owner), 1)
-        self.assertEqual(USERNAME, owner[0][0])
-        self.assertEqual(SHOP.name, owner[0][1])
+        self.assertEqual(USERNAME, owner.username)
+        self.assertEqual(SHOP.name, owner.shop_name)
 
     def test_add_owner_bad_owner(self):
         ShopLogic.create_shop(SHOP, USERNAME)
@@ -75,13 +74,13 @@ class OwnerTests(unittest.TestCase):
 
     def test_modify_notifications(self):
         ShopLogic.create_shop(SHOP, USERNAME)
-        UsersLogic.modify_notifications(USERNAME, 1)
-        owner = Owners.get_owner(USERNAME, SHOP_NAME)
-        self.assertEqual(1, owner[0][2])
-
         UsersLogic.modify_notifications(USERNAME, 0)
         owner = Owners.get_owner(USERNAME, SHOP_NAME)
-        self.assertEqual(0, owner[0][2])
+        self.assertEqual(0, owner.should_notify)
+
+        UsersLogic.modify_notifications(USERNAME, 1)
+        owner = Owners.get_owner(USERNAME, SHOP_NAME)
+        self.assertEqual(1, owner.should_notify)
 
     def tearDown(self):
         os.remove(DB_NAME)
