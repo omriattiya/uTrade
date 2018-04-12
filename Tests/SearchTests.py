@@ -18,6 +18,7 @@ class SearchTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
         ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'Tomer')
         ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'Tomer')
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'Tomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')
@@ -56,6 +57,10 @@ class SearchTests(unittest.TestCase):
         items_founded = SearchLogic.search_by_keywords('best')
         self.assertTrue(items_founded[0][2] == 'banana')
         self.assertTrue(items_founded[0][3] == 'fruit')
+        items_founded = SearchLogic.search_by_keywords('one;two')
+        self.assertTrue(items_founded[0][2] == 'water')
+        self.assertTrue(items_founded[0][3] == 'drinks')
+
 
     def tearDown(self):
         os.remove('db.sqlite3')

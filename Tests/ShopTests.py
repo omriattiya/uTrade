@@ -3,6 +3,7 @@ import unittest
 
 from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems
 from DatabaseLayer.RegisteredUsers import get_user
+from DatabaseLayer.ReviewsOnShops import get_all_reviews_on_shop
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic
 from DomainLayer.ShopLogic import close_shop_permanently, create_shop
@@ -55,14 +56,6 @@ class ShopTest(unittest.TestCase):
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
 
-    def test_review_on_item(self):
-        register(RegisteredUser('Tomer', '12345678'))
-        user = get_user('Tomer')
-        item = Item('Tomer', 'My Shop', 'Banana', 'Fruit', 'Bad', 5, 5)
-        item_review = ItemReview('Tomer', 'Good', 3, 1)
-        ReviewsOnItems.add_review_on_item('Tomer', item.id, 'Best', 10)
-        self.assertTrue(True)
-
     def test_review_on_shop(self):
         register(RegisteredUser('Tomer', '12345678'))
         user = get_user('Tomer')
@@ -70,7 +63,8 @@ class ShopTest(unittest.TestCase):
         ShopLogic.create_shop(shop, user)
         shop_review = ShopReview('Tomer', 'Best', 10, 'My Shop')
         ReviewsOnShops.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
-        self.assertTrue(True)
+        reviews = get_all_reviews_on_shop('My Shop')
+        self.assertTrue(len(reviews) == 1)
 
     def tearDown(self):
         os.remove('db.sqlite3')
