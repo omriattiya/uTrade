@@ -1,10 +1,12 @@
-from DatabaseLayer import ShoppingCart
+from DatabaseLayer import ShoppingCart, RegisteredUsers
 from DomainLayer import ItemsLogic
 
 
 def remove_item_shopping_cart(username, item_id):
     if username is not None and item_id is not None:
-        return ShoppingCart.remove_item_shopping_cart(username, item_id)
+        user = RegisteredUsers.get_user(username)
+        if user is not False:
+            return ShoppingCart.remove_item_shopping_cart(username, item_id)
 
 
 def get_cart_items(username):
@@ -14,7 +16,22 @@ def get_cart_items(username):
 
 def add_item_shopping_cart(username, item_id, quantity):
     if username is not None and item_id is not None and quantity > 0:
+        if ItemsLogic.check_in_stock(item_id, quantity) is False:
+            return False
         return ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
+    return False
+
+
+def update_item_shopping_cart(username, item_id, new_quantity):
+    if username is not None and item_id is not None and new_quantity >= 0:
+        if new_quantity is 0:
+            return remove_item_shopping_cart(username, item_id)
+        if ItemsLogic.check_in_stock(item_id, new_quantity) is False:
+            return False
+        user = RegisteredUsers.get_user(username)
+        if user is not False:
+            return ShoppingCart.update_item_shopping_cart(username, item_id, new_quantity)
+    return False
 
 
 def pay_all(username):

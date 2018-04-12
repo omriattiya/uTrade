@@ -25,6 +25,15 @@ def add_item_shopping_cart(username, item_id, quantity):
     return commit_command(sql)
 
 
+def update_item_shopping_cart(username, item_id, new_quantity):
+    sql = """
+            UPDATE ShoppingCart
+            SET itemQuantity = '{}'
+            WHERE username = '{}' AND itemId = '{}'
+              """.format(username, item_id, new_quantity)
+    return commit_command(sql)
+
+
 def get_cart_items(username):
     sql_query = """
         SELECT * FROM ShoppingCart WHERE userName LIKE '{}'
