@@ -1,5 +1,20 @@
 from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.RegisteredUser import RegisteredUser
+from DatabaseLayer.PurchasedItems import fetch_purchased_items
+
+
+def fetch_users(results):
+    array = []
+    for item in results:
+        array.append(RegisteredUser(item[0], item[1]))
+    return array
+
+
+def fetch_user(result):
+    if len(result) == 0:
+        return False
+    result = result[0]
+    return RegisteredUser(result[0], result[1])
 
 
 def add_user(user):
@@ -25,10 +40,8 @@ def get_user(username):
             FROM RegisteredUsers
             WHERE username = '{}'
             """.format(username)
-    results = select_command(sql_query)
-    if len(results) == 0:
-        return False
-    return RegisteredUser(results[0][0], results[0][1])
+    return fetch_user(select_command(sql_query))
+
 
 
 def login(user):
@@ -54,4 +67,4 @@ def get_purchase_history(username):
                 FROM PurchasedItems
                 WHERE username = '{}'
               """.format(username)
-    return select_command(sql_query)
+    return fetch_purchased_items(select_command(sql_query))

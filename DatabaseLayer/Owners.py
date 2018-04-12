@@ -1,4 +1,19 @@
 from DatabaseLayer.getConn import commit_command, select_command
+from SharedClasses.Owner import Owner
+
+
+def fetch_owners(results):
+    array = []
+    for item in results:
+        array.append(Owner(item[0], item[1], item[2]))
+    return array
+
+
+def fetch_owner(result):
+    if len(result) == 0:
+        return False
+    result = result[0]
+    return Owner(result[0], result[1], result[2])
 
 
 def add_owner(shop_name, username):
@@ -21,7 +36,5 @@ def get_owner(username, shop_name):
     sql_query = """
         SELECT * FROM Owners WHERE username = '{}' AND shop_name = '{}'
     """.format(username, shop_name)
-    results = select_command(sql_query)
-    if len(results) == 0:
-        return False
-    return results
+    return fetch_owner(select_command(sql_query))
+
