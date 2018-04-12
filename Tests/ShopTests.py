@@ -27,7 +27,7 @@ class ShopTests(unittest.TestCase):
         owner = get_user('Toni')
         shop = Shop('My Shop', "Open")
         ShopLogic.create_shop(shop, owner.username)
-        add_system_manager(remover.username)
+        add_system_manager(remover.username, remover.password)
         status = close_shop_permanently(remover.username, shop.name)
         self.assertTrue(status)
 

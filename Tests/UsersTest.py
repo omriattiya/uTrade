@@ -47,7 +47,7 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(user.username, 'Yoni')
         register(RegisteredUser('Yonion', '123123123'))
         remover = get_user('Yonion')
-        add_system_manager(remover.username)
+        add_system_manager(remover.username, remover.password)
         status = remove_user(remover.username, user.username)
         self.assertTrue(status)
 
@@ -63,7 +63,7 @@ class UsersTest(unittest.TestCase):
     def test_not_exist_remove_user(self):
         register(RegisteredUser('Yonion', '123123123'))
         remover = get_user('Yonion')
-        add_system_manager(remover.username)
+        add_system_manager(remover.username, remover.password)
         status = remove_user(remover.username, 'Yoni')
         print(status)
         self.assertFalse(status)

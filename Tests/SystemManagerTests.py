@@ -1,14 +1,15 @@
-import unittest, os
-from DatabaseLayer.initializeDatabase import init_database
+import os
+import unittest
+
+from DatabaseLayer.PurchasedItems import add_purchased_item
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.SystemManagers import add_system_manager
+from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, ItemsLogic
-from DomainLayer.ItemsLogic import get_all_purchased_items
 from DomainLayer.UsersLogic import register
 from SharedClasses import Shop
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
-from DatabaseLayer.PurchasedItems import add_purchased_item
 
 
 class SystemManagerTests(unittest.TestCase):
@@ -16,7 +17,6 @@ class SystemManagerTests(unittest.TestCase):
         init_database('db.sqlite3')
 
     def test_get_all_purchased_items(self):
-
         register(RegisteredUser('Yoni', '121212'))
         register(RegisteredUser('Toni', '121212'))
         register(RegisteredUser('Noni', '121212'))
@@ -26,8 +26,8 @@ class SystemManagerTests(unittest.TestCase):
 
         shop_name = 'My New Shop'
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), owner.username)  # add shop
-        add_system_manager(sys_man.username)
-
+        add_system_manager(sys_man.username, sys_man.password)
+        #  TODO make sure the sys_man really added.
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), owner.username)
         # TODO buy milk
         add_purchased_item(1111, 2222, "banana", 'Yoni')
