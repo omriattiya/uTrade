@@ -9,17 +9,17 @@ def add_owner(shop_name, username):
     return commit_command(sql)
 
 
-def modify_notifications(owner_id, should_notify):
+def modify_notifications(owner_username, should_notify):
     sql = """
-            UPDATE Owners SET shouldNotify = '{}'
-            WHERE username like '{}'
-            """.format(should_notify, owner_id)
+            UPDATE Owners SET shouldNotify = {}
+            WHERE username = '{}'
+            """.format(should_notify, owner_username)
     return commit_command(sql)
 
 
 def get_owner(username, shop_name):
     sql_query = """
-        SELECT * FROM Owners WHERE username LIKE '{}' AND shop_name = '{}'
+        SELECT * FROM Owners WHERE username = '{}' AND shop_name = '{}'
     """.format(username, shop_name)
     results = select_command(sql_query)
     if len(results) == 0:

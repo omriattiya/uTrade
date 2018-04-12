@@ -64,13 +64,21 @@ def add_manager(username, shop_name, target_username, permissions):
         return False
 
 
-def close_shop(shop_name):
-    return Shops.close_shop(shop_name)
+def close_shop(username, shop_name):
+    owner_of_shop = Owners.get_owner(username,shop_name)
+    if owner_of_shop is not False:
+        return Shops.close_shop(shop_name)
+    else:
+        return False
 
 
-def re_open_shop(shop_name):
-    return Shops.re_open_shop(shop_name)
+def re_open_shop(username, shop_name):
+    owner_of_shop = Owners.get_owner(username,shop_name)
+    if owner_of_shop is not False:
+        return Shops.re_open_shop(shop_name)
+    else:
+        return False
 
 
-def modify_notifications(owner_id, should_notify):
-    return Owners.modify_notifications(owner_id, should_notify)
+def modify_notifications(owner_username, should_notify):
+    return Owners.modify_notifications(owner_username, should_notify)
