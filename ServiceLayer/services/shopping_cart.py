@@ -27,6 +27,24 @@ def add_item_shopping_cart(request):
 
 
 @csrf_exempt
+def update_item_shopping_cart(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        item_id = request.POST.get("item_id")
+        new_quantity = request.POST.get("new_quantity")
+        return ShoppingLogic.update_item_shopping_cart(username, item_id, new_quantity)
+
+
+@csrf_exempt
+def update_code_shopping_cart(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        item_id = request.POST.get("item_id")
+        code = request.POST.get("code")
+        return ShoppingLogic.update_code_shopping_cart(username, item_id, code)
+
+
+@csrf_exempt
 def pay_all(request):
     if request.method == 'POST':
         username = request.POST.get('username')

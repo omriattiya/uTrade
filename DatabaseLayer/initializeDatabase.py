@@ -97,6 +97,7 @@ tables_sql = [
           userName CHAR(30) REFERENCES RegisteredUsers(username),
           itemId INTEGER REFERENCES Items(id),
           itemQuantity INTEGER,
+          code CHAR(15),
           PRIMARY KEY(userName,itemId)
         )
     """,

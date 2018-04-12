@@ -1,4 +1,6 @@
 from DatabaseLayer import ShoppingCart, RegisteredUsers
+from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
+from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic
 
 
@@ -34,6 +36,17 @@ def update_item_shopping_cart(username, item_id, new_quantity):
     return False
 
 
+def update_code_shopping_cart(username, item_id, code):
+    if username is not None and item_id is not None and code is not None:
+        user = RegisteredUsers.get_user(username)
+        if user is not False:
+            if len(code) == 15 and isinstance(code, str):
+                return ShoppingCart.update_item_shopping_cart(username, item_id, code)
+            print("bad code")
+        print("No such user")
+    return False
+
+
 def pay_all(username):
     if username is not None:
         #  check if cart has items
@@ -41,13 +54,23 @@ def pay_all(username):
         if empty is not True:
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)
-            for item_tuple in cart_items:
-                if ItemsLogic.check_in_stock(item_tuple[1], item_tuple[2]) is False:
+            # cart_items is a array consist of shopping_cart objects
+            for shopping_cart in cart_items:
+                if ItemsLogic.check_in_stock(shopping_cart.item_id, shopping_cart.item_quantity) is False:
                     return False
             # if so, sum all items costs, get from costumer his credentials
             total_cost = 0
-            for item_tuple in cart_items:
-                total_cost = total_cost + item_tuple[2] * ItemsLogic.Items.get_item(item_tuple[1]).price
+            # for each item, calculate visible_discount
+            for shopping_cart in cart_items:
+                item = get_item(shopping_cart.item_id)
+                discount = get_visible_discount(item.item_id, item.shop_name)
+                percentage = 0
+                if discount is not False:
+                    percentage = discount.percentage
+                new_price = item.price * (1 - percentage) * shopping_cart.item_quantity
+                discount = get_invisible_discount(item.item_id, item.shop_name)
+                total_cost = total_cost + shopping_cart.item_quantity * item.price * (1 - percentage)
+
             # TODO pay through the external payment system
             return True
     return False

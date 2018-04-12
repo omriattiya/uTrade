@@ -52,6 +52,7 @@ shoppingcart_urlpatterns = [
     path('shopping_cart/add_item_shopping_cart', shopping_cart.add_item_shopping_cart),
     path('shopping_cart/remove_item_shopping_cart/', shopping_cart.remove_item_shopping_cart),
     path('shopping_cart/update_item_shopping_cart/', shopping_cart.update_item_shopping_cart),
+    path('shopping_cart/update_code_shopping_cart/', shopping_cart.update_code_shopping_cart),
     path('shopping_cart/get_cart_items/', shopping_cart.get_cart_items),
     path('shopping-cart/pay_all', shopping_cart.pay_all)
 
