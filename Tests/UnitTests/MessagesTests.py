@@ -27,10 +27,10 @@ class MessageTests(unittest.TestCase):
     def test_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('User1', '12345678'))
         user1 = get_user('User1')
-        shop1 = Shop('My Shop1', "Open")
+        shop1 = Shop('My Shop1', 'ACTIVE')
         register(RegisteredUser('User2', '12345678'))
         user2 = get_user('User2')
-        shop2 = Shop('My Shop2', "Open")
+        shop2 = Shop('My Shop2', 'ACTIVE')
         ShopLogic.create_shop(shop1, user1)
         ShopLogic.create_shop(shop2, user2)
         register(RegisteredUser('StoreManager1', '12345678'))

@@ -1,4 +1,19 @@
 from DatabaseLayer.getConn import commit_command, select_command
+from SharedClasses.Message import Message
+
+
+def fetch_messages(results):
+    array = []
+    for item in results:
+        array.append(Message(item[0], item[1], item[2], item[3]))
+    return array
+
+
+def fetch_message(result):
+    if len(result) == 0:
+        return False
+    result = result[0]
+    return Message(result[0], result[1], result[2], result[3])
 
 
 def send_message(message_from, message_to, content):
@@ -15,7 +30,7 @@ def get_all_messages(actor_id):
                 FROM Messages
                 WHERE MessageTo = '{}'
               """.format(actor_id)
-    return select_command(sql_query)
+    return fetch_messages(select_command(sql_query))
 
 
 def get_all_shop_messages(shop_name):
@@ -24,7 +39,7 @@ def get_all_shop_messages(shop_name):
                 FROM Messages
                 WHERE MessageTo = '{}'
               """.format(shop_name)
-    return select_command(sql_query)
+    return fetch_messages(select_command(sql_query))
 
 
 def send_message_from_shop(message, shop_name, to):

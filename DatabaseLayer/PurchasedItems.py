@@ -1,5 +1,19 @@
-from SharedClasses.Item import Item
 from DatabaseLayer.getConn import select_command, commit_command
+from SharedClasses.PurchasedItem import PurchasedItem
+
+
+def fetch_purchased_items(results):
+    array = []
+    for item in results:
+        array.append(PurchasedItem(item[0], item[1], item[2], item[3], item[4], item[5]))
+    return array
+
+
+def fetch_purchased_item(result):
+    if len(result) == 0:
+        return False
+    result = result[0]
+    return PurchasedItem(result[0], result[1], result[2], result[3], result[4], result[5])
 
 
 def get_purchased_items_by_shop(shop_name):
@@ -8,14 +22,7 @@ def get_purchased_items_by_shop(shop_name):
                 FROM PurchasedItems, Items, Shops
                 WHERE Items.shop_name = '{}' AND PurchasedItems.PurchasedItem = Items.id
             """.format(shop_name)
-    items = select_command(sql_query)
-    list_of_items = []
-    for item in items:
-        list_of_items.append({
-            'item': Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]),
-            'purchased_item': {item[8: len(item)]}})
-
-    return list_of_items
+    return fetch_purchased_items(select_command(sql_query))
 
 
 def get_all_purchased_items():
@@ -23,14 +30,7 @@ def get_all_purchased_items():
                 SELECT *
                FROM Items
               """
-    items = select_command(sql_query)
-    list_of_items = []
-    for item in items:
-        list_of_items.append({
-            'item': Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]),
-            'purchased_item': {item[8: len(item)]}})
-
-    return list_of_items
+    return fetch_purchased_items(select_command(sql_query))
 
 
 def add_purchased_item(purchased_item, purchase_date, quantity, price, user_id):
@@ -47,4 +47,4 @@ def get_purchased_item(item_id):
                     FROM PurchasedItems
                     WHERE PurchasedItem = '{}'
                 """.format(item_id)
-    return select_command(sql_query)
+    return fetch_purchased_item(select_command(sql_query))

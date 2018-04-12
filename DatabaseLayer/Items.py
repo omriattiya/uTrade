@@ -2,27 +2,37 @@ from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.Item import Item
 
 
+def fetch_items(items):
+    items_arr = []
+    for item in items:
+        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+    return items_arr
+
+
+def fetch_item(item):
+    if len(item) == 0:
+        return False
+    item = item[0]
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+    return item
+
+
 def get_item(item_id):
     sql_query = """
                 SELECT *
                 FROM Items
                 Where id = '{}'
             """.format(item_id)
-    results = select_command(sql_query)
-    if len(results) == 0:
-        return False
-    item = results[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
-    return item
+    return fetch_item(select_command(sql_query))
 
 
 def search_items_by_name(item_name):
     sql_query = """
                 SELECT *
-                FROM Items
-                WHERE name = '{}'
+                FROM Items,Shops
+                WHERE Items.name = '{}' AND Shops.status = 'ACTIVE'
               """.format(item_name)
-    return select_command(sql_query)
+    return fetch_items(select_command(sql_query))
 
 
 def add_item_to_shop(item):
@@ -50,25 +60,25 @@ def search_item_in_shop(shop_name, item_name):
                 FROM Items,Shops
                 WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = '{}'
               """.format(item_name, shop_name, shop_name)
-    return select_command(sql_query)
+    return fetch_item(select_command(sql_query))
 
 
 def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
-                FROM Items
-                WHERE category = '{}'
+                FROM Items,Shop
+                WHERE category = '{}' AND Shops.status = 'ACTIVE'
               """.format(item_category)
-    return select_command(sql_query)
+    return fetch_items(select_command(sql_query))
 
 
 def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
-                FROM Items
-                WHERE keyWords = '{}'
+                FROM Items,Shop
+                WHERE keyWords = '{}' AND Shops.status = 'ACTIVE'
               """.format(item_keyword)
-    return select_command(sql_query)
+    return fetch_items(select_command(sql_query))
 
 
 def update_item(item_id, field_name, new_value):
@@ -78,4 +88,3 @@ def update_item(item_id, field_name, new_value):
             WHERE id = '{}'
             """.format(field_name, new_value, item_id)
     return commit_command(sql)
-

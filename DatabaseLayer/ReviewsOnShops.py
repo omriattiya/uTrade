@@ -1,4 +1,19 @@
 from DatabaseLayer.getConn import commit_command, select_command
+from SharedClasses.ShopReview import ShopReview
+
+
+def fetch_reviews(results):
+    array = []
+    for item in results:
+        array.append(ShopReview(item[0], item[1], item[2], item[3]))
+    return array
+
+
+def fetch_review(result):
+    if len(result) == 0:
+        return False
+    result = result[0]
+    return ShopReview(result[0], result[1], result[2], result[3])
 
 
 def add_review_on_shop(writer_id, shop_name, description, rank):
@@ -15,7 +30,7 @@ def get_all_reviews_on_shop(shop_name):
                 FROM ReviewsOnShops
                 WHERE shop_name = '{}'
               """.format(shop_name)
-    return select_command(sql_query)
+    return fetch_reviews(select_command(sql_query))
 
 
 def get_shop_rank(shop_name):
@@ -24,4 +39,4 @@ def get_shop_rank(shop_name):
                 FROM ReviewsOnShops
                 WHERE shop_name = '{}'
                 """.format(shop_name)
-    return select_command(sql_query)
+    return select_command(sql_query)[0][0]
