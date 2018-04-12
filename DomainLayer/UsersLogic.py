@@ -60,6 +60,8 @@ def add_manager(username, shop_name, target_username, permissions):
                     RegisteredUsers.get_user(username) is not False and \
                     RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
         return StoreManagers.add_manager(shop_name, target_username, permissions)
+    else:
+        return False
 
 
 def close_shop(shop_name):

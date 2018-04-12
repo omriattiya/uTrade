@@ -15,7 +15,7 @@ from DatabaseLayer.SystemManagers import add_system_manager
 from SharedClasses.ShopReview import ShopReview
 
 
-class ShopTest(unittest.TestCase):
+class ShopTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
 

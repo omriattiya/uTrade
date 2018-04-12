@@ -1,7 +1,7 @@
 import unittest, os
 
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer import ShopLogic
+from DomainLayer import ShopLogic, UsersLogic
 from DomainLayer.UsersLogic import register
 from SharedClasses.RegisteredUser import RegisteredUser
 from DatabaseLayer import Owners, StoreManagers
@@ -32,15 +32,15 @@ class OwnerTests(unittest.TestCase):
         username = 'this username doesnt exist'
         shop_name = 'My New Shop'
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
-        owner = Owners.get_owner(username, shop_name)
-        self.assertEqual(len(owner), 0)
+        is_owner = Owners.get_owner(username, shop_name)
+        self.assertFalse(is_owner)
 
     def test_add_owner_bad_shop(self):
         username = 'Omri'
         shop_name = 'bad shop name'
         ShopLogic.create_shop(Shop.Shop('My New Shop', 'ACTIVE'), username)  # add shop
-        owner = Owners.get_owner(username, shop_name)
-        self.assertEqual(len(owner), 0)
+        is_owner = Owners.get_owner(username, shop_name)
+        self.assertFalse(is_owner)
 
     def test_add_manager(self):
         shop_name = 'bad shop name'
@@ -54,7 +54,7 @@ class OwnerTests(unittest.TestCase):
                        'getPurchaseHistoryPermission': True
                        }
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
-        store_manager = StoreManagers.add_manager(shop_name, target_user_name, permissions)
+        store_manager = UsersLogic.add_manager('Omri', shop_name, target_user_name, permissions)
         self.assertEqual(store_manager, True)
 
     def test_add_manager_bad_username(self):
@@ -67,8 +67,8 @@ class OwnerTests(unittest.TestCase):
                        'getAllMessagePermission': True,
                        'getPurchaseHistoryPermission': True
                        }
-        store_manager = StoreManagers.add_manager(shop_name, target_user_name, permissions)
-        self.assertEqual(store_manager, False)
+        store_manager = UsersLogic.add_manager('Omri',shop_name, target_user_name, permissions)
+        self.assertFalse(store_manager)
 
     def test_add_manager_bad_shop(self):
         shop_name = 'bad shop name'
@@ -82,7 +82,7 @@ class OwnerTests(unittest.TestCase):
                        'getPurchaseHistoryPermission': True
                        }
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), 'Omri')  # add shop
-        store_manager = StoreManagers.add_manager(shop_name + '1', target_user_name, permissions)
+        store_manager = UsersLogic.add_manager('Omri',shop_name + '1', target_user_name, permissions)
         self.assertEqual(False, store_manager)
 
     def tearDown(self):

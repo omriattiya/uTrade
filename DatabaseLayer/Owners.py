@@ -22,5 +22,6 @@ def get_owner(username, shop_name):
         SELECT * FROM Owners WHERE username LIKE '{}' AND shop_name = '{}'
     """.format(username, shop_name)
     results = select_command(sql_query)
+    if len(results) == 0:
+        return False
     return results
-
