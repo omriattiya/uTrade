@@ -23,7 +23,7 @@ class ItemsTest(unittest.TestCase):
         user = get_user('Yoni')
         add_system_manager(user.username)
         add_purchased_item(1111, 2222, "banana", 'Yoni')
-        lst = get_all_purchased_items()
+        lst = get_all_purchased_items('Yoni')
         self.assertTrue(len(lst) > 0)
 
     def test_review_on_item(self):

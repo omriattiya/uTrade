@@ -4,9 +4,9 @@ from DatabaseLayer import Items, StoreManagers, ReviewsOnItems, Owners, SystemMa
 
 def add_item_to_shop(item, username):
     if item is not None and item.shop_name is not None and username is not None:
-        is_manager = StoreManagers.get_store_manager(username, item.shop_name)
-        if is_manager is not False:
-            add_item_permission = is_manager[2]
+        manager = StoreManagers.get_store_manager(username, item.shop_name)
+        if manager is not False:
+            add_item_permission = manager[2]
             if add_item_permission > 0:
                 return Items.add_item_to_shop(item)
         if Owners.get_owner(username, item.shop_name) is not False:
