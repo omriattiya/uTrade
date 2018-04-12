@@ -1,11 +1,12 @@
 import os
+import time
 import unittest
 
-from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems
+from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems, PurchasedItems
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnShops import get_all_reviews_on_shop
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer import ShopLogic
+from DomainLayer import ShopLogic, ItemsLogic
 from DomainLayer.ShopLogic import close_shop_permanently, create_shop
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
@@ -62,11 +63,23 @@ class ShopTests(unittest.TestCase):
         register(RegisteredUser('Tomer', '12345678'))
         user = get_user('Tomer')
         shop = Shop('My Shop', "Open")
+        ShopLogic.create_shop(shop, 'Tomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
+        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'Tomer')
+        shop_review = ShopReview('Tomer', 'Best', 10, 'My Shop')
+        ShopLogic.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
+        reviews = get_all_reviews_on_shop('My Shop')
+        self.assertEqual(len(reviews),1)
+
+    def test_review_on_shop_bad(self):
+        register(RegisteredUser('Tomer', '12345678'))
+        user = get_user('Tomer')
+        shop = Shop('My Shop', "Open")
         ShopLogic.create_shop(shop, user)
         shop_review = ShopReview('Tomer', 'Best', 10, 'My Shop')
-        ReviewsOnShops.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
+        ShopLogic.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
         reviews = get_all_reviews_on_shop('My Shop')
-        self.assertTrue(len(reviews) == 1)
+        self.assertTrue(len(reviews) == 0)
 
     def tearDown(self):
         os.remove('db.sqlite3')
