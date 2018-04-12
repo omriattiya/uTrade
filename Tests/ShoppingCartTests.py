@@ -18,6 +18,8 @@ class ShoppingCartTests(unittest.TestCase):
         register(RegisteredUser(username, '123456'))  # register user
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), username)  # add shop
         ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100), username)
+        ItemsLogic.add_item_to_shop(Item.Item(2, shop_name, 'glue', 'glue', 'keywords', 12, 100), username)
+
 
     def test_add_item_to_cart(self):
         username = 'Omri'
@@ -39,6 +41,20 @@ class ShoppingCartTests(unittest.TestCase):
         cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
         self.assertEqual(len(cart_items), 0)
 
+    def test_get_cart_items(self):
+        username = 'Omri'
+        item_id1 = 1
+        quantity1 = 20
+        item_id2 = 2
+        quantity2 = 2
+        ShoppingCart.add_item_shopping_cart(username, item_id1, quantity1)
+        ShoppingCart.add_item_shopping_cart(username, item_id2, quantity2)
+        cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
+        self.assertEqual(len(cart_items), 2)
+        self.assertEqual(cart_items[0][0], username)
+        self.assertEqual(cart_items[0][1], item_id1)
+        self.assertEqual(cart_items[0][2], quantity1)
+
     def tearDown(self):
         os.remove('db.sqlite3')
 
@@ -46,17 +62,3 @@ class ShoppingCartTests(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
- #   def test_get_cart_items(self):
-  #      username = 'Tomer'
-  #      item_id1 = 1
-  #      quantity1 = 20
-   #     item_id2 = 2
-    #    quantity2 = 2
-    #    ShoppingCart.add_item_shopping_cart(username, item_id1, quantity1)
-     #   ShoppingCart.add_item_shopping_cart(username, item_id2, quantity2)
-     #   cart_items = ShoppingCart.get_cart_items(username)  # [0] username [1] item_id [2] quantity
-     #   self.assertEqual(len(cart_items), 1)
-      #  self.assertEqual(cart_items[0][0], username)
-      #  self.assertEqual(cart_items[0][1], item_id1)
-      #  self.assertEqual(cart_items[0][2], quantity1)
-      #  print(3)

@@ -82,7 +82,7 @@ class StoreManagersTests(unittest.TestCase):
             'getPurchaseHistoryPermission': 0
         })
         status = ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                                  'toys', 'toys;kids', 20, 300), 'TomerLev')
+                                  'toys', 'toys;kids', 20, 300), 'TomerLev')
         self.assertFalse(status)
 
         status = MessagingLogic.send_message_from_shop('TomerLev', 'Hi There', 'myShop', 'Shahar')

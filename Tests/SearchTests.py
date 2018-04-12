@@ -25,7 +25,7 @@ class SearchTests(unittest.TestCase):
         self.assertTrue(shop_founded.name == 'My Shop')
 
     def test_search_item_in_shop(self):
-        items_founded = SearchLogic.search_item_in_shop('My Shop', 'banana');
+        items_founded = SearchLogic.search_item_in_shop('My Shop', 'banana')
         self.assertTrue(items_founded[0][2] == 'banana')
 
     def test_search_item_by_name(self):
