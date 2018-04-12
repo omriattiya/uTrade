@@ -67,10 +67,13 @@ def pay_all(username):
                 percentage = 0
                 if discount is not False:
                     percentage = discount.percentage
-                new_price = item.price * (1 - percentage) * shopping_cart.item_quantity
-                discount = get_invisible_discount(item.item_id, item.shop_name)
-                total_cost = total_cost + shopping_cart.item_quantity * item.price * (1 - percentage)
-
+                new_price = item.price * (1 - percentage)
+                if shopping_cart.code is not None:
+                    discount = get_invisible_discount(item.item_id, item.shop_name, shopping_cart.code)
+                    if discount is not False:
+                        percentage = discount.percentage
+                    new_price = new_price * (1 - percentage)
+                total_cost = total_cost + shopping_cart.item_quantity * new_price
             # TODO pay through the external payment system
             return True
     return False
