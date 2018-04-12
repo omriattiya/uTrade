@@ -1,5 +1,27 @@
 from DatabaseLayer.getConn import commit_command, select_command
 from datetime import datetime
+from SharedClasses.VisibleDiscount import VisibleDiscount
+from SharedClasses.InvisibleDiscount import InvisibleDiscount
+
+
+def fetch_discount(discount_tuples):
+    if len(discount_tuples) == 0:
+        return False
+    discount_tuple = discount_tuples[0]
+    if len(discount_tuple == 5):
+        discount = VisibleDiscount(discount_tuple[0],
+                                   discount_tuple[1],
+                                   discount_tuple[2],
+                                   discount_tuple[3],
+                                   discount_tuple[4])
+    else:
+        discount = InvisibleDiscount(discount_tuple[0],
+                                     discount_tuple[1],
+                                     discount_tuple[2],
+                                     discount_tuple[3],
+                                     discount_tuple[4],
+                                     discount_tuple[5])
+    return discount
 
 
 def add_visible_discount(visible_discount):
@@ -37,7 +59,7 @@ def get_visible_discount(item_id, shop_name):
                       '{}' >= from_date AND 
                       '{}' <= end_date
               """.format(item_id, shop_name, now, now)
-    return select_command(sql_query)
+    return fetch_discount(select_command(sql_query))
 
 
 def get_invisible_discount(item_id, shop_name, text):
@@ -51,5 +73,5 @@ def get_invisible_discount(item_id, shop_name, text):
                       '{}' <= end_date AND
                       '{}' = code
               """.format(item_id, shop_name, now, now, text)
-    return select_command(sql_query)
+    return fetch_discount(select_command(sql_query))
 
