@@ -126,6 +126,37 @@ tables_sql = [
           FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
           PRIMARY KEY(username,shop_name)
         )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS VisibleDiscounts(
+          item_id INTEGER REFERENCES Items(id) ,
+          shop_name INTEGER REFERENCES Shops(name),
+          percentage REAL,
+          from_date DATE,
+          end_date DATE,
+          PRIMARY KEY(item_id, shop_name, from_date)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
+          item_id INTEGER REFERENCES Items(id) ,
+          shop_name INTEGER REFERENCES Shops(name),
+          percentage REAL,
+          from_date DATE,
+          end_date DATE,
+          code CHAR(15),
+          PRIMARY KEY(item_id, shop_name, from_date)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS GlobalDiscountInShop(
+          shop_name INTEGER REFERENCES Shops(name),
+          percentage REAL,
+          from_date DATE,
+          end_date DATE,
+          code CHAR(15),
+          PRIMARY KEY(shop_name, from_date)
+        )
     """
 ]
 
