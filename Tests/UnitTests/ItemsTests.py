@@ -24,7 +24,7 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('Yoni', '121212'))
         user = get_user('Yoni')
         add_system_manager(user.username, user.password)
-        add_purchased_item(2222, "banana", 'Yoni')
+        add_purchased_item( "banana", 'Yoni')
         lst = get_all_purchased_items('Yoni')
         self.assertTrue(len(lst) > 0)
 

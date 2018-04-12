@@ -41,6 +41,9 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(new_user.username, 'TomerLev')
         self.assertEqual(new_user.password, 'new_pass1234')
 
+        status = edit_profile(RegisteredUser('Shahar','123456'))
+        self.assertFalse(status)
+
     def test_remove_user(self):
         register(RegisteredUser('Yoni', '121212'))
         user = get_user('Yoni')

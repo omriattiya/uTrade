@@ -23,7 +23,7 @@ search_urlpatterns = [
 
 items_urlpatterns = [
     path('items/add_item_to_shop/', items.add_item_to_shop),
-    path('items/add_item_shopping_cartto_shop/', items.add_item_to_shop),
+    path('items/add_item_shopping_cart_to_shop/', items.add_item_to_shop),
     path('items/remove_item_from_shop/', items.remove_item_from_shop),
     path('items/add_review_on_item/', items.add_review_on_item),
     path('items/edit_shop_item', items.edit_shop_item)
