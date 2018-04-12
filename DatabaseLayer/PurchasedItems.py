@@ -1,5 +1,5 @@
 from SharedClasses.Item import Item
-from DatabaseLayer.getConn import select_command
+from DatabaseLayer.getConn import select_command, commit_command
 
 
 def get_purchased_items_by_shop(shop_name):
@@ -17,3 +17,18 @@ def get_purchased_items_by_shop(shop_name):
 
     return list_of_items
 
+
+def get_all_purchased_items():
+    sql_query = """
+                SELECT *
+               FROM Items
+              """
+    return select_command(sql_query)
+
+
+def add_purchased_item(purchase_id, purchased_item, purchased_data, user_id):
+    sql_query = """
+                INSERT INTO PurchasedItems(purchaseId, PurchasedItem, purchasedData, userId)
+                VALUES ('{}','{}','{}','{}')
+                """.format(purchase_id, purchased_item, purchased_data, user_id)
+    return commit_command(sql_query)
