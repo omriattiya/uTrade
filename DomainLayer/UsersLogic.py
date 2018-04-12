@@ -28,8 +28,9 @@ def remove_user(username, registered_user):
     if username is not None and registered_user is not None:
         sys_manager = SystemManagers.is_system_manager(username)
         if sys_manager is not False:
-            # if check_logged_in(username)
-            return RegisteredUsers.remove_user(registered_user)
+            user = RegisteredUsers.get_user(registered_user)
+            if user is not False:
+                return RegisteredUsers.remove_user(registered_user)
         return False
     return False
 

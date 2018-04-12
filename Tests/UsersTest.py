@@ -46,7 +46,7 @@ class UsersTest(unittest.TestCase):
         user = get_user('Yoni')
         self.assertEqual(user.username, 'Yoni')
         register(RegisteredUser('Yonion', '123123123'))
-        remover = get_user('Yoni')
+        remover = get_user('Yonion')
         add_system_manager(remover.username)
         status = remove_user(remover.username, user.username)
         self.assertTrue(status)
@@ -56,8 +56,16 @@ class UsersTest(unittest.TestCase):
         user = get_user('Yoni')
         self.assertEqual(user.username, 'Yoni')
         register(RegisteredUser('Yonion', '123123123'))
-        remover = get_user('Yoni')
+        remover = get_user('Yonion')
         status = remove_user(remover.username, user.username)
+        self.assertFalse(status)
+
+    def test_not_exist_remove_user(self):
+        register(RegisteredUser('Yonion', '123123123'))
+        remover = get_user('Yonion')
+        add_system_manager(remover.username)
+        status = remove_user(remover.username, 'Yoni')
+        print(status)
         self.assertFalse(status)
 
     def test_get_purchased_history(self):
