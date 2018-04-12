@@ -1,16 +1,8 @@
 import unittest
 
 # import your test modules
-from Tests import ItemsTests
-from Tests import MessagesTests
-from Tests import OwnerTests
-from Tests import SearchTests
-from Tests import ShoppingCartTests
-from Tests import ShoppingTests
-from Tests import ShopTests
-from Tests import StoreManagersTests
-from Tests import UsersTest
-
+from Tests.UnitTests import SearchTests, ShopTests, MessagesTests, UsersTest, OwnerTests, ItemsTests, ShoppingCartTests, \
+    StoreManagersTests, ShoppingTests
 
 if __name__ == "__main__":
     # initialize the test suite

@@ -52,14 +52,14 @@ def get_purchase_history(username):
 
 def add_owner(username, shop_name, target_username):
     if username is not None and \
-            RegisteredUsers.get_user(username) is not False and \
+            Owners.get_owner(username, shop_name) is not False and \
             RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
         return Owners.add_owner(shop_name, target_username)
 
 
 def add_manager(username, shop_name, target_username, permissions):
     if username is not None and \
-            RegisteredUsers.get_user(username) is not False and \
+            Owners.get_owner(username, shop_name) is not False and \
             RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
         return StoreManagers.add_manager(shop_name, target_username, permissions)
     else:
