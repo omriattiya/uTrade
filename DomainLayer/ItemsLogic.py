@@ -25,9 +25,12 @@ def remove_item_from_shop(item_id, username):
     return False
 
 
-def add_review_on_item(writer_id, item_id, description, rank):
-    if writer_id is not None and item_id is not None and description is not None and rank is not None:
-        return ReviewsOnItems.add_review_on_item(writer_id, item_id, description, rank)
+def add_review_on_item(writer_name, item_id, description, rank):
+    if writer_name is not None and item_id is not None and description is not None and rank is not None:
+        purchased_item = PurchasedItems.get_purchased_item(item_id)
+        if len(purchased_item) > 0 and purchased_item[0][5] == writer_name:
+            return ReviewsOnItems.add_review_on_item(writer_name, item_id, description, rank)
+    return False
 
 
 def edit_shop_item(username, item_id, field_name, new_value):
@@ -54,4 +57,3 @@ def get_all_purchased_items(username):
     if sys_manager is not False:
         return PurchasedItems.get_all_purchased_items()
     return False
-

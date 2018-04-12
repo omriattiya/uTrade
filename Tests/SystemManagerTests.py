@@ -30,7 +30,7 @@ class SystemManagerTests(unittest.TestCase):
         #  TODO make sure the sys_man really added.
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), owner.username)
         # TODO buy milk
-        add_purchased_item(1111, 2222, "banana", 'Yoni')
+        add_purchased_item(2222, "banana", 'Yoni')
         # lst = get_all_purchased_items()
         # self.assertTrue(len(lst) > 0)
         self.assertTrue(True)

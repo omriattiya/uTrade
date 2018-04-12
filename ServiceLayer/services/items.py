@@ -22,19 +22,18 @@ def remove_item_from_shop(request):
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
         username = request.POST.get('username')
-        shop_name = request.POST.get('shop_name')
-        ItemsLogic.remove_item_from_shop(item_id, shop_name, username)
+        ItemsLogic.remove_item_from_shop(item_id, username)
 
 
 @csrf_exempt
 def add_review_on_item(request):
     if request.method == 'POST':
         # return HttpResponse('item added')
-        writer_id = request.POST.get('writer_id')
+        writer_name = request.POST.get('writer_name')
         item_id = request.POST.get('item_id')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        ItemsLogic.add_review_on_item(writer_id, item_id, description, rank)
+        ItemsLogic.add_review_on_item(writer_name, item_id, description, rank)
 
 
 @csrf_exempt
