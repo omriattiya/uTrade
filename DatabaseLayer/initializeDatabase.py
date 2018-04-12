@@ -30,7 +30,8 @@ def init(database_path, tables):
 tables_sql = [
     """CREATE TABLE IF NOT EXISTS RegisteredUsers(
         username CHAR(30) PRIMARY KEY,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        CONSTRAINT username_size CHECK(length(username) <= 30)
     )""",
 
     """CREATE TABLE IF NOT EXISTS Items(
@@ -45,7 +46,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Shops(
           name CHAR(30) PRIMARY KEY NOT NULL,
-          status TEXT
+          status TEXT,
+          CONSTRAINT name_size CHECK(length(name) <= 30)
         )
     """,
     """
@@ -73,7 +75,8 @@ tables_sql = [
           purchaseDate INTEGER,
           quantity INTEGER,
           price REAL,
-          username CHAR(30) REFERENCES RegisteredUsers(username)
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          CONSTRAINT username_size CHECK(length(username) <= 30)
         )
     """,
     """
@@ -81,7 +84,8 @@ tables_sql = [
           username CHAR(30) REFERENCES RegisteredUsers(username),
           shop_name INTEGER REFERENCES Shops(name), 
           shouldNotify INTEGER DEFAULT 1,
-          PRIMARY KEY(username,shop_name)
+          PRIMARY KEY(username,shop_name),
+          CONSTRAINT username_size CHECK(length(username) <= 30)
         )
     """,
     """
@@ -89,7 +93,9 @@ tables_sql = [
           MessageId INTEGER PRIMARY KEY AUTOINCREMENT,
           MessageFrom CHAR(30),
           MessageTo CHAR(30),
-          Content TEXT
+          Content TEXT,
+          CONSTRAINT MessageFrom_size CHECK(length(MessageFrom) <= 30),
+          CONSTRAINT MessageTo_size CHECK(length(MessageTo) <= 30)
         )
     """,
     """
@@ -97,7 +103,10 @@ tables_sql = [
           userName CHAR(30) REFERENCES RegisteredUsers(username),
           itemId INTEGER REFERENCES Items(id),
           itemQuantity INTEGER,
-          PRIMARY KEY(userName,itemId)
+          code CHAR(15),
+          PRIMARY KEY(userName,itemId),
+          CONSTRAINT userName_size CHECK(length(userName) <= 30),
+          CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
     # TODO: whoever does this part needs to add more fields to the table below
@@ -112,7 +121,8 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS SystemManagers(
           username char(30),
           password TEXT NOT NULL,
-          PRIMARY KEY(username)
+          PRIMARY KEY(username),
+          CONSTRAINT username_size CHECK(length(username) <= 30)
         )
     """,
     """
@@ -126,7 +136,8 @@ tables_sql = [
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
           FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
-          PRIMARY KEY(username,shop_name)
+          PRIMARY KEY(username,shop_name),
+          CONSTRAINT username_size CHECK(length(username) <= 30)
         )
     """,
     """
@@ -147,7 +158,8 @@ tables_sql = [
           from_date DATE,
           end_date DATE,
           code CHAR(15),
-          PRIMARY KEY(item_id, shop_name, from_date)
+          PRIMARY KEY(item_id, shop_name, from_date),
+          CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
     """
@@ -157,7 +169,8 @@ tables_sql = [
           from_date DATE,
           end_date DATE,
           code CHAR(15),
-          PRIMARY KEY(shop_name, from_date)
+          PRIMARY KEY(shop_name, from_date),
+          CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
     #       _        ___            _         _       _
