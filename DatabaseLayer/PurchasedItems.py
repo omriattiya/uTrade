@@ -23,7 +23,14 @@ def get_all_purchased_items():
                 SELECT *
                FROM Items
               """
-    return select_command(sql_query)
+    items = select_command(sql_query)
+    list_of_items = []
+    for item in items:
+        list_of_items.append({
+            'item': Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]),
+            'purchased_item': {item[8: len(item)]}})
+
+    return list_of_items
 
 
 def add_purchased_item(purchase_id, purchased_item, purchased_data, user_id):

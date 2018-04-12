@@ -24,9 +24,10 @@ class ShopTest(unittest.TestCase):
         register(RegisteredUser('Toni', '121212'))
         remover = get_user('Yoni')
         owner = get_user('Toni')
+        shop = Shop('My Shop', "Open")
+        ShopLogic.create_shop(shop, owner.username)
         add_system_manager(remover.username)
-        create_shop('1111', owner.username)
-        status = close_shop_permanently(remover.username, '1111')
+        status = close_shop_permanently(remover.username, shop.name)
         self.assertTrue(status)
 
     def test_bad_sys_man_close_shop_permanently(self):
@@ -34,8 +35,9 @@ class ShopTest(unittest.TestCase):
         register(RegisteredUser('Toni', '121212'))
         remover = get_user('Yoni')
         owner = get_user('Toni')
-        create_shop('1111', owner.username)
-        status = close_shop_permanently(remover.username, '1111')
+        shop = Shop('My Shop', "Open")
+        ShopLogic.create_shop(shop, owner.username)
+        status = close_shop_permanently(remover.username, 'My Shop')
         self.assertFalse(status)
 
     def test_bad_shop_close_shop_permanently(self):
@@ -43,9 +45,9 @@ class ShopTest(unittest.TestCase):
         register(RegisteredUser('Toni', '121212'))
         remover = get_user('Yoni')
         owner = get_user('Toni')
-        add_system_manager(remover.username)
-        create_shop('1111', owner.username)
-        status = close_shop_permanently(remover.username, '2222')
+        shop = Shop('My Shop', "Open")
+        ShopLogic.create_shop(shop, owner.username)
+        status = close_shop_permanently(remover.username, 'My Shopi')
         self.assertFalse(status)
 
     def test_create_shop(self):

@@ -11,7 +11,7 @@ def add_review_on_shop(writer_id, shop_name, description, rank):
         return ReviewsOnShops.add_review_on_shop(writer_id, shop_name, description, rank)
 
 
-def search_shop_purchase_history(username, shop_name):
+def get_shop_purchase_history(username, shop_name):
     manager = StoreManagers.get_store_manager(username, shop_name)
     if manager is not False:
         get_purchase_history_permission = manager[7]

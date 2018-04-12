@@ -79,12 +79,3 @@ def update_item(item_id, field_name, new_value):
             """.format(field_name, new_value, item_id)
     return commit_command(sql)
 
-
-def get_all_purchased_items():
-    sql_query = """
-                SELECT *
-               FROM Items,PurchasedItems
-               WHERE Items.id = PurchasedItems.PurchasedItem
-              """
-    # TODO: return something nicer here
-    return select_command(sql_query)
