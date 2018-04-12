@@ -51,12 +51,12 @@ class MessageTests(unittest.TestCase):
             'getAllMessagePermission': 1,
             'getPurchaseHistoryPermission': 1
         })
-        MessagingLogic.send_message_from_shop('StoreManager1','Hello 1', 'My Shop1','My Shop1')
-        MessagingLogic.send_message_from_shop('StoreManager2','Hello 2', 'My Shop2','My Shop2')
+        MessagingLogic.send_message_from_shop('StoreManager1','Hello 1', 'My Shop1','My Shop2')
+        MessagingLogic.send_message_from_shop('StoreManager2','Hello 2', 'My Shop2','My Shop1')
         messages1 = MessagingLogic.get_all_shop_messages('StoreManager1','My Shop1')
         messages2 = MessagingLogic.get_all_shop_messages('StoreManager2','My Shop2')
-        self.assertTrue(messages1[0][3] == 'Hello 1')
-        self.assertTrue(messages2[0][3] == 'Hello 2')
+        self.assertTrue(messages1[0][3] == 'Hello 2')
+        self.assertTrue(messages2[0][3] == 'Hello 1')
 
     def tearDown(self):
         os.remove('db.sqlite3')
