@@ -1,4 +1,12 @@
 from DatabaseLayer.getConn import commit_command, select_command
+from SharedClasses.SystemManager import SystemManager
+
+
+def parse_system_managers(system_managers):
+    system_managers_list = []
+    for system_manager in system_managers:
+        system_managers_list.append(SystemManager(system_manager[0], system_manager[1]))
+    return system_managers_list
 
 
 def is_system_manager(username):

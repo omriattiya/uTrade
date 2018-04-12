@@ -2,6 +2,13 @@ from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.Shop import Shop
 
 
+def parse_shops(shops):
+    shops_list = []
+    for shop in shops:
+        shops_list.append(Shop(shop[0], shop[1]))
+    return shops_list
+
+
 def search_shop(shop_name):
     sql_query = """
                 SELECT *
@@ -9,10 +16,10 @@ def search_shop(shop_name):
                 WHERE name = '{}'
               """.format(shop_name)
     shop = select_command(sql_query)
+    shop = parse_shops(shop)
     if len(shop) == 0:
         return False
-    shop = shop[0]
-    return Shop(shop[0], shop[1])
+    return shop[0]
 
 
 def create_shop(shop):
