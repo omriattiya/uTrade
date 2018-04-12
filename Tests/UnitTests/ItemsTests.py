@@ -30,7 +30,7 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item(self):
         register(RegisteredUser('Tomer', '12345678'))
-        shop = Shop('My Shop', "Open")
+        shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'Tomer')
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'Tomer')
@@ -40,7 +40,7 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item_bad(self):
         register(RegisteredUser('Tomer', '12345678'))
-        shop = Shop('My Shop', "Open")
+        shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'Tomer')
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
         ItemsLogic.add_review_on_item('Tomer', 1, 'Good', 10)

@@ -9,6 +9,7 @@ def get_conn():
               """)
     return conn
 
+
 def commit_command(sql_query):
     try:
         conn = get_conn()
