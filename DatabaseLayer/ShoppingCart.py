@@ -21,7 +21,7 @@ def add_item_shopping_cart(shop_cart):
     sql = """
                 INSERT INTO ShoppingCart (userName, itemId, itemQuantity) 
                 VALUES ('{}','{}','{}')
-              """.format(shop_cart.username, shop_cart.item_id, shop_cart.quantity)
+              """.format(shop_cart.username, shop_cart.item_id, shop_cart.item_quantity)
     return commit_command(sql)
 
 

@@ -9,3 +9,14 @@ class StoreManager:
         self.permission_reply_messages = permission_reply_messages
         self.permission_get_all_messages = permission_get_all_messages
         self.permission_get_purchased_history = permission_get_purchased_history
+
+    @classmethod
+    def store_manager(cls, username, store_name, permissions):
+        return StoreManager(username,
+                            store_name,
+                            permissions.get('permission_add_item', 0),
+                            permissions.get('permission_remove_item', 0),
+                            permissions.get('permission_edit_item', 0),
+                            permissions.get('permission_reply_messages', 0),
+                            permissions.get('permission_get_all_messages', 0),
+                            permissions.get('permission_get_purchased_history', 0))

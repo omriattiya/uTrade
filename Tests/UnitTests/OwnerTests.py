@@ -3,8 +3,9 @@ import unittest, os
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, UsersLogic
 from SharedClasses.RegisteredUser import RegisteredUser
-from DatabaseLayer import Owners, StoreManagers
+from DatabaseLayer import Owners
 from SharedClasses import Shop
+from SharedClasses.StoreManager import StoreManager
 
 
 class OwnerTests(unittest.TestCase):
@@ -32,17 +33,21 @@ class OwnerTests(unittest.TestCase):
     def test_add_manager(self):
         ShopLogic.create_shop(SHOP, USERNAME)
         UsersLogic.register(OTHER_USER)
-        store_manager = UsersLogic.add_manager(USERNAME, SHOP_NAME, OTHER_USERNAME, PERMISSIONS)
-        self.assertTrue(store_manager)
+        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
+        is_added = UsersLogic.add_manager(USERNAME, manager)
+        self.assertTrue(is_added)
 
     def test_add_manager_bad_username(self):
-        store_manager = UsersLogic.add_manager(USERNAME, SHOP_NAME, OTHER_USERNAME, PERMISSIONS)
-        self.assertFalse(store_manager)
+        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
+        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
+        is_added = UsersLogic.add_manager(USERNAME, manager)
+        self.assertFalse(is_added)
 
     def test_add_manager_bad_shop(self):
         ShopLogic.create_shop(SHOP, USERNAME)
-        store_manager = UsersLogic.add_manager(USERNAME, OTHER_SHOP_NAME, OTHER_USERNAME, PERMISSIONS)
-        self.assertFalse(store_manager)
+        manager = StoreManager.store_manager(OTHER_USERNAME, OTHER_SHOP_NAME, PERMISSIONS)
+        is_added = UsersLogic.add_manager(USERNAME, manager)
+        self.assertFalse(is_added)
 
     def test_close_shop(self):
         ShopLogic.create_shop(SHOP, USERNAME)
@@ -96,12 +101,12 @@ OTHER_USERNAME = 'Naruto'
 SHOP_NAME = 'My New Shop'
 OTHER_SHOP_NAME = 'Other Shop'
 SHOP_STATUS = 'ACTIVE'
-PERMISSIONS = {'addItemPermission': True,
-               'removeItemPermission': True,
-               'editItemPermission': True,
-               'replyMessagePermission': True,
-               'getAllMessagePermission': True,
-               'getPurchaseHistoryPermission': True
+PERMISSIONS = {'permission_add_item': 1,
+               'permission_remove_item': 1,
+               'permission_edit_item': 1,
+               'permission_reply_messages': 1,
+               'permission_get_all_messages': 1,
+               'permission_get_purchased_history': 1
                }
 
 SHOP = Shop.Shop(SHOP_NAME, SHOP_STATUS)

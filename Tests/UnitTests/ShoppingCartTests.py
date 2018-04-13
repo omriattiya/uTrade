@@ -24,7 +24,7 @@ class ShoppingCartTests(unittest.TestCase):
         username = 'Omri'
         item_id = 1
         quantity = 20
-        ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
+        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
         cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 1)
         self.assertEqual(cart_items[0].username, username)
@@ -35,7 +35,7 @@ class ShoppingCartTests(unittest.TestCase):
         username = 'Omri'
         item_id = 1
         quantity = 20
-        ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
+        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
         ShoppingCart.remove_item_shopping_cart(username, item_id)
         cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 0)
@@ -46,8 +46,8 @@ class ShoppingCartTests(unittest.TestCase):
         quantity1 = 20
         item_id2 = 2
         quantity2 = 2
-        ShoppingCart.add_item_shopping_cart(username, item_id1, quantity1)
-        ShoppingCart.add_item_shopping_cart(username, item_id2, quantity2)
+        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id1, quantity1, ""))
+        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id2, quantity2, ""))
         cart_items = ShoppingCart.get_cart_items(username)
         self.assertEqual(len(cart_items), 2)
         self.assertEqual(username, cart_items[0].username)
