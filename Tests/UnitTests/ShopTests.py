@@ -15,6 +15,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from DatabaseLayer.SystemManagers import add_system_manager
 from SharedClasses.ShopReview import ShopReview
+from SharedClasses.SystemManager import SystemManager
 
 
 class ShopTests(unittest.TestCase):
@@ -28,7 +29,7 @@ class ShopTests(unittest.TestCase):
         owner = get_user('Toni')
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, owner.username)
-        add_system_manager(remover.username, remover.password)
+        add_system_manager(SystemManager(remover.username, remover.password))
         status = close_shop_permanently(remover.username, shop.name)
         self.assertTrue(status)
 
@@ -49,6 +50,7 @@ class ShopTests(unittest.TestCase):
         owner = get_user('Toni')
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, owner.username)
+        add_system_manager(SystemManager(remover.username, remover.password))
         status = close_shop_permanently(remover.username, 'My Shopi')
         self.assertFalse(status)
 

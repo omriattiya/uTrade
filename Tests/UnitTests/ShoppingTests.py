@@ -7,6 +7,8 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from DomainLayer.ShoppingLogic import add_item_shopping_cart, remove_item_shopping_cart
 from DomainLayer.ShoppingLogic import pay_all
+from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.StoreManager import StoreManager
 
 
 class ShoppingTests(unittest.TestCase):
@@ -16,21 +18,14 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '12345678'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'Yoni')
-        UsersLogic.add_manager('Yoni', 'My Shop', 'StoreManager1', {
-            'addItemPermission': 1,
-            'removeItemPermission': 1,
-            'editItemPermission': 1,
-            'replyMessagePermission': 1,
-            'getAllMessagePermission': 1,
-            'getPurchaseHistoryPermission': 1
-        })
+        UsersLogic.add_manager('Yoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
         item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         register(RegisteredUser('Toni', '12345678'))
-        add_item_shopping_cart('Toni', item1.id, 3)
-        add_item_shopping_cart('Toni', item2.id, 2)
+        add_item_shopping_cart(ShoppingCart('Toni', item1.id, 3, None))
+        add_item_shopping_cart(ShoppingCart('Toni', item2.id, 2, None))
 
     def test_pay_all(self):
         self.assertTrue(pay_all('Toni'))
