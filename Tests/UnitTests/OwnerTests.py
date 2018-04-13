@@ -1,10 +1,11 @@
-import unittest, os
+import os
+import unittest
 
+from DatabaseLayer import Owners
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, UsersLogic
-from SharedClasses.RegisteredUser import RegisteredUser
-from DatabaseLayer import Owners
 from SharedClasses import Shop
+from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 
 
@@ -33,19 +34,23 @@ class OwnerTests(unittest.TestCase):
     def test_add_manager(self):
         ShopLogic.create_shop(SHOP, USERNAME)
         UsersLogic.register(OTHER_USER)
-        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
+        manager = StoreManager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1],
+                               PERMISSIONS[2], PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], )
         is_added = UsersLogic.add_manager(USERNAME, manager)
         self.assertTrue(is_added)
 
     def test_add_manager_bad_username(self):
-        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
-        manager = StoreManager.store_manager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS)
+        manager = StoreManager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1],
+                               PERMISSIONS[2], PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], )
+        manager = StoreManager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1],
+                               PERMISSIONS[2], PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], )
         is_added = UsersLogic.add_manager(USERNAME, manager)
         self.assertFalse(is_added)
 
     def test_add_manager_bad_shop(self):
         ShopLogic.create_shop(SHOP, USERNAME)
-        manager = StoreManager.store_manager(OTHER_USERNAME, OTHER_SHOP_NAME, PERMISSIONS)
+        manager = StoreManager(OTHER_USERNAME, OTHER_SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1], PERMISSIONS[2],
+                               PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], )
         is_added = UsersLogic.add_manager(USERNAME, manager)
         self.assertFalse(is_added)
 
@@ -101,13 +106,7 @@ OTHER_USERNAME = 'Naruto'
 SHOP_NAME = 'My New Shop'
 OTHER_SHOP_NAME = 'Other Shop'
 SHOP_STATUS = 'ACTIVE'
-PERMISSIONS = {'permission_add_item': 1,
-               'permission_remove_item': 1,
-               'permission_edit_item': 1,
-               'permission_reply_messages': 1,
-               'permission_get_all_messages': 1,
-               'permission_get_purchased_history': 1
-               }
+PERMISSIONS = [1, 1, 1, 1, 1, 1]
 
 SHOP = Shop.Shop(SHOP_NAME, SHOP_STATUS)
 OTHER_SHOP = Shop.Shop(OTHER_SHOP_NAME, SHOP_STATUS)
