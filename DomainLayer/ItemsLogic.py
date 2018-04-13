@@ -6,7 +6,7 @@ def add_item_to_shop(item, username):
     if item is not None and item.shop_name is not None and username is not None and item.quantity >= 0:
         manager = StoreManagers.get_store_manager(username, item.shop_name)
         if manager is not False:
-            add_item_permission = manager[2]
+            add_item_permission = manager.permission_add_item
             if add_item_permission > 0:
                 return Items.add_item_to_shop(item)
         if Owners.get_owner(username, item.shop_name) is not False:
@@ -19,7 +19,7 @@ def remove_item_from_shop(item_id, username):
         item = Items.get_item(item_id)
         manager = StoreManagers.get_store_manager(username, item.shop_name)
         if manager is not False:
-            remove_item_permission = manager[3]
+            remove_item_permission = manager.permission_remove_item
             if remove_item_permission > 0:
                 return Items.remove_item_from_shop(item_id)
     return False
@@ -37,7 +37,7 @@ def edit_shop_item(username, item_id, field_name, new_value):
     item = Items.get_item(item_id)
     result = StoreManagers.get_store_manager(username, item.shop_name)
     if result is not False:
-        edit_item_permission = result[4]
+        edit_item_permission = result.permission_edit_item
         if edit_item_permission > 0:
             return Items.update_item(item_id, field_name, new_value)
     return False
