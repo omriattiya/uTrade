@@ -1,8 +1,9 @@
+import datetime
 import os
 import unittest
 import time
 
-from DatabaseLayer.Items import search_item_in_shop
+from DatabaseLayer.Items import search_item_in_shop, add_item_to_shop
 from DatabaseLayer.PurchasedItems import add_purchased_item
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnItems import get_all_reviews_on_item
@@ -19,7 +20,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
-from SharedClasses.PurchasedItem import PurchasedItem
+
 
 class ItemsTest(unittest.TestCase):
     def setUp(self):
@@ -31,11 +32,15 @@ class ItemsTest(unittest.TestCase):
         UsersLogic.add_manager('Yoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
 
     def test_get_all_purchased_items(self):
-        register(RegisteredUser('Yoni', '121212'))
-        user = get_user('Yoni')
+        register(RegisteredUser('Toni', '121212'))
+        register(RegisteredUser('Noni', '121212'))
+        user = get_user('Toni')
+        user1 = get_user('Noni')
         add_system_manager(SystemManager(user.username, user.password))
-        add_purchased_item("banana", 'Yoni')
-        lst = get_all_purchased_items('Yoni')
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        add_item_to_shop(item1)
+        add_purchased_item(item1.id, 50, 7, item1.price, user1.username)
+        lst = get_all_purchased_items('Toni')
         self.assertTrue(len(lst) > 0)
 
     def test_review_on_item(self):

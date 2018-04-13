@@ -1,4 +1,5 @@
 from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
+from DomainLayer.SearchLogic import search_shop
 from DomainLayer.UsersLogic import get_purchase_history
 from SharedClasses.Owner import Owner
 
@@ -34,6 +35,8 @@ def close_shop_permanently(username, shop_name):
     if username is not None and shop_name is not None:
         sys_manager = SystemManagers.is_system_manager(username)
         if sys_manager is not False:
-            return Shops.close_shop_permanently(shop_name)
+            shop = search_shop(shop_name)
+            if shop is not False:
+                return Shops.close_shop_permanently(shop_name)
         return False
     return False

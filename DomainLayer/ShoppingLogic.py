@@ -17,8 +17,8 @@ def get_cart_items(username):
 
 
 def add_item_shopping_cart(shop_cart):
-    if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.quantity > 0:
-        if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.quantity) is False:
+    if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.item_quantity > 0:
+        if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.item_quantity) is False:
             return False
         return ShoppingCart.add_item_shopping_cart(shop_cart)
     return False
