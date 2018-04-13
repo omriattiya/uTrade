@@ -3,6 +3,7 @@ from django.http.response import HttpResponse
 from DomainLayer import ItemsLogic
 from SharedClasses.Item import Item
 
+
 @csrf_exempt
 def add_item_to_shop(request):
     if request.method == 'POST':
@@ -15,6 +16,7 @@ def add_item_to_shop(request):
         item = Item(None, shop_name, item_name, item_category, item_keywords, item_price, item_quantity)
         username = request.POST.get('username')
         ItemsLogic.add_item_to_shop(item, username)
+
 
 @csrf_exempt
 def remove_item_from_shop(request):
