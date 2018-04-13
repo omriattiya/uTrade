@@ -20,7 +20,7 @@ def send_message(message):
     sql_query = """
                 INSERT INTO Messages (MessageFrom, MessageTo, Content)  
                 VALUES ('{}', '{}', '{}');
-              """.format(message.message_from, message.message_to, message.content)
+              """.format(message.from_username, message.to_username, message.content)
     return commit_command(sql_query)
 
 

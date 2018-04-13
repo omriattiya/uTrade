@@ -20,7 +20,7 @@ def add_review_on_item(review):
     sql_query = """
                 INSERT INTO ReviewsOnItems (writerId, itemId, description, rank)  
                 VALUES ('{}', '{}', '{}', '{}');
-              """.format(review.writer_id, review.item_id,
+              """.format(review.writerId, review.itemId,
                          review.description, review.rank)
     return commit_command(sql_query)
 

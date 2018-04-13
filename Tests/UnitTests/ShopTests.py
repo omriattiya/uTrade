@@ -69,7 +69,7 @@ class ShopTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'Tomer')
         shop_review = ShopReview('Tomer', 'Best', 10, 'My Shop')
-        ShopLogic.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
+        ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
         self.assertEqual(len(reviews),1)
 
@@ -79,7 +79,7 @@ class ShopTests(unittest.TestCase):
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, user)
         shop_review = ShopReview('Tomer', 'Best', 10, 'My Shop')
-        ShopLogic.add_review_on_shop(shop_review.writerId, shop_review.shop_name, shop_review.description, shop_review.rank)
+        ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
         self.assertTrue(len(reviews) == 0)
 

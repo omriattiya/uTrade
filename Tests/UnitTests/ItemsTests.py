@@ -16,6 +16,7 @@ from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
 from DomainLayer.ItemsLogic import get_all_purchased_items, check_in_stock, remove_item_from_shop, edit_shop_item
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
+from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from SharedClasses.StoreManager import StoreManager
@@ -45,20 +46,16 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item(self):
         register(RegisteredUser('Tomer', '12345678'))
-        shop = Shop('My Shop', 'ACTIVE')
-        ShopLogic.create_shop(shop, 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Yoni')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'Tomer')
-        ItemsLogic.add_review_on_item('Tomer', 1, 'Good', 10)
+        ItemsLogic.add_review_on_item(ItemReview('Tomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
         self.assertEqual(len(reviews), 1)
 
     def test_review_on_item_bad(self):
         register(RegisteredUser('Tomer', '12345678'))
-        shop = Shop('My Shop', 'ACTIVE')
-        ShopLogic.create_shop(shop, 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
-        ItemsLogic.add_review_on_item('Tomer', 1, 'Good', 10)
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Yoni')
+        ItemsLogic.add_review_on_item(ItemReview('Tomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
         self.assertEqual(reviews, [])
 

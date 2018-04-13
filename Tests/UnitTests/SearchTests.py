@@ -18,7 +18,7 @@ class SearchTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
         ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'Tomer')
         ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'Tomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'Tomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')
@@ -26,40 +26,40 @@ class SearchTests(unittest.TestCase):
 
     def test_search_item_in_shop(self):
         items_founded = SearchLogic.search_item_in_shop('My Shop', 'banana')
-        self.assertTrue(items_founded[0][2] == 'banana')
+        self.assertTrue(items_founded.name == 'banana')
 
     def test_search_item_by_name(self):
         items_founded = SearchLogic.search_by_name('banana')
-        self.assertTrue(items_founded[0][2] == 'banana')
+        self.assertTrue(items_founded[0].name == 'banana')
         items_founded = SearchLogic.search_by_name('milk')
-        self.assertTrue(items_founded[0][2] == 'milk')
+        self.assertTrue(items_founded[0].name == 'milk')
         items_founded = SearchLogic.search_by_name('steak')
-        self.assertTrue(items_founded[0][2] == 'steak')
+        self.assertTrue(items_founded[0].name == 'steak')
 
     def test_search_item_by_category(self):
         items_founded = SearchLogic.search_by_category('diary')
-        self.assertTrue(items_founded[0][2] == 'milk')
-        self.assertTrue(items_founded[0][3] == 'diary')
+        self.assertTrue(items_founded[0].name == 'milk')
+        self.assertTrue(items_founded[0].category == 'diary')
         items_founded = SearchLogic.search_by_category('meat')
-        self.assertTrue(items_founded[0][2] == 'steak')
-        self.assertTrue(items_founded[0][3] == 'meat')
+        self.assertTrue(items_founded[0].name == 'steak')
+        self.assertTrue(items_founded[0].category == 'meat')
         items_founded = SearchLogic.search_by_category('fruit')
-        self.assertTrue(items_founded[0][2] == 'banana')
-        self.assertTrue(items_founded[0][3] == 'fruit')
+        self.assertTrue(items_founded[0].name == 'banana')
+        self.assertTrue(items_founded[0].category == 'fruit')
 
     def test_search_item_by_keywords(self):
         items_founded = SearchLogic.search_by_keywords('good')
-        self.assertTrue(items_founded[0][2] == 'milk')
-        self.assertTrue(items_founded[0][3] == 'diary')
+        self.assertTrue(items_founded[0].name == 'milk')
+        self.assertTrue(items_founded[0].category == 'diary')
         items_founded = SearchLogic.search_by_keywords('bad')
-        self.assertTrue(items_founded[0][2] == 'steak')
-        self.assertTrue(items_founded[0][3] == 'meat')
+        self.assertTrue(items_founded[0].name == 'steak')
+        self.assertTrue(items_founded[0].category == 'meat')
         items_founded = SearchLogic.search_by_keywords('best')
-        self.assertTrue(items_founded[0][2] == 'banana')
-        self.assertTrue(items_founded[0][3] == 'fruit')
+        self.assertTrue(items_founded[0].name == 'banana')
+        self.assertTrue(items_founded[0].category == 'fruit')
         items_founded = SearchLogic.search_by_keywords('one;two')
-        self.assertTrue(items_founded[0][2] == 'water')
-        self.assertTrue(items_founded[0][3] == 'drinks')
+        self.assertTrue(items_founded[0].name == 'water')
+        self.assertTrue(items_founded[0].category == 'drinks')
 
 
     def tearDown(self):
