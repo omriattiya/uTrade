@@ -1,5 +1,8 @@
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
+from SharedClasses.VisibleDiscount import VisibleDiscount
+from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Owner import Owner
 from SharedClasses.StoreManager import StoreManager
@@ -109,6 +112,46 @@ def modify_notifications(request):
         should_notify = request.POST.get('modify_notifications')
         username = request.POST.get('username')
         return UsersLogic.modify_notifications(username, should_notify)
+
+
+def add_visible_discount(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        shop_name = request.POST.get('shop_name')
+        percentage = request.POST.get('percentage')
+        from_date = request.POST.get('from_date')
+        end_date = request.POST.get('end_date')
+        disc = VisibleDiscount(item_id, shop_name, percentage, from_date, end_date)
+        username = request.POST.get('username')
+        return UsersLogic.add_visible_discount(disc, username)
+
+
+def add_invisible_discount(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        shop_name = request.POST.get('shop_name')
+        percentage = request.POST.get('percentage')
+        from_date = request.POST.get('from_date')
+        end_date = request.POST.get('end_date')
+        code = request.POST.get('code')
+        disc = InvisibleDiscount(item_id, shop_name, percentage, from_date, end_date, code)
+        username = request.POST.get('username')
+        return UsersLogic.add_invisible_discount(disc, username)
+
+
+def get_visible_discount(request):
+    if request.method == 'GET':
+        item_id = request.POST.get('item_id')
+        shop_name = request.POST.get('shop_name')
+        return UsersLogic.get_visible_discount(item_id, shop_name)
+
+
+def get_invisible_discount(request):
+    if request.method == 'GET':
+        item_id = request.POST.get('item_id')
+        shop_name = request.POST.get('shop_name')
+        text = request.POST.get('text')
+        return UsersLogic.get_invisible_discount(item_id, shop_name, text)
 
 
 def add_system_manager(request):

@@ -63,13 +63,13 @@ def pay_all(username):
             # for each item, calculate visible_discount
             for shopping_cart in cart_items:
                 item = get_item(shopping_cart.item_id)
-                discount = get_visible_discount(item.item_id, item.shop_name)
+                discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
                     percentage = discount.percentage
                 new_price = item.price * (1 - percentage)
                 if shopping_cart.code is not None:
-                    discount = get_invisible_discount(item.item_id, item.shop_name, shopping_cart.code)
+                    discount = get_invisible_discount(item.id, item.shop_name, shopping_cart.code)
                     if discount is not False:
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)

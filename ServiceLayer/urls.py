@@ -12,6 +12,10 @@ users_urlpatterns = [
     path('users/owner/close_shop', users.close_shop),
     path('users/owner/re_open_shop', users.re_open_shop),
     path('users/owner/modify_notifications', users.modify_notifications),
+    path('users/add_visible_discount', users.add_visible_discount),
+    path('users/add_invisible_discount', users.add_invisible_discount),
+    path('users/get_visible_discount', users.get_visible_discount),
+    path('users/get_invisible_discount', users.get_invisible_discount),
     path('users/get_purchase_history/', users.get_purchase_history),
 ]
 
