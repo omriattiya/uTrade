@@ -6,6 +6,8 @@ from DomainLayer import MessagingLogic, ItemsLogic, UsersLogic, SearchLogic, Sho
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from SharedClasses.Item import Item
+from SharedClasses.StoreManager import StoreManager
+from SharedClasses.Message import Message
 from DatabaseLayer import Shops, StoreManagers, Items
 
 
@@ -18,14 +20,7 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerLev', '654321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', 'myShop', 'TomerLev', {
-            'addItemPermission': 1,
-            'removeItemPermission': 1,
-            'editItemPermission': 1,
-            'replyMessagePermission': 1,
-            'getAllMessagePermission': 1,
-            'getPurchaseHistoryPermission': 1
-        })
+        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
         manager = StoreManagers.get_store_manager('TomerLev', 'myShop')
         self.assertTrue(manager.permission_add_item > 0)
         self.assertTrue(manager.permission_remove_item > 0)
@@ -38,14 +33,7 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerLev', '654321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', 'myShop', 'TomerLev', {
-            'addItemPermission': 1,
-            'removeItemPermission': 1,
-            'editItemPermission': 1,
-            'replyMessagePermission': 1,
-            'getAllMessagePermission': 1,
-            'getPurchaseHistoryPermission': 1
-        })
+        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
         ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
                                          'toys', 'toys:kids', 20, 300), 'TomerLev')
         item = Items.get_item(1)
@@ -61,9 +49,9 @@ class StoreManagersTests(unittest.TestCase):
         self.assertTrue(status)
 
         item = Items.get_item(1)
-        self.assertEqual(item.name,'doll_new')
-        self.assertEqual(item.quantity,40)
-        self.assertEqual(item.keyWords,'toys:kids')
+        self.assertEqual(item.name, 'doll_new')
+        self.assertEqual(item.quantity, 40)
+        self.assertEqual(item.keyWords, 'toys:kids')
 
         status = ItemsLogic.remove_item_from_shop(1, 'TomerLev')
         self.assertTrue(status)
@@ -73,19 +61,13 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerLev', '654321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', 'myShop', 'TomerLev', {
-            'addItemPermission': 0,
-            'removeItemPermission': 0,
-            'editItemPermission': 0,
-            'replyMessagePermission': 0,
-            'getAllMessagePermission': 0,
-            'getPurchaseHistoryPermission': 0
-        })
+        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 0, 0, 0, 0, 0, 0))
         status = ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                  'toys', 'toys;kids', 20, 300), 'TomerLev')
+                                                  'toys', 'toys;kids', 20, 300), 'TomerLev')
         self.assertFalse(status)
 
-        status = MessagingLogic.send_message_from_shop('TomerLev', 'Hi There', 'myShop', 'Shahar')
+        message = Message(None, 'myShop', 'Shahar', 'Hi There')
+        status = MessagingLogic.send_message_from_shop('TomerLev', message)
         self.assertFalse(status)
 
     def tearDown(self):
