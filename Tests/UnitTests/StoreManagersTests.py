@@ -27,11 +27,11 @@ class StoreManagersTests(unittest.TestCase):
             'getPurchaseHistoryPermission': 1
         })
         manager = StoreManagers.get_store_manager('TomerLev', 'myShop')
-        self.assertTrue(manager[2] > 0)
-        self.assertTrue(manager[3] > 0)
-        self.assertTrue(manager[4] > 0)
-        self.assertEqual(manager[1], 'myShop')
-        self.assertEqual(manager[0], 'TomerLev')
+        self.assertTrue(manager.permission_add_item > 0)
+        self.assertTrue(manager.permission_remove_item > 0)
+        self.assertTrue(manager.permission_edit_item > 0)
+        self.assertEqual(manager.store_name, 'myShop')
+        self.assertEqual(manager.username, 'TomerLev')
 
     def test_permissions(self):
         UsersLogic.register(RegisteredUser('Shahar', '123456'))

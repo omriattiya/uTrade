@@ -43,7 +43,6 @@ def get_user(username):
     return fetch_user(select_command(sql_query))
 
 
-
 def login(user):
     sql_query = """
             SELECT *

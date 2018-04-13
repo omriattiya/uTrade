@@ -25,7 +25,7 @@ def get_store_manager(username, shop_name):
         return False
 
 
-def add_manager(shop_name, target_username, permissions):
+def add_manager(store_manager):
     sql = """
             INSERT INTO StoreManagers (username, shop_name, 
                                         addItemPermission,
@@ -35,11 +35,11 @@ def add_manager(shop_name, target_username, permissions):
                                         getAllMessagePermission,
                                         getPurchaseHistoryPermission)
             VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')
-            """.format(target_username, shop_name,
-                       permissions.get('addItemPermission'),
-                       permissions.get('removeItemPermission'),
-                       permissions.get('editItemPermission'),
-                       permissions.get('replyMessagePermission'),
-                       permissions.get('getAllMessagePermission'),
-                       permissions.get('getPurchaseHistoryPermission'))
+            """.format(store_manager.username, store_manager.store_name,
+                       store_manager.permission_add_item,
+                       store_manager.permission_remove_item,
+                       store_manager.permission_edit_item,
+                       store_manager.permission_reply_messages,
+                       store_manager.permission_get_all_messages,
+                       store_manager.permission_get_purchased_history)
     return commit_command(sql)

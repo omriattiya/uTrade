@@ -17,11 +17,11 @@ def remove_item_shopping_cart(username, item_id):
     return commit_command(sql_query)
 
 
-def add_item_shopping_cart(username, item_id, quantity):
+def add_item_shopping_cart(shop_cart):
     sql = """
-                INSERT INTO ShoppingCart (userName, itemId, itemQuantity, code) 
-                VALUES ('{}','{}','{}', '{}')
-              """.format(username, item_id, quantity, None)
+                INSERT INTO ShoppingCart (userName, itemId, itemQuantity) 
+                VALUES ('{}','{}','{}')
+              """.format(shop_cart.username, shop_cart.item_id, shop_cart.quantity)
     return commit_command(sql)
 
 

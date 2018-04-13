@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
 from DomainLayer import ItemsLogic
 from SharedClasses.Item import Item
+from SharedClasses.ItemReview import ItemReview
 
 @csrf_exempt
 def add_item_to_shop(request):
@@ -33,7 +34,8 @@ def add_review_on_item(request):
         item_id = request.POST.get('item_id')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        ItemsLogic.add_review_on_item(writer_name, item_id, description, rank)
+        review = ItemReview(writer_name,description,rank,item_id)
+        ItemsLogic.add_review_on_item(review)
 
 
 @csrf_exempt

@@ -17,7 +17,9 @@ from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
-
+from SharedClasses.StoreManager import StoreManager
+from SharedClasses.SystemManager import SystemManager
+from SharedClasses.PurchasedItem import PurchasedItem
 
 class ItemsTest(unittest.TestCase):
     def setUp(self):
@@ -26,20 +28,13 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '12345678'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'Yoni')
-        UsersLogic.add_manager('Yoni', 'My Shop', 'StoreManager1', {
-            'addItemPermission': 1,
-            'removeItemPermission': 1,
-            'editItemPermission': 1,
-            'replyMessagePermission': 1,
-            'getAllMessagePermission': 1,
-            'getPurchaseHistoryPermission': 1
-        })
+        UsersLogic.add_manager('Yoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
 
     def test_get_all_purchased_items(self):
         register(RegisteredUser('Yoni', '121212'))
         user = get_user('Yoni')
-        add_system_manager(user.username, user.password)
-        add_purchased_item( "banana", 'Yoni')
+        add_system_manager(SystemManager(user.username, user.password))
+        add_purchased_item("banana", 'Yoni')
         lst = get_all_purchased_items('Yoni')
         self.assertTrue(len(lst) > 0)
 

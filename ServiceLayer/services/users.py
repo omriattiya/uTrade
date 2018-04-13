@@ -1,6 +1,9 @@
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from SharedClasses.RegisteredUser import RegisteredUser
+from SharedClasses.Owner import Owner
+from SharedClasses.StoreManager import StoreManager
+from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic
 
 
@@ -51,7 +54,7 @@ def login(request):
         return UsersLogic.login(user)
 
 
-#    _____
+# _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___
 #  | |   | || | | ||  _ \  / _  ) / ___) /___)
@@ -65,7 +68,8 @@ def add_owner(request):
         username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
-        return UsersLogic.add_owner(username, shop_name, target_id)
+        owner = Owner(target_id, shop_name, None)
+        return UsersLogic.add_owner(username, owner)
 
 
 @csrf_exempt
@@ -74,39 +78,44 @@ def add_manager(request):
         username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
-        permissions = {"addItemPermission": request.POST.get('addItemPermission'),
-                       "editItemPermission": request.POST.get('editItemPermission'),
-                       "replyMessagePermission": request.POST.get('replyMessagePermission'),
-                       "getAllMessagePermission": request.POST.get('getAllMessagePermission'),
-                       "getPurchaseHistoryPermission": request.POST.get('getPurchaseHistoryPermission')}
-        return UsersLogic.add_manager(username, shop_name, target_id, permissions)
+        store_manager = StoreManager(target_id, shop_name,
+                                     request.POST.get('add_item_permission'),
+                                     request.POST.get('remove_item_permission'),
+                                     request.POST.get('edit_item_permission'),
+                                     request.POST.get('reply_message_permission'),
+                                     request.POST.get('get_all_message_permission'),
+                                     request.POST.get('get_purchase_history_permission'))
+
+        return UsersLogic.add_manager(username, store_manager)
 
 
 @csrf_exempt
 def close_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-        return UsersLogic.close_shop(shop_name)
+        username = request.POST.get('username')
+        return UsersLogic.close_shop(username, shop_name)
 
 
 def re_open_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-        return UsersLogic.re_open_shop(shop_name)
+        username = request.POST.get('username')
+        return UsersLogic.re_open_shop(username, shop_name)
 
 
 def modify_notifications(request):
     if request.method == 'POST':
         should_notify = request.POST.get('modify_notifications')
-        owner_id = request.POST.get('modify_notifications')
-        return UsersLogic.modify_notifications(owner_id, should_notify)
+        username = request.POST.get('username')
+        return UsersLogic.modify_notifications(username, should_notify)
 
 
 def add_system_manager(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        added_successfully = UsersLogic.add_system_manager(username, password)
+        added_successfully = UsersLogic.add_system_manager(SystemManager(username, password))
         if added_successfully:
             return HttpResponse('added')
     return HttpResponse('failed - probably username exist in RegisteredUsers or SystemManagers')

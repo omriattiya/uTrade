@@ -16,11 +16,11 @@ def get_cart_items(username):
         return ShoppingCart.get_cart_items(username)
 
 
-def add_item_shopping_cart(username, item_id, quantity):
-    if username is not None and item_id is not None and quantity > 0:
-        if ItemsLogic.check_in_stock(item_id, quantity) is False:
+def add_item_shopping_cart(shop_cart):
+    if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.quantity > 0:
+        if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.quantity) is False:
             return False
-        return ShoppingCart.add_item_shopping_cart(username, item_id, quantity)
+        return ShoppingCart.add_item_shopping_cart(shop_cart)
     return False
 
 

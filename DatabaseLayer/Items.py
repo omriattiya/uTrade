@@ -66,7 +66,7 @@ def search_item_in_shop(shop_name, item_name):
 def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
-                FROM Items,Shop
+                FROM Items,Shops
                 WHERE category = '{}' AND Shops.status = 'ACTIVE'
               """.format(item_category)
     return fetch_items(select_command(sql_query))
@@ -75,7 +75,7 @@ def search_items_by_category(item_category):
 def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
-                FROM Items,Shop
+                FROM Items,Shops
                 WHERE keyWords = '{}' AND Shops.status = 'ACTIVE'
               """.format(item_keyword)
     return fetch_items(select_command(sql_query))

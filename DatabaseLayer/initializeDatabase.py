@@ -103,7 +103,7 @@ tables_sql = [
           userName CHAR(30) REFERENCES RegisteredUsers(username),
           itemId INTEGER REFERENCES Items(id),
           itemQuantity INTEGER,
-          code CHAR(15),
+          code CHAR(15) DEFAULT NULL,
           PRIMARY KEY(userName,itemId),
           CONSTRAINT userName_size CHECK(length(userName) <= 30),
           CONSTRAINT code_size CHECK(length(code) <= 15)

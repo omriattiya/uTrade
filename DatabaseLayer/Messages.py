@@ -16,11 +16,11 @@ def fetch_message(result):
     return Message(result[0], result[1], result[2], result[3])
 
 
-def send_message(message_from, message_to, content):
+def send_message(message):
     sql_query = """
                 INSERT INTO Messages (MessageFrom, MessageTo, Content)  
                 VALUES ('{}', '{}', '{}');
-              """.format(message_from, message_to, content)
+              """.format(message.message_from, message.message_to, message.content)
     return commit_command(sql_query)
 
 
@@ -42,9 +42,9 @@ def get_all_shop_messages(shop_name):
     return fetch_messages(select_command(sql_query))
 
 
-def send_message_from_shop(message, shop_name, to):
+def send_message_from_shop(message):
     sql_query = """
                   INSERT INTO Messages (MessageFrom, MessageTo, Content)  
                   VALUES ('{}', '{}', '{}')
-                  """.format(shop_name, to, message)
+                  """.format(message.from_username, message.to_username, message.content)
     return commit_command(sql_query)

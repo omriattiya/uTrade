@@ -50,18 +50,18 @@ def get_purchase_history(username):
 #   \_____/  \____||_| |_| \____)|_|    (___/
 #
 
-def add_owner(username, shop_name, target_username):
+def add_owner(username, owner):
     if username is not None and \
-            Owners.get_owner(username, shop_name) is not False and \
-            RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
-        return Owners.add_owner(shop_name, target_username)
+            Owners.get_owner(username, owner.shop_name) is not False and \
+            RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
+        return Owners.add_owner(owner)
 
 
-def add_manager(username, shop_name, target_username, permissions):
+def add_manager(username, store_manager):
     if username is not None and \
-            Owners.get_owner(username, shop_name) is not False and \
-            RegisteredUsers.get_user(target_username) is not False and shop_name is not None:
-        return StoreManagers.add_manager(shop_name, target_username, permissions)
+            Owners.get_owner(username, store_manager.store_name) is not False and \
+            RegisteredUsers.get_user(store_manager.username) is not False and store_manager.store_name is not None:
+        return StoreManagers.add_manager(store_manager)
     else:
         return False
 
@@ -86,8 +86,8 @@ def modify_notifications(owner_username, should_notify):
     return Owners.modify_notifications(owner_username, should_notify)
 
 
-def add_system_manager(username, password):
-    if RegisteredUsers.get_user(username) is False:
-        return SystemManagers.add_system_manager(username, password)
+def add_system_manager(system_manager):
+    if RegisteredUsers.get_user(system_manager.username) is False:
+        return SystemManagers.add_system_manager(system_manager)
     else:
         return False

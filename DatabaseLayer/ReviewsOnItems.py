@@ -16,12 +16,12 @@ def fetch_review(result):
     return ItemReview(result[0], result[1], result[2], result[3])
 
 
-def add_review_on_item(writer_id, item_id, description, rank):
+def add_review_on_item(review):
     sql_query = """
                 INSERT INTO ReviewsOnItems (writerId, itemId, description, rank)  
                 VALUES ('{}', '{}', '{}', '{}');
-              """.format(writer_id, item_id,
-                         description, rank)
+              """.format(review.writer_id, review.item_id,
+                         review.description, review.rank)
     return commit_command(sql_query)
 
 

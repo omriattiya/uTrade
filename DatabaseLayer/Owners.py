@@ -16,11 +16,11 @@ def fetch_owner(result):
     return Owner(result[0], result[1], result[2])
 
 
-def add_owner(shop_name, username):
+def add_owner(owner):
     sql = """
             INSERT INTO Owners (username, shop_name)
             VALUES ('{}','{}')
-            """.format(username, shop_name)
+            """.format(owner.username, owner.shop_name)
     return commit_command(sql)
 
 

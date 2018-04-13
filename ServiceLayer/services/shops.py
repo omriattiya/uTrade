@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
 from SharedClasses.Shop import Shop
-from DatabaseLayer import Shops
+from SharedClasses.ShopReview import ShopReview
 
 
 @csrf_exempt
@@ -34,7 +35,8 @@ def add_review_on_shop(request):
         shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        ShopLogic.add_review_on_shop(writer_id, shop_name, description, rank)
+        shop_review = ShopReview(writer_id,description,rank,shop_name)
+        ShopLogic.add_review_on_shop(shop_review)
 
 
 def search_shop_purchase_history(request):
