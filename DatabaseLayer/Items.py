@@ -63,6 +63,15 @@ def search_item_in_shop(shop_name, item_name):
     return fetch_item(select_command(sql_query))
 
 
+def search_items_in_shop(shop_name):
+    sql_query = """
+                SELECT *
+                FROM Items,Shops
+                WHERE Shops.name = '{}' AND Items.shop_name = '{}'
+              """.format(shop_name, shop_name)
+    return fetch_items(select_command(sql_query))
+
+
 def search_items_by_category(item_category):
     sql_query = """
                 SELECT *

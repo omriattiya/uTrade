@@ -20,11 +20,17 @@ def search_item(request):
 
 def search_shop(request):
     if request.method == 'GET':
-            shop = SearchLogic.search_shop(request.GET.get('name'))
-            return render(request, 'SearchView.html')
+        shop = SearchLogic.search_shop(request.GET.get('name'))
+        return render(request, 'SearchView.html')
 
 
 def search_item_in_shop(request):
     if request.method == 'GET':
-            item = SearchLogic.search_item_in_shop(request.GET.get('item_name'), request.GET.get('shop_name'))
-            return render(request, 'SearchView.html')
+        item = SearchLogic.search_item_in_shop(request.GET.get('item_name'), request.GET.get('shop_name'))
+        return render(request, 'SearchView.html')
+
+
+def search_items_in_shop(request):
+    if request.method == 'GET':
+        items = SearchLogic.search_item_in_shop(request.GET.get('shop_name'))
+        return render(request, 'SearchView.html')
