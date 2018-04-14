@@ -4,6 +4,7 @@ from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.SystemManagers import add_system_manager
 from DomainLayer.UsersLogic import register, edit_profile, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
+from SharedClasses.SystemManager import SystemManager
 
 
 class UsersTest(unittest.TestCase):
@@ -48,10 +49,8 @@ class UsersTest(unittest.TestCase):
         register(RegisteredUser('Yoni', '121212'))
         user = get_user('Yoni')
         self.assertEqual(user.username, 'Yoni')
-        register(RegisteredUser('Yonion', '123123123'))
-        remover = get_user('Yonion')
-        add_system_manager(remover.username, remover.password)
-        status = remove_user(remover.username, user.username)
+        add_system_manager(SystemManager('Yonion','123123123'))
+        status = remove_user('Yonion', user.username)
         self.assertTrue(status)
 
     def test_bad_remove_user(self):
@@ -66,9 +65,8 @@ class UsersTest(unittest.TestCase):
     def test_not_exist_remove_user(self):
         register(RegisteredUser('Yonion', '123123123'))
         remover = get_user('Yonion')
-        add_system_manager(remover.username, remover.password)
-        status = remove_user(remover.username, 'Yoni')
-        print(status)
+        add_system_manager(SystemManager('asdx123','21431d1wd'))
+        status = remove_user('asdx123', remover)
         self.assertFalse(status)
 
     def test_get_purchased_history(self):
