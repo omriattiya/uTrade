@@ -1,4 +1,5 @@
-from DatabaseLayer import ShoppingCart, RegisteredUsers
+import time
+from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic
@@ -74,6 +75,12 @@ def pay_all(username):
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)
                 total_cost = total_cost + shopping_cart.item_quantity * new_price
-            # TODO pay through the external payment system
+                # TODO pay through the external payment system
+                status = PurchasedItems.add_purchased_item(shopping_cart.item_id, time.time(),
+                                                           shopping_cart.item_quantity,
+                                                           shopping_cart.item_quantity * new_price,
+                                                           shopping_cart.username)
+                if status is False:
+                    return False
             return True
     return False

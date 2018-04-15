@@ -1,4 +1,4 @@
-from DatabaseLayer import Messages, StoreManagers
+from DatabaseLayer import Messages, StoreManagers, Owners
 from SharedClasses import Message
 
 
@@ -17,6 +17,8 @@ def get_all_shop_messages(username, shop_name):
     if manager is not False:
         if manager.permission_get_all_messages > 0:
             return Messages.get_all_shop_messages(shop_name)
+    if Owners.get_owner(username,shop_name) is not False:
+        return Messages.get_all_shop_messages(shop_name)
 
     return False
 
@@ -26,5 +28,6 @@ def send_message_from_shop(username, message):
     if manager is not False:
         if manager.permission_reply_messages > 0:
             Messages.send_message_from_shop(message)
-
+    if Owners.get_owner(username,message.from_username) is not False:
+        Messages.send_message_from_shop(message)
     return False

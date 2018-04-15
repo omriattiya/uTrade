@@ -18,9 +18,9 @@ def fetch_purchased_item(result):
 
 def get_purchased_items_by_shop(shop_name):
     sql_query = """
-                SELECT Items.*, PurchasedItems.*
+                SELECT PurchasedItems.*
                 FROM PurchasedItems, Items, Shops
-                WHERE Items.shop_name = '{}' AND PurchasedItems.PurchasedItem = Items.id
+                WHERE Items.shop_name = '{}' AND PurchasedItems.PurchasedItem = Items.id AND Shops.name = Items.shop_name
             """.format(shop_name)
     return fetch_purchased_items(select_command(sql_query))
 
@@ -28,7 +28,7 @@ def get_purchased_items_by_shop(shop_name):
 def get_all_purchased_items():
     sql_query = """
                 SELECT *
-               FROM Items
+               FROM PurchasedItems
               """
     return fetch_purchased_items(select_command(sql_query))
 

@@ -15,8 +15,9 @@ def register(user):
 
 
 def edit_profile(user):
-    if user.username is not None and user.password is not None:
-        if len(user.password) > min_password_len:
+    status = RegisteredUsers.get_user(user.username)
+    if status and user.username is not None and user.password is not None:
+        if len(user.password) >= min_password_len:
             return RegisteredUsers.edit_user_password(user)
     return False
 
