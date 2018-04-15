@@ -12,7 +12,7 @@ def parse_shopping_carts(shopping_carts):
 def remove_item_shopping_cart(username, item_id):
     sql_query = """
                 DELETE FROM ShoppingCart
-                WHERE userName = '{}' AND itemId = '{}'
+                WHERE userName = '{}' AND itemId = {}
               """.format(username, item_id)
     return commit_command(sql_query)
 
@@ -20,7 +20,7 @@ def remove_item_shopping_cart(username, item_id):
 def add_item_shopping_cart(shop_cart):
     sql = """
                 INSERT INTO ShoppingCart (userName, itemId, itemQuantity) 
-                VALUES ('{}','{}','{}')
+                VALUES ('{}',{},{})
               """.format(shop_cart.username, shop_cart.item_id, shop_cart.item_quantity)
     return commit_command(sql)
 
@@ -29,7 +29,7 @@ def update_item_shopping_cart(username, item_id, new_quantity):
     sql = """
             UPDATE ShoppingCart
             SET itemQuantity = '{}'
-            WHERE username = '{}' AND itemId = '{}'
+            WHERE username = '{}' AND itemId = {}
               """.format(new_quantity, username, item_id)
     return commit_command(sql)
 
@@ -38,7 +38,7 @@ def update_code_shopping_cart(username, item_id, code):
     sql = """
             UPDATE ShoppingCart
             SET code = '{}'
-            WHERE username = '{}' AND itemId = '{}'
+            WHERE username = '{}' AND itemId = {}
               """.format(code, username, item_id)
     return commit_command(sql)
 

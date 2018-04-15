@@ -1,19 +1,17 @@
-import datetime
 import os
-import unittest
 import time
+import unittest
 
+from DatabaseLayer import PurchasedItems
 from DatabaseLayer.Items import search_item_in_shop, add_item_to_shop
 from DatabaseLayer.PurchasedItems import add_purchased_item
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnItems import get_all_reviews_on_item
 from DatabaseLayer.Shops import search_shop
-from DatabaseLayer.StoreManagers import add_manager
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
-from DatabaseLayer import PurchasedItems
 from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
-from DomainLayer.ItemsLogic import get_all_purchased_items, check_in_stock, remove_item_from_shop, edit_shop_item
+from DomainLayer.ItemsLogic import get_all_purchased_items, remove_item_from_shop, edit_shop_item
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
