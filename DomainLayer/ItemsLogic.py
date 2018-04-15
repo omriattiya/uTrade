@@ -1,5 +1,5 @@
-from DatabaseLayer import Items, StoreManagers, Shops, Owners, SystemManagers, PurchasedItems
 from DatabaseLayer import Items, StoreManagers, ReviewsOnItems, Owners, SystemManagers
+from DatabaseLayer import PurchasedItems
 
 
 def add_item_to_shop(item, username):
@@ -39,6 +39,9 @@ def edit_shop_item(username, item_id, field_name, new_value):
     if result is not False:
         edit_item_permission = result.permission_edit_item
         if edit_item_permission > 0:
+            return Items.update_item(item_id, field_name, new_value)
+    else:
+        if Owners.get_owner(username, item.shop_name) is not False:
             return Items.update_item(item_id, field_name, new_value)
     return False
 

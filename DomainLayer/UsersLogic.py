@@ -1,5 +1,3 @@
-from struct import pack
-
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount
 
 min_password_len = 6
@@ -55,6 +53,7 @@ def add_owner(username, owner):
             Owners.get_owner(username, owner.shop_name) is not False and \
             RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
         return Owners.add_owner(owner)
+    return False
 
 
 def add_manager(username, store_manager):
@@ -110,7 +109,7 @@ def add_invisible_discount(disc, username):
 
 
 def get_visible_discount(item_id, shop_name):
-    if item_id is not None and shop_name is not None and from_date is not None:
+    if item_id is not None and shop_name is not None:
         return Discount.get_visible_discount(item_id, shop_name)
     return False
 
