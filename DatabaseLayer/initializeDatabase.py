@@ -173,6 +173,35 @@ tables_sql = [
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
+
+    """
+        CREATE TABLE IF NOT EXISTS lotteries(
+          lotto_id INTEGER PRIMARY KEY AUTOINCREMENT ,
+          item_id INTEGER REFERENCES Items(id),
+          max_price INTEGER,
+          final_date DATE,
+          real_end_date DATE,
+          prize_item_id INTEGER REFERENCES Items(id)
+        )
+    """,
+
+    """
+        CREATE TABLE IF NOT EXISTS customersInLotteries(
+          lotto_id INTEGER REFERENCES lotteries(lotto_id),
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          price INTEGER,
+          PRIMARY KEY(lotto_id,username)
+        )
+    """,
+
+    """
+        CREATE TABLE IF NOT EXISTS lotteryWins(
+          lotto_id INTEGER REFERENCES lotteries(lotto_id),
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          PRIMARY KEY(lotto_id)
+        )
+    """,
+
     #       _        ___            _         _       _
     #      | |      / __)          | |_      (_)     (_)_
     #    _ | | ____| |__ ____ _   _| | |_     _ ____  _| |_
