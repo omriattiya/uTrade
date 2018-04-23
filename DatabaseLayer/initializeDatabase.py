@@ -176,12 +176,13 @@ tables_sql = [
 
     """
         CREATE TABLE IF NOT EXISTS lotteries(
-          lotto_id INTEGER PRIMARY KEY AUTOINCREMENT ,
-          item_id INTEGER REFERENCES Items(id),
+          lotto_id INTEGER REFERENCES Items(id),
           max_price INTEGER,
           final_date DATE,
           real_end_date DATE,
+          winner CHAR(30) REFERENCES RegisteredUsers(username),
           prize_item_id INTEGER REFERENCES Items(id)
+          PRIMARY KEY(lotto_id)
         )
     """,
 
@@ -191,14 +192,6 @@ tables_sql = [
           username CHAR(30) REFERENCES RegisteredUsers(username),
           price INTEGER,
           PRIMARY KEY(lotto_id,username)
-        )
-    """,
-
-    """
-        CREATE TABLE IF NOT EXISTS lotteryWins(
-          lotto_id INTEGER REFERENCES lotteries(lotto_id),
-          username CHAR(30) REFERENCES RegisteredUsers(username),
-          PRIMARY KEY(lotto_id)
         )
     """,
 
