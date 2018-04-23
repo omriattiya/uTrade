@@ -65,7 +65,6 @@ class SearchTests(unittest.TestCase):
         self.assertTrue(items_founded[0].name == 'water')
         self.assertTrue(items_founded[0].category == 'drinks')
 
-
     def tearDown(self):
         os.remove('db.sqlite3')
 

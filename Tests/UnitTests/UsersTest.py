@@ -24,7 +24,6 @@ class UsersTest(unittest.TestCase):
         status = login(RegisteredUser('KingT678', '12345678ABCabcd'))
         self.assertFalse(status)
 
-
     def test_add_user(self):
         register(RegisteredUser('ShaharShahar', '12341256'))
         user = get_user('ShaharShahar')
@@ -60,6 +59,8 @@ class UsersTest(unittest.TestCase):
         new_user = get_user('TomerTomerLev')
         self.assertEqual(new_user.username, 'TomerTomerLev')
 
+    def test_bad_edit_profile(self):
+        register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
         status = edit_profile(RegisteredUser('ShaharShahar', '1234567878'))
         self.assertFalse(status)
 
@@ -94,6 +95,14 @@ class UsersTest(unittest.TestCase):
         # purchase
         # get purchased history
         # assertEqual(ans, [banana item])
+        self.assertEqual(user, user)
+
+    def test_bad_get_purchased_history(self):
+        register(RegisteredUser('TomerTomer', '12121212'))
+        user = get_user('TomerTomer')
+        # do not purchase anything
+        # get purchased history
+        # assertEqual(ans, [])
         self.assertEqual(user, user)
 
     def tearDown(self):
