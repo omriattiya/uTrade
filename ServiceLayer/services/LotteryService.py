@@ -18,7 +18,5 @@ def add_lottery_item_to_shop(request):
         item = Item(None, shop_name, item_name, item_category, item_keywords, 0, 1)
         ticket = Item(None, shop_name, ticket_name, item_category, item_keywords, ticket_price, 1)
         username = request.POST.get('username')
-        item_id = ItemsLogic.add_item_to_shop_and_return_id(item, username)
-        ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
-        lottery = Lottery(ticket_id, item_price, final_date, None, None, item_id)
-        LotteryLogic.add_lottery(lottery)
+        LotteryLogic.add_lottery_and_items(item, ticket, item_price, final_date, username)
+

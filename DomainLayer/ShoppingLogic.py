@@ -1,3 +1,4 @@
+import datetime
 import time
 from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
@@ -65,6 +66,8 @@ def pay_all(username):
             # for each item, calculate visible_discount
             for shopping_cart in cart_items:
                 item = get_item(shopping_cart.item_id)
+                if shopping_cart.quantity > item.quantity:
+                    return False
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
@@ -77,10 +80,13 @@ def pay_all(username):
                     new_price = new_price * (1 - percentage)
                 lottery = get_lottery(item.id)
                 if lottery is not False:
-                    lottery_sum = get_lottery_sum(lottery.lotto_id)
-                    if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
-                        lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
-                        if lotto_status is False:
+                    if lottery.final_date > datetime.now():
+                        lottery_sum = get_lottery_sum(lottery.lotto_id)
+                        if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
+                            lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
+                            if lotto_status is False:
+                                return False
+                        else:
                             return False
                     else:
                         return False
@@ -90,6 +96,10 @@ def pay_all(username):
                                                            shopping_cart.item_quantity,
                                                            shopping_cart.item_quantity * new_price,
                                                            shopping_cart.username)
+                if status is False:
+                    return False
+                new_quantity = item.quantity - shopping_cart.item_quantity
+                status = ItemsLogic.edit_shop_item(username, item.id, 'quantity', new_quantity)
                 if status is False:
                     return False
             return True
