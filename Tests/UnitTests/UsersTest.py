@@ -72,13 +72,21 @@ class UsersTest(unittest.TestCase):
         status = remove_user('YoniYonion', user.username)
         self.assertTrue(status)
 
-    def test_bad_remove_user(self):
+    def test_bad_remover_remove_user(self):
         register(RegisteredUser('YoniYoni', '12112212'))
         user = get_user('YoniYoni')
         self.assertEqual(user.username, 'YoniYoni')
         register(RegisteredUser('YoniYonion', '123123123'))
         remover = get_user('YoniYonion')
         status = remove_user(remover.username, user.username)
+        self.assertFalse(status)
+
+    def test_bad_user_remove_user(self):
+        register(RegisteredUser('YoniYoni', '12112212'))
+        user = get_user('YoniYoni')
+        self.assertEqual(user.username, 'YoniYoni')
+        add_system_manager(SystemManager('YoniYonion', '123123123'))
+        status = remove_user('YoniYonion', 'mistake')
         self.assertFalse(status)
 
     def test_not_exist_remove_user(self):
