@@ -86,6 +86,7 @@ def pay_all(username):
                         return False
                 total_cost = total_cost + shopping_cart.item_quantity * new_price
                 # TODO pay through the external payment system
+                # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
                 status = PurchasedItems.add_purchased_item(shopping_cart.item_id, time.time(),
                                                            shopping_cart.item_quantity,
                                                            shopping_cart.item_quantity * new_price,
