@@ -34,11 +34,11 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
-        user1 = get_user('NoniNoni')
+        user1user1 = get_user('NoniNoni')
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
         add_item_to_shop(item1)
-        add_purchased_item(item1.id, 50, 7, item1.price, user1.username)
+        add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
         lst = get_all_purchased_items('ToniToniToniToni')
         self.assertTrue(len(lst) > 0)
 

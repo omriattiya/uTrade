@@ -51,7 +51,7 @@ def re_open_shop(shop_name):
     sql_query = """
             UPDATE Shops 
             SET status='ACTIVE'
-            WHERE name='{}'
+            WHERE name='{}' AND status != 'PERMANENTLY_CLOSED'
             """.format(shop_name)
     return commit_command(sql_query)
 
@@ -59,7 +59,7 @@ def re_open_shop(shop_name):
 def close_shop_permanently(shop_name):
     sql_query = """
             UPDATE Shops 
-            SET status='CLOSED'
+            SET status='PERMANENTLY_CLOSED'
             WHERE name='{}'
             """.format(shop_name)
     return commit_command(sql_query)
