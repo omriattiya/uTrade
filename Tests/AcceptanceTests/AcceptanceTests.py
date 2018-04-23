@@ -10,14 +10,14 @@ class CusTomerTomer(unittest.TestCase):
         init_database('db.sqlite3')
 
     def test_register(self):  # 1.2
-        is_added = Bridge.register_user('SHALOM', '123456')
+        is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
         self.assertTrue(is_added)
-        is_added = Bridge.register_user('SHALOM', '123456')
+        is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
         self.assertFalse(is_added)
 
     def test_login(self):  # 1.8
-        Bridge.register_user('SHALOM', '123456')
-        is_logged = Bridge.login('SHALOM', '123456')
+        Bridge.register_user('SHALOMSHALOM', '12345678')
+        is_logged = Bridge.login('SHALOMSHALOM', '12345678')
         self.assertTrue(is_logged)
 
     def test_open_shop(self):  # 1.9

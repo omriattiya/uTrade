@@ -29,7 +29,7 @@ class StoreManagersTests(unittest.TestCase):
         self.assertEqual(manager.username, 'TomerTomerLev')
 
     def test_permissions(self):
-        UsersLogic.register(RegisteredUser('ShaharShahar', '12123456'))
+        UsersLogic.register(RegisteredUser('ShaharShahar', '1212345678'))
         UsersLogic.register(RegisteredUser('TomerTomerLev', '65412321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'ShaharShahar')

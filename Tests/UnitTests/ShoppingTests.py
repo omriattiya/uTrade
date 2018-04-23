@@ -14,8 +14,8 @@ from SharedClasses.StoreManager import StoreManager
 class ShoppingTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
-        register(RegisteredUser('YoniYoni', '12345678'))
-        register(RegisteredUser('StoreManager1', '12345678'))
+        register(RegisteredUser('YoniYoni', '1234567878'))
+        register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
@@ -23,7 +23,7 @@ class ShoppingTests(unittest.TestCase):
         item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        register(RegisteredUser('ToniToni', '12345678'))
+        register(RegisteredUser('ToniToni', '1234567878'))
         add_item_shopping_cart(ShoppingCart('ToniToni', item1.id, 3, None))
         add_item_shopping_cart(ShoppingCart('ToniToni', item2.id, 2, None))
 

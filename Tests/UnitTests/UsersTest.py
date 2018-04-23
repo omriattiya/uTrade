@@ -20,8 +20,8 @@ class UsersTest(unittest.TestCase):
         register(RegisteredUser('Tomer123', '12345ABCDE'))
         status = login(RegisteredUser('Tomer123', '12345ABCDE1'))
         self.assertFalse(status)
-        register(RegisteredUser('KingT678', '123456ABCabc'))
-        status = login(RegisteredUser('KingT678', '123456ABCabcd'))
+        register(RegisteredUser('KingT678', '12345678ABCabc'))
+        status = login(RegisteredUser('KingT678', '12345678ABCabcd'))
         self.assertFalse(status)
 
 
@@ -60,7 +60,7 @@ class UsersTest(unittest.TestCase):
         new_user = get_user('TomerTomerLev')
         self.assertEqual(new_user.username, 'TomerTomerLev')
 
-        status = edit_profile(RegisteredUser('ShaharShahar', '12345678'))
+        status = edit_profile(RegisteredUser('ShaharShahar', '1234567878'))
         self.assertFalse(status)
 
     def test_remove_user(self):

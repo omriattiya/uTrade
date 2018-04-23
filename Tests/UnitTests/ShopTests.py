@@ -55,14 +55,14 @@ class ShopTests(unittest.TestCase):
         self.assertFalse(status)
 
     def test_create_shop(self):
-        register(RegisteredUser('TomerTomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
 
     def test_review_on_shop(self):
-        register(RegisteredUser('TomerTomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '1234567878'))
         user = get_user('TomerTomer')
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
@@ -74,7 +74,7 @@ class ShopTests(unittest.TestCase):
         self.assertEqual(len(reviews),1)
 
     def test_review_on_shop_bad(self):
-        register(RegisteredUser('TomerTomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '1234567878'))
         user = get_user('TomerTomer')
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, user)

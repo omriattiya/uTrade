@@ -24,8 +24,8 @@ from SharedClasses.SystemManager import SystemManager
 class ItemsTest(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
-        register(RegisteredUser('YoniYoni', '12345678'))
-        register(RegisteredUser('StoreManager1', '12345678'))
+        register(RegisteredUser('YoniYoni', '1234567878'))
+        register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
@@ -43,7 +43,7 @@ class ItemsTest(unittest.TestCase):
         self.assertTrue(len(lst) > 0)
 
     def test_review_on_item(self):
-        register(RegisteredUser('TomerTomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '1234567878'))
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
         ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
@@ -51,7 +51,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(len(reviews), 1)
 
     def test_review_on_item_bad(self):
-        register(RegisteredUser('TomerTomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '1234567878'))
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
         ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
