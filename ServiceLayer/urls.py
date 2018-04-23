@@ -1,4 +1,4 @@
-from ServiceLayer.services import UsersService, SearchService, ItemsService, ShopsService, MessagesService, ShoppingService
+from ServiceLayer.services import UsersService, SearchService, ItemsService, ShopsService, MessagesService, ShoppingService, AuctionService
 from django.urls import path
 
 users_urlpatterns = [
@@ -62,10 +62,16 @@ shoppingcart_urlpatterns = [
 
 ]
 
+
+auction_urlpatterns = [
+    path('auction/bid_on_item', AuctionService.bid_on_item)
+]
+
 urlpatterns = users_urlpatterns + \
               search_urlpatterns + \
               items_urlpatterns + \
               shops_urlpatterns + \
               system_manager_urlpatterns + \
               messages_urlpatterns + \
-              shoppingcart_urlpatterns  # add more here using '+'
+              shoppingcart_urlpatterns + \
+              auction_urlpatterns  # add more here using '+'

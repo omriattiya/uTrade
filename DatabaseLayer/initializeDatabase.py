@@ -175,7 +175,7 @@ tables_sql = [
     """,
 
     """
-        CREATE TABLE IF NOT EXISTS lotteries(
+        CREATE TABLE IF NOT EXISTS Lotteries(
           lotto_id INTEGER REFERENCES Items(id),
           max_price INTEGER,
           final_date DATE,
@@ -187,11 +187,28 @@ tables_sql = [
     """,
 
     """
-        CREATE TABLE IF NOT EXISTS customersInLotteries(
-          lotto_id INTEGER REFERENCES lotteries(lotto_id),
+        CREATE TABLE IF NOT EXISTS CustomersInLotteries(
+          lotto_id INTEGER REFERENCES Lotteries(lotto_id),
           username CHAR(30) REFERENCES RegisteredUsers(username),
           price INTEGER,
           PRIMARY KEY(lotto_id,username)
+        )
+    """,
+
+    """CREATE TABLE IF NOT EXISTS AuctionItems(
+        id INTEGER PRIMARY KEY AUTOINCREMENT ,
+        shop_name INTEGER REFERENCES Shops(name),
+        name TEXT NOT NULL,
+        category TEXT NOT NULL,
+        keyWords TEXT
+    )""",
+
+    """
+        CREATE TABLE IF NOT EXISTS AuctionCustomers(
+          auction_id INTEGER REFERENCES AuctionItems(id),
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          price INTEGER,
+          PRIMARY KEY(auction_id, username, price)
         )
     """,
 
