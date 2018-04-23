@@ -16,36 +16,36 @@ class StoreManagersTests(unittest.TestCase):
         init_database('db.sqlite3')
 
     def test_add_store_manager(self):
-        UsersLogic.register(RegisteredUser('Shahar', '123456'))
-        UsersLogic.register(RegisteredUser('TomerLev', '654321'))
+        UsersLogic.register(RegisteredUser('ShaharShahar', '12345126'))
+        UsersLogic.register(RegisteredUser('TomerTomerLev', '65412321'))
         shop = Shop('myShop', 'Active')
-        ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
-        manager = StoreManagers.get_store_manager('TomerLev', 'myShop')
+        ShopLogic.create_shop(shop, 'ShaharShahar')
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
+        manager = StoreManagers.get_store_manager('TomerTomerLev', 'myShop')
         self.assertTrue(manager.permission_add_item > 0)
         self.assertTrue(manager.permission_remove_item > 0)
         self.assertTrue(manager.permission_edit_item > 0)
         self.assertEqual(manager.store_name, 'myShop')
-        self.assertEqual(manager.username, 'TomerLev')
+        self.assertEqual(manager.username, 'TomerTomerLev')
 
     def test_permissions(self):
-        UsersLogic.register(RegisteredUser('Shahar', '123456'))
-        UsersLogic.register(RegisteredUser('TomerLev', '654321'))
+        UsersLogic.register(RegisteredUser('ShaharShahar', '12123456'))
+        UsersLogic.register(RegisteredUser('TomerTomerLev', '65412321'))
         shop = Shop('myShop', 'Active')
-        ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
+        ShopLogic.create_shop(shop, 'ShaharShahar')
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
         ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                         'toys', 'toys:kids', 20, 300), 'TomerLev')
+                                         'toys', 'toys:kids', 20, 300), 'TomerTomerLev')
         item = Items.get_item(1)
         self.assertEqual(item.shop_name, 'myShop')
         self.assertEqual(item.price, 20)
         self.assertEqual(item.quantity, 300)
 
-        status = ItemsLogic.edit_shop_item('TomerLev', 1, 'price', 40)
+        status = ItemsLogic.edit_shop_item('TomerTomerLev', 1, 'price', 40)
         self.assertTrue(status)
-        status = ItemsLogic.edit_shop_item('TomerLev', 1, 'name', 'doll_new')
+        status = ItemsLogic.edit_shop_item('TomerTomerLev', 1, 'name', 'doll_new')
         self.assertTrue(status)
-        status = ItemsLogic.edit_shop_item('TomerLev', 1, 'quantity', 40)
+        status = ItemsLogic.edit_shop_item('TomerTomerLev', 1, 'quantity', 40)
         self.assertTrue(status)
 
         item = Items.get_item(1)
@@ -53,21 +53,21 @@ class StoreManagersTests(unittest.TestCase):
         self.assertEqual(item.quantity, 40)
         self.assertEqual(item.keyWords, 'toys:kids')
 
-        status = ItemsLogic.remove_item_from_shop(1, 'TomerLev')
+        status = ItemsLogic.remove_item_from_shop(1, 'TomerTomerLev')
         self.assertTrue(status)
 
     def test_no_permission(self):
-        UsersLogic.register(RegisteredUser('Shahar', '123456'))
-        UsersLogic.register(RegisteredUser('TomerLev', '654321'))
+        UsersLogic.register(RegisteredUser('ShaharShahar', '12312456'))
+        UsersLogic.register(RegisteredUser('TomerTomerLev', '65431221'))
         shop = Shop('myShop', 'Active')
-        ShopLogic.create_shop(shop, 'Shahar')
-        UsersLogic.add_manager('Shahar', StoreManager('TomerLev', 'myShop', 0, 0, 0, 0, 0, 0))
+        ShopLogic.create_shop(shop, 'ShaharShahar')
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 0, 0, 0, 0, 0, 0))
         status = ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                                  'toys', 'toys;kids', 20, 300), 'TomerLev')
+                                                  'toys', 'toys;kids', 20, 300), 'TomerTomerLev')
         self.assertFalse(status)
 
-        message = Message(None, 'myShop', 'Shahar', 'Hi There')
-        status = MessagingLogic.send_message_from_shop('TomerLev', message)
+        message = Message(None, 'myShop', 'ShaharShahar', 'Hi There')
+        status = MessagingLogic.send_message_from_shop('TomerTomerLev', message)
         self.assertFalse(status)
 
     def tearDown(self):

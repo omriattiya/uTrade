@@ -12,13 +12,13 @@ from SharedClasses.Shop import Shop
 class SearchTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
-        register(RegisteredUser('Tomer', '12345678'))
+        register(RegisteredUser('TomerTomer', '12345678'))
         shop = Shop('My Shop', 'ACTIVE')
-        ShopLogic.create_shop(shop, 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'Tomer')
-        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'Tomer')
+        ShopLogic.create_shop(shop, 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'TomerTomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')

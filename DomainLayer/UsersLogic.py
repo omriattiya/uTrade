@@ -1,3 +1,6 @@
+import re
+import hashlib
+
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount
 
 min_password_len = 6
@@ -5,9 +8,14 @@ min_password_len = 6
 
 def register(user):
     if user.username is not None and user.password is not None and not SystemManagers.is_system_manager(user.username):
-        if len(user.username) > 0 and (user.username[0] > '9' or user.username[0] < '0'):
-            if len(user.password) >= min_password_len:
+        if re.match(r'[A-Za-z0-9]{8,20}', user.username):
+            if re.match(r'[A-Za-z0-9]{8,20}', user.password):
+                user.password = hashlib.sha256(user.password.encode()).hexdigest()
                 return RegisteredUsers.add_user(user)
+            else:
+                return False
+        else:
+            return False
     else:
         return False
 
@@ -15,13 +23,15 @@ def register(user):
 def edit_profile(user):
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
-        if len(user.password) >= min_password_len:
+        if re.match(r'[A-Za-z0-9]{8,20}', user.password):
+            user.password = hashlib.sha256(user.password.encode()).hexdigest()
             return RegisteredUsers.edit_user_password(user)
     return False
 
 
 def login(user):
     if user.username is not None and user.password is not None:
+        user.password = hashlib.sha256(user.password.encode()).hexdigest()
         return RegisteredUsers.login(user)
 
 

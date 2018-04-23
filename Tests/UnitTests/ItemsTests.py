@@ -24,36 +24,36 @@ from SharedClasses.SystemManager import SystemManager
 class ItemsTest(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
-        register(RegisteredUser('Yoni', '12345678'))
+        register(RegisteredUser('YoniYoni', '12345678'))
         register(RegisteredUser('StoreManager1', '12345678'))
         shop = Shop('My Shop', 'ACTIVE')
-        ShopLogic.create_shop(shop, 'Yoni')
-        UsersLogic.add_manager('Yoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
+        ShopLogic.create_shop(shop, 'YoniYoni')
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
 
     def test_get_all_purchased_items(self):
-        register(RegisteredUser('Toni', '121212'))
-        register(RegisteredUser('Noni', '121212'))
-        user = get_user('Toni')
-        user1 = get_user('Noni')
+        register(RegisteredUser('ToniToniToniToni', '12121212'))
+        register(RegisteredUser('NoniNoni', '12121212'))
+        user = get_user('ToniToniToniToni')
+        user1 = get_user('NoniNoni')
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
         add_item_to_shop(item1)
         add_purchased_item(item1.id, 50, 7, item1.price, user1.username)
-        lst = get_all_purchased_items('Toni')
+        lst = get_all_purchased_items('ToniToniToniToni')
         self.assertTrue(len(lst) > 0)
 
     def test_review_on_item(self):
-        register(RegisteredUser('Tomer', '12345678'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Yoni')
-        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'Tomer')
-        ItemsLogic.add_review_on_item(ItemReview('Tomer', 'Good', 10, 1))
+        register(RegisteredUser('TomerTomer', '12345678'))
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
+        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
+        ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
         self.assertEqual(len(reviews), 1)
 
     def test_review_on_item_bad(self):
-        register(RegisteredUser('Tomer', '12345678'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'Yoni')
-        ItemsLogic.add_review_on_item(ItemReview('Tomer', 'Good', 10, 1))
+        register(RegisteredUser('TomerTomer', '12345678'))
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
+        ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
         self.assertEqual(reviews, [])
 

@@ -13,15 +13,15 @@ class ShoppingCartTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
 
-        username = 'Omri'
+        username = 'OmriOmri'
         shop_name = 'My New Shop'
-        register(RegisteredUser(username, '123456'))  # register user
+        register(RegisteredUser(username, '12341256'))  # register user
         ShopLogic.create_shop(Shop.Shop(shop_name, 'ACTIVE'), username)  # add shop
         ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100), username)
         ItemsLogic.add_item_to_shop(Item.Item(2, shop_name, 'glue', 'glue', 'keywords', 12, 100), username)
 
     def test_add_item_to_cart(self):
-        username = 'Omri'
+        username = 'OmriOmri'
         item_id = 1
         quantity = 20
         ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
@@ -32,7 +32,7 @@ class ShoppingCartTests(unittest.TestCase):
         self.assertEqual(cart_items[0].item_quantity, quantity)
 
     def test_remove_item_from_cart(self):
-        username = 'Omri'
+        username = 'OmriOmri'
         item_id = 1
         quantity = 20
         ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
@@ -41,7 +41,7 @@ class ShoppingCartTests(unittest.TestCase):
         self.assertEqual(len(cart_items), 0)
 
     def test_get_cart_items(self):
-        username = 'Omri'
+        username = 'OmriOmri'
         item_id1 = 1
         quantity1 = 20
         item_id2 = 2

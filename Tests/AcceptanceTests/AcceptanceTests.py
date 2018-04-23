@@ -5,7 +5,7 @@ from DatabaseLayer.initializeDatabase import init_database
 from Tests.AcceptanceTests import Bridge
 
 
-class Customer(unittest.TestCase):
+class CusTomerTomer(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
 

@@ -100,9 +100,9 @@ if __name__ == '__main__':
     unittest.main()
 
 DB_NAME = 'db.sqlite3'
-PASSWORD = '123456'
-USERNAME = 'Omri'
-OTHER_USERNAME = 'Naruto'
+PASSWORD = '12345126'
+USERNAME = 'OmriOmri'
+OTHER_USERNAME = 'NarutoNaruto'
 SHOP_NAME = 'My New Shop'
 OTHER_SHOP_NAME = 'Other Shop'
 SHOP_STATUS = 'ACTIVE'

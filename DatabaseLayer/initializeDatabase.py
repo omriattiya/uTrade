@@ -180,10 +180,10 @@ tables_sql = [
     #  ( (_| ( (/ /| | ( ( | | |_| | | |__   | | | | | | |__
     #   \____|\____)_|  \_||_|\____|_|\___)  |_|_| |_|_|\___)
     #
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Omri','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Shahar','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Tomer','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Yoni','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate OmriOmri','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate ShaharShahar','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate TomerTomer','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate YoniYoni','ADMINISTRATOR'); """,
     """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Kuti','ADMINISTRATOR'); """
 ]
 
