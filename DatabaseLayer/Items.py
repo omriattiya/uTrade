@@ -1,6 +1,6 @@
-from DatabaseLayer.getConn import commit_command, select_command
+from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
-
+from sqlite3 import Error
 
 def fetch_items(items):
     items_arr = []
@@ -46,6 +46,25 @@ def add_item_to_shop(item):
                          item.keyWords,
                          item.price, item.quantity)
     return commit_command(sql_query)
+
+
+def add_item_to_shop_and_return_id(item):
+    sql_query = """
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {});
+              """.format(item.shop_name,
+                         item.name, item.category,
+                         item.keyWords,
+                         item.price, item.quantity)
+    try:
+        conn = get_conn()
+        conn.cursor().execute(sql_query)
+        conn.commit()
+        to_return = conn.cursor().lastrowid
+        conn.close()
+        return to_return
+    except Error as e:
+        return False
 
 
 def remove_item_from_shop(item_id):

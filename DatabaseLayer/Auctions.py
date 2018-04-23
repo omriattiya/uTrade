@@ -22,3 +22,11 @@ def get_max_bid(auction_id):
                     WHERE auction_id = '{}'
                 """.format(auction_id)
     return fetch_integer(select_command(sql_query))
+
+
+def add_auction(auction):
+    sql_query = """
+                    INSERT INTO Auctions(auction_id,end_date)
+                    VALUES ('{}','{}')
+                    """.format(auction.auction_id, auction.end_date)
+    return commit_command(sql_query)

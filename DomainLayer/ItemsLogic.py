@@ -14,6 +14,18 @@ def add_item_to_shop(item, username):
     return False
 
 
+def add_item_to_shop_and_return_id(item, username):
+    if item is not None and item.shop_name is not None and username is not None and item.quantity >= 0:
+        manager = StoreManagers.get_store_manager(username, item.shop_name)
+        if manager is not False:
+            add_item_permission = manager.permission_add_item
+            if add_item_permission > 0:
+                return Items.add_item_to_shop_and_return_id(item)
+        if Owners.get_owner(username, item.shop_name) is not False:
+            return Items.add_item_to_shop_and_return_id(item)
+    return False
+
+
 def remove_item_from_shop(item_id, username):
     if item_id is not None:
         item = Items.get_item(item_id)

@@ -1,4 +1,4 @@
-from DatabaseLayer import Lotteries,RegisteredUsers
+from DatabaseLayer import Lotteries, RegisteredUsers
 
 
 def add_or_update_lottery_customer(purchased_item, username, price):
@@ -17,3 +17,8 @@ def add_or_update_lottery_customer(purchased_item, username, price):
         else:
             print("No such user")
     return False
+
+
+def add_lottery(lottery):
+    if lottery is not None:
+        return Lotteries.add_lottery(lottery)

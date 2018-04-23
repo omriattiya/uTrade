@@ -21,6 +21,15 @@ def fetch_integer(result):
         return False
     return result[0]
 
+
+def add_lottery(lottery):
+    sql_query = """
+                INSERT INTO Lotteries(lotto_id,max_price,final_date,prize_item_id)
+                VALUES ('{}','{}','{}','{}')
+                """.format(lottery.lotto_id, lottery.max_price, lottery.final_date,lottery.prize_item_id)
+    return commit_command(sql_query)
+
+
 def add_lottery_item(purchased_item, user_id, price):
     sql_query = """
                 INSERT INTO CustomersInLotteries(lotto_id,username,price)

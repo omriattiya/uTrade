@@ -195,17 +195,19 @@ tables_sql = [
         )
     """,
 
-    """CREATE TABLE IF NOT EXISTS AuctionItems(
-        id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shop_name INTEGER REFERENCES Shops(name),
-        name TEXT NOT NULL,
-        category TEXT NOT NULL,
-        keyWords TEXT
-    )""",
+
+    """
+        CREATE TABLE IF NOT EXISTS Auctions(
+          auction_id INTEGER REFERENCES Items(id),
+          end_date DATE,
+          PRIMARY KEY(auction_id, username, price)
+        )
+    """,
+
 
     """
         CREATE TABLE IF NOT EXISTS AuctionCustomers(
-          auction_id INTEGER REFERENCES AuctionItems(id),
+          auction_id INTEGER REFERENCES Auctions(auction_id),
           username CHAR(30) REFERENCES RegisteredUsers(username),
           price INTEGER,
           PRIMARY KEY(auction_id, username, price)
