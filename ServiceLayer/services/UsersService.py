@@ -87,7 +87,8 @@ def add_manager(request):
                                      request.POST.get('edit_item_permission'),
                                      request.POST.get('reply_message_permission'),
                                      request.POST.get('get_all_message_permission'),
-                                     request.POST.get('get_purchase_history_permission'))
+                                     request.POST.get('get_purchase_history_permission'),
+                                     request.POST.get('get_discount_permission'))
 
         return UsersLogic.add_manager(username, store_manager)
 

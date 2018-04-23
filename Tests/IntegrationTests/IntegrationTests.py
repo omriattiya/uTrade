@@ -74,9 +74,9 @@ class IntegrationTests(unittest.TestCase):
 
         owner = Owners.get_owner('u1ser1u1ser1', 'myShop1')
         status = UsersLogic.add_manager(
-            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1))
+            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1))
         status = UsersLogic.add_manager(
-            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1)
+            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1)
         )
 
         manager = StoreManagers.get_store_manager('u4ser4u4ser4', 'myShop1')
@@ -171,9 +171,9 @@ class IntegrationTests(unittest.TestCase):
 
         owner = Owners.get_owner('u1ser1u1ser1', 'myShop1')
         status = UsersLogic.add_manager(
-            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1))
+            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1))
         status = UsersLogic.add_manager(
-            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1)
+            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1)
         )
 
         ItemsLogic.add_item_to_shop(

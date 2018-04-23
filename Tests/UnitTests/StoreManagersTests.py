@@ -20,7 +20,7 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerTomerLev', '65412321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'ShaharShahar')
-        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1, 1))
         manager = StoreManagers.get_store_manager('TomerTomerLev', 'myShop')
         self.assertTrue(manager.permission_add_item > 0)
         self.assertTrue(manager.permission_remove_item > 0)
@@ -33,7 +33,7 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerTomerLev', '65412321'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'ShaharShahar')
-        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1, 1))
         ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
                                          'toys', 'toys:kids', 20, 300), 'TomerTomerLev')
         item = Items.get_item(1)
@@ -61,7 +61,7 @@ class StoreManagersTests(unittest.TestCase):
         UsersLogic.register(RegisteredUser('TomerTomerLev', '65431221'))
         shop = Shop('myShop', 'Active')
         ShopLogic.create_shop(shop, 'ShaharShahar')
-        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 0, 0, 0, 0, 0, 0))
+        UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 0, 0, 0, 0, 0, 0, 0))
         status = ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
                                                   'toys', 'toys;kids', 20, 300), 'TomerTomerLev')
         self.assertFalse(status)

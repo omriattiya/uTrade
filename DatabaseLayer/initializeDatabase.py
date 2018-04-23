@@ -135,6 +135,7 @@ tables_sql = [
           replyMessagePermission INTEGER NOT NULL,
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
+          discountPermission INTEGER NOT NULL,
           FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
           PRIMARY KEY(username,shop_name),
           CONSTRAINT username_size CHECK(length(username) <= 30)
