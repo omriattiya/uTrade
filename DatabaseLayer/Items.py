@@ -2,6 +2,7 @@ from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
 from sqlite3 import Error
 
+
 def fetch_items(items):
     items_arr = []
     for item in items:

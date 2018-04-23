@@ -29,11 +29,12 @@ def add_item_to_shop_and_return_id(item, username):
 def remove_item_from_shop(item_id, username):
     if item_id is not None:
         item = Items.get_item(item_id)
-        manager = StoreManagers.get_store_manager(username, item.shop_name)
-        if manager is not False:
-            remove_item_permission = manager.permission_remove_item
-            if remove_item_permission > 0:
-                return Items.remove_item_from_shop(item_id)
+        if item is not False:
+            manager = StoreManagers.get_store_manager(username, item.shop_name)
+            if manager is not False:
+                remove_item_permission = manager.permission_remove_item
+                if remove_item_permission > 0:
+                    return Items.remove_item_from_shop(item_id)
     return False
 
 
