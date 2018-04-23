@@ -1,4 +1,4 @@
-import datetime
+from datetime import  datetime
 import time
 from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
@@ -66,7 +66,7 @@ def pay_all(username):
             # for each item, calculate visible_discount
             for shopping_cart in cart_items:
                 item = get_item(shopping_cart.item_id)
-                if shopping_cart.quantity > item.quantity:
+                if shopping_cart.item_quantity > item.quantity:
                     return False
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
@@ -80,7 +80,8 @@ def pay_all(username):
                     new_price = new_price * (1 - percentage)
                 lottery = get_lottery(item.id)
                 if lottery is not False:
-                    if lottery.final_date > datetime.now():
+                    final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
+                    if final_date > datetime.now():
                         lottery_sum = get_lottery_sum(lottery.lotto_id)
                         if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
                             lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
@@ -92,7 +93,7 @@ def pay_all(username):
                         return False
                 total_cost = total_cost + shopping_cart.item_quantity * new_price
                 # TODO pay through the external payment system
-                status = PurchasedItems.add_purchased_item(shopping_cart.item_id, time.time(),
+                status = PurchasedItems.add_purchased_item(shopping_cart.item_id, datetime.now(),
                                                            shopping_cart.item_quantity,
                                                            shopping_cart.item_quantity * new_price,
                                                            shopping_cart.username)

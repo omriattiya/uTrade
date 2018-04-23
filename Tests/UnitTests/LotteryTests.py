@@ -1,19 +1,27 @@
+import os
 import unittest
+from datetime import date
+
 from DatabaseLayer import PurchasedItems
 from DatabaseLayer.Items import search_item_in_shop, add_item_to_shop
+from DatabaseLayer.Lotteries import get_lotteries, get_lottery_customer
 from DatabaseLayer.PurchasedItems import add_purchased_item
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnItems import get_all_reviews_on_item
+from DatabaseLayer.ShoppingCart import add_item_shopping_cart
 from DatabaseLayer.Shops import search_shop
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
 from DomainLayer.ItemsLogic import get_all_purchased_items, remove_item_from_shop, edit_shop_item
+from DomainLayer.LotteryLogic import add_lottery_and_items
+from DomainLayer.ShoppingLogic import pay_all
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
+from SharedClasses.ShoppingCart import ShoppingCart
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 
@@ -27,107 +35,65 @@ class LotteryTest(unittest.TestCase):
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
 
-    def test_get_all_purchased_items(self):
+    def test_add_lottery(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
         user1user1 = get_user('NoniNoni')
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
-        add_item_to_shop(item1)
-        add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
-        lst = get_all_purchased_items('ToniToniToniToni')
+        item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
+        lst = get_lotteries()
         self.assertTrue(len(lst) > 0)
 
-    def test_review_on_item(self):
-        register(RegisteredUser('TomerTomer', '1234567878'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
-        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
-        ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
-        reviews = get_all_reviews_on_item(1)
-        self.assertEqual(len(reviews), 1)
+    def test_add_lottery_customer(self):
+        register(RegisteredUser('ToniToniToniToni', '12121212'))
+        register(RegisteredUser('NoniNoni', '12121212'))
+        user = get_user('ToniToniToniToni')
+        user1user1 = get_user('NoniNoni')
+        add_system_manager(SystemManager(user.username, user.password))
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
+        lst = get_lotteries()
+        lottery = lst[0]
+        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all('NoniNoni')
+        customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
+        self.assertTrue(customer_lottery is not False)
 
-    def test_review_on_item_bad(self):
-        register(RegisteredUser('TomerTomer', '1234567878'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
-        ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
-        reviews = get_all_reviews_on_item(1)
-        self.assertEqual(reviews, [])
+    def test_add_lottery_customer_date_fail(self):
+        register(RegisteredUser('ToniToniToniToni', '12121212'))
+        register(RegisteredUser('NoniNoni', '12121212'))
+        user = get_user('ToniToniToniToni')
+        user1user1 = get_user('NoniNoni')
+        add_system_manager(SystemManager(user.username, user.password))
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        add_lottery_and_items(item1, item2, 500, date(2016, 12, 26), 'YoniYoni')
+        lst = get_lotteries()
+        lottery = lst[0]
+        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all('NoniNoni')
+        customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
+        self.assertFalse(customer_lottery is not False)
 
-    def test_add_item_to_shop(self):
-        shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        searched_1 = search_item_in_shop(shop.name, item1.name)
-        searched_2 = search_item_in_shop(shop.name, item2.name)
-        # condition1 = check_in_stock(item1.id, 100) and check_in_stock(item2.id, 100)
-        self.assertEqual(searched_1.id, item1.id)
-        self.assertEqual(searched_2.id, item2.id)
-
-    def test_bad_quantity_of_item(self):
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, -5)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, -7)
-        status1 = ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        status2 = ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        self.assertFalse(status1)
-        self.assertFalse(status2)
-
-    def test_bad_add_item_to_shop(self):
-        shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        item3 = Item(3, 'My Shop', 'tomato', 'vegetables', 'bad', 12, 100)
-        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        searched_1 = search_item_in_shop(shop.name, item1.name)
-        searched_2 = search_item_in_shop(shop.name, item2.name)
-        # condition1 = check_in_stock(item1.id, 100) and check_in_stock(item2.id, 100)
-        self.assertEqual(searched_1.id, item1.id)
-        self.assertEqual(searched_2.id, item2.id)
-        self.assertFalse(search_item_in_shop(shop.name, item3.id))
-
-    def test_remove_item_from_shop(self):
-        shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        searched_1 = search_item_in_shop(shop.name, item1.name)
-        searched_2 = search_item_in_shop(shop.name, item2.name)
-        self.assertEqual(searched_1.id, item1.id)
-        self.assertEqual(searched_2.id, item2.id)
-        self.assertTrue(remove_item_from_shop(item1.id, 'StoreManager1'))
-        self.assertFalse(search_item_in_shop(shop.name, item1.name))
-
-    def test_edit_shop_item(self):
-        shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        searched_1 = search_item_in_shop(shop.name, item1.name)
-        searched_2 = search_item_in_shop(shop.name, item2.name)
-        self.assertEqual(searched_1.id, item1.id)
-        self.assertEqual(searched_2.id, item2.id)
-        self.assertTrue(edit_shop_item('StoreManager1', item1.id, 'price', 15))
-        price = search_item_in_shop(shop.name, item1.name).price
-        self.assertEqual(15, price)
-
-    def test_bad_edit_shop_item(self):
-        shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
-        searched_1 = search_item_in_shop(shop.name, item1.name)
-        searched_2 = search_item_in_shop(shop.name, item2.name)
-        self.assertEqual(searched_1.id, item1.id)
-        self.assertEqual(searched_2.id, item2.id)
-        self.assertFalse(edit_shop_item('StoreManager1', item1.id, 'mistake', 15))
-        price = search_item_in_shop(shop.name, item1.name).price
-        self.assertEqual(12, price)
+    def test_add_lottery_customer_money_fail(self):
+        register(RegisteredUser('ToniToniToniToni', '12121212'))
+        register(RegisteredUser('NoniNoni', '12121212'))
+        user = get_user('ToniToniToniToni')
+        user1user1 = get_user('NoniNoni')
+        add_system_manager(SystemManager(user.username, user.password))
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        add_lottery_and_items(item1, item2, 1, date(2016, 12, 26), 'YoniYoni')
+        lst = get_lotteries()
+        lottery = lst[0]
+        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all('NoniNoni')
+        customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
+        self.assertFalse(customer_lottery is not False)
 
     def tearDown(self):
         os.remove('db.sqlite3')

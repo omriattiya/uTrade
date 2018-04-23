@@ -30,7 +30,7 @@ def search_items_by_name(item_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name = '{}' AND
+                WHERE Items.name LIKE '%{}%' AND
                 Shops.status = 'ACTIVE' AND
                 Items.shop_name = Shops.name
               """.format(item_name)
@@ -58,9 +58,10 @@ def add_item_to_shop_and_return_id(item):
                          item.price, item.quantity)
     try:
         conn = get_conn()
-        conn.cursor().execute(sql_query)
+        c = conn.cursor()
+        c.execute(sql_query)
         conn.commit()
-        to_return = conn.cursor().lastrowid
+        to_return = c.lastrowid
         conn.close()
         return to_return
     except Error as e:

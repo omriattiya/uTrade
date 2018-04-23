@@ -181,7 +181,7 @@ tables_sql = [
           final_date DATE,
           real_end_date DATE,
           winner CHAR(30) REFERENCES RegisteredUsers(username),
-          prize_item_id INTEGER REFERENCES Items(id)
+          prize_item_id INTEGER REFERENCES Items(id),
           PRIMARY KEY(lotto_id)
         )
     """,
@@ -200,7 +200,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS Auctions(
           auction_id INTEGER REFERENCES Items(id),
           end_date DATE,
-          PRIMARY KEY(auction_id, username, price)
+          PRIMARY KEY(auction_id)
         )
     """,
 
