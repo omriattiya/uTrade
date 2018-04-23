@@ -6,7 +6,8 @@ from SharedClasses.Owner import Owner
 
 def create_shop(shop, username):
     if shop is not None and username is not None:
-        return Shops.create_shop(shop) and Owners.add_owner(Owner(username, shop.name, None))
+        if Shops.search_shop(shop.name) is False:
+            return Shops.create_shop(shop) and Owners.add_owner(Owner(username, shop.name, None))
 
 
 def add_review_on_shop(shop_review):

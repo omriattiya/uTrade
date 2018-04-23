@@ -61,6 +61,15 @@ class ShopTests(unittest.TestCase):
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
 
+    def test_bad_create_shop(self):
+        register(RegisteredUser('TomerTomer', '1234567878'))
+        shop = Shop('My Shop', 'ACTIVE')
+        ShopLogic.create_shop(shop, 'TomerTomer')
+        shop_founded = Shops.search_shop('My Shop')
+        self.assertTrue(shop_founded.name == 'My Shop')
+        status = ShopLogic.create_shop(shop, 'TomerTomer')
+        self.assertFalse(status)
+
     def test_review_on_shop(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         user = get_user('TomerTomer')
@@ -71,7 +80,7 @@ class ShopTests(unittest.TestCase):
         shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
         ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
-        self.assertEqual(len(reviews),1)
+        self.assertEqual(len(reviews), 1)
 
     def test_review_on_shop_bad(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
@@ -82,7 +91,6 @@ class ShopTests(unittest.TestCase):
         ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
         self.assertTrue(len(reviews) == 0)
-
 
     def tearDown(self):
         os.remove('db.sqlite3')
