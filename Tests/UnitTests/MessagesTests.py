@@ -48,7 +48,7 @@ class MessageTests(unittest.TestCase):
         self.assertTrue(messages1[0].content == 'Hello 2')
         self.assertTrue(messages2[0].content == 'Hello 1')
 
-    def test_bad_no_premssion_send_message_and_get_messages_of_shops(self):
+    def test_bad_no_permssion_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('TomerTomer1', '1234567878'))
         shop1 = Shop('My Shop1', 'ACTIVE')
         ShopLogic.create_shop(shop1, 'TomerTomer1')

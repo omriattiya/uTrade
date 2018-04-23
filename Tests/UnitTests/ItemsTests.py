@@ -44,7 +44,7 @@ class ItemsTest(unittest.TestCase):
         lst = get_all_purchased_items('ToniToniToniToni')
         self.assertTrue(len(lst) > 0)
 
-    def test_bad_no_itemsget_all_purchased_items(self):
+    def test_bad_no_items_get_all_purchased_items(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
@@ -54,7 +54,7 @@ class ItemsTest(unittest.TestCase):
         lst = get_all_purchased_items('ToniToniToniToni')
         self.assertFalse(len(lst) > 0)
 
-    def test_bad_sysman_get_all_purchased_items(self):
+    def test_bad_sys_man_get_all_purchased_items(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user1user1 = get_user('NoniNoni')
@@ -132,7 +132,7 @@ class ItemsTest(unittest.TestCase):
         self.assertTrue(remove_item_from_shop(item1.id, 'StoreManager1'))
         self.assertFalse(search_item_in_shop(shop.name, item1.name))
 
-    def test_bad_shopless_item_remove_item_from_shop(self):
+    def test_bad_shop_less_item_remove_item_from_shop(self):
         shop = search_shop('My Shop')
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
         item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
@@ -195,7 +195,7 @@ class ItemsTest(unittest.TestCase):
         price = search_item_in_shop(shop.name, item1.name).price
         self.assertEqual(12, price)
 
-    def test_bad_premission_edit_shop_item(self):
+    def test_bad_permission_edit_shop_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = search_shop('My Shop')
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)

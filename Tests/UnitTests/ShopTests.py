@@ -83,6 +83,7 @@ class ShopTests(unittest.TestCase):
         reviews = get_all_reviews_on_shop('My Shop')
         self.assertTrue(len(reviews) == 0)
 
+
     def tearDown(self):
         os.remove('db.sqlite3')
 
