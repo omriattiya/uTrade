@@ -2,7 +2,8 @@ import time
 from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
-from DomainLayer import ItemsLogic
+from DatabaseLayer.Lotteries import get_lottery,get_lottery_sum
+from DomainLayer import ItemsLogic,LotteryLogic
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -74,6 +75,15 @@ def pay_all(username):
                     if discount is not False:
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)
+                lottery = get_lottery(item.id)
+                if lottery is not False:
+                    lottery_sum = get_lottery_sum(lottery.lotto_id)
+                    if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
+                        lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
+                        if lotto_status is False:
+                            return False
+                    else:
+                        return False
                 total_cost = total_cost + shopping_cart.item_quantity * new_price
                 # TODO pay through the external payment system
                 status = PurchasedItems.add_purchased_item(shopping_cart.item_id, time.time(),
