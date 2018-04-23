@@ -69,6 +69,14 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(searched_1.id, item1.id)
         self.assertEqual(searched_2.id, item2.id)
 
+    def test_bad_quantity_of_item(self):
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, -5)
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, -7)
+        status1 = ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
+        status2 = ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
+        self.assertFalse(status1)
+        self.assertFalse(status2)
+
     def test_bad_add_item_to_shop(self):
         shop = search_shop('My Shop')
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
