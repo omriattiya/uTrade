@@ -29,6 +29,10 @@ class ShoppingTests(unittest.TestCase):
 
     def test_pay_all(self):
         self.assertTrue(pay_all('ToniToni'))
+        item1 = ItemsLogic.Items.search_item_in_shop('My Shop', 'milk')
+        item2 = ItemsLogic.Items.search_item_in_shop('My Shop', 'steak')
+        self.assertTrue(item1.quantity == 97)
+        self.assertTrue(item2.quantity == 98)
 
     def test_bad_pay_all(self):
         item1 = ItemsLogic.Items.search_item_in_shop('My Shop', 'milk')

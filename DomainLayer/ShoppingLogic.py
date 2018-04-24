@@ -102,9 +102,9 @@ def pay_all(username):
                                                            shopping_cart.username)
                 if status is False:
                     return False
-                #new_quantity = item.quantity - shopping_cart.item_quantity
-                #status = ItemsLogic.edit_shop_item(username, item.id, 'quantity', new_quantity)
-                #if status is False:
-                #    return False
+                new_quantity = item.quantity - shopping_cart.item_quantity
+                status = ItemsLogic.update_stock(item.id, new_quantity)
+                if status is False:
+                    return False
             return True
     return False
