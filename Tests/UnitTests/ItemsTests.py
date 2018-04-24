@@ -12,7 +12,7 @@ from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
 from DomainLayer.ItemsLogic import get_all_purchased_items, remove_item_from_shop, edit_shop_item
-from DomainLayer.SearchLogic import search_by_name, get_similar_words
+from DomainLayer.SearchLogic import search_by_name
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
@@ -37,7 +37,7 @@ class ItemsTest(unittest.TestCase):
         user = get_user('ToniToniToniToni')
         user1user1 = get_user('NoniNoni')
         add_system_manager(SystemManager(user.username, user.password))
-        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'regular')
         add_item_to_shop(item1)
         add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
         lst = get_all_purchased_items('ToniToniToniToni')
@@ -45,8 +45,8 @@ class ItemsTest(unittest.TestCase):
 
     def test_search_like(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk1', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'milk2', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk1', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'milk2', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         lst = search_by_name('milk')
@@ -55,7 +55,7 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'YoniYoni')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
         ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
@@ -63,15 +63,15 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item_bad(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'YoniYoni')
         ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
         self.assertEqual(reviews, [])
 
     def test_add_item_to_shop(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
@@ -81,8 +81,8 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(searched_2.id, item2.id)
 
     def test_bad_quantity_of_item(self):
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, -5)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, -7)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, -5, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, -7, 'regular')
         status1 = ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         status2 = ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         self.assertFalse(status1)
@@ -90,9 +90,9 @@ class ItemsTest(unittest.TestCase):
 
     def test_bad_add_item_to_shop(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
-        item3 = Item(3, 'My Shop', 'tomato', 'vegetables', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
+        item3 = Item(3, 'My Shop', 'tomato', 'vegetables', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
@@ -104,8 +104,8 @@ class ItemsTest(unittest.TestCase):
 
     def test_remove_item_from_shop(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
@@ -117,8 +117,8 @@ class ItemsTest(unittest.TestCase):
 
     def test_edit_shop_item(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
@@ -131,8 +131,8 @@ class ItemsTest(unittest.TestCase):
 
     def test_bad_edit_shop_item(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)

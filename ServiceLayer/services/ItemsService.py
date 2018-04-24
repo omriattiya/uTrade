@@ -14,7 +14,7 @@ def add_item_to_shop(request):
         item_price = request.POST.get('price')
         item_quantity = request.POST.get('quantity')
         shop_name = request.POST.get('shop_name')
-        item = Item(None, shop_name, item_name, item_category, item_keywords, item_price, item_quantity)
+        item = Item(None, shop_name, item_name, item_category, item_keywords, item_price, item_quantity, 'regular')
         username = request.POST.get('username')
         ItemsLogic.add_item_to_shop(item, username)
 

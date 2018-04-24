@@ -41,7 +41,8 @@ tables_sql = [
         category TEXT NOT NULL,
         keyWords TEXT,
         price REAL NOT NULL,
-        quantity INTEGER
+        quantity INTEGER,
+        kind TEXT
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(

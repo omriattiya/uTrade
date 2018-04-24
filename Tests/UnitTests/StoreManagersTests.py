@@ -35,7 +35,7 @@ class StoreManagersTests(unittest.TestCase):
         ShopLogic.create_shop(shop, 'ShaharShahar')
         UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 1, 1, 1, 1, 1, 1))
         ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                         'toys', 'toys:kids', 20, 300), 'TomerTomerLev')
+                                         'toys', 'toys:kids', 20, 300, 'regular'), 'TomerTomerLev')
         item = Items.get_item(1)
         self.assertEqual(item.shop_name, 'myShop')
         self.assertEqual(item.price, 20)
@@ -63,7 +63,7 @@ class StoreManagersTests(unittest.TestCase):
         ShopLogic.create_shop(shop, 'ShaharShahar')
         UsersLogic.add_manager('ShaharShahar', StoreManager('TomerTomerLev', 'myShop', 0, 0, 0, 0, 0, 0))
         status = ItemsLogic.add_item_to_shop(Item(None, 'myShop', 'doll',
-                                                  'toys', 'toys;kids', 20, 300), 'TomerTomerLev')
+                                                  'toys', 'toys;kids', 20, 300, 'regular'), 'TomerTomerLev')
         self.assertFalse(status)
 
         message = Message(None, 'myShop', 'ShaharShahar', 'Hi There')

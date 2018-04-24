@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ShoppingLogic
 from SharedClasses.ShoppingCart import ShoppingCart
 
+
 def remove_item_shopping_cart(request):
     if request.method == 'GET':
         username = request.GET.get('username')

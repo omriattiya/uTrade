@@ -66,7 +66,7 @@ class ShopTests(unittest.TestCase):
         user = get_user('TomerTomer')
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
         shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
         ShopLogic.add_review_on_shop(shop_review)

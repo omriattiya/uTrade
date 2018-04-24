@@ -15,10 +15,10 @@ class SearchTests(unittest.TestCase):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100, 'regular'), 'TomerTomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')
@@ -64,7 +64,6 @@ class SearchTests(unittest.TestCase):
         items_founded = SearchLogic.search_by_keywords('one;two')
         self.assertTrue(items_founded[0].name == 'water')
         self.assertTrue(items_founded[0].category == 'drinks')
-
 
     def tearDown(self):
         os.remove('db.sqlite3')

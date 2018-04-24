@@ -2,10 +2,11 @@ from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
 from sqlite3 import Error
 
+
 def fetch_items(items):
     items_arr = []
     for item in items:
-        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7]))
     return items_arr
 
 
@@ -13,7 +14,7 @@ def fetch_item(item):
     if len(item) == 0:
         return False
     item = item[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7])
     return item
 
 
@@ -32,30 +33,30 @@ def search_items_by_name(item_name):
                 FROM Items,Shops
                 WHERE Items.name LIKE '%{}%' AND
                 Shops.status = 'ACTIVE' AND
-                Items.shop_name = Shops.name
+                Items.shop_name = Shops.name AND Items.kind <> 'prize'
               """.format(item_name)
     return fetch_items(select_command(sql_query))
 
 
 def add_item_to_shop(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {});
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity)
+                         item.price, item.quantity, item.kind)
     return commit_command(sql_query)
 
 
 def add_item_to_shop_and_return_id(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {});
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity)
+                         item.price, item.quantity, item.kind)
     try:
         conn = get_conn()
         c = conn.cursor()
@@ -80,7 +81,7 @@ def search_item_in_shop(shop_name, item_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = '{}'
+                WHERE Items.name = '{}'  AND Shops.name = '{}' AND Items.shop_name = '{}' AND Items.kind <> 'prize'
               """.format(item_name, shop_name, shop_name)
     return fetch_item(select_command(sql_query))
 
@@ -89,7 +90,7 @@ def search_items_in_shop(shop_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Shops.name = Items.shop_name AND Items.shop_name LIKE '%{}%' 
+                WHERE Shops.name = Items.shop_name AND Items.shop_name LIKE '%{}%' AND Items.kind <> 'prize'
               """.format(shop_name)
     return fetch_items(select_command(sql_query))
 
@@ -98,7 +99,7 @@ def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE category LIKE '%{}%' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name
+                WHERE category LIKE '%{}%' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_category)
     return fetch_items(select_command(sql_query))
 
@@ -107,7 +108,7 @@ def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE keyWords = '{}' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name
+                WHERE keyWords = '{}' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_keyword)
     return fetch_items(select_command(sql_query))
 

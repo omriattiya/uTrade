@@ -22,7 +22,11 @@ def add_item_shopping_cart(shop_cart):
     if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.item_quantity > 0:
         if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.item_quantity) is False:
             return False
-        return ShoppingCart.add_item_shopping_cart(shop_cart)
+        existing = ShoppingCart.get_shopping_cart_item(shop_cart)
+        if existing is not False:
+            return update_item_shopping_cart(shop_cart.username, shop_cart.item_id, shop_cart.item_quantity + existing.item_quantity)
+        else:
+            return ShoppingCart.add_item_shopping_cart(shop_cart)
     return False
 
 
@@ -78,7 +82,7 @@ def pay_all(username):
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)
                 lottery = get_lottery(item.id)
-                if lottery is not False:
+                if item.kind == 'ticket':
                     final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
                     if final_date > datetime.now():
                         lottery_sum = get_lottery_sum(lottery.lotto_id)
@@ -98,9 +102,9 @@ def pay_all(username):
                                                            shopping_cart.username)
                 if status is False:
                     return False
-                new_quantity = item.quantity - shopping_cart.item_quantity
-                status = ItemsLogic.edit_shop_item(username, item.id, 'quantity', new_quantity)
-                if status is False:
-                    return False
+                #new_quantity = item.quantity - shopping_cart.item_quantity
+                #status = ItemsLogic.edit_shop_item(username, item.id, 'quantity', new_quantity)
+                #if status is False:
+                #    return False
             return True
     return False

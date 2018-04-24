@@ -15,8 +15,8 @@ def add_lottery_item_to_shop(request):
         ticket_price = request.POST.get('ticket_price')
         shop_name = request.POST.get('item_shop_name')
         final_date = request.POST.get('final_date')
-        item = Item(None, shop_name, item_name, item_category, item_keywords, 0, 1)
-        ticket = Item(None, shop_name, ticket_name, item_category, item_keywords, ticket_price, 1)
+        item = Item(None, shop_name, item_name, item_category, item_keywords, 0, 1, 'prize')
+        ticket = Item(None, shop_name, ticket_name, item_category, item_keywords, ticket_price, 1, 'ticket')
         username = request.POST.get('username')
         LotteryLogic.add_lottery_and_items(item, ticket, item_price, final_date, username)
 
