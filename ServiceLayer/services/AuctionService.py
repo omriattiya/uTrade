@@ -30,7 +30,5 @@ def add_auction_to_shop(request):
         end_date = request.POST.get('end_date')
         item = Item(None, shop_name, item_name, item_category, item_keywords, item_price, item_quantity)
         username = request.POST.get('username')
-        item_id = ItemsLogic.add_item_to_shop(item, username)
-        auction = Auction(item_id, end_date)
-        AuctionLogic.add_auction(auction)
+        AuctionLogic.add_auction(item, username, end_date)
 

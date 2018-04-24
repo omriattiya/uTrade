@@ -1,5 +1,4 @@
-from datetime import  datetime
-import time
+from datetime import datetime
 from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item

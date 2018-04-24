@@ -53,10 +53,6 @@ class ItemsTest(unittest.TestCase):
         # condition1 = check_in_stock(item1.id, 100) and check_in_stock(item2.id, 100)
         self.assertTrue(len(lst) == 2)
 
-    def test_metathesis(self):
-        get_similar_words('aet')
-
-
     def test_review_on_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
