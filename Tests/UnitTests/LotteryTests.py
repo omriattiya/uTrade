@@ -2,23 +2,17 @@ import os
 import unittest
 from datetime import date
 
-from DatabaseLayer import PurchasedItems
-from DatabaseLayer.Items import search_item_in_shop, add_item_to_shop
+
 from DatabaseLayer.Lotteries import get_lotteries, get_lottery_customer
-from DatabaseLayer.PurchasedItems import add_purchased_item
 from DatabaseLayer.RegisteredUsers import get_user
-from DatabaseLayer.ReviewsOnItems import get_all_reviews_on_item
 from DatabaseLayer.ShoppingCart import add_item_shopping_cart
-from DatabaseLayer.Shops import search_shop
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
-from DomainLayer.ItemsLogic import get_all_purchased_items, remove_item_from_shop, edit_shop_item
+from DomainLayer import ShopLogic, UsersLogic
 from DomainLayer.LotteryLogic import add_lottery_and_items
 from DomainLayer.ShoppingLogic import pay_all
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
-from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from SharedClasses.ShoppingCart import ShoppingCart
@@ -63,7 +57,7 @@ class LotteryTest(unittest.TestCase):
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertTrue(customer_lottery is not False)
 
-    def test_add_lottery_customer_date_fail(self):
+    def test_bad_date(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
@@ -79,7 +73,7 @@ class LotteryTest(unittest.TestCase):
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertFalse(customer_lottery is not False)
 
-    def test_add_lottery_customer_money_fail(self):
+    def test_bad_money(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
