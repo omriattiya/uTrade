@@ -3,6 +3,7 @@ import unittest
 from DatabaseLayer import Shops
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, ItemsLogic, SearchLogic
+from DomainLayer.SearchLogic import get_similar_words
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
@@ -15,10 +16,10 @@ class SearchTests(unittest.TestCase):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100, 'regular'), 'TomerTomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')
@@ -39,6 +40,14 @@ class SearchTests(unittest.TestCase):
         self.assertTrue(items_founded[0].name == 'milk')
         items_founded = SearchLogic.search_by_name('steak')
         self.assertTrue(items_founded[0].name == 'steak')
+
+    def test_search_item_by_like_name(self):
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'green beans', 'fruit', 'best', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'pink salt', 'drinks', 'one two', 12, 100, 'regular'), 'TomerTomer')
+        items_founded = SearchLogic.search_by_name('beans')
+        self.assertTrue(items_founded[0].name == 'green beans')
+        items_founded = SearchLogic.search_by_name('salt')
+        self.assertTrue(items_founded[0].name == 'pink salt')
 
     def test_search_item_by_category(self):
         items_founded = SearchLogic.search_by_category('diary')
@@ -64,6 +73,38 @@ class SearchTests(unittest.TestCase):
         items_founded = SearchLogic.search_by_keywords('one;two')
         self.assertTrue(items_founded[0].name == 'water')
         self.assertTrue(items_founded[0].category == 'drinks')
+
+    def test_suggest_word(self):
+        arr = get_similar_words('banaan')
+        out = ''
+        for word in arr:
+            out = word
+            if word == 'banana':
+                break
+        self.assertTrue(out == 'banana')
+        arr = get_similar_words('bota')
+        out = ''
+        for word in arr:
+            out = word
+            if word == 'boat':
+                break
+        self.assertTrue(out == 'boat')
+
+    def test_bad_suggest_word(self):
+        arr = get_similar_words('banaan')
+        out = ''
+        for word in arr:
+            out = word
+            if word == 'head':
+                break
+        self.assertFalse(out == 'head')
+        arr = get_similar_words('caek')
+        out = ''
+        for word in arr:
+            out = word
+            if word == 'bomb':
+                break
+        self.assertFalse(out == 'bomb')
 
     def tearDown(self):
         os.remove('db.sqlite3')

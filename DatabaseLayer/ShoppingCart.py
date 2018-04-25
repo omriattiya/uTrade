@@ -2,6 +2,14 @@ from DatabaseLayer.getConn import commit_command, select_command
 from SharedClasses.ShoppingCart import ShoppingCart
 
 
+def fetch_cart_item(cart_item):
+    if len(cart_item) == 0:
+        return False
+    cart_item = cart_item[0]
+    cart_item = ShoppingCart(cart_item[0], cart_item[1], cart_item[2], cart_item[3])
+    return cart_item
+
+
 def parse_shopping_carts(shopping_carts):
     shopping_carts_list = []
     for shopping_cart in shopping_carts:
@@ -23,6 +31,13 @@ def add_item_shopping_cart(shop_cart):
                 VALUES ('{}',{},{})
               """.format(shop_cart.username, shop_cart.item_id, shop_cart.item_quantity)
     return commit_command(sql)
+
+
+def get_shopping_cart_item(shop_cart):
+    sql = """
+            SELECT * FROM ShoppingCart WHERE username = '{}' AND itemID = {}
+            """.format(shop_cart.username, shop_cart.item_id)
+    return fetch_cart_item(select_command(sql))
 
 
 def update_item_shopping_cart(username, item_id, new_quantity):

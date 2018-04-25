@@ -19,8 +19,8 @@ class ShoppingTests(unittest.TestCase):
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         register(RegisteredUser('ToniToni', '1234567878'))
@@ -29,6 +29,10 @@ class ShoppingTests(unittest.TestCase):
 
     def test_pay_all(self):
         self.assertTrue(pay_all('ToniToni'))
+        item1 = ItemsLogic.Items.search_item_in_shop('My Shop', 'milk')
+        item2 = ItemsLogic.Items.search_item_in_shop('My Shop', 'steak')
+        self.assertTrue(item1.quantity == 97)
+        self.assertTrue(item2.quantity == 98)
 
     def test_pay_all_different_shops(self):
         register(RegisteredUser('YoniYoni1', '1234567878'))

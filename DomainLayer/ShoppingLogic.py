@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
@@ -22,7 +22,11 @@ def add_item_shopping_cart(shop_cart):
     if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.item_quantity > 0:
         if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.item_quantity) is False:
             return False
-        return ShoppingCart.add_item_shopping_cart(shop_cart)
+        existing = ShoppingCart.get_shopping_cart_item(shop_cart)
+        if existing is not False:
+            return update_item_shopping_cart(shop_cart.username, shop_cart.item_id, shop_cart.item_quantity + existing.item_quantity)
+        else:
+            return ShoppingCart.add_item_shopping_cart(shop_cart)
     return False
 
 
@@ -65,6 +69,8 @@ def pay_all(username):
             # for each item, calculate visible_discount
             for shopping_cart in cart_items:
                 item = get_item(shopping_cart.item_id)
+                if shopping_cart.item_quantity > item.quantity:
+                    return False
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
@@ -76,11 +82,15 @@ def pay_all(username):
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)
                 lottery = get_lottery(item.id)
-                if lottery is not False:
-                    lottery_sum = get_lottery_sum(lottery.lotto_id)
-                    if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
-                        lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
-                        if lotto_status is False:
+                if item.kind == 'ticket':
+                    final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
+                    if final_date > datetime.now():
+                        lottery_sum = get_lottery_sum(lottery.lotto_id)
+                        if lottery_sum + shopping_cart.item_quantity * item.price < lottery.max_price:
+                            lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart.item_id, username, shopping_cart.item_quantity * item.price)
+                            if lotto_status is False:
+                                return False
+                        else:
                             return False
                     else:
                         return False
@@ -88,9 +98,14 @@ def pay_all(username):
                 # TODO pay through the external payment system
                 # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
                 status = PurchasedItems.add_purchased_item(shopping_cart.item_id, time.time(),
+                status = PurchasedItems.add_purchased_item(shopping_cart.item_id, datetime.now(),
                                                            shopping_cart.item_quantity,
                                                            shopping_cart.item_quantity * new_price,
                                                            shopping_cart.username)
+                if status is False:
+                    return False
+                new_quantity = item.quantity - shopping_cart.item_quantity
+                status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
                     return False
             return True

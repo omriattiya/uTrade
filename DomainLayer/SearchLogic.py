@@ -1,4 +1,5 @@
 from DatabaseLayer import Items, Shops
+import enchant
 
 
 def search_by_name(item_name):
@@ -37,3 +38,8 @@ def search_by_keywords(item_keywords):
     if item_keywords is not None:
         keywords_array = item_keywords.replace(';', ' ')
         return Items.search_items_by_keywords(keywords_array)
+
+
+def get_similar_words(word):
+    d = enchant.Dict()
+    return d.suggest(word)

@@ -1,5 +1,6 @@
 from DatabaseLayer import Items, StoreManagers, ReviewsOnItems, Owners, SystemManagers
 from DatabaseLayer import PurchasedItems
+from DatabaseLayer.Items import update_item
 
 
 def add_item_to_shop(item, username):
@@ -73,3 +74,8 @@ def get_all_purchased_items(username):
     if sys_manager is not False:
         return PurchasedItems.get_all_purchased_items()
     return False
+
+
+def update_stock(item_id, quantity):
+    if item_id is not None and quantity is not None:
+        update_item(item_id, 'quantity', quantity)
