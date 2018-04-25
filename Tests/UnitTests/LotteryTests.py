@@ -27,7 +27,7 @@ class LotteryTest(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
 
     def test_add_lottery(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))

@@ -60,7 +60,7 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('NoniNoni', '12121212'))
         user = get_user('ToniToniToniToni')
         add_system_manager(SystemManager(user.username, user.password))
-        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'regular')
         add_item_to_shop(item1)
         lst = get_all_purchased_items('ToniToniToniToni')
         self.assertFalse(len(lst) > 0)
@@ -69,7 +69,7 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
         register(RegisteredUser('NoniNoni', '12121212'))
         user1user1 = get_user('NoniNoni')
-        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500)
+        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'regular')
         add_item_to_shop(item1)
         add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
         self.assertFalse(get_all_purchased_items('ToniToniToniToni'))
@@ -91,7 +91,7 @@ class ItemsTest(unittest.TestCase):
 
     def test_review_on_item_bad_writer(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100), 'YoniYoni')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'YoniYoni')
         PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
         ItemsLogic.add_review_on_item(ItemReview('TomerYoni', 'Good', 10, 1))
         self.assertFalse(get_all_reviews_on_item(1))
@@ -145,8 +145,8 @@ class ItemsTest(unittest.TestCase):
 
     def test_bad_shop_less_item_remove_item_from_shop(self):
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
         self.assertEqual(searched_1.id, item1.id)
@@ -156,7 +156,7 @@ class ItemsTest(unittest.TestCase):
     def test_bad_man_remove_item_from_shop(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
         self.assertEqual(searched_1.id, item1.id)
@@ -194,8 +194,8 @@ class ItemsTest(unittest.TestCase):
     def test_bad_no_man_edit_shop_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
@@ -209,8 +209,8 @@ class ItemsTest(unittest.TestCase):
     def test_bad_permission_edit_shop_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = search_shop('My Shop')
-        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100)
-        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100)
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
+        item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         searched_1 = search_item_in_shop(shop.name, item1.name)
