@@ -1,5 +1,5 @@
-import re
 import hashlib
+import re
 
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount
 
@@ -11,6 +11,10 @@ def register(user):
         if re.match(r'[A-Za-z0-9]{8,20}', user.username):
             if re.match(r'[A-Za-z0-9]{8,20}', user.password):
                 user.password = hashlib.sha256(user.password.encode()).hexdigest()
+                if Shops.search_shop(user.username) is not False:
+                    return False
+                if RegisteredUsers.get_user(user.username) is not False:
+                    return False
                 return RegisteredUsers.add_user(user)
             else:
                 return False
@@ -35,13 +39,23 @@ def login(user):
         return RegisteredUsers.login(user)
 
 
+# remove the user @username and if he is the last owner - delete the shop as well !
 def remove_user(username, registered_user):
     if username is not None and registered_user is not None:
         sys_manager = SystemManagers.is_system_manager(username)
+        is_store_manager = StoreManagers.is_store_manager(username)
+        is_owner = Owners.is_owner(username)
         if sys_manager is not False:
-            user = RegisteredUsers.get_user(registered_user)
+            user = RegisteredUsers.get_user(username)
             if user is not False:
-                return RegisteredUsers.remove_user(registered_user)
+                result_delete = RegisteredUsers.remove_user(registered_user)
+                if result_delete is not False and is_store_manager is not False:
+                    return StoreManagers.remove_manager(username)
+                else:
+                    if result_delete is not False and is_owner is not False:
+                        return Owners.remove_owner(username)
+                    else:
+                        return result_delete
         return False
     return False
 

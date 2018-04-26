@@ -25,6 +25,20 @@ def get_store_manager(username, shop_name):
         return False
 
 
+def is_store_manager(username):
+    sql_query = """
+                SELECT *
+                FROM StoreManagers
+                WHERE username = '{}'
+            """.format(username)
+    manager = select_command(sql_query)
+    manager = parse_store_managers(manager)
+    if len(manager) >= 1:
+        return True
+    else:
+        return False
+
+
 def add_manager(store_manager):
     sql = """
             INSERT INTO StoreManagers (username, shop_name, 
@@ -44,4 +58,12 @@ def add_manager(store_manager):
                        store_manager.permission_get_all_messages,
                        store_manager.permission_get_purchased_history,
                        store_manager.discount_permission)
+    return commit_command(sql)
+
+
+def remove_manager(username):
+    sql = """
+                    DELETE FROM StoreManagers
+                    WHERE username = '{}'
+                  """.format(username)
     return commit_command(sql)

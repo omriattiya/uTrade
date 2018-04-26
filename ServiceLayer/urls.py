@@ -1,5 +1,7 @@
-from ServiceLayer.services import UsersService, SearchService, ItemsService, ShopsService, MessagesService, ShoppingService, AuctionService, LotteryService
 from django.urls import path
+
+from ServiceLayer.services import UsersService, SearchService, ItemsService, ShopsService, MessagesService, \
+    ShoppingService, AuctionService, LotteryService
 
 users_urlpatterns = [
     path('users/register/', UsersService.register),
@@ -23,7 +25,7 @@ search_urlpatterns = [
     path('search/item/', SearchService.search_item),
     path('search/shop/', SearchService.search_shop),
     path('search/itemInShop/', SearchService.search_item_in_shop),
-    path('search/itemדInShop/', SearchService.search_items_in_shop),
+    path('search/itemsInShop/', SearchService.search_items_in_shop),
 ]
 
 items_urlpatterns = [
