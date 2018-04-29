@@ -2,18 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Testing</title>
     <script>
-        setInterval(function () {
-            var Socket = new WebSocket('ws://127.0.0.1:8000/test/');
-            Socket.onopen = function () {
-                alert('connected!')
-            };
-            Socket.onclose = function () {
-                alert('closed')
-            };
-            setTimeout(function() {Socket.close()},2000);
-        },5000);
-
         function webSocketClicked() {
             var Socket = new WebSocket('ws://127.0.0.1:8000/test/');
             Socket.onopen = function () {
@@ -22,24 +12,22 @@
         }
 
         function nextPage() {
-            /*var loadHTML = new XMLHttpRequest();
+            var loadHTML = new XMLHttpRequest();
             loadHTML.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     document.body.innerHTML = loadHTML.responseText;
                 }
             };
             loadHTML.open("GET", "http://127.0.0.1:8000/test2/", true);
-            loadHTML.send();*/
-            window.location = 'http://127.0.0.1:8000/test2/'
+            loadHTML.send();
         }
     </script>
 </head>
 <body>
-    <h1>Welcome To uTrade!</h1>
-    <h2>This page is awesome</h2>
+<div>
+    <h1>This is not a joke, I'm crying for help!!!</h1>
     <button type="button" onClick="webSocketClicked()">WebSocket</button>
-    <a ></a>
     <button type="button" onclick="nextPage()">Next Page</button>
-
+</div>
 </body>
 </html>

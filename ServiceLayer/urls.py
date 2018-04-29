@@ -1,7 +1,9 @@
 from django.urls import path
 
-from ServiceLayer.services import UsersService, SearchService, ItemsService, ShopsService, MessagesService, \
-    ShoppingService, AuctionService, LotteryService
+from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
+    ShoppingService, AuctionService, LotteryService, UsersService
+
+from ServiceLayer.services.PresentationServices import Home
 
 users_urlpatterns = [
     path('users/register/', UsersService.register),
@@ -64,15 +66,17 @@ shoppingcart_urlpatterns = [
 
 ]
 
-
 lottery_urlpatterns = [
     path('lottery/add_lottery_item_to_shop', LotteryService.add_lottery_item_to_shop)
 ]
 
-
 auction_urlpatterns = [
     path('auction/add_auction_to_shop', AuctionService.bid_on_item),
     path('auction/bid_on_item', AuctionService.bid_on_item)
+]
+
+home_page = [
+    path('', Home.get_home)
 ]
 
 urlpatterns = users_urlpatterns + \
@@ -83,4 +87,4 @@ urlpatterns = users_urlpatterns + \
               messages_urlpatterns + \
               shoppingcart_urlpatterns + \
               lottery_urlpatterns + \
-              auction_urlpatterns  # add more here using '+'
+              auction_urlpatterns + home_page  # add more here using '+'
