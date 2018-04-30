@@ -1,5 +1,6 @@
 from DatabaseLayer import Items, Shops
 
+
 def search_by_name(item_name):
     if item_name is not None:
         return Items.search_items_by_name(item_name)

@@ -1,4 +1,4 @@
-class ShoppingCart:
+class ShoppingCartItem:
     def __init__(self, username, item_id, item_quantity, code):
         self.username = username
         self.item_id = item_id

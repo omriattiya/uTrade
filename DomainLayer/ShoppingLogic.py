@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from DatabaseLayer import ShoppingCart, RegisteredUsers, PurchasedItems
+from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
@@ -12,24 +12,24 @@ def remove_item_shopping_cart(username, item_id):
     if username is not None and item_id is not None:
         user = RegisteredUsers.get_user(username)
         if user is not False:
-            return ShoppingCart.remove_item_shopping_cart(username, item_id)
+            return ShoppingCartItem.remove_item_shopping_cart(username, item_id)
 
 
 def get_cart_items(username):
     if username is not None:
-        return ShoppingCart.get_cart_items(username)
+        return ShoppingCartItem.get_cart_items(username)
 
 
 def add_item_shopping_cart(shop_cart):
     if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.item_quantity > 0:
         if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.item_quantity) is False:
             return False
-        existing = ShoppingCart.get_shopping_cart_item(shop_cart)
+        existing = ShoppingCartItem.get_shopping_cart_item(shop_cart)
         if existing is not False:
             return update_item_shopping_cart(shop_cart.username, shop_cart.item_id,
                                              shop_cart.item_quantity + existing.item_quantity)
         else:
-            return ShoppingCart.add_item_shopping_cart(shop_cart)
+            return ShoppingCartItem.add_item_shopping_cart(shop_cart)
     return False
 
 
@@ -41,7 +41,7 @@ def update_item_shopping_cart(username, item_id, new_quantity):
             return False
         user = RegisteredUsers.get_user(username)
         if user is not False:
-            return ShoppingCart.update_item_shopping_cart(username, item_id, new_quantity)
+            return ShoppingCartItem.update_item_shopping_cart(username, item_id, new_quantity)
     return False
 
 
@@ -50,7 +50,7 @@ def update_code_shopping_cart(username, item_id, code):
         user = RegisteredUsers.get_user(username)
         if user is not False:
             if len(code) == 15 and isinstance(code, str):
-                return ShoppingCart.update_item_shopping_cart(username, item_id, code)
+                return ShoppingCartItem.update_item_shopping_cart(username, item_id, code)
             print("bad code")
         print("No such user")
     return False
@@ -59,7 +59,7 @@ def update_code_shopping_cart(username, item_id, code):
 def pay_all(username):
     if username is not None:
         #  check if cart has items
-        empty = ShoppingCart.check_empty(username)
+        empty = ShoppingCartItem.check_empty(username)
         if empty is not True:
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)

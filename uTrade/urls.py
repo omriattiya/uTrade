@@ -1,4 +1,4 @@
-"""uTrade URL Configuration
+"""uTrade URL Confi1guration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -14,9 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.urls import path, include
+
+
+def not_func(request):
+    return render(request, 'TestingWebsockets.html', context=None)
+
+
+def test2_func(request):
+    return render(request,'Test2.html',context=None)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('ServiceLayer.urls'))
+    path('app/', include('ServiceLayer.urls')),
+    path('test/', not_func),
+    path('test2/',test2_func)
 ]
