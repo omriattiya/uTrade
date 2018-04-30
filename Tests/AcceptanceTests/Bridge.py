@@ -7,7 +7,7 @@ from SharedClasses.Item import Item
 from SharedClasses.Owner import Owner
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
-from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
 
 def register_user(username, password):
@@ -32,7 +32,7 @@ def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quant
 
 
 def buy_item(username, shop_name, item_id, quantity):
-    return ShoppingLogic.add_item_shopping_cart(ShoppingCart(username, item_id, quantity, ""))
+    return ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(username, item_id, quantity, ""))
 
 
 def is_item_bought(username, item_id):

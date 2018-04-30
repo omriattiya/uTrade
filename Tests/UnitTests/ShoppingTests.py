@@ -7,7 +7,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from DomainLayer.ShoppingLogic import add_item_shopping_cart, remove_item_shopping_cart
 from DomainLayer.ShoppingLogic import pay_all
-from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.StoreManager import StoreManager
 
 
@@ -24,8 +24,8 @@ class ShoppingTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         register(RegisteredUser('ToniToni', '1234567878'))
-        add_item_shopping_cart(ShoppingCart('ToniToni', item1.id, 3, None))
-        add_item_shopping_cart(ShoppingCart('ToniToni', item2.id, 2, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni', item1.id, 3, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni', item2.id, 2, None))
 
     def test_pay_all(self):
         self.assertTrue(pay_all('ToniToni'))
@@ -44,8 +44,8 @@ class ShoppingTests(unittest.TestCase):
         item2 = Item(2, 'My Shop1', 'steak', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item1, 'StoreManager11')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager11')
-        add_item_shopping_cart(ShoppingCart('ToniToni', item1.id, 3, None))
-        add_item_shopping_cart(ShoppingCart('ToniToni', item2.id, 2, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni', item1.id, 3, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni', item2.id, 2, None))
         self.assertTrue(pay_all('ToniToni'))
 
     def test_bad_no_items_cart_pay_all(self):
@@ -59,8 +59,8 @@ class ShoppingTests(unittest.TestCase):
         item3 = Item(3, 'My Shop', 'asado', 'meat', 'bad', 12, 100, 'regular')
         ItemsLogic.add_item_to_shop(item3, 'StoreManager1')
         register(RegisteredUser('ToniToni1', '1234567878'))
-        add_item_shopping_cart(ShoppingCart('ToniToni', item3.id, 100, None))
-        add_item_shopping_cart(ShoppingCart('ToniToni1', item3.id, 100, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni', item3.id, 100, None))
+        add_item_shopping_cart(ShoppingCartItem('ToniToni1', item3.id, 100, None))
         self.assertTrue(pay_all('ToniToni'))
         # TODO fix this test.
         # self.assertFalse(pay_all('ToniToni1'))

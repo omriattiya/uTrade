@@ -100,7 +100,7 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS ShoppingCart(
+        CREATE TABLE IF NOT EXISTS ShoppingCartItem(
           userName CHAR(30) REFERENCES RegisteredUsers(username),
           itemId INTEGER REFERENCES Items(id),
           itemQuantity INTEGER,

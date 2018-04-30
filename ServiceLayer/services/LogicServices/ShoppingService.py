@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ShoppingLogic
-from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
 
 def remove_item_shopping_cart(request):
@@ -23,7 +23,7 @@ def add_item_shopping_cart(request):
         username = request.POST.get("username")
         item_id = request.POST.get("item_id")
         quantity = request.POST.get("quantity")
-        shop_cart = ShoppingCart(username,item_id,quantity,None)
+        shop_cart = ShoppingCartItem(username, item_id, quantity, None)
         ShoppingLogic.add_item_shopping_cart(shop_cart)
         return HttpResponse('item added to cart')
 

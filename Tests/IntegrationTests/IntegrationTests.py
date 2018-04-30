@@ -10,7 +10,7 @@ from SharedClasses.Owner import Owner
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.Item import Item
 from SharedClasses.Message import Message
-from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.ItemReview import ItemReview
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic
 
@@ -191,9 +191,9 @@ class IntegrationTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(
             Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2), 'u3ser3u3ser3')
 
-        ShoppingLogic.add_item_shopping_cart(ShoppingCart('u5seru5ser', 1, 10, None))
-        ShoppingLogic.add_item_shopping_cart(ShoppingCart('u5seru5ser', 2, 5, None))
-        ShoppingLogic.add_item_shopping_cart(ShoppingCart('u5seru5ser', 3, 15, None))
+        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 1, 10, None))
+        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 2, 5, None))
+        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 3, 15, None))
 
         items = ShoppingLogic.get_cart_items('u5seru5ser')
         self.assertEqual(len(items), 3)

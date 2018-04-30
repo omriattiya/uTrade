@@ -5,7 +5,7 @@ from datetime import date
 
 from DatabaseLayer.Lotteries import get_lotteries, get_lottery_customer
 from DatabaseLayer.RegisteredUsers import get_user
-from DatabaseLayer.ShoppingCart import add_item_shopping_cart
+from DatabaseLayer.ShoppingCartItem import add_item_shopping_cart
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, UsersLogic
@@ -15,7 +15,7 @@ from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
-from SharedClasses.ShoppingCart import ShoppingCart
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 
@@ -52,7 +52,7 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
         pay_all('NoniNoni')
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertTrue(customer_lottery is not False)
@@ -68,7 +68,7 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 500, date(2016, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
         pay_all('NoniNoni')
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertFalse(customer_lottery is not False)
@@ -84,7 +84,7 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 1, date(2016, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCart('NoniNoni', lottery.lotto_id, 3, None))
+        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
         pay_all('NoniNoni')
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertFalse(customer_lottery is not False)

@@ -1,6 +1,6 @@
 import unittest, os
 
-from DatabaseLayer import ShoppingCart
+from DatabaseLayer import ShoppingCartItem
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer.UsersLogic import register
 from SharedClasses.RegisteredUser import RegisteredUser
@@ -24,8 +24,8 @@ class ShoppingCartTests(unittest.TestCase):
         username = 'OmriOmri'
         item_id = 1
         quantity = 20
-        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
-        cart_items = ShoppingCart.get_cart_items(username)
+        ShoppingCartItem.add_item_shopping_cart(ShoppingCartItem.ShoppingCartItem(username, item_id, quantity, ""))
+        cart_items = ShoppingCartItem.get_cart_items(username)
         self.assertEqual(len(cart_items), 1)
         self.assertEqual(cart_items[0].username, username)
         self.assertEqual(cart_items[0].item_id, item_id)
@@ -35,9 +35,9 @@ class ShoppingCartTests(unittest.TestCase):
         username = 'OmriOmri'
         item_id = 1
         quantity = 20
-        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id, quantity, ""))
-        ShoppingCart.remove_item_shopping_cart(username, item_id)
-        cart_items = ShoppingCart.get_cart_items(username)
+        ShoppingCartItem.add_item_shopping_cart(ShoppingCartItem.ShoppingCartItem(username, item_id, quantity, ""))
+        ShoppingCartItem.remove_item_shopping_cart(username, item_id)
+        cart_items = ShoppingCartItem.get_cart_items(username)
         self.assertEqual(len(cart_items), 0)
 
     def test_get_cart_items(self):
@@ -46,9 +46,9 @@ class ShoppingCartTests(unittest.TestCase):
         quantity1 = 20
         item_id2 = 2
         quantity2 = 2
-        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id1, quantity1, ""))
-        ShoppingCart.add_item_shopping_cart(ShoppingCart.ShoppingCart(username, item_id2, quantity2, ""))
-        cart_items = ShoppingCart.get_cart_items(username)
+        ShoppingCartItem.add_item_shopping_cart(ShoppingCartItem.ShoppingCartItem(username, item_id1, quantity1, ""))
+        ShoppingCartItem.add_item_shopping_cart(ShoppingCartItem.ShoppingCartItem(username, item_id2, quantity2, ""))
+        cart_items = ShoppingCartItem.get_cart_items(username)
         self.assertEqual(len(cart_items), 2)
         self.assertEqual(username, cart_items[0].username)
         self.assertEqual(item_id1, cart_items[0].item_id)
