@@ -25,3 +25,10 @@ def add_system_manager(system_manager):
                 VALUES ('{}', '{}')
                 """.format(system_manager.username, system_manager.password)
     return commit_command(sql_query)
+
+
+def login(username, password):
+    sql_query = """
+                   SELECT * FROM SystemManagers WHERE username='{}' AND password='{}'
+                   """.format(username, password)
+    return len(select_command(sql_query)) == 1

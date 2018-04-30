@@ -1,7 +1,9 @@
-import unittest, os
-from DatabaseLayer.initializeDatabase import init_database
+import os
+import unittest
+
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.SystemManagers import add_system_manager
+from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer.UsersLogic import register, edit_profile, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.SystemManager import SystemManager
@@ -69,7 +71,7 @@ class UsersTest(unittest.TestCase):
         user = get_user('YoniYoni')
         self.assertEqual(user.username, 'YoniYoni')
         add_system_manager(SystemManager('YoniYonion', '123123123'))
-        status = remove_user('YoniYonion', user.username)
+        status = remove_user('YoniYonion', user)
         self.assertTrue(status)
 
     def test_bad_remover_remove_user(self):
@@ -78,7 +80,7 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(user.username, 'YoniYoni')
         register(RegisteredUser('YoniYonion', '123123123'))
         remover = get_user('YoniYonion')
-        status = remove_user(remover.username, user.username)
+        status = remove_user(remover.username, user)
         self.assertFalse(status)
 
     def test_bad_user_remove_user(self):
@@ -86,14 +88,12 @@ class UsersTest(unittest.TestCase):
         user = get_user('YoniYoni')
         self.assertEqual(user.username, 'YoniYoni')
         add_system_manager(SystemManager('YoniYonion', '123123123'))
-        status = remove_user('YoniYonion', 'mistake')
+        status = remove_user('YoniYonion', None)
         self.assertFalse(status)
 
     def test_not_exist_remove_user(self):
-        register(RegisteredUser('YoniYonion', '123123123'))
-        remover = get_user('YoniYonion')
-        add_system_manager(SystemManager('asdx123', '21431d1wd'))
-        status = remove_user('asdx123', remover)
+        add_system_manager(SystemManager('YoniYonion', '123123123'))
+        status = remove_user('YoniYonion', RegisteredUser('sadasdf11', '123123123'))
         self.assertFalse(status)
 
     def test_get_purchased_history(self):

@@ -1,4 +1,4 @@
-from DatabaseLayer import Owners
+from DatabaseLayer import Owners, SystemManagers
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
 from DomainLayer import ShoppingLogic
@@ -26,8 +26,8 @@ def is_owner(username, shop_name):
     return Owners.get_owner(username, shop_name) is not False
 
 
-def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quantity, username):
-    return ItemsLogic.add_item_to_shop(Item(0, shop_name, item_name, item_category, keywords, price, quantity),
+def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quantity, username, kind):
+    return ItemsLogic.add_item_to_shop(Item(0, shop_name, item_name, item_category, keywords, price, quantity, kind),
                                        username)
 
 
@@ -52,3 +52,30 @@ def add_owner(owner, shop, new_owner):
 
 def edit_item_name(item_id, username, item_name):
     return ItemsLogic.edit_shop_item(username, item_id, 'name', item_name)
+
+
+def search_shop(shop_name):
+    return ShopLogic.search_shop(shop_name)
+
+
+def pay_cart(username):
+    return ShoppingLogic.pay_all(username)
+
+
+def quantity_in_store(item_id):
+    item = ItemsLogic.get_item(item_id)
+    if item is not False:
+        return item.quantity
+    return False
+
+
+def get_cart_cost(username):
+    return ShoppingLogic.get_cart_cost(username)
+
+
+def delete_user(by, who):
+    return UsersLogic.remove_user(by, UsersLogic.get_registered_user(who))
+
+
+def is_system_manager(username, password):
+    return SystemManagers.login(username, password)

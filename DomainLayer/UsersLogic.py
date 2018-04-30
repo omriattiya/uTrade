@@ -24,6 +24,10 @@ def register(user):
         return False
 
 
+def get_registered_user(username):
+    return RegisteredUsers.get_user(username)
+
+
 def edit_profile(user):
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
@@ -39,24 +43,24 @@ def login(user):
         return RegisteredUsers.login(user)
 
 
-# remove the user @username and if he is the last owner - delete the shop as well !
+# @username wants to remove the user @registered_user and if he is the last owner - delete the shop as well !
 def remove_user(username, registered_user):
     if username is not None and registered_user is not None:
-        sys_manager = SystemManagers.is_system_manager(username)
-        is_store_manager = StoreManagers.is_store_manager(username)
-        is_owner = Owners.is_owner(username)
-        if sys_manager is not False:
-            user = RegisteredUsers.get_user(username)
-            if user is not False:
-                result_delete = RegisteredUsers.remove_user(registered_user)
-                if result_delete is not False and is_store_manager is not False:
-                    return StoreManagers.remove_manager(username)
-                else:
-                    if result_delete is not False and is_owner is not False:
-                        return Owners.remove_owner(username)
+        if SystemManagers.is_system_manager(username) is not False:
+            sys_manager = SystemManagers.is_system_manager(registered_user.username)
+            is_store_manager = StoreManagers.is_store_manager(registered_user.username)
+            is_owner = Owners.is_owner(registered_user.username)
+            if sys_manager is False:
+                user = RegisteredUsers.get_user(registered_user.username)
+                if user is not False:
+                    result_delete = True
+                    if is_store_manager is not False:
+                        result_delete = StoreManagers.remove_manager(registered_user.username)
                     else:
-                        return result_delete
-        return False
+                        if is_owner is not False:
+                            result_delete = Owners.remove_owner(registered_user.username)
+                    return result_delete and RegisteredUsers.remove_user(registered_user.username)
+            return False
     return False
 
 

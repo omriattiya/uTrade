@@ -10,8 +10,10 @@ class CusTomerTomer(unittest.TestCase):
         init_database('db.sqlite3')
 
     def test_register(self):  # 1.2
+        # success scenario
         is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
         self.assertTrue(is_added)
+        # sad scenario
         is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
         self.assertFalse(is_added)
 
@@ -19,6 +21,10 @@ class CusTomerTomer(unittest.TestCase):
         Bridge.register_user('SHALOMSHALOM', '12345678')
         is_logged = Bridge.login('SHALOMSHALOM', '12345678')
         self.assertTrue(is_logged)
+
+        # sad scenario
+        is_logged = Bridge.login('SHALOMSHALOM', '123456789')
+        self.assertFalse(is_logged)
 
     def test_open_shop(self):  # 1.9
         # register user
@@ -30,6 +36,10 @@ class CusTomerTomer(unittest.TestCase):
         is_owner = Bridge.is_owner('username', 'shop_name')
         self.assertTrue(is_owner)
 
+        # sad scenario - existing shop name
+        is_opened = Bridge.open_shop('username', 'shop_name')
+        self.assertFalse(is_opened)
+
     def test_cart_items(self):  # 1.5
         # open shop
         Bridge.register_user('username', 'password')
@@ -38,15 +48,15 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username')
+                                quantity=100, username='username', kind='regular')
         # item is = 2
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username')
+                                quantity=100, username='username', kind='regular')
         # item is = 3
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username')
+                                quantity=100, username='username', kind='regular')
 
         Bridge.buy_item(username='username', shop_name='shop_name', item_id=1, quantity=10)
         self.assertTrue(Bridge.is_item_bought(username='username', item_id=1))
@@ -86,21 +96,98 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username')
+                                           quantity=100, username='username', kind='regular')
         self.assertTrue(is_added)
         # item is = 2
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username')
+                                           quantity=100, username='username', kind='regular')
         self.assertTrue(is_added)
         # item is = 3
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username')
+                                           quantity=100, username='username', kind='regular')
         self.assertTrue(is_added)
 
         is_edited = Bridge.edit_item_name(item_id=1, username='username', item_name='NEW NAME')
         self.assertTrue(is_edited)
+
+    def test_buy(self):  # 1.7
+        # setup shop
+        Bridge.register_user('ownerUser', 'password')
+        Bridge.login('ownerUser', 'password')
+        Bridge.open_shop('ownerUser', 'my_shop')
+        Bridge.register_user('clientUser', 'password')
+        Bridge.search_shop('my_shop')
+
+        # add items to shop
+        Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name1',
+                                item_category='item_category', keywords='keywords', price=10,
+                                quantity=10, username='ownerUser', kind='regular')
+        Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name2',
+                                item_category='item_category', keywords='keywords', price=10,
+                                quantity=20, username='ownerUser', kind='regular')
+        Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name3',
+                                item_category='item_category', keywords='keywords', price=10,
+                                quantity=30, username='ownerUser', kind='regular')
+        Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name4',
+                                item_category='item_category', keywords='keywords', price=10,
+                                quantity=40, username='ownerUser', kind='regular')
+        Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name5',
+                                item_category='item_category', keywords='keywords', price=10,
+                                quantity=50, username='ownerUser', kind='regular')
+
+        # add items to cart
+        Bridge.buy_item('clientUser', 'my_shop', 1, 10)
+        Bridge.buy_item('clientUser', 'my_shop', 2, 10)
+        Bridge.buy_item('clientUser', 'my_shop', 3, 10)
+        Bridge.buy_item('clientUser', 'my_shop', 4, 10)
+        Bridge.buy_item('clientUser', 'my_shop', 5, 10)
+
+        # check total cost is calculated right
+        self.assertEqual(Bridge.get_cart_cost('clientUser'), 500)
+
+        # buy!
+        self.assertTrue(Bridge.pay_cart('clientUser'))
+
+        # check quantity in store changed
+        self.assertEqual(Bridge.quantity_in_store(1), 0)
+        self.assertEqual(Bridge.quantity_in_store(2), 10)
+        self.assertEqual(Bridge.quantity_in_store(3), 20)
+        self.assertEqual(Bridge.quantity_in_store(4), 30)
+        self.assertEqual(Bridge.quantity_in_store(5), 40)
+
+        # alternative scenario - item quantity is not enough
+        self.assertFalse(Bridge.buy_item('clientUser', 'my_shop', 1, 10))
+
+        # alternative scenario - added items, but another user already bought them
+        Bridge.register_user('clientUser2', 'password')
+        Bridge.buy_item('clientUser', 'my_shop', 2, 10)
+        Bridge.buy_item('clientUser2', 'my_shop', 2, 10)
+
+        self.assertTrue(Bridge.pay_cart('clientUser2'))
+        self.assertFalse(Bridge.pay_cart('clientUser'))
+
+    def test_system_remove(self):  # 5.2
+        # check sys manager really exist
+        self.assertTrue(Bridge.is_system_manager('Ultimate_OmriOmri', 'ADMINISTRATOR'))
+
+        # add a normal user
+        self.assertTrue(Bridge.register_user('normalUser', 'password'))
+
+        # delete the normal user
+        self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='normalUser'))
+        self.assertFalse(Bridge.login('normalUser', 'password'))
+
+        # add owner of store
+        Bridge.register_user('ownerUser', 'password')
+        Bridge.open_shop('ownerUser', 'myShop')
+
+        # delete owner and its shop
+        self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='ownerUser'))
+        self.assertFalse(Bridge.login('normalUser', 'password'))
+
+        self.assertFalse(Bridge.search_shop('myShop'))
 
     def tearDown(self):
         os.remove('db.sqlite3')
