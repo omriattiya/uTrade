@@ -26,9 +26,15 @@ def not_func(request):
 def test2_func(request):
     return render(request,'Test2.html',context=None)
 
+
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app/', include('ServiceLayer.urls')),
     path('test/', not_func),
     path('test2/',test2_func)
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

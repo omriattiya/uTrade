@@ -114,8 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, ""),
-    'PresentationLayer/templates/',
+    os.path.join(BASE_DIR, "PresentationLayer/templates/"),
 ]
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'PresentationLayer/templates'),)
 ASGI_APPLICATION = "routing.application"
