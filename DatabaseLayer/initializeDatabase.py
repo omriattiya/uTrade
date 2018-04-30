@@ -36,7 +36,7 @@ tables_sql = [
 
     """CREATE TABLE IF NOT EXISTS Items(
         id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shop_name INTEGER REFERENCES Shops(name),
+        shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
@@ -54,8 +54,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          writerId INTEGER REFERENCES RegisteredUsers(username),
-          shop_name INTEGER REFERENCES Shops(name),
+          writerId INTEGER REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
           description TEXT,
           rank INTEGER
         )
@@ -63,8 +63,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS ReviewsOnItems(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          writerId INTEGER REFERENCES RegisteredUsers(username),
-          itemId INTEGER REFERENCES Items(id),
+          writerId INTEGER REFERENCES RegisteredUsers(username) ON DELETE SET NULL ,
+          itemId INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           description TEXT,
           rank INTEGER
         )
@@ -72,7 +72,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS PurchasedItems(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          PurchasedItem INTEGER REFERENCES Items(id),
+          PurchasedItem INTEGER REFERENCES Items(id) ON DELETE SET NULL,
           purchaseDate INTEGER,
           quantity INTEGER,
           price REAL,
@@ -82,8 +82,8 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS Owners(
-          username CHAR(30) REFERENCES RegisteredUsers(username),
-          shop_name INTEGER REFERENCES Shops(name), 
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE , 
           shouldNotify INTEGER DEFAULT 1,
           PRIMARY KEY(username,shop_name),
           CONSTRAINT username_size CHECK(length(username) <= 30)
@@ -101,8 +101,8 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS ShoppingCartItem(
-          userName CHAR(30) REFERENCES RegisteredUsers(username),
-          itemId INTEGER REFERENCES Items(id),
+          userName CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
+          itemId INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           itemQuantity INTEGER,
           code CHAR(15) DEFAULT NULL,
           PRIMARY KEY(userName,itemId),
@@ -113,7 +113,7 @@ tables_sql = [
     # TODO: whoever does this part needs to add more fields to the table below
     """
         CREATE TABLE IF NOT EXISTS PurchasePolicy(
-          itemId INTEGER REFERENCES Items(id),
+          itemId INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           purchasePolicy TEXT,
           PRIMARY KEY(itemId)
         )
@@ -129,7 +129,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
           username char(30) ,
-          shop_name INTEGER REFERENCES Shops(name),
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,
@@ -137,15 +137,15 @@ tables_sql = [
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
           discountPermission INTEGER NOT NULL,
-          FOREIGN KEY (username) REFERENCES RegisteredUsers(username),
+          FOREIGN KEY (username) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
           PRIMARY KEY(username,shop_name),
           CONSTRAINT username_size CHECK(length(username) <= 30)
         )
     """,
     """
         CREATE TABLE IF NOT EXISTS VisibleDiscounts(
-          item_id INTEGER REFERENCES Items(id) ,
-          shop_name INTEGER REFERENCES Shops(name),
+          item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
@@ -154,8 +154,8 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
-          item_id INTEGER REFERENCES Items(id) ,
-          shop_name INTEGER REFERENCES Shops(name),
+          item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
@@ -166,7 +166,7 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS GlobalDiscountInShop(
-          shop_name INTEGER REFERENCES Shops(name),
+          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE,
           percentage REAL,
           from_date DATE,
           end_date DATE,
@@ -182,16 +182,16 @@ tables_sql = [
           max_price INTEGER,
           final_date DATE,
           real_end_date DATE,
-          winner CHAR(30) REFERENCES RegisteredUsers(username),
-          prize_item_id INTEGER REFERENCES Items(id),
+          winner CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL ,
+          prize_item_id INTEGER REFERENCES Items(id) ON DELETE SET NULL,
           PRIMARY KEY(lotto_id)
         )
     """,
 
     """
         CREATE TABLE IF NOT EXISTS CustomersInLotteries(
-          lotto_id INTEGER REFERENCES Lotteries(lotto_id),
-          username CHAR(30) REFERENCES RegisteredUsers(username),
+          lotto_id INTEGER REFERENCES Lotteries(lotto_id) ON DELETE CASCADE ,
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
           price INTEGER,
           PRIMARY KEY(lotto_id,username)
         )
@@ -210,7 +210,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS AuctionCustomers(
           auction_id INTEGER REFERENCES Auctions(auction_id),
-          username CHAR(30) REFERENCES RegisteredUsers(username),
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
           price INTEGER,
           PRIMARY KEY(auction_id, username, price)
         )
@@ -223,11 +223,11 @@ tables_sql = [
     #  ( (_| ( (/ /| | ( ( | | |_| | | |__   | | | | | | |__
     #   \____|\____)_|  \_||_|\____|_|\___)  |_|_| |_|_|\___)
     #
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate OmriOmri','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate ShaharShahar','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate TomerTomer','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate YoniYoni','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Kuti','ADMINISTRATOR'); """
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_OmriOmri','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_ShaharShahar','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_TomerTomer','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_YoniYoni','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_KutiKuti','ADMINISTRATOR'); """
 ]
 
 
