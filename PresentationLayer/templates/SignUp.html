@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title></title>
+    <base href="https://www.dokkanafkar.com/"/>
+    <link href="https://www.dokkanafkar.com/image/data/Logo/BulbFavicon-15.png" rel="icon"/>
+    <link rel="stylesheet" type="text/css" href="catalog/view/theme/desktop/stylesheet/fonts.css?version=0.50a"/>
+    <link rel="stylesheet" type="text/css" href="catalog/view/theme/desktop/stylesheet/core.min.css?version=0.50a"/>
+    <link rel="stylesheet" type="text/css" href="catalog/view/theme/desktop/stylesheet/stylesheet.css?version=0.50a"/>
+    <link rel="stylesheet" type="text/css"
+          href="catalog/view/theme/desktop/stylesheet/sidebar_navigation.css?version=0.50a"/>
+    <link rel="stylesheet" type="text/css" href="catalog/view/theme/desktop/stylesheet/responsive.css?version=0.50a"/>
+    <link rel="stylesheet" type="text/css" href="catalog/view/theme/desktop/stylesheet/owl.carousel.min.css"
+          media="screen"/>
+    <script type="text/javascript" src="catalog/view/theme/desktop/script/jquery.min.js?version=0.50a"></script>
+    <script type="text/javascript" src="catalog/view/theme/desktop/script/bootstrap.min.js?version=0.50a"></script>
+    <script type="text/javascript" src="catalog/view/theme/desktop/script/common.js?version=0.50a"></script>
+    <script type="text/javascript" src="catalog/view/javascript/city_autosuggest.js?version=0.50a"></script>
+    <script type="text/javascript" src="catalog/view/theme/desktop/script/owl.carousel.min.js?version=0.50a"></script>
+    <script>
+        var rtlStatus = false;
+    </script>
+</head>
+<body id="register">
+
+
+<div class="countries-list-popup">
+    <button class="countries-popup-close"><i class="da-times"></i></button>
+    <div class="countries-content">
+        <h2 class="title">You can change your country here</h2>
+        <ul>
+            <li class="country-list-item">
+
+                <a class="sec-link" href="https://www.dokkanafkar.com"
+                   onclick="ga('send', 'event', 'Homepage Buttons', 'Header Country Switch Icon', '');">
+                    <img src="//cdn.dokkanafkar.com/image/data/country_flags/saudi-arabia-flag.svg" title="" alt=""/>
+                    Saudi Arabia </a>
+            </li>
+            <li class="country-list-item">
+
+                <a class="sec-link" href="https://ae.dokkanafkar.com"
+                   onclick="ga('send', 'event', 'Homepage Buttons', 'Header Country Switch Icon', '');">
+                    <img src="//cdn.dokkanafkar.com/image/data/country_flags/ae-flag.svg" title="" alt=""/> UAE </a>
+            </li>
+            <li class="country-list-item">
+
+                <a class="sec-link" href="https://kuwait.dokkanafkar.com"
+                   onclick="ga('send', 'event', 'Homepage Buttons', 'Header Country Switch Icon', '');">
+                    <img src="//cdn.dokkanafkar.com/image/data/country_flags/kuwait-flag.svg" title="" alt=""/> Kuwait
+                </a>
+            </li>
+            <li class="country-list-item">
+
+                <a class="sec-link" href="https://bahrain.dokkanafkar.com"
+                   onclick="ga('send', 'event', 'Homepage Buttons', 'Header Country Switch Icon', '');">
+                    <img src="//cdn.dokkanafkar.com/image/data/country_flags/bahrain-flag.svg" title="" alt=""/> Bahrain
+                </a>
+            </li>
+            <li class="country-list-item">
+
+                <a class="sec-link" href="https://oman.dokkanafkar.com"
+                   onclick="ga('send', 'event', 'Homepage Buttons', 'Header Country Switch Icon', '');">
+                    <img src="//cdn.dokkanafkar.com/image/data/country_flags/oman-flag.svg" title="" alt=""/> Oman </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<header>
+    <div class="country-switch-notification">
+        <div class="country-switch-notification-item">
+            <div class="container">
+                <div class="country-switch-notification-content">
+                    <span class="notification-image"></span>
+                    <span class="notification-text">
+                        You can change your country here                    </span>
+                    <div class="custom-country-select">
+                        <span class="selected">
+                                                                                            <span><img
+                                                                                                    src="//cdn.dokkanafkar.com/image/data/country_flags/saudi-arabia-flag.svg"/> Saudi Arabia</span>
+                                                                                                                                                                                                                                                                                                                                    </span>
+                        <span class="selectArrow">&#9660</span>
+                        <ul class="custom-country-select-options">
+                            <li>
+                                <a class="sec-link" href="https://ae.dokkanafkar.com"><img
+                                        src="//cdn.dokkanafkar.com/image/data/country_flags/ae-flag.svg"/> UAE</a>
+                            </li>
+                            <li>
+                                <a class="sec-link" href="https://kuwait.dokkanafkar.com"><img
+                                        src="//cdn.dokkanafkar.com/image/data/country_flags/kuwait-flag.svg"/>
+                                    Kuwait</a>
+                            </li>
+                            <li>
+                                <a class="sec-link" href="https://bahrain.dokkanafkar.com"><img
+                                        src="//cdn.dokkanafkar.com/image/data/country_flags/bahrain-flag.svg"/> Bahrain</a>
+                            </li>
+                            <li>
+                                <a class="sec-link" href="https://oman.dokkanafkar.com"><img
+                                        src="//cdn.dokkanafkar.com/image/data/country_flags/oman-flag.svg"/> Oman</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="country-switch-notification-close"><i class="da-times"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header__wrapper">
+            <div class="header__wrapper__left">
+                <a href="https://www.dokkanafkar.com/" title="دكان افكار">
+                    <img src="catalog/view/theme/desktop/image/logo.svg" title="دكان افكار" alt="دكان افكار"/>
+                </a>
+            </div>
+            <div class="header__wrapper__right">
+                <ul class="dokkan-features-text">
+                    <li>
+                        <div class="custom-language-select">
+                        <span class="selected">
+                                                                                                                                            <span>English</span>
+                                                                                </span>
+                            <span class="selectArrow">&#9660</span>
+                            <ul class="custom-language-select-options">
+                                <li>
+                                    <a class="sec-link" data-language="ar" href="javascript:void(0);">العربية</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="custom-country-select">
+                        <span class="selected">
+                                                                                    <span><img
+                                                                                            src="//cdn.dokkanafkar.com/image/data/country_flags/saudi-arabia-flag.svg"/> Saudi Arabia</span>
+                                                                                                                                                                                                                                                                                                                </span>
+                            <span class="selectArrow">&#9660</span>
+                            <ul class="custom-country-select-options">
+                                <li>
+                                    <a class="sec-link" href="https://ae.dokkanafkar.com"><img
+                                            src="//cdn.dokkanafkar.com/image/data/country_flags/ae-flag.svg"/> UAE</a>
+                                </li>
+                                <li>
+                                    <a class="sec-link" href="https://kuwait.dokkanafkar.com"><img
+                                            src="//cdn.dokkanafkar.com/image/data/country_flags/kuwait-flag.svg"/>
+                                        Kuwait</a>
+                                </li>
+                                <li>
+                                    <a class="sec-link" href="https://bahrain.dokkanafkar.com"><img
+                                            src="//cdn.dokkanafkar.com/image/data/country_flags/bahrain-flag.svg"/>
+                                        Bahrain</a>
+                                </li>
+                                <li>
+                                    <a class="sec-link" href="https://oman.dokkanafkar.com"><img
+                                            src="//cdn.dokkanafkar.com/image/data/country_flags/oman-flag.svg"/>
+                                        Oman</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="popover-text"><img class="info-icon"
+                                                  src="catalog/view/theme/desktop/image/info-icon.svg"/>Cash on Delivery
+                        <span class="features-popover">
+                            - Pay through credit card*<br/>- Cash on delivery*<br/>*Terms and conditions applied                        </span>
+                    </li>
+                    <li class="popover-text"><img class="info-icon"
+                                                  src="catalog/view/theme/desktop/image/info-icon.svg"/>Free Shipping
+                        <span class="features-popover">
+                            - For orders over 500 SAR<br/>- Delivery in 2-5 workdays<br/>- Please contact us on 920008456                        </span>
+                    </li>
+                    <li class="popover-text"><img class="info-icon"
+                                                  src="catalog/view/theme/desktop/image/info-icon.svg"/>100% Genuine
+                        Brands <span class="features-popover">
+                            - 100% original products directly through suppliers<br/>- Local and global brands                        </span>
+                    </li>
+                </ul>
+                <div class="shorcut__holder">
+                    <!--div class="nav-country-toggle">
+                        <a href="javascript:void(0)"><img src="//cdn.dokkanafkar.com/image/data/country_flags/saudi-arabia-flag.svg" class="img-responsive"/></a>
+                    </div -->
+                    <!--div class="nav-search-toggle">
+                        <a href="javascript:void(0)"><img src="catalog/view/theme/desktop/image/search-icon.svg" class="img-responsive"/></a>
+                    </div -->
+                    <!--div class="nav-notifications">
+                        <a href="javascript:void(0)"><span id="notifications-counter">0</span>
+                        <div class="notification-icon"></div>
+                        </a>
+                    </div -->
+                    <div class="nav-cart">
+                        <a href="javascript:void(0)" id="open-side-cart"><span class="cart-total">0</span>
+                            <div class="cart-icon"></div>
+                        </a></div>
+                    <div class="account-toggle">
+                        <a href="https://www.dokkanafkar.com/account/account" class="sec-link">
+                            <img src="catalog/view/theme/desktop/image/account-icon.svg" class="img-responsive"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="navs-wrapper">
+        <div id="main-nav">
+            <div class="container">
+                <div class="menu__left">
+                    <div class="logo">
+                        <a href="https://www.dokkanafkar.com/" title="دكان افكار">
+                            <img style="width: 50px;" src="catalog/view/theme/desktop/image/logo-bulb.png"
+                                 title="دكان افكار" alt="دكان افكار"/>
+                        </a>
+                    </div>
+                    <ul id="top-nav">
+                        <li>
+                            <div class="nav-toggle">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </div>
+                            <a href="javascript:void(0)" class="nav-toggle-link">Shop Menu</a>
+                        </li>
+                        <li class="one-row">
+                            <a href="https://www.dokkanafkar.com/product/bestselling" class="image">
+                                <img src="catalog/view/theme/desktop/image/love-list-icon_old.svg"
+                                     class="img-responsive"/>
+                            </a>
+                            <a href="https://www.dokkanafkar.com/product/bestselling" class="link">
+                                Love List </a>
+                        </li>
+                        <li class="one-row">
+                            <a href="https://www.dokkanafkar.com/art-shop" class="image">
+                                <img src="catalog/view/theme/desktop/image/art-shop-icon.svg" class="img-responsive"/>
+                            </a>
+                            <a href="https://www.dokkanafkar.com/art-shop" class="link">
+                                Art Shop </a>
+                        </li>
+                        <li class="one-row">
+                            <a href="https://www.dokkanafkar.com/product/random" class="image">
+                                <img src="catalog/view/theme/desktop/image/random-products-icon.svg"
+                                     class="img-responsive"/>
+                            </a>
+                            <a href="https://www.dokkanafkar.com/product/random" class="link">Random</a>
+                        </li>
+                        <!--li class="one-row">
+                            <a href="javascript:void(0)" class="image">
+                                <img src="catalog/view/theme/desktop/image/afkar-club-icon.svg" class="img-responsive"/>
+                            </a>
+                            <a href="javascript:void(0)" class="link">
+                                Afkar Club                            </a>
+                        </li-->
+
+                    </ul>
+                </div>
+                <div class="menu__right_default">
+                    <div class="nav-search">
+                        <input type="text" name="search" value="" class="form-control"
+                               placeholder="Search for a product..." value=""><i class="da-magnifier"></i>
+                        <div id="nav-search-results"></div>
+                    </div>
+                    <div class="nav-search-overlay"></div>
+                </div>
+                <div class="menu__right">
+                    <div class="nav-search-toggle">
+                        <a href="javascript:void(0)"><img src="catalog/view/theme/desktop/image/search-icon.svg"
+                                                          class="img-responsive"/></a>
+                    </div>
+                    <!--div class="nav-notifications">
+                        <a href="javascript:void(0)"><span id="notifications-counter">0</span>
+                        <div class="notification-icon"></div>
+                        </a>
+                    </div -->
+                    <div class="nav-cart">
+                        <a href="javascript:void(0)" id="open-side-cart"><span class="cart-total">0</span>
+                            <div class="cart-icon"></div>
+                        </a></div>
+                    <div class="account-toggle">
+                        <a href="https://www.dokkanafkar.com/account/account" class="sec-link">
+                            <img src="catalog/view/theme/desktop/image/account-icon.svg" class="img-responsive"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sub-nav">
+            <div class="container">
+                <ul class="categories">
+                    <li><a class="sec-link" href="https://www.dokkanafkar.com/product/all">All Sections</a></li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Gadgets">Gadgets</a></li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Toys-Games">Toys &amp; Games</a></li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Health-and-Beauty">Health and Beauty</a>
+                    </li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Home-Kitchen">Home &amp; Kitchen</a>
+                    </li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Fashion">Fashion</a></li>
+                    <li><a class="sec-link" href="http://www.dokkanafkar.com/en/Stationary">Stationary</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="navigation_wrapper">
+    <nav id="navigation" class="side-navigation">
+        <div class="service-box ">
+            <button id="navigation-close"><i class="da-times"></i></button>
+            <span class="text-welcome">Welcome Dear!</span>
+            <a href="javascript:void(0)" id="btn-open-login-form"
+               class="btn btn-primary btn-shadow btn-block btn-loading">Login or Register Here</a>
+        </div>
+        <div class="main-navigation">
+            <ul class="list-unstyled">
+                <li><a href="javascript:void(0)" id="open-category-list"><span class="left"><i
+                        class="da-drawer-circle"></i></span>Shop By Category<span class="right"><i
+                        class="da-angle-start"></i></span></a></li>
+                <li><a href="https://www.dokkanafkar.com/brands" class="sec-link"><span class="left"><i
+                        class="da-label-circle"></i></span>Shop By Brands</a></li>
+                <li><a href="https://www.dokkanafkar.com/arab-artist-call"><span class="left"><i
+                        class="da-shirt-circle"></i></span>Designers Community</a></li>
+                <li><a href="https://www.dokkanafkar.com/product/bestselling"><span class="left"><i
+                        class="da-star-circle"></i></span>We Recommend</a></li>
+                <li><a href="https://www.dokkanafkar.com/wishlist" class="sec-link"><span class="left"><i
+                        class="da-heart-circle"></i></span>Wish List <span class="wishlist-total">0</span></a></li>
+                <li><a href="javascript:void(0)" id="btn-trackingboard"><span class="left"><i
+                        class="da-pointer-circle"></i></span>Track Your Order</a></li>
+                <li><a href="https://www.dokkanafkar.com/contact-us"><span class="left"><i
+                        class="da-question-circle"></i></span>Customer Support</a></li>
+                <li id="language-switcher">
+                    <form action="https://www.dokkanafkar.com/index.php?action=module-language" method="post"
+                          enctype="multipart/form-data">
+
+                        <a href="javascript:void(0)" data-language="ar" class="rtl"><img
+                                src="catalog/view/theme/mobile/image/flags/sa.png" alt="العربية" title="العربية"/>
+                            العربية</a>
+
+
+                        <input type="hidden" name="language_code" value=""/>
+                        <input type="hidden" name="redirect" value="https://www.dokkanafkar.com/account/register"/>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav id="sub-navigation-first" class="side-navigation">
+        <span class="side-navigation-back" data-target="sub-navigation-first"><i
+                class="da-arrow-squared-end"></i>Back</span>
+        <div class="main-navigation">
+            <ul class="list-unstyled">
+                <li>
+                    <a href="" data-category-id="439">Gadgets<span class="right"><i
+                            class="da-angle-start"></i></span></a>
+                </li>
+                <li>
+                    <a href="http://www.dokkanafkar.com/en/Toys-Games" data-category-id="441">Toys &amp; Games</a>
+                </li>
+                <li>
+                    <a href="" data-category-id="445">Health and Beauty<span class="right"><i
+                            class="da-angle-start"></i></span></a>
+                </li>
+                <li>
+                    <a href="" data-category-id="442">Home &amp; Kitchen<span class="right"><i
+                            class="da-angle-start"></i></span></a>
+                </li>
+                <li>
+                    <a href="" data-category-id="440">Fashion<span class="right"><i
+                            class="da-angle-start"></i></span></a>
+                </li>
+                <li>
+                    <a href="" data-category-id="177">Stationary<span class="right"><i
+                            class="da-angle-start"></i></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav id="sub-navigation-second" class="side-navigation">
+        <span class="side-navigation-back" data-target="sub-navigation-second"><i class="da-arrow-squared-end"></i>Back</span>
+        <div class="main-navigation">
+            <ul class="list-unstyled"></ul>
+        </div>
+    </nav>
+
+    <nav id="sub-navigation-third" class="side-navigation">
+        <span class="side-navigation-back" data-target="sub-navigation-third"><i
+                class="da-arrow-squared-end"></i>Back</span>
+        <div class="main-navigation">
+            <ul class="list-unstyled"></ul>
+        </div>
+    </nav>
+    <div class="navigation-overlay"></div>
+</div>
+
+<div id="side-cart"></div>
+
+<script type="text/javascript">
+
+    $(document).on('click', function (e) {
+        if ($(e.target).closest(".custom-country-select").length === 0) {
+            $('.custom-country-select-options').css('display', 'none');
+        }
+
+        if ($(e.target).closest(".custom-language-select").length === 0) {
+            $('.custom-language-select-options').css('display', 'none');
+        }
+    });
+
+
+    $(document).ready(function () {
+
+        $('.nav-country-toggle a').click(function () {
+            $('.country-switch-notification').removeClass('visible');
+            $('.countries-list-popup').addClass('visible');
+            $('body').addClass('country-list-popup-visible');
+            $('body').removeClass('country-switch-notification-visible');
+        });
+
+        $('.countries-list-popup .countries-popup-close').click(function () {
+            $('.countries-list-popup').removeClass('visible');
+            setTimeout(function () {
+                $('body').removeClass('country-list-popup-visible');
+            }, 300);
+        });
+
+        $('.country-switch-notification-close').click(function () {
+            $('.country-switch-notification').removeClass('visible');
+            setTimeout(function () {
+                $('body').removeClass('country-switch-notification-visible');
+            }, 300);
+        });
+
+        $('.country-switch-notification .custom-country-select').click(function () {
+            if ($('.custom-country-select-options').css('display') == 'none') {
+                $('.custom-country-select-options').css('display', 'block');
+            } else {
+                $('.custom-country-select-options').css('display', 'none');
+            }
+        });
+
+        $('.custom-country-select').click(function () {
+            if ($('.custom-country-select-options').css('display') == 'none') {
+                $('.custom-country-select-options').css('display', 'block');
+            } else {
+                $('.custom-country-select-options').css('display', 'none');
+            }
+        });
+
+        $('.custom-language-select').click(function () {
+            if ($('.custom-language-select-options').css('display') == 'none') {
+                $('.custom-language-select-options').css('display', 'block');
+            } else {
+                $('.custom-language-select-options').css('display', 'none');
+            }
+        });
+
+        $('.custom-language-select-options li a').on('click', function (e) {
+            var language_code = $(this).attr('data-language');
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "https://www.dokkanafkar.com/index.php?action=module-language-switchLanguage",
+                data: {language_code: language_code, header_switcher: true},
+                success: function () {
+                    location.href = 'https://www.dokkanafkar.com/account/register';
+                }
+            });
+        });
+
+        $('.country-switch-notification .custom-country-select').click(function () {
+            if ($('.custom-country-select-options').css('display') == 'none') {
+                $('.custom-country-select-options').css('display', 'block');
+            } else {
+                $('.custom-country-select-options').css('display', 'none');
+            }
+        });
+
+        $.ajax({
+            url: 'index.php?action=common/header/getCountrySwitchData',
+            dataType: 'json',
+            success: function (json) {
+                if (json['notification']) {
+                    $('header .country-switch-notification').addClass('visible');
+                    $('body').addClass('country-switch-notification-visible');
+                    setCookie('notification_country_switch', 'showed', '30');
+                }
+            }
+        });
+    });
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    $(document).on('change', '.country-switch-notification .country-select', function () {
+        $(this).siblings().find('.current-value').text($(this).val());
+        $(this).siblings().find('.current-value-image img').attr('src', $(this).find(':selected').attr('data-img'));
+        location.href = $(this).find(':selected').attr('data-link');
+    });
+
+</script>
+<section class="white-background-section">
+    <div id="register-content" class="container">
+        <div id="register_popup">
+            <div id="step_1_register_popup">
+                <form>
+                    <h3>Step 1: Personal Information</h3>
+                    <div class="form-group input-error">
+                        <label>Full Name</label>
+                        <input data-min="5" data-max="80" data-error="Name is short" class="form-control input-lg"
+                               placeholder="Name is short" name="fullname" value="" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>E-Mail Address</label>
+                        <input data-check-pattern="\S+@\S+\.\S+" data-error="Email is not correct"
+                               class="form-control input-lg" placeholder="E-Mail Address" name="email" value=""
+                               type="email">
+                    </div>
+                    <div class="form-group" data-placeholder="e.g. (0)51 234 5678">
+                        <label>Mobile Number</label>
+                        <div class="custom-select-box">
+                            <div class="element-inline element-code">
+                                <select name="phone_code" class="form-control input-lg" id="phone_code_select"
+                                        tabindex="-1">
+                                    <option value="+966" data-prefixval="e.g. (0)51 234 5678">+966</option>
+                                </select>
+                                <div class="form-control input-lg select-switch">
+                                    <div class="select-value"><span class="current-value">+966</span></div>
+                                    <i class="da-arrow-rounded-down"></i>
+                                </div>
+                            </div>
+                            <div class="element-inline element-phone">
+                                <input data-check-pattern="^(0?5)[0-9]{8}$" data-error="e.g. (0)51 234 5678"
+                                       name="telephone" class="form-control input-lg" value=""
+                                       placeholder="e.g. (0)51 234 5678" type="tel">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="form-password">
+                            <button class="password-toggle"><i class="da-eye-slash"></i></button>
+                            <input data-min="5" data-max="20" data-error="Password is too short"
+                                   class="form-control input-lg" autocomplete="off" placeholder="Password"
+                                   name="password" value="" type="password">
+                        </div>
+                    </div>
+                    <div class="form-group custom-select">
+                        <label>Gender</label>
+                        <div class="custom-select-box">
+                            <div class="element-gender">
+                                <select name="gender" class="gender-select form-control input-lg">
+                                    <option disabled="" selected=""> --- Please Select ---</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                                <div class="form-control input-lg select-switch">
+                                    <div class="select-value">
+                                        <span class="current-value"> --- Please Select --- </span><span
+                                            class="current-value-image"></span>
+                                    </div>
+                                    <i class="da-arrow-rounded-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input name="agree" value="1" type="hidden">
+                    <div class="newsletter-subscribe">
+                        <div class="form-group">
+                            <input id="newsletter_subscribe" name="newsletter" checked="checked" value="1"
+                                   type="checkbox">
+                            <label for="newsletter_subscribe" class="form-element-block"><span
+                                    class="custom-checkbox"></span><span class="checkbox-label">Please send me your cool stuf by email</span></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <a href="javascript:void(0)" class="btn btn-primary btn-lg btn-block btn-uppercase btn-loading"
+               id="step_shipping_information">Next Shipping Information</a>
+        </div>
+
+        <script>
+            var refresh_prefix = function () {
+                var inputVal = $('input[name="telephone"]').val();
+                var numberPrefix = $('select[name="phone_code"] option:selected').attr('data-prefixval');
+                if (inputVal.indexOf(numberPrefix) != 0) {
+                    $('input[name="telephone"]').attr('placeholder', numberPrefix);
+                }
+            };
+
+            $('select[name="phone_code"]').change(refresh_prefix).trigger('change');
+            $('input[name="telephone"]').keyup(refresh_prefix);
+        </script>
+    </div>
+</section>
+
+
+<div id="footer">
+    <div class="container push-30">
+        <div class="payment-app-information">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="payment-information">
+                        <h3>100% Secure Online Shopping</h3>
+                        <ul class="list-unstyled payment-method-list">
+                            <li><img src="catalog/view/theme/desktop/image/payment-visa-icon.svg" title="Visa"
+                                     alt="Visa" class="img-responsive"/></li>
+                            <li><img src="catalog/view/theme/desktop/image/payment-mastercard-icon.svg"
+                                     title="Mastercard" alt="Mastercard" class="img-responsive"/></li>
+                            <li><img src="catalog/view/theme/desktop/image/payment-wire-transfer-icon.svg"
+                                     title="Wire Transfer" alt="Wire Transfer" class="img-responsive"/></li>
+                            <li><img src="catalog/view/theme/desktop/image/payment-cash-icon.svg" title="Cash"
+                                     alt="Cash" class="img-responsive"/></li>
+                            <li><img src="catalog/view/theme/desktop/image/payment-comodo-icon.svg" title="Comodo"
+                                     alt="Comodo" class="img-responsive"/></li>
+                            <li><img src="catalog/view/theme/desktop/image/payment-arabic-icon.svg" title="" alt=""
+                                     class="img-responsive"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="app-information">
+                        <!-- <h3>Download our mobile app</h3> -->
+                        <h3>Download our mobile app</h3>
+                        <ul class="list-unstyled app-list">
+                            <li>
+                                <a rel="external" target="_blank"
+                                   href="https://itunes.apple.com/us/app/%D8%AF%D9%83%D8%A7%D9%86-%D8%A7%D9%81%D9%83%D8%A7%D8%B1-dokkan-afkar/id1311418390"
+                                   title="Download on the app store">
+                                    <img src="catalog/view/theme/desktop/image/app-store-download-icon.svg"
+                                         title="Download on the app store" alt="Download on the app store"
+                                         class="img-responsive"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a rel="external" target="_blank"
+                                   href="https://play.google.com/store/apps/details?id=com.dokkanafkar"
+                                   title="Download on the Google store">
+                                    <img src="catalog/view/theme/desktop/image/google-download-icon.svg"
+                                         title="Download on the app store" alt="Download on the app store"
+                                         class="img-responsive"/>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-links">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-2">
+                    <div class="column">
+                        <h5>Dokkan Afkar</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="https://www.dokkanafkar.com/contact-us" class="sec-link">Contact Us</a></li>
+                            <li><a href="https://www.dokkanafkar.com/en/faq" class="sec-link">FAQ's</a></li>
+                            <li><a href="https://www.dokkanafkar.com/en/about-us" class="sec-link">About Us</a></li>
+                            <li><a href="https://www.dokkanafkar.com/en/shipping-and-delivery" class="sec-link">Shipping
+                                &amp; Delivery</a></li>
+                            <li><a href="https://www.dokkanafkar.com/en/return-policy" class="sec-link">Return
+                                Policy</a></li>
+                            <li><a href="https://www.dokkanafkar.com/en/privacy_policy" class="sec-link">Privacy
+                                Policy</a></li>
+                            <li>
+                                <a href="https://www.dokkanafkar.com/index.php?action=information-information&amp;information_id=15"
+                                   class="sec-link">Become a supplier</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-2">
+                    <div class="column">
+                        <h5>Countries</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="https://www.dokkanafkar.com">Saudi Arabia</a></li>
+                            <li><a href="https://kuwait.dokkanafkar.com">Kuwait</a></li>
+                            <li><a href="https://ae.dokkanafkar.com">United Arab Emirates</a></li>
+                            <li><a href="https://bahrain.dokkanafkar.com">Bahrain</a></li>
+                            <li><a href="https://oman.dokkanafkar.com">Oman</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <h6><i class="fa fa-heart" aria-hidden="true"></i><span>Made With Love in Saudi Arabia</span><i
+                    class="fa fa-heart" aria-hidden="true"></i></h6>
+            <p><h6>All rights reserved to Dokkan Afkar © 2018</h6></p>
+        </div>
+    </div>
+    <div class="footer-image"></div>
+</div>
+
+
+<div id="scroll-to-top">
+    <span><i class="da-arrow-squared-top"></i></span>
+    <span>Up</span>
+</div>
+
+<div id="popup-default">
+    <div class="popup-positioner">
+        <div class="container popup-holder"></div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: 'index.php?route=account/register/personal_information',
+        dataType: 'html',
+        success: function (html) {
+            $('#register-content').html(html);
+            setScrollableContent('.page-footer-fixed:visible', '.page-scrollable-content');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(document).on('click', '.password-toggle', function (e) {
+        e.preventDefault();
+        if ($(this).parent('.form-password').hasClass('visible')) {
+            $(this).children().attr('class', 'da-eye-slash');
+            $(this).parent('.form-password').children('.form-control').attr('type', 'password');
+            $(this).parent('.form-password').removeClass('visible');
+        } else {
+            $(this).children().attr('class', 'da-eye');
+            $(this).parent('.form-password').children('.form-control').attr('type', 'text');
+            $(this).parent('.form-password').addClass('visible');
+        }
+    });
+
+    var refresh_prefix = function () {
+        var inputVal = $('input[name="telephone"]').val();
+        var numberPrefix = $('select[name="phone_code"] option:selected').attr('data-prefixval');
+        if (inputVal.indexOf(numberPrefix) != 0) {
+            $('input[name="telephone"]').attr('placeholder', numberPrefix);
+        }
+    }
+
+    $('select[name="phone_code"]').change(refresh_prefix).trigger('change');
+    $('input[name="telephone"]').keyup(refresh_prefix);
+
+    $(document).on('change', '.country-select', function () {
+        $(this).parent().find('.current-value').text($(this).find('option:selected').text());
+    });
+
+    $(document).on('change', '.zone-select', function () {
+        $(this).parent().find('.current-value').text($(this).find('option:selected').text());
+    });
+
+    $(document).on('change', '.date-select', function () {
+        $(this).siblings().find('.current-value').text($(this).val());
+    });
+
+    $(document).on('change', '.gender-select', function () {
+        if ($(this).val() == 'M') {
+            $(this).siblings().find('.current-value').text('Male');
+            $(this).siblings().find('.current-value-image').attr('class', 'current-value-image da-moustache');
+        } else {
+            $(this).siblings().find('.current-value').text('Female');
+            $(this).siblings().find('.current-value-image').attr('class', 'current-value-image text-purple da-lips');
+        }
+    });
+
+    $(document).on('change', '#newsletter_subscribe', function () {
+        if ($(this).is(':checked')) {
+            $(this).val('1');
+        } else {
+            $(this).val('0');
+        }
+    });
+
+    $(document).on('blur', '#register_popup input[type="text"], #register_popup textarea, #register_popup [type="email"],#register_popup [type="password"], #register_popup select', function (e) {
+
+        var $input = $(e.target);
+        var input_name = $input.attr('name');
+        var min = $input.attr('data-min');
+        var max = $input.attr('data-max');
+        var error = $input.attr('data-error');
+        var pattern = $input.attr('data-check-pattern');
+
+        if (min && max) {
+            if ($input.val().length > max || $input.val().length < min) {
+                $input.attr('placeholder', error).val('');
+
+                if ($input.parents('.form-group').hasClass('input-success')) {
+                    $input.parents('.form-group').removeClass('input-success').addClass('input-error');
+                } else {
+                    $input.parents('.form-group').addClass('input-error');
+                }
+            } else {
+                if ($input.parents('.form-group').hasClass('input-error')) {
+                    $input.parents('.form-group').removeClass('input-error').addClass('input-success');
+                } else {
+                    $input.parents('.form-group').addClass('input-success');
+                }
+            }
+        } else if (pattern) {
+            var regexp = new RegExp(pattern);
+            if (!(regexp.test($input.val().replace(/ /g, "")))) {
+                $input.attr('placeholder', error).val('');
+
+                if ($input.parents('.form-group').hasClass('input-success')) {
+                    $input.parents('.form-group').removeClass('input-success').addClass('input-error');
+                } else {
+                    $input.parents('.form-group').addClass('input-error');
+                }
+            } else {
+                if ($input.parents('.form-group').hasClass('input-error')) {
+                    $input.parents('.form-group').removeClass('input-error').addClass('input-success');
+                } else {
+                    $input.parents('.form-group').addClass('input-success');
+                }
+            }
+        }
+
+        /*$.ajax({
+         url: 'index.php?route=account/register/validate',
+         type: 'post',
+         data: $('#register_popup  input, #register_popup select, #register_popup textarea'),
+         dataType: 'json',
+         success: function (json) {
+         var $input = $(e.target);
+         var input_name = $input.attr('name');
+         var min = $input.attr('data-min');
+         var max = $input.attr('data-max');
+         var error = $input.attr('data-error');
+
+         if(min && max) {
+         if ( $input.val().length > max || $input.val().length < min ) {
+         $input.attr('placeholder', error).val('');
+
+         if ($input.parents('.form-group').hasClass('input-success')) {
+         $input.parents('.form-group').removeClass('input-success').addClass('input-error');
+         } else {
+         $input.parents('.form-group').addClass('input-error');
+         }
+         } else {
+         if ($input.parents('.form-group').hasClass('input-error')) {
+         $input.parents('.form-group').removeClass('input-error').addClass('input-success');
+         } else {
+         $input.parents('.form-group').addClass('input-success');
+         }
+         }
+         }
+         }
+         });*/
+    });
+
+    // RegisterButton
+    $(document).on('click', '#step_shipping_information', function () {
+        $(this).text("Please Wait...").addClass('disabled');
+        closeNotifications();
+        $.ajax({
+            url: 'index.php?route=account/register/validate',
+            type: 'post',
+            data: $('#register_popup form input, #register_popup form select'),
+            dataType: 'json',
+            success: function (json) {
+                if (json) {
+
+                    $('#step_shipping_information').text("Next Shipping Information").removeClass('disabled');
+
+                    if (json['redirect']) {
+                        window.location.replace(json['redirect']);
+                    }
+
+                    if (json['success']) {
+                        for (prop in json['success']) {
+                            var $input = $('#register_popup [name="' + prop + '"]');
+
+                            if ($input.parents('.form-group').hasClass('input-error')) {
+                                $input.parents('.form-group').removeClass('input-error').addClass('input-success');
+                            } else {
+                                $input.parents('.form-group').addClass('input-success');
+                            }
+                        }
+                    }
+
+                    if (json['error']) {
+                        for (prop in json['error']) {
+
+                            var $input = $('#register_popup [name="' + prop + '"]');
+
+                            $input.attr('placeholder', json['error'][prop]).val('');
+
+                            if ($input.parents('.form-group').hasClass('input-success')) {
+                                $input.parents('.form-group').removeClass('input-success').addClass('input-error');
+                            } else {
+                                $input.parents('.form-group').addClass('input-error');
+                            }
+                        }
+
+                        var firstElementPosition = $('.form-group.input-error').first().position();
+
+                        $('.popup-scrollable-content').animate({
+                            scrollTop: firstElementPosition.top
+                        }, 'fast');
+
+                    } else {
+                        if (json['details']) {
+                            if (json['details']) {
+                                $.ajax({
+                                    url: 'index.php?route=account/register/validate_everything&register',
+                                    type: 'post',
+                                    data: $('#register_popup input, #register_popup select, #register_popup textarea'),
+                                    dataType: 'json',
+                                    success: function (json) {
+                                        if (json) {
+                                            $('#finish_registration').text("Create My Account").removeClass('disabled');
+
+                                            if (json['success']) {
+                                                for (prop in json['success']) {
+                                                    var $input = $('#register_popup [name="' + prop + '"]');
+
+                                                    if ($input.parents('.form-group').hasClass('input-error')) {
+                                                        $input.parents('.form-group').removeClass('input-error').addClass('input-success');
+                                                    } else {
+                                                        $input.parents('.form-group').addClass('input-success');
+                                                    }
+                                                }
+                                            }
+
+                                            if (json['error']) {
+                                                for (prop in json['error']) {
+                                                    var $input = $('#register_popup [name="' + prop + '"]');
+
+                                                    $input.attr('placeholder', json['error'][prop]).val('');
+
+                                                    if ($input.parents('.form-group').hasClass('input-success')) {
+                                                        $input.parents('.form-group').removeClass('input-success').addClass('input-error');
+                                                    } else {
+                                                        $input.parents('.form-group').addClass('input-error');
+                                                    }
+                                                }
+
+                                            } else if (json['redirect']) {
+                                                window.location.replace(json['redirect']);
+                                            } else {
+                                                showSuccessfulRegistrationPopup();
+                                            }
+
+                                        }
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $('#step_shipping_information').text("Next Shipping Information").removeClass('disabled');
+            }
+        });
+    });
+
+    /* Successful Registration Popup Content */
+    function showSuccessfulRegistrationPopup() {
+        $("#popup-body").empty();
+        $.ajax({
+            url: "index.php?route=account/register/successfulRegistration",
+            success: function (html) {
+                $('#popup-default').removeClass('white').addClass("open");
+                $('#popup-close').remove();
+                $('.container.popup-holder').html(html);
+                //  $('#popup-body').append(html);
+                setScrollableContent();
+            }
+        });
+    }
+</script>

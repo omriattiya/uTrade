@@ -76,7 +76,7 @@ auction_urlpatterns = [
 ]
 
 home_page = [
-    path('', Home.get_home)
+    path('home/', Home.get_home)
 ]
 
 urlpatterns = users_urlpatterns + \
