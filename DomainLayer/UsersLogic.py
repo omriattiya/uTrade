@@ -60,7 +60,6 @@ def remove_user(username, registered_user):
                         if is_owner is not False:
                             result_delete = Owners.remove_owner(registered_user.username)
                     return result_delete and RegisteredUsers.remove_user(registered_user.username)
-
             return False
     return False
 
