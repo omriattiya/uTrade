@@ -1,6 +1,4 @@
 from DatabaseLayer import Items, Shops
-import enchant
-
 
 def search_by_name(item_name):
     if item_name is not None:

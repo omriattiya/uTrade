@@ -223,11 +223,11 @@ tables_sql = [
     #  ( (_| ( (/ /| | ( ( | | |_| | | |__   | | | | | | |__
     #   \____|\____)_|  \_||_|\____|_|\___)  |_|_| |_|_|\___)
     #
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate OmriOmri','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate ShaharShahar','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate TomerTomer','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate YoniYoni','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate Kuti','ADMINISTRATOR'); """
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_OmriOmri','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_ShaharShahar','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_TomerTomer','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_YoniYoni','ADMINISTRATOR'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_Kuti','ADMINISTRATOR'); """
 ]
 
 

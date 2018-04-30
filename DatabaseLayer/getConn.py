@@ -11,23 +11,25 @@ def get_conn():
 
 
 def commit_command(sql_query):
+    conn = get_conn()
     try:
-        conn = get_conn()
         conn.cursor().execute(sql_query)
         conn.commit()
         conn.close()
         return True
     except Error as e:
+        conn.close()
         return False
 
 
 def select_command(sql_query):
+    conn = get_conn()
     try:
-        conn = get_conn()
         c = conn.cursor()
         c.execute(sql_query)
         results = c.fetchall()
         conn.close()
         return results
     except Error as e:
+        conn.close()
         return []

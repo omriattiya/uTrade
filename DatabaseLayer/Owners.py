@@ -52,16 +52,24 @@ def remove_owner(username):
         WHERE username = '{}'
     """.format(username)
     shops_array = select_command(sql)
-    for i in range(0, len(shops_array)):
-        sql = """
-            SELECT * FROM Owners WHERE shop_name = '{}'
-        """.format(shops_array[i])
-        results = select_command(sql)
-        if len(results) == 1:
+    sql = """
+               DELETE FROM Owners
+               WHERE username = '{}'
+             """.format(username)
+    results = commit_command(sql)
+    if results is not False:
+        for i in range(0, len(shops_array)):
             sql = """
-                        DELETE FROM Shops
-                        WHERE name = '{}'
-                      """.format(shops_array[i])
-            if not commit_command(sql):
-                return False
+                SELECT * FROM Owners WHERE shop_name = '{}'
+            """.format(shops_array[i][0])
+            results = select_command(sql)
+            if len(results) == 0:
+                sql = """
+                            DELETE FROM Shops
+                            WHERE name = '{}'
+                          """.format(shops_array[i][0])
+                if not commit_command(sql):
+                    return False
+    else:
+        return False
     return True
