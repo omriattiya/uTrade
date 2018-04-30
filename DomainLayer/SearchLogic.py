@@ -1,3 +1,5 @@
+import enchant
+
 from DatabaseLayer import Items, Shops
 
 

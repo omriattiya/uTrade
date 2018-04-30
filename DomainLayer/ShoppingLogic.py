@@ -128,7 +128,7 @@ def supply_items(items):
 
 
 def get_cart_cost(username):
-    empty = ShoppingCart.check_empty(username)
+    empty = ShoppingCartItem.check_empty(username)
     if empty is not True:
         #  if so, check foreach item if the requested amount exist
         cart_items = get_cart_items(username)
