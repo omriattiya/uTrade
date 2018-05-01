@@ -4,7 +4,7 @@ from SharedClasses.Lottery import Lottery
 
 
 def add_or_update_lottery_customer(purchased_item, username, price):
-    if purchased_item is not None and username is not None and price is not None:
+    if purchased_item is not None and username is not None and price is not None and price >= 0:
         lottery_customer = Lotteries.get_lottery_customer(purchased_item, username)
         user = RegisteredUsers.get_user(username)
         if user is not False:

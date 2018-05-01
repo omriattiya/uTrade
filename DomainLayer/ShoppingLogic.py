@@ -20,16 +20,16 @@ def get_cart_items(username):
         return ShoppingCartItem.get_cart_items(username)
 
 
-def add_item_shopping_cart(shop_cart):
-    if shop_cart.username is not None and shop_cart.item_id is not None and shop_cart.item_quantity > 0:
-        if ItemsLogic.check_in_stock(shop_cart.item_id, shop_cart.item_quantity) is False:
+def add_item_shopping_cart(shop_cart_item):
+    if shop_cart_item.username is not None and shop_cart_item.item_id is not None and shop_cart_item.item_quantity > 0:
+        if ItemsLogic.check_in_stock(shop_cart_item.item_id, shop_cart_item.item_quantity) is False:
             return False
-        existing = ShoppingCartItem.get_shopping_cart_item(shop_cart)
+        existing = ShoppingCartItem.get_shopping_cart_item(shop_cart_item)
         if existing is not False:
-            return update_item_shopping_cart(shop_cart.username, shop_cart.item_id,
-                                             shop_cart.item_quantity + existing.item_quantity)
+            return update_item_shopping_cart(shop_cart_item.username, shop_cart_item.item_id,
+                                             shop_cart_item.item_quantity + existing.item_quantity)
         else:
-            return ShoppingCartItem.add_item_shopping_cart(shop_cart)
+            return ShoppingCartItem.add_item_shopping_cart(shop_cart_item)
     return False
 
 
