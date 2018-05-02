@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <BASE href="http://localhost:8000/static/">
 
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -434,40 +435,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for cart_item,item in cart_items_combined %}
                                         <tr>
                                             <td>
                                                 <a href="#">
                                                     <img src="img/detailsquare.jpg" alt="White Blouse Armani">
                                                 </a>
                                             </td>
-                                            <td><a href="#">White Blouse Armani</a>
+                                            <td><a href="#">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input type="number" value="2" class="form-control">
+                                                <input type="number" value="{{cart_item.item_quantity}}" class="form-control">
                                             </td>
-                                            <td>$123.00</td>
+                                            <td>{{item.price}}</td>
                                             <td>$0.00</td>
-                                            <td>$246.00</td>
+                                            <td>{% widthratio item.price 1 cart_item.item_quantity %}</td>
                                             <td><a href="#"><i class="fa fa-trash-o"></i></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <a href="#">
-                                                    <img src="img/basketsquare.jpg" alt="Black Blouse Armani">
-                                                </a>
-                                            </td>
-                                            <td><a href="#">Black Blouse Armani</a>
-                                            </td>
-                                            <td>
-                                                <input type="number" value="1" class="form-control">
-                                            </td>
-                                            <td>$200.00</td>
-                                            <td>$0.00</td>
-                                            <td>$200.00</td>
-                                            <td><a href="#"><i class="fa fa-trash-o"></i></a>
-                                            </td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                     <tfoot>
                                         <tr>

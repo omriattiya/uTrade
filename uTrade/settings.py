@@ -26,7 +26,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
+   # 'channels',
     'ServiceLayer',
     'django.contrib.admin',
     'django.contrib.auth',
