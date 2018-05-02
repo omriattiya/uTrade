@@ -36,13 +36,14 @@ tables_sql = [
 
     """CREATE TABLE IF NOT EXISTS Items(
         id INTEGER PRIMARY KEY AUTOINCREMENT ,
-        shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
+        shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
         name TEXT NOT NULL,
         category TEXT NOT NULL,
         keyWords TEXT,
         price REAL NOT NULL,
         quantity INTEGER,
-        kind TEXT
+        kind TEXT,
+        url TEXT
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
@@ -54,8 +55,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS ReviewsOnShops(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          writerId INTEGER REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
+          writerId CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           description TEXT,
           rank INTEGER
         )
@@ -63,7 +64,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS ReviewsOnItems(
           reviewId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          writerId INTEGER REFERENCES RegisteredUsers(username) ON DELETE SET NULL ,
+          writerId CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL ,
           itemId INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           description TEXT,
           rank INTEGER
@@ -83,7 +84,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Owners(
           username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE , 
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE , 
           shouldNotify INTEGER DEFAULT 1,
           PRIMARY KEY(username,shop_name),
           CONSTRAINT username_size CHECK(length(username) <= 30)
@@ -129,7 +130,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS StoreManagers(
           username char(30) ,
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           addItemPermission INTEGER NOT NULL,
           removeItemPermission INTEGER NOT NULL,
           editItemPermission INTEGER NOT NULL,
@@ -145,7 +146,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS VisibleDiscounts(
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
@@ -155,7 +156,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
@@ -166,7 +167,7 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS GlobalDiscountInShop(
-          shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE,
           percentage REAL,
           from_date DATE,
           end_date DATE,

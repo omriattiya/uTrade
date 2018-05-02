@@ -1,4 +1,4 @@
-from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
+from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops, Items
 from DomainLayer.SearchLogic import search_shop
 from DomainLayer.UsersLogic import get_purchase_history
 from SharedClasses.Owner import Owner
@@ -42,3 +42,11 @@ def close_shop_permanently(username, shop_name):
                 return Shops.close_shop_permanently(shop_name)
         return False
     return False
+
+
+def get_shop_items(shop_name):
+    return Items.get_shop_items(shop_name=shop_name)
+
+
+def get_shop_reviews(shop_name):
+    return ReviewsOnShops.get_all_reviews_on_shop(shop_name)

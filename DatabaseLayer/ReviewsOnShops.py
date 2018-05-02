@@ -5,7 +5,7 @@ from SharedClasses.ShopReview import ShopReview
 def fetch_reviews(results):
     array = []
     for item in results:
-        array.append(ShopReview(item[0], item[1], item[2], item[3]))
+        array.append(ShopReview(item[1], item[3], item[4], item[2]))
     return array
 
 
@@ -13,7 +13,7 @@ def fetch_review(result):
     if len(result) == 0:
         return False
     result = result[0]
-    return ShopReview(result[0], result[1], result[2], result[3])
+    return ShopReview(result[1], result[3], result[4], result[2])
 
 
 def add_review_on_shop(shop_review):

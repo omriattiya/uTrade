@@ -51,3 +51,9 @@ def close_shop_permanently(request):
         shop_name = request.POST.get('shop_name')
         # return HttpResponse('no GUI yet')
         ShopLogic.close_shop_permanently(username, shop_name)
+
+
+@csrf_exempt
+def shop_page(request):
+    if request.method == 'POST':
+        shop_name = request.POST.get('shop_name')

@@ -1,6 +1,7 @@
+from sqlite3 import Error
+
 from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
-from sqlite3 import Error
 
 
 def fetch_items(items):
@@ -120,3 +121,10 @@ def update_item(item_id, field_name, new_value):
             WHERE id = '{}'
             """.format(field_name, new_value, item_id)
     return commit_command(sql)
+
+
+def get_shop_items(shop_name):
+    sql = """
+            SELECT * FROM Items WHERE shop_name='{}'
+            """.format(shop_name)
+    return fetch_items(select_command(sql))
