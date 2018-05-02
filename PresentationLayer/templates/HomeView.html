@@ -3,22 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        setInterval(function () {
-            var Socket = new WebSocket('ws://127.0.0.1:8000/test/');
+
+        function webSocketClicked() {
+            /*var Socket = new WebSocket('ws://localhost:8000/test/');
             Socket.onopen = function () {
                 alert('connected!')
             };
             Socket.onclose = function () {
                 alert('closed')
-            };
-            setTimeout(function() {Socket.close()},2000);
-        },5000);
-
-        function webSocketClicked() {
-            var Socket = new WebSocket('ws://127.0.0.1:8000/test/');
-            Socket.onopen = function () {
-                alert('connected!')
-            }
+            };*/
         }
 
         function nextPage() {
@@ -28,18 +21,18 @@
                     document.body.innerHTML = loadHTML.responseText;
                 }
             };
-            loadHTML.open("GET", "http://127.0.0.1:8000/test2/", true);
+            loadHTML.open("GET", "http://localhost:8000/test2/", true);
             loadHTML.send();*/
-            window.location = 'http://127.0.0.1:8000/test2/'
+            window.location = 'http://localhost:8000/test2/'
         }
     </script>
 </head>
 <body>
-    <h1>Welcome To uTrade!</h1>
-    <h2>This page is awesome</h2>
-    <button type="button" onClick="webSocketClicked()">WebSocket</button>
-    <a ></a>
-    <button type="button" onclick="nextPage()">Next Page</button>
+<h1>Welcome To uTrade!</h1>
+<h2>This page is awesome</h2>
+<button type="button" onClick="webSocketClicked()">WebSocket</button>
+<a></a>
+<button type="button" onclick="nextPage()">Next Page</button>
 
 </body>
 </html>

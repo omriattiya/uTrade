@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <BASE href="http://localhost:8000/static/">
+
     <meta charset="UTF-8">
     <title>Testing</title>
+    <script src="js/jquery-1.11.0.min.js"></script>
     <script>
-        function webSocketClicked() {
-            var Socket = new WebSocket('ws://127.0.0.1:8000/test/');
+        var Socket = null;
+        var connected = true;
+
+        $(document).ready(function () {
+            Socket = new WebSocket('ws://localhost:8000/test/');
             Socket.onopen = function () {
+                connected = true;
                 alert('connected!')
+            };
+        });
+
+        function webSocketClicked() {
+            if (connected) {
+                alert("here");
+                Socket.send("My Message!!!")
             }
         }
 
         function nextPage() {
-            var loadHTML = new XMLHttpRequest();
-            loadHTML.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    document.body.innerHTML = loadHTML.responseText;
-                }
-            };
-            loadHTML.open("GET", "http://127.0.0.1:8000/test2/", true);
-            loadHTML.send();
+            window.location = 'http://localhost:8000/test2/'
+
         }
     </script>
 </head>

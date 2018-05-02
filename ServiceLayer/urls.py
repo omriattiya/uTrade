@@ -3,7 +3,7 @@ from django.urls import path
 from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
     ShoppingService, AuctionService, LotteryService, UsersService
 
-from ServiceLayer.services.PresentationServices import Home
+from ServiceLayer.services.PresentationServices import Home, Profile
 
 users_urlpatterns = [
     path('users/register/', UsersService.register),
@@ -75,8 +75,14 @@ auction_urlpatterns = [
     path('auction/bid_on_item', AuctionService.bid_on_item)
 ]
 
-home_page = [
-    path('home/', Home.get_home)
+home_page_urlpatterns = [
+    path('home/', Home.get_home),
+    path('home/register/', Home.get_register),
+]
+
+private_area_urlpatterns = [
+    path('my/account/', Profile.get_account),
+    path('my/shops/',Profile.get_shops)
 ]
 
 urlpatterns = users_urlpatterns + \
@@ -87,4 +93,6 @@ urlpatterns = users_urlpatterns + \
               messages_urlpatterns + \
               shoppingcart_urlpatterns + \
               lottery_urlpatterns + \
-              auction_urlpatterns + home_page  # add more here using '+'
+              auction_urlpatterns + \
+              home_page_urlpatterns + \
+              private_area_urlpatterns  # add more here using '+'

@@ -28,7 +28,7 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
         register(RegisteredUser('StoreManager0', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager0', 'My Shop', 0, 0, 0, 0, 0, 0, 0))

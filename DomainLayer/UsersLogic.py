@@ -69,7 +69,7 @@ def get_purchase_history(username):
         return RegisteredUsers.get_purchase_history(username)
 
 
-#    _____
+# _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___
 #  | |   | || | | ||  _ \  / _  ) / ___) /___)
@@ -79,16 +79,17 @@ def get_purchase_history(username):
 
 def add_owner(username, owner):
     if username is not None and \
-            Owners.get_owner(username, owner.shop_name) is not False and \
-            RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
+                    Owners.get_owner(username, owner.shop_name) is not False and \
+                    RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
         return Owners.add_owner(owner)
     return False
 
 
 def add_manager(username, store_manager):
     if username is not None and \
-            Owners.get_owner(username, store_manager.store_name) is not False and \
-            RegisteredUsers.get_user(store_manager.username) is not False and store_manager.store_name is not None:
+                    Owners.get_owner(username, store_manager.store_name) is not False and \
+                    RegisteredUsers.get_user(
+                        store_manager.username) is not False and store_manager.store_name is not None:
         return StoreManagers.add_manager(store_manager)
     else:
         return False
@@ -148,3 +149,7 @@ def get_invisible_discount(item_id, shop_name, text):
     if item_id is not None and shop_name is not None and text is not None:
         return Discount.get_invisible_discount(item_id, shop_name, text)
     return False
+
+
+def get_owned_shops(username):
+    return Owners.get_shops_by_owner(username)

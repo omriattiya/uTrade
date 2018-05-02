@@ -73,3 +73,14 @@ def remove_owner(username):
     else:
         return False
     return True
+
+
+def get_shops_by_owner(username):
+    sql_query = """
+                    SELECT *
+                    FROM Owners
+                    WHERE username = '{}'
+                  """.format(username)
+    owned_shops = select_command(sql_query)
+    owned_shops = fetch_owners(owned_shops)
+    return owned_shops

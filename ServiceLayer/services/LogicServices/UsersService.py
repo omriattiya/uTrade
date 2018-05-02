@@ -1,3 +1,5 @@
+import hashlib
+
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -8,7 +10,7 @@ from SharedClasses.Owner import Owner
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic
-
+from ServiceLayer import Consumer
 
 def get_purchase_history(request):
     if request.method == 'GET':
@@ -54,7 +56,16 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = RegisteredUser(username, password)
-        return UsersLogic.login(user)
+        if UsersLogic.login(user):
+            result = Consumer.loggedInUsers.get(username)
+            if result is None:
+                access_token = hashlib.md5(username.encode()).hexdigest()
+                Consumer.loggedInUsers[access_token] = username
+                return HttpResponse(access_token)
+            else:
+                return HttpResponse(result)
+        else:
+            return HttpResponse('fail')
 
 
 # _____

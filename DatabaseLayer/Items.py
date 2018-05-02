@@ -32,7 +32,7 @@ def search_items_by_name(item_name):
                 SELECT *
                 FROM Items,Shops
                 WHERE Items.name LIKE '%{}%' AND
-                Shops.status = 'ACTIVE' AND
+                Shops.status = 'Active' AND
                 Items.shop_name = Shops.name AND Items.kind <> 'prize'
               """.format(item_name)
     return fetch_items(select_command(sql_query))
@@ -99,7 +99,7 @@ def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE category LIKE '%{}%' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
+                WHERE category LIKE '%{}%' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_category)
     return fetch_items(select_command(sql_query))
 
@@ -108,7 +108,7 @@ def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE keyWords = '{}' AND Shops.status = 'ACTIVE' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
+                WHERE keyWords = '{}' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_keyword)
     return fetch_items(select_command(sql_query))
 

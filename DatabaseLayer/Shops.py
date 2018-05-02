@@ -41,7 +41,7 @@ def connect_shop_to_owner(username, shop_name):
 def close_shop(shop_name):
     sql_query = """
             UPDATE Shops 
-            SET status='INACTIVE'
+            SET status='Inactive'
             WHERE name='{}'
             """.format(shop_name)
     return commit_command(sql_query)
@@ -50,8 +50,8 @@ def close_shop(shop_name):
 def re_open_shop(shop_name):
     sql_query = """
             UPDATE Shops 
-            SET status='ACTIVE'
-            WHERE name='{}' AND status != 'PERMANENTLY_CLOSED'
+            SET status='Active'
+            WHERE name='{}' AND status != 'Permanaently_closed'
             """.format(shop_name)
     return commit_command(sql_query)
 
@@ -59,7 +59,7 @@ def re_open_shop(shop_name):
 def close_shop_permanently(shop_name):
     sql_query = """
             UPDATE Shops 
-            SET status='PERMANENTLY_CLOSED'
+            SET status='Permanaently_closed'
             WHERE name='{}'
             """.format(shop_name)
     return commit_command(sql_query)

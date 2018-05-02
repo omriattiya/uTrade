@@ -20,10 +20,20 @@ def init_tables(conn, tables):
         print(e)
 
 
-def init(database_path, tables):
+def insert_defaults(conn, values):
+    c = conn.cursor()
+    try:
+        for value in values:
+            c.execute(value)
+    except Error as e:
+        print(e)
+
+
+def init(database_path, tables, values):
     conn = connect_to_database(database_path)
     if conn is not None:
         init_tables(conn, tables)
+        insert_defaults(conn, values)
     conn.commit()
 
 
@@ -197,7 +207,6 @@ tables_sql = [
         )
     """,
 
-
     """
         CREATE TABLE IF NOT EXISTS Auctions(
           auction_id INTEGER REFERENCES Items(id),
@@ -205,7 +214,6 @@ tables_sql = [
           PRIMARY KEY(auction_id)
         )
     """,
-
 
     """
         CREATE TABLE IF NOT EXISTS AuctionCustomers(
@@ -215,6 +223,8 @@ tables_sql = [
           PRIMARY KEY(auction_id, username, price)
         )
     """,
+]
+values_sql = [
 
     #       _        ___            _         _       _
     #      | |      / __)          | |_      (_)     (_)_
@@ -232,7 +242,7 @@ tables_sql = [
 
 
 def init_database(path):
-    init(path, tables_sql)
+    init(path, tables_sql, values_sql)
     print('database initialized')
 
 

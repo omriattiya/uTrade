@@ -1,8 +1,8 @@
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.conf.urls import url
 
-import TestConsumer
+from ServiceLayer import Consumer
 
 application = ProtocolTypeRouter({
-    "websocket": URLRouter([url(r"^test/", TestConsumer.TestConsumer)]),
+    "websocket": URLRouter([url(r"^test/", Consumer.Consumer)]),
 })

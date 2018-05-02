@@ -26,6 +26,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #'pipeline',
+    #'corsheaders',
     'channels',
     'ServiceLayer',
     'django.contrib.admin',
@@ -35,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+#MIDDLEWARE_CLASSES = (
+   # 'corsheaders.middleware.CorsMiddleware',
+  #  'django.middleware.common.BrokenLinkEmailsMiddleware',
+ #   'django.middleware.common.CommonMiddleware',
+#)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

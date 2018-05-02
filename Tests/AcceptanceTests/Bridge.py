@@ -19,7 +19,7 @@ def login(username, password):
 
 
 def open_shop(username, shop_name):
-    return ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
+    return ShopLogic.create_shop(Shop(shop_name, 'Active'), username)
 
 
 def is_owner(username, shop_name):
