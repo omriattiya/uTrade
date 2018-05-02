@@ -64,3 +64,8 @@ function login() {
     loadHTML.open("POST", "http://localhost:8000/app/users/login/", true);
     loadHTML.send(data);
 }
+
+
+function logout() {
+
+}

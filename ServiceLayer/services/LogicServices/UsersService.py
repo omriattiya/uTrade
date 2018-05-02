@@ -57,13 +57,9 @@ def login(request):
         password = request.POST.get('password')
         user = RegisteredUser(username, password)
         if UsersLogic.login(user):
-            result = Consumer.loggedInUsers.get(username)
-            if result is None:
-                access_token = hashlib.md5(username.encode()).hexdigest()
-                Consumer.loggedInUsers[access_token] = username
-                return HttpResponse(access_token)
-            else:
-                return HttpResponse(result)
+            access_token = hashlib.md5(username.encode()).hexdigest()
+            Consumer.loggedInUsers[access_token] = username
+            return HttpResponse(access_token)
         else:
             return HttpResponse('fail')
 
