@@ -105,7 +105,7 @@ USERNAME = 'OmriOmri'
 OTHER_USERNAME = 'NarutoNaruto'
 SHOP_NAME = 'My New Shop'
 OTHER_SHOP_NAME = 'Other Shop'
-SHOP_STATUS = 'ACTIVE'
+SHOP_STATUS = 'Active'
 PERMISSIONS = [1, 1, 1, 1, 1, 1, 1]
 
 SHOP = Shop.Shop(SHOP_NAME, SHOP_STATUS)

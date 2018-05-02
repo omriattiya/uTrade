@@ -34,10 +34,10 @@ class MessageTests(unittest.TestCase):
 
     def test_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('TomerTomer1', '1234567878'))
-        shop1 = Shop('My Shop1', 'ACTIVE')
+        shop1 = Shop('My Shop1', 'Active')
         ShopLogic.create_shop(shop1, 'TomerTomer1')
         register(RegisteredUser('TomerTomer2', '1234567878'))
-        shop2 = Shop('My Shop2', 'ACTIVE')
+        shop2 = Shop('My Shop2', 'Active')
         ShopLogic.create_shop(shop2, 'TomerTomer2')
         UsersLogic.add_manager('TomerTomer1', StoreManager('TomerTomer2', 'My Shop1', 1, 1, 1, 1, 1, 1, 1))
         UsersLogic.add_manager('TomerTomer2', StoreManager('TomerTomer1', 'My Shop2', 1, 1, 1, 1, 1, 1, 1))
@@ -50,10 +50,10 @@ class MessageTests(unittest.TestCase):
 
     def test_bad_no_permssion_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('TomerTomer1', '1234567878'))
-        shop1 = Shop('My Shop1', 'ACTIVE')
+        shop1 = Shop('My Shop1', 'Active')
         ShopLogic.create_shop(shop1, 'TomerTomer1')
         register(RegisteredUser('TomerTomer2', '1234567878'))
-        shop2 = Shop('My Shop2', 'ACTIVE')
+        shop2 = Shop('My Shop2', 'Active')
         ShopLogic.create_shop(shop2, 'TomerTomer2')
         UsersLogic.add_manager('TomerTomer1', StoreManager('TomerTomer2', 'My Shop1', 1, 1, 1, 0, 1, 1, 1))
         UsersLogic.add_manager('TomerTomer2', StoreManager('TomerTomer1', 'My Shop2', 1, 1, 1, 0, 1, 1, 1))
@@ -64,10 +64,10 @@ class MessageTests(unittest.TestCase):
 
     def test_bad_no_get_all_premss_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('TomerTomer1', '1234567878'))
-        shop1 = Shop('My Shop1', 'ACTIVE')
+        shop1 = Shop('My Shop1', 'Active')
         ShopLogic.create_shop(shop1, 'TomerTomer1')
         register(RegisteredUser('TomerTomer2', '1234567878'))
-        shop2 = Shop('My Shop2', 'ACTIVE')
+        shop2 = Shop('My Shop2', 'Active')
         ShopLogic.create_shop(shop2, 'TomerTomer2')
         UsersLogic.add_manager('TomerTomer1', StoreManager('TomerTomer2', 'My Shop1', 1, 1, 1, 1, 0, 1, 1))
         UsersLogic.add_manager('TomerTomer2', StoreManager('TomerTomer1', 'My Shop2', 1, 1, 1, 1, 0, 1, 1))

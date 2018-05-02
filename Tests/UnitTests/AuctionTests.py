@@ -31,7 +31,7 @@ class AuctionTest(unittest.TestCase):
         init_database('db.sqlite3')
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
 

@@ -14,7 +14,7 @@ class SearchTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
         register(RegisteredUser('TomerTomer', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'TomerTomer')
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
         ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular'), 'TomerTomer')

@@ -63,10 +63,10 @@ class IntegrationTests(unittest.TestCase):
         self.assertTrue(status)
 
         # Creating Shops
-        status = ShopLogic.create_shop(Shop('myShop1', 'ACTIVE'), 'u1ser1u1ser1')
+        status = ShopLogic.create_shop(Shop('myShop1', 'Active'), 'u1ser1u1ser1')
         self.assertTrue(status)
 
-        status = ShopLogic.create_shop(Shop('myShop2', 'ACTIVE'), 'u2ser2u2ser2')
+        status = ShopLogic.create_shop(Shop('myShop2', 'Active'), 'u2ser2u2ser2')
         self.assertTrue(status)
 
         status = UsersLogic.add_owner('u1ser1u1ser1', Owner('u3ser3u3ser3', 'myShop1', 0))
@@ -160,10 +160,10 @@ class IntegrationTests(unittest.TestCase):
         self.assertTrue(status)
 
         # Creating Shops
-        status = ShopLogic.create_shop(Shop('myShop1', 'ACTIVE'), 'u1ser1u1ser1')
+        status = ShopLogic.create_shop(Shop('myShop1', 'Active'), 'u1ser1u1ser1')
         self.assertTrue(status)
 
-        status = ShopLogic.create_shop(Shop('myShop2', 'ACTIVE'), 'u2ser2u2ser2')
+        status = ShopLogic.create_shop(Shop('myShop2', 'Active'), 'u2ser2u2ser2')
         self.assertTrue(status)
 
         status = UsersLogic.add_owner('u1ser1u1ser1', Owner('u3ser3u3ser3', 'myShop1', 0))

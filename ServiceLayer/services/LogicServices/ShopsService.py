@@ -5,6 +5,7 @@ from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
+from ServiceLayer import Consumer
 
 
 @csrf_exempt
@@ -13,9 +14,20 @@ def create_shop(request):
         # return HttpResponse('item added')
         shop_name = request.POST.get('name')
         shop_status = request.POST.get('status')
-        username = request.POST.get('username')
+
+        login = request.COOKIES.get('login_hash')
+        if login is None:
+            return HttpResponse('fail')
+        username = Consumer.loggedInUsers.get(login)
+        if username is None:
+            return HttpResponse('fail')
+
         shop = Shop(shop_name, shop_status)
-        ShopLogic.create_shop(shop, username)
+        result = ShopLogic.create_shop(shop, username)
+        if result:
+            return HttpResponse('success')
+        else:
+            return HttpResponse('fail')
 
 
 @csrf_exempt
@@ -24,7 +36,7 @@ def remove_item(request):
         # return HttpResponse('item added')
         item_id = request.POST.get('item_id')
         username = request.POST.get('username')
-        ItemsLogic.remove_item_from_shop(item_id,username)
+        ItemsLogic.remove_item_from_shop(item_id, username)
 
 
 @csrf_exempt
@@ -35,7 +47,7 @@ def add_review_on_shop(request):
         shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        shop_review = ShopReview(writer_id,description,rank,shop_name)
+        shop_review = ShopReview(writer_id, description, rank, shop_name)
         ShopLogic.add_review_on_shop(shop_review)
 
 

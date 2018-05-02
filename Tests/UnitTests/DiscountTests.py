@@ -23,7 +23,7 @@ class ShoppingTests(unittest.TestCase):
     def test_add_visible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
@@ -34,7 +34,7 @@ class ShoppingTests(unittest.TestCase):
     def test_add_invisible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
@@ -45,7 +45,7 @@ class ShoppingTests(unittest.TestCase):
     def test_get_visible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
@@ -60,7 +60,7 @@ class ShoppingTests(unittest.TestCase):
     def test_get_invisible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
-        shop = Shop('My Shop', 'ACTIVE')
+        shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular')
