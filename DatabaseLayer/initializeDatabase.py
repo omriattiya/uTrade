@@ -81,14 +81,21 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS PurchasedItems(
+        CREATE TABLE IF NOT EXISTS Purchases(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          PurchasedItem INTEGER REFERENCES Items(id) ON DELETE SET NULL,
-          purchaseDate INTEGER,
+          purchaseDate DATE,
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          totalPrice REAL,
+          CONSTRAINT username_size CHECK(length(username) <= 30)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS PurchasedItems(
+          purchaseId INTEGER REFERENCES Purchases(purchaseId) ,
+          purchasedItem INTEGER REFERENCES Items(id) ON DELETE SET NULL,
           quantity INTEGER,
           price REAL,
-          username CHAR(30) REFERENCES RegisteredUsers(username),
-          CONSTRAINT username_size CHECK(length(username) <= 30)
+          PRIMARY KEY(purchaseId,purchasedItem)
         )
     """,
     """
@@ -165,13 +172,14 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
+          code CHAR(15),
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
           code CHAR(15),
-          PRIMARY KEY(item_id, shop_name, from_date),
+          PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,

@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import time
 import unittest
@@ -5,6 +6,7 @@ import unittest
 from DatabaseLayer import PurchasedItems
 from DatabaseLayer.Items import search_item_in_shop, add_item_to_shop
 from DatabaseLayer.PurchasedItems import add_purchased_item
+from DatabaseLayer.Purchases import add_purchase_and_return_id
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnItems import get_all_reviews_on_item
 from DatabaseLayer.Shops import search_shop
@@ -40,8 +42,9 @@ class ItemsTest(unittest.TestCase):
         user1user1 = get_user('NoniNoni')
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'regular')
-        add_item_to_shop(item1)
-        add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
+        status = add_item_to_shop(item1)
+        purchase_id = add_purchase_and_return_id(datetime.now(), user1user1.username, 0)
+        status = add_purchased_item(purchase_id, item1.id, 50, item1.price)
         lst = get_all_purchased_items('ToniToniToniToni')
         self.assertTrue(len(lst) > 0)
 
@@ -71,16 +74,18 @@ class ItemsTest(unittest.TestCase):
         user1user1 = get_user('NoniNoni')
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'regular')
         add_item_to_shop(item1)
-        add_purchased_item(item1.id, 50, 7, item1.price, user1user1.username)
+        purchase_id = add_purchase_and_return_id(datetime.now(), user1user1.username, 0)
+        add_purchased_item(purchase_id, item1.id, 7, item1.price)
         self.assertFalse(get_all_purchased_items('ToniToniToniToni'))
 
     def test_review_on_item(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'YoniYoni')
-        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
+        purchase_id = add_purchase_and_return_id(datetime.now(), 'TomerTomer', 0)
+        status = PurchasedItems.add_purchased_item(purchase_id, 1, 5, 10)
         ItemsLogic.add_review_on_item(ItemReview('TomerTomer', 'Good', 10, 1))
         reviews = get_all_reviews_on_item(1)
-        self.assertEqual(len(reviews), 1)
+        self.assertTrue(len(reviews) == 1)
 
     def test_review_on_item_bad(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
@@ -92,7 +97,8 @@ class ItemsTest(unittest.TestCase):
     def test_review_on_item_bad_writer(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'YoniYoni')
-        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
+        purchase_id = add_purchase_and_return_id(datetime.now(), 'TomerTomer', 0)
+        PurchasedItems.add_purchased_item(purchase_id, 1, 5, 10)
         ItemsLogic.add_review_on_item(ItemReview('TomerYoni', 'Good', 10, 1))
         self.assertFalse(get_all_reviews_on_item(1))
 
