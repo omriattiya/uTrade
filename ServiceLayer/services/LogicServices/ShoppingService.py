@@ -5,12 +5,16 @@ from DomainLayer import ShoppingLogic
 from DomainLayer.ItemsLogic import get_item
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
-
+@csrf_exempt
 def remove_item_shopping_cart(request):
-    if request.method == 'GET':
-        username = request.GET.get('username')
-        item_id = request.GET.get('itemId')
-        ShoppingLogic.remove_item_shopping_cart(username, item_id)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        item_id = request.POST.get('item_id')
+        status = ShoppingLogic.remove_item_shopping_cart(username, item_id)
+        if status is False:
+            return HttpResponse('Removing Item Failed')
+        else:
+            return HttpResponse('OK')
 
 
 def get_cart_items(request):
@@ -19,11 +23,15 @@ def get_cart_items(request):
         username = 'OmriOmri'
         cart_items = ShoppingLogic.get_cart_items(username)
         items = []
-        for i in [0,len(cart_items) - 1]:
-            items.append(get_item(cart_items[i].item_id))
-        if cart_items is not False:
-            context = {'username': username, 'cart_items_combined': zip(cart_items,items)}
-            return render(request, 'basket.html', context=context)
+        context = {}
+        if len(cart_items) == 0:
+            context = {'username': username, 'cart_items_combined': cart_items}
+        else:
+            for i in [0, len(cart_items) - 1]:
+                items.append(get_item(cart_items[i].item_id))
+            if cart_items is not False:
+                context = {'username': username, 'cart_items_combined': zip(cart_items, items)}
+        return render(request, 'basket.html', context=context)
 
 
 @csrf_exempt
