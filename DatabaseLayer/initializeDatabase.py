@@ -70,14 +70,21 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS PurchasedItems(
+        CREATE TABLE IF NOT EXISTS Purchases(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
-          PurchasedItem INTEGER REFERENCES Items(id) ON DELETE SET NULL,
-          purchaseDate INTEGER,
+          purchaseDate DATE,
+          username CHAR(30) REFERENCES RegisteredUsers(username),
+          totalPrice REAL,
+          CONSTRAINT username_size CHECK(length(username) <= 30)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS PurchasedItems(
+          purchaseId INTEGER REFERENCES Purchases(purchaseId) ,
+          purchasedItem INTEGER REFERENCES Items(id) ON DELETE SET NULL,
           quantity INTEGER,
           price REAL,
-          username CHAR(30) REFERENCES RegisteredUsers(username),
-          CONSTRAINT username_size CHECK(length(username) <= 30)
+          PRIMARY KEY(purchaseId,purchasedItem)
         )
     """,
     """

@@ -1,8 +1,10 @@
+from _datetime import datetime
 import os
 import time
 import unittest
 
 from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems, PurchasedItems
+from DatabaseLayer.Purchases import add_purchase_and_return_id
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnShops import get_all_reviews_on_shop
 from DatabaseLayer.initializeDatabase import init_database
@@ -76,11 +78,13 @@ class ShopTests(unittest.TestCase):
         shop = Shop('My Shop', 'ACTIVE')
         ShopLogic.create_shop(shop, 'TomerTomer')
         ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
-        PurchasedItems.add_purchased_item(1, time.time(), 5, 10, 'TomerTomer')
+        purchase_id = add_purchase_and_return_id(datetime.now(), 'TomerTomer', 0)
+        status = PurchasedItems.add_purchased_item(purchase_id, 1, 10, 10)
         shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
-        ShopLogic.add_review_on_shop(shop_review)
+        status = ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
-        self.assertEqual(len(reviews), 1)
+        answer = len(reviews) == 1
+        self.assertTrue(answer)
 
     def test_review_on_shop_bad(self):
         register(RegisteredUser('TomerTomer', '1234567878'))

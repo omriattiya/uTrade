@@ -43,8 +43,8 @@ def remove_item_from_shop(item_id, username):
 
 def add_review_on_item(review):
     if review.writerId is not None and review.itemId is not None and review.description is not None and review.rank is not None:
-        purchased_item = PurchasedItems.get_purchased_item(review.itemId)
-        if purchased_item is not False and purchased_item.username == review.writerId:
+        purchased_item = PurchasedItems.get_purchased_item_by_user(review.itemId, review.writerId)
+        if purchased_item is not False:
             return ReviewsOnItems.add_review_on_item(review)
     return False
 

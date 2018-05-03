@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems
+from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems, Purchases
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
+from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
 
@@ -61,6 +62,8 @@ def pay_all(username):
         #  check if cart has items
         empty = ShoppingCartItem.check_empty(username)
         if empty is not True:
+            toCreatePurchase = True
+            purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)
             # cart_items is a array consist of shopping_cart objects
@@ -103,10 +106,18 @@ def pay_all(username):
                 if actual_pay(total_cost) is False:
                     return False
                 # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
-                status = PurchasedItems.add_purchased_item(shopping_cart_item.item_id, datetime.now(),
+
+                if toCreatePurchase is True:
+                    toCreatePurchase = False
+                    purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
+                    if purchase_id is False:
+                        return False
+                status = PurchasedItems.add_purchased_item(purchase_id, shopping_cart_item.item_id,
                                                            shopping_cart_item.item_quantity,
-                                                           shopping_cart_item.item_quantity * new_price,
-                                                           shopping_cart_item.username)
+                                                           shopping_cart_item.item_quantity * new_price)
+                if status is False:
+                    return False
+                status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
                     return False
                 new_quantity = item.quantity - shopping_cart_item.item_quantity

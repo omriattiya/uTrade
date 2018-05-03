@@ -62,8 +62,8 @@ def remove_user(registered_user):
 
 def get_purchase_history(username):
     sql_query = """
-                SELECT *
-                FROM PurchasedItems
-                WHERE username = '{}'
+                SELECT PurchasedItems.*
+                FROM PurchasedItems,Purchases
+                WHERE Purchases.purchaseId = PurchasedItems.purchaseId AND Purchases.username = '{}'
               """.format(username)
     return fetch_purchased_items(select_command(sql_query))
