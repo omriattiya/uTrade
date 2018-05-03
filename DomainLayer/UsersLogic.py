@@ -28,7 +28,7 @@ def get_registered_user(username):
     return RegisteredUsers.get_user(username)
 
 
-def edit_profile(user):
+def edit_password(user):
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
         if re.match(r'[A-Za-z0-9]{8,20}', user.password):

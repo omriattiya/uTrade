@@ -13,7 +13,6 @@ $(document).ready(function () {
         alert(evt.data)
     };
     $('#login-form').submit(function () {
-        login();
         return false;
     });
 

@@ -36,7 +36,7 @@ class IntegrationTests(unittest.TestCase):
         status = UsersLogic.add_system_manager(SystemManager('sys1sys1', 'POWER123'))
         self.assertTrue(status)
 
-        status = UsersLogic.edit_profile(RegisteredUser('user5user5', '12312456'))
+        status = UsersLogic.edit_password(RegisteredUser('user5user5', '12312456'))
         self.assertTrue(status)
 
         user = RegisteredUsers.get_user('user5user5')

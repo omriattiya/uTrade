@@ -4,7 +4,7 @@ import unittest
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer.UsersLogic import register, edit_profile, remove_user, login
+from DomainLayer.UsersLogic import register, edit_password, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.SystemManager import SystemManager
 
@@ -56,14 +56,14 @@ class UsersTest(unittest.TestCase):
         register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
         old_user = get_user('TomerTomerLev')
         user = RegisteredUser(old_user.username, 'newpass1234')
-        status = edit_profile(user)
+        status = edit_password(user)
         self.assertTrue(status)
         new_user = get_user('TomerTomerLev')
         self.assertEqual(new_user.username, 'TomerTomerLev')
 
     def test_bad_edit_profile(self):
         register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
-        status = edit_profile(RegisteredUser('ShaharShahar', '1234567878'))
+        status = edit_password(RegisteredUser('ShaharShahar', '1234567878'))
         self.assertFalse(status)
 
     def test_remove_user(self):

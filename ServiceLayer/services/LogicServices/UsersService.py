@@ -41,14 +41,19 @@ def remove_user(request):
 
 
 @csrf_exempt
-def edit_profile(request):
+def edit_password(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
-        status = UsersLogic.edit_profile(RegisteredUser(username, new_password))
-        if status:
-            return HttpResponse('updated successfully')
-        return HttpResponse('failed')
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            if UsersLogic.login(RegisteredUser(username, current_password)) and \
+                    UsersLogic.edit_password(RegisteredUser(username, new_password)):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 @csrf_exempt
@@ -99,7 +104,6 @@ def add_owner(request):
             if UsersLogic.add_owner(username, owner):
                 return HttpResponse('success')
         return HttpResponse('fail')
-
 
 
 @csrf_exempt
