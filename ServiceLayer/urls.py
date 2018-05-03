@@ -93,7 +93,7 @@ shop_page_urlpatterns = [
 
 item_page_urlpatterns = [
     path('item/', Item.get_item),
-    path('item/reviews/', Shop.get_reviews)
+    path('item/reviews/', Item.get_reviews)
 
 ]
 
