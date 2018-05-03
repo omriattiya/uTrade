@@ -10,17 +10,15 @@ from SharedClasses.ShopReview import ShopReview
 
 shop_not_exist = 'shop does not exist'
 not_get_request = 'not a get request'
-is_used = False
 
 
 def add_to_db():
-    is_used = True
     shop_name = 'my_shop'
     username = 'omriatti'
-    UsersLogic.register(RegisteredUser(username, '12345678'))
-    ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
-    ItemsLogic.add_item_to_shop(Item(1, shop_name, 'tomato', 'fruits', '', 20, 70, 'regular',
-                                     'https://cdn.shopify.com/s/files/1/1380/2059/products/Cherry-Tomato_600x600.jpg?v=1480318422'),
+    #UsersLogic.register(RegisteredUser(username, '12345678'))
+    #ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
+    ItemsLogic.add_item_to_shop(Item(1, shop_name, 'tomato-2', 'fruits', '', 20, 70, 'regular',
+                                     'https://nutriliving-images.imgix.net/images/2014/266/1440/5B26E568-4243-E411-B834-22000AF88B16.jpg?ch=DPR&w=500&h=500&auto=compress,format&dpr=1&ixlib=imgixjs-3.0.4'),
                                 username)
     ShopLogic.add_review_on_shop(ShopReview(username, "THIS IS AMAZING SHOP I BUT HERE EVERY DAY", 5, shop_name))
 

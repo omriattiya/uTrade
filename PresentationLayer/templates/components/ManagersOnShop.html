@@ -1,0 +1,19 @@
+<tr>
+    <th>{{ manager_name }}</th>
+    <td><input id="AIP_{{ manager_name }}" type="checkbox" {{ checked_AIP }}></td>
+    <td><input id="RIP_{{ manager_name }}" type="checkbox" {{ checked_RIP }}></td>
+    <td><input id="EIP_{{ manager_name }}" type="checkbox" {{ checked_EIP }}></td>
+    <td><input id="RMP_{{ manager_name }}" type="checkbox" {{ checked_RMP }}></td>
+    <td><input id="GAP_{{ manager_name }}" type="checkbox" {{ checked_GAP }}></td>
+    <td><input id="GPHP_{{ manager_name }}" type="checkbox" {{ checked_GPHP }}></td>
+    <td><input id="DP_{{ manager_name }}" type="checkbox" {{ checked_DP }}></td>
+    <td>
+        <a href="javascript:void(0)" onclick="applyPermissions('{{ manager_name }}')"
+           class="btn btn-primary btn-sm">Apply Changes</a>
+    </td>
+    <td>
+        <a href="javascript:void(0)" onclick="removeManager('{{ manager_name }}')"
+           class="btn btn-danger btn-sm">Remove</a>
+    </td>
+
+</tr>

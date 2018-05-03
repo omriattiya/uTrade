@@ -12,6 +12,7 @@ from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic
 from ServiceLayer import Consumer
 
+
 def get_purchase_history(request):
     if request.method == 'GET':
         username = request.GET.get('username')
@@ -64,6 +65,18 @@ def login(request):
             return HttpResponse('fail')
 
 
+@csrf_exempt
+def logout(request):
+    if request.method == 'POST':
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            if Consumer.loggedInUsers.get(login) is not None:
+                del Consumer.loggedInUsers[login]
+                return HttpResponse('success')
+
+        return HttpResponse('fail')
+
+
 # _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___
@@ -75,51 +88,117 @@ def login(request):
 @csrf_exempt
 def add_owner(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
         owner = Owner(target_id, shop_name, None)
-        return UsersLogic.add_owner(username, owner)
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            if UsersLogic.add_owner(username, owner):
+                return HttpResponse('success')
+        return HttpResponse('fail')
+
 
 
 @csrf_exempt
 def add_manager(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
-        store_manager = StoreManager(target_id, shop_name,
-                                     request.POST.get('add_item_permission'),
-                                     request.POST.get('remove_item_permission'),
-                                     request.POST.get('edit_item_permission'),
-                                     request.POST.get('reply_message_permission'),
-                                     request.POST.get('get_all_message_permission'),
-                                     request.POST.get('get_purchase_history_permission'),
-                                     request.POST.get('get_discount_permission'))
 
-        return UsersLogic.add_manager(username, store_manager)
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            store_manager = StoreManager(target_id, shop_name,
+                                         request.POST.get('add_item_permission'),
+                                         request.POST.get('remove_item_permission'),
+                                         request.POST.get('edit_item_permission'),
+                                         request.POST.get('reply_message_permission'),
+                                         request.POST.get('get_all_message_permission'),
+                                         request.POST.get('get_purchase_history_permission'),
+                                         request.POST.get('get_discount_permission'))
+
+            if UsersLogic.add_manager(username, store_manager):
+                return HttpResponse('success')
+        return HttpResponse('fail')
+
+
+@csrf_exempt
+def remove_manager(request):
+    if request.method == 'POST':
+        shop_name = request.POST.get('shop_name')
+        target_id = request.POST.get('target_id')
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            if UsersLogic.remove_store_manager(username, shop_name, target_id):
+                return HttpResponse('success')
+        return HttpResponse('fail')
+
+
+@csrf_exempt
+def update_permissions(request):
+    if request.method == 'POST':
+        shop_name = request.POST.get('shop_name')
+        target_id = request.POST.get('target_id')
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            store_manager = StoreManager(target_id, shop_name,
+                                         request.POST.get('add_item_permission'),
+                                         request.POST.get('remove_item_permission'),
+                                         request.POST.get('edit_item_permission'),
+                                         request.POST.get('reply_message_permission'),
+                                         request.POST.get('get_all_message_permission'),
+                                         request.POST.get('get_purchase_history_permission'),
+                                         request.POST.get('get_discount_permission'))
+
+            if UsersLogic.update_permissions(username, store_manager):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 @csrf_exempt
 def close_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-        username = request.POST.get('username')
-        return UsersLogic.close_shop(username, shop_name)
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if UsersLogic.close_shop(username, shop_name):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
+@csrf_exempt
 def re_open_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-        username = request.POST.get('username')
-        return UsersLogic.re_open_shop(username, shop_name)
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if UsersLogic.re_open_shop(username, shop_name):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
+@csrf_exempt
 def modify_notifications(request):
     if request.method == 'POST':
         should_notify = request.POST.get('modify_notifications')
-        username = request.POST.get('username')
-        return UsersLogic.modify_notifications(username, should_notify)
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if UsersLogic.modify_notifications(username, should_notify):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 def add_visible_discount(request):

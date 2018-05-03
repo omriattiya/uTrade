@@ -50,3 +50,11 @@ def get_shop_items(shop_name):
 
 def get_shop_reviews(shop_name):
     return ReviewsOnShops.get_all_reviews_on_shop(shop_name)
+
+
+def get_shop_rank(shop_name):
+    return ReviewsOnShops.get_shop_rank(shop_name)
+
+
+def get_store_managers(shop_name):
+    return StoreManagers.get_store_managers_on_shop(shop_name)

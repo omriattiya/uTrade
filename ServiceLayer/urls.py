@@ -10,12 +10,15 @@ users_urlpatterns = [
     path('users/remove_user/', UsersService.remove_user),
     path('users/edit_profile/', UsersService.edit_profile),
     path('users/login/', UsersService.login),
+    path('users/logout/', UsersService.logout),
 
-    path('users/owner/add_owner', UsersService.add_owner),
-    path('users/owner/add_manager', UsersService.add_manager),
-    path('users/owner/close_shop', UsersService.close_shop),
-    path('users/owner/re_open_shop', UsersService.re_open_shop),
-    path('users/owner/modify_notifications', UsersService.modify_notifications),
+    path('users/owner/add_owner/', UsersService.add_owner),
+    path('users/owner/add_manager/', UsersService.add_manager),
+    path('users/owner/remove_manager/', UsersService.remove_manager),
+    path('users/owner/update_permissions/',UsersService.update_permissions),
+    path('users/owner/close_shop/', UsersService.close_shop),
+    path('users/owner/re_open_shop/', UsersService.re_open_shop),
+    path('users/owner/modify_notifications/', UsersService.modify_notifications),
     path('users/add_visible_discount', UsersService.add_visible_discount),
     path('users/add_invisible_discount', UsersService.add_invisible_discount),
     path('users/get_visible_discount', UsersService.get_visible_discount),
@@ -82,7 +85,8 @@ home_page_urlpatterns = [
 
 private_area_urlpatterns = [
     path('my/account/', Profile.get_account),
-    path('my/shops/', Profile.get_shops)
+    path('my/shops/', Profile.get_shops),
+    path('my/shops/manager/', Profile.get_managers)
 ]
 
 shop_page_urlpatterns = [
@@ -101,5 +105,5 @@ urlpatterns = users_urlpatterns + \
               lottery_urlpatterns + \
               auction_urlpatterns + \
               home_page_urlpatterns + \
-              private_area_urlpatterns +\
-                shop_page_urlpatterns  # add more here using '+'
+              private_area_urlpatterns + \
+              shop_page_urlpatterns  # add more here using '+'

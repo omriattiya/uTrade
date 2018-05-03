@@ -153,3 +153,23 @@ def get_invisible_discount(item_id, shop_name, text):
 
 def get_owned_shops(username):
     return Owners.get_shops_by_owner(username)
+
+
+def get_managed_shops(username):
+    return StoreManagers.get_manager_shops(username)
+
+
+def is_owner_on_shop(username, shop_name):
+    return Owners.is_owner_on_shop(username, shop_name)
+
+
+def remove_store_manager(username, shop_name, target_id):
+    if Owners.is_owner_on_shop(username, shop_name) is not False:
+        return StoreManagers.remove_manager_from_shop(target_id, shop_name)
+    return False
+
+
+def update_permissions(username, store_manager):
+    if Owners.is_owner_on_shop(username, store_manager.store_name) is not False:
+        return StoreManagers.update_permissions(store_manager)
+    return False

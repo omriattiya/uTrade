@@ -67,3 +67,48 @@ def remove_manager(username):
                     WHERE username = '{}'
                   """.format(username)
     return commit_command(sql)
+
+
+def remove_manager_from_shop(username, shop_name):
+    sql = """
+                        DELETE FROM StoreManagers
+                        WHERE username = '{}' AND shop_name = '{}'
+                      """.format(username, shop_name)
+    return commit_command(sql)
+
+
+def get_manager_shops(username):
+    sql_query = """
+                    SELECT *
+                    FROM StoreManagers
+                    WHERE username = '{}'
+                """.format(username)
+    manager = select_command(sql_query)
+    return parse_store_managers(manager)
+
+
+def get_store_managers_on_shop(shop_name):
+    sql_query = """
+                        SELECT *
+                        FROM StoreManagers
+                        WHERE shop_name = '{}'
+                    """.format(shop_name)
+    managers = select_command(sql_query)
+    return parse_store_managers(managers)
+
+
+def update_permissions(store_manager):
+    sql_query = """
+                UPDATE StoreManagers 
+                SET addItemPermission = '{}'  ,removeItemPermission ='{}'   ,editItemPermission  ='{}', replyMessagePermission ='{}' ,getAllMessagePermission ='{}', getPurchaseHistoryPermission='{}' ,discountPermission ='{}'
+                WHERE username='{}' AND shop_name = '{}'
+                """.format(store_manager.permission_add_item,
+                           store_manager.permission_remove_item,
+                           store_manager.permission_edit_item,
+                           store_manager.permission_reply_messages,
+                           store_manager.permission_get_all_messages,
+                           store_manager.permission_get_purchased_history,
+                           store_manager.discount_permission,
+                           store_manager.username,
+                           store_manager.store_name)
+    return commit_command(sql_query)

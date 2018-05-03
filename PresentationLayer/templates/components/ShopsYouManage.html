@@ -1,0 +1,16 @@
+<tr>
+    <th>{{ shop_name }}</th>
+    <td>{{ review }}</td>
+    <td>{{ status }}</td>
+    <td><span onclick="alert(
+            'add item? : {{ AIP }}\n'+
+           'remove item? : {{ RIP }}\n'+
+            'edit item? : {{ EIP }}\n'+
+            'reply to messages? : {{ RMP }}\n'+
+            'see all messages? : {{ GAP }}\n'+
+            'see purchase history? : {{ GPHP }}\n'+
+            'add discount? {{ DP }}')" class="label label-success ">Show</span>
+
+    <td><a href="http://localhost:8000/app/shop/?shop_name={{ shop_name }}" class="btn btn-primary btn-sm">Go To Shop</a>
+    </td>
+</tr>

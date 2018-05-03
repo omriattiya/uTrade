@@ -84,3 +84,13 @@ def get_shops_by_owner(username):
     owned_shops = select_command(sql_query)
     owned_shops = fetch_owners(owned_shops)
     return owned_shops
+
+
+def is_owner_on_shop(username, shop_name):
+    sql_query = """
+                        SELECT *
+                        FROM Owners
+                        WHERE username = '{}' AND shop_name = '{}'
+                      """.format(username,shop_name)
+    owned_shop = select_command(sql_query)
+    return fetch_owner(owned_shop)

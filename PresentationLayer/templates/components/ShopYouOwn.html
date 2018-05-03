@@ -1,9 +1,27 @@
 <tr>
     <th>{{ shop_name }}</th>
     <td>{{ review }}</td>
-    <td>{{ status }}</td>
-    <td><span onclick="alert('clicked')" class="label label-success">{{ notify }}</span>
+    <td>
+        <button id="{{ shop_name }}_status" onclick="setStatus('{{ shop_name }}')"
+                class="{{ status_button_class }}">{{ status }}</button>
     </td>
-    <td><a href="customer-order.html" class="btn btn-primary btn-sm">View</a>
+
+    <td>
+        <button href="#" onclick="shopModalOpened('{{ shop_name }}')" data-toggle="modal"
+                data-target="#edit-managers-modal"
+                class="btn btn-primary btn-sm">View
+        </button>
+    </td>
+
+    <td>
+        <button href="#" onclick="addOwnerOpened('{{ shop_name }}')" data-toggle="modal"
+                data-target="#add-owner-modal"
+                class="btn btn-primary btn-sm">Add Owner
+        </button>
+    </td>
+
+    <td>
+        <a href="http://localhost:8000/app/shop/?shop_name={{ shop_name }}" class="btn btn-primary btn-sm">Go to
+            Shop</a>
     </td>
 </tr>

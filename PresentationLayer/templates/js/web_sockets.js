@@ -67,5 +67,17 @@ function login() {
 
 
 function logout() {
+var data = new FormData();
 
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'success') {
+                setCookie('login_hash', "", 7);
+                window.location.href = "http://localhost:8000/app/home/"
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/users/logout/", true);
+    loadHTML.send();
 }
