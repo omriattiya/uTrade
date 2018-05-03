@@ -51,9 +51,7 @@ def update_code_shopping_cart(username, item_id, code):
         user = RegisteredUsers.get_user(username)
         if user is not False:
             if len(code) == 15 and isinstance(code, str):
-                return ShoppingCartItem.update_item_shopping_cart(username, item_id, code)
-            print("bad code")
-        print("No such user")
+                return ShoppingCartItem.update_code_shopping_cart(username, item_id, code)
     return False
 
 

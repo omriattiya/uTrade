@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import ShoppingLogic
+from DomainLayer import ShoppingLogic, ItemsLogic
 from DomainLayer.ItemsLogic import get_item
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
+
 
 @csrf_exempt
 def remove_item_shopping_cart(request):
@@ -58,9 +59,13 @@ def update_item_shopping_cart(request):
 def update_code_shopping_cart(request):
     if request.method == 'POST':
         username = request.POST.get("username")
-        item_id = request.POST.get("item_id")
         code = request.POST.get("code")
-        return ShoppingLogic.update_code_shopping_cart(username, item_id, code)
+        item = ItemsLogic.get_item_by_code(code)
+        status = ShoppingLogic.update_code_shopping_cart(username, item.id, code)
+        if status is False:
+            return HttpResponse('Removing Item Failed')
+        else:
+            return HttpResponse('OK')
 
 
 @csrf_exempt
@@ -69,3 +74,11 @@ def pay_all(request):
         username = request.POST.get('username')
         # return HttpResponse('item added to cart')
         return ShoppingLogic.pay_all(username)
+
+
+@csrf_exempt
+def deliver(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        context = {'username': username}
+        return render(request, 'checkout1.html', context=context)

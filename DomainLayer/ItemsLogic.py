@@ -85,3 +85,8 @@ def update_stock(item_id, quantity):
 
 def get_item(item_id):
     return Items.get_item(item_id)
+
+
+def get_item_by_code(code):
+    return Items.get_item_by_code(code)
+

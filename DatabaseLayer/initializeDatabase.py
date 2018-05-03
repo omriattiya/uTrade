@@ -161,13 +161,14 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
+          code CHAR(15),
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           shop_name INTEGER REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date DATE,
           end_date DATE,
           code CHAR(15),
-          PRIMARY KEY(item_id, shop_name, from_date),
+          PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,

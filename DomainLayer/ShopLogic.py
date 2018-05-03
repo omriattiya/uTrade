@@ -15,7 +15,6 @@ def create_shop(shop, username):
 def add_review_on_shop(shop_review):
     if shop_review.writerId is not None and shop_review.shop_name is not None \
             and shop_review.description is not None and shop_review.rank is not None:
-
         purchased_item = get_purchased_item_by_shop_and_username(shop_review.shop_name, shop_review.writerId)
         if purchased_item is not False:
             return ReviewsOnShops.add_review_on_shop(shop_review)

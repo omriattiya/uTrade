@@ -120,3 +120,12 @@ def update_item(item_id, field_name, new_value):
             WHERE id = '{}'
             """.format(field_name, new_value, item_id)
     return commit_command(sql)
+
+
+def get_item_by_code(code):
+    sql_query = """
+                SELECT Items.*
+                FROM Items,InvisibleDiscounts
+                WHERE Items.id = InvisibleDiscounts.item_id AND InvisibleDiscounts.code = {}
+                """.format(code)
+    return fetch_item(select_command(sql_query))

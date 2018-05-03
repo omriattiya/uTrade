@@ -22,6 +22,33 @@
         loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/remove_item_shopping_cart/", true);
         loadHTML.send(data);
     }
+    function addCouponCode()
+    {
+        if(document.getElementById("code").value == '')
+        {
+            alert("no coupon id");
+        }
+        else
+        {
+            var data = new FormData();
+            data.append('username', "OmriOmri");
+            data.append('code',document.getElementById("code").value);
+            var loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (loadHTML.responseText === 'fail') {
+                    alert("Wrong Credentials")
+                }
+                else {
+                    //setCookie('login_hash', loadHTML.responseText, 7);
+                    window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/"
+                }
+            }
+            };
+        loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/update_code_shopping_cart/", true);
+        loadHTML.send(data);
+        }
+    }
     </script>
     <BASE href="http://localhost:8000/static/">
 
@@ -384,7 +411,7 @@
 
                     <div class="box">
 
-                        <form method="post" action="http://localhost:8000/app/shopping-cart/pay_all/">
+                        <form method="post" action="http://localhost:8000/app/shopping-cart/delivery/">
 
                             <h1>Shopping cart</h1>
                             <p class="text-muted">You currently have 3 item(s) in your cart.</p>
@@ -503,11 +530,11 @@
                         <form>
                             <div class="input-group">
 
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="code">
 
                                 <span class="input-group-btn">
 
-					<button class="btn btn-primary" type="button"><i class="fa fa-gift"></i></button>
+					<button class="btn btn-primary" type="button" onclick="addCouponCode();"><i class="fa fa-gift"></i></button>
 
 				    </span>
                             </div>
