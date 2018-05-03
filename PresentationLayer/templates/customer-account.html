@@ -50,7 +50,7 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
 
-    <script src="js/profile.js"></script>
+    <script src="js/profile-account.js"></script>
     <script src="js/web_sockets.js"></script>
 
 </head>
@@ -181,11 +181,10 @@
                     <div class="box">
                         <h1>My account</h1>
                         <p class="lead">Change your personal details or your password here.</p>
-                        <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
 
                         <h3>Change password</h3>
 
-                        <form>
+                        <form id="change-password-form">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -211,7 +210,7 @@
                             <!-- /.row -->
 
                             <div class="col-sm-12 text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save new password</button>
+                                <button onclick="changePassword()" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save new password</button>
                             </div>
                         </form>
 

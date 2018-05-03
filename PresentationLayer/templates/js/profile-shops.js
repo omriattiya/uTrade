@@ -1,11 +1,9 @@
 $(document).ready(function () {
     $('#create-shop-form').submit(function () {
-        createShop();
         return false;
     });
 
     $('#add-manager-form').submit(function () {
-        addManager();
         return false;
     });
 });
@@ -30,7 +28,7 @@ function addManager() {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else {
                 alert("Manager has been added!");
@@ -51,7 +49,7 @@ function removeManager(manager_name) {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
                 alert("Manager has been removed!");
@@ -79,7 +77,7 @@ function applyPermissions(manager_name) {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
                 alert("Manager permissions has been updated!");
@@ -103,7 +101,7 @@ function createShop() {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else {
                 alert("Your shop has been opened!");
@@ -148,7 +146,7 @@ function setStatus(shop_name) {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
                 window.location.href = "http://localhost:8000/app/my/shops/"
@@ -169,7 +167,7 @@ function shopModalOpened(shop_name) {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else {
                 document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText + plus_button_managers;
@@ -198,7 +196,7 @@ function addOwner() {
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                //alert("Failed")
+                alert("Failed")
             }
             else if(loadHTML.responseText === 'success'){
                 alert("Owner has been added!");
