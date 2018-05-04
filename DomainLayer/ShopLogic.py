@@ -1,4 +1,6 @@
 from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops, Items
+from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
+from DatabaseLayer.PurchasedItems import get_purchased_item_by_shop_and_username
 from DomainLayer.SearchLogic import search_shop
 from DomainLayer.UsersLogic import get_purchase_history
 from SharedClasses.Owner import Owner
@@ -14,13 +16,8 @@ def create_shop(shop, username):
 def add_review_on_shop(shop_review):
     if shop_review.writerId is not None and shop_review.shop_name is not None \
             and shop_review.description is not None and shop_review.rank is not None:
-
-        history = get_purchase_history(shop_review.writerId)
-        is_found = False
-        for item in history:
-            if item.username == shop_review.writerId:
-                is_found = True
-        if is_found:
+        purchased_item = get_purchased_item_by_shop_and_username(shop_review.shop_name, shop_review.writerId)
+        if purchased_item is not False:
             return ReviewsOnShops.add_review_on_shop(shop_review)
         return False
 

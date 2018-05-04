@@ -65,8 +65,8 @@ shoppingcart_urlpatterns = [
     path('shopping_cart/update_item_shopping_cart/', ShoppingService.update_item_shopping_cart),
     path('shopping_cart/update_code_shopping_cart/', ShoppingService.update_code_shopping_cart),
     path('shopping_cart/get_cart_items/', ShoppingService.get_cart_items),
-    path('shopping-cart/pay_all', ShoppingService.pay_all)
-
+    path('shopping-cart/pay_all/', ShoppingService.pay_all),
+    path('shopping-cart/delivery/', ShoppingService.deliver)
 ]
 
 lottery_urlpatterns = [

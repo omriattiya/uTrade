@@ -128,3 +128,12 @@ def get_shop_items(shop_name):
             SELECT * FROM Items WHERE shop_name='{}'
             """.format(shop_name)
     return fetch_items(select_command(sql))
+
+
+def get_item_by_code(code):
+    sql_query = """
+                SELECT Items.*
+                FROM Items,InvisibleDiscounts
+                WHERE Items.id = InvisibleDiscounts.item_id AND InvisibleDiscounts.code = {}
+                """.format(code)
+    return fetch_item(select_command(sql_query))

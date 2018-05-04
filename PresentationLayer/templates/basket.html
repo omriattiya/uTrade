@@ -2,6 +2,55 @@
 <html lang="en">
 
 <head>
+    <script>
+    function deleteItemFromCart(item_id) {
+        var data = new FormData();
+        data.append('username', "OmriOmri");
+        data.append('item_id', item_id);
+        var loadHTML = new XMLHttpRequest();
+        loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Wrong Credentials")
+            }
+            else {
+                //setCookie('login_hash', loadHTML.responseText, 7);
+                window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/"
+            }
+        }
+        };
+        loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/remove_item_shopping_cart/", true);
+        loadHTML.send(data);
+    }
+    function addCouponCode()
+    {
+        if(document.getElementById("code").value == '')
+        {
+            alert("no coupon id");
+        }
+        else
+        {
+            var data = new FormData();
+            data.append('username', "OmriOmri");
+            data.append('code',document.getElementById("code").value);
+            var loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (loadHTML.responseText === 'fail') {
+                    alert("Wrong Credentials")
+                }
+                else {
+                    //setCookie('login_hash', loadHTML.responseText, 7);
+                    window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/"
+                }
+            }
+            };
+        loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/update_code_shopping_cart/", true);
+        loadHTML.send(data);
+        }
+    }
+    </script>
+    <BASE href="http://localhost:8000/static/">
 
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -41,63 +90,7 @@
 </head>
 
 <body>
-    <!-- *** TOPBAR ***
- _________________________________________________________ -->
-    <div id="top">
-        <div class="container">
-            <div class="col-md-6 offer" data-animate="fadeInDown">
-                <a href="#" class="btn btn-success btn-sm" data-animate-hover="shake">Offer of the day</a>  <a href="#">Get flat 35% off on orders over $50!</a>
-            </div>
-            <div class="col-md-6" data-animate="fadeInDown">
-                <ul class="menu">
-                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                    </li>
-                    <li><a href="register.html">Register</a>
-                    </li>
-                    <li><a href="contact.html">Contact</a>
-                    </li>
-                    <li><a href="#">Recently viewed</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="Login">Customer login</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="customer-orders.html" method="post">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="email-modal" placeholder="email">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="password-modal" placeholder="password">
-                            </div>
-
-                            <p class="text-center">
-                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
-                            </p>
-
-                        </form>
-
-                        <p class="text-center text-muted">Not registered yet?</p>
-                        <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- *** TOP BAR END *** -->
-
-    <!-- *** NAVBAR ***
- _________________________________________________________ -->
 
     <div class="navbar navbar-default yamm" role="navigation" id="navbar">
         <div class="container">
@@ -418,7 +411,7 @@
 
                     <div class="box">
 
-                        <form method="post" action="checkout1.html">
+                        <form method="post" action="http://localhost:8000/app/shopping-cart/delivery/">
 
                             <h1>Shopping cart</h1>
                             <p class="text-muted">You currently have 3 item(s) in your cart.</p>
@@ -434,40 +427,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for cart_item,item in cart_items_combined %}
                                         <tr>
                                             <td>
                                                 <a href="#">
                                                     <img src="img/detailsquare.jpg" alt="White Blouse Armani">
                                                 </a>
                                             </td>
-                                            <td><a href="#">White Blouse Armani</a>
+                                            <td><a href="#">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input type="number" value="2" class="form-control">
+                                                <input type="number" value="{{cart_item.item_quantity}}" class="form-control">
                                             </td>
-                                            <td>$123.00</td>
+                                            <td>{{item.price}}</td>
                                             <td>$0.00</td>
-                                            <td>$246.00</td>
-                                            <td><a href="#"><i class="fa fa-trash-o"></i></a>
+                                            <td>{% widthratio item.price 1 cart_item.item_quantity %}</td>
+                                            <td><a href="javascript:void(0)" onclick="deleteItemFromCart({{item.id}});"><i class="fa fa-trash-o"></i></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <a href="#">
-                                                    <img src="img/basketsquare.jpg" alt="Black Blouse Armani">
-                                                </a>
-                                            </td>
-                                            <td><a href="#">Black Blouse Armani</a>
-                                            </td>
-                                            <td>
-                                                <input type="number" value="1" class="form-control">
-                                            </td>
-                                            <td>$200.00</td>
-                                            <td>$0.00</td>
-                                            <td>$200.00</td>
-                                            <td><a href="#"><i class="fa fa-trash-o"></i></a>
-                                            </td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -498,94 +476,12 @@
 
 
                     <div class="row same-height-row">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="box same-height">
-                                <h3>You may also like these products</h3>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 col-sm-6">
-                            <div class="product same-height">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3>Fur coat</h3>
-                                    <p class="price">$143</p>
-                                </div>
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="col-md-3 col-sm-6">
-                            <div class="product same-height">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product1.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product1_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3>Fur coat</h3>
-                                    <p class="price">$143</p>
-                                </div>
-                            </div>
-                            <!-- /.product -->
-                        </div>
 
 
-                        <div class="col-md-3 col-sm-6">
-                            <div class="product same-height">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3>Fur coat</h3>
-                                    <p class="price">$143</p>
 
-                                </div>
-                            </div>
-                            <!-- /.product -->
-                        </div>
+
+
+
 
                     </div>
 
@@ -634,11 +530,11 @@
                         <form>
                             <div class="input-group">
 
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="code">
 
                                 <span class="input-group-btn">
 
-					<button onclick="" class="btn btn-primary" type="button"><i class="fa fa-gift"></i></button>
+					<button class="btn btn-primary" type="button" onclick="addCouponCode();"><i class="fa fa-gift"></i></button>
 
 				    </span>
                             </div>
