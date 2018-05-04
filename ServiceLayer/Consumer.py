@@ -1,3 +1,4 @@
+'''
 from channels.generic.websocket import WebsocketConsumer
 
 connectedUsers = []
@@ -18,3 +19,4 @@ class Consumer(WebsocketConsumer):
     def disconnect(self, message):
         #connectedUsers.remove()
         pass
+        '''
