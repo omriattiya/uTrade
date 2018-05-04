@@ -27,7 +27,7 @@ def get_purchased_items_by_shop(shop_name):
 
 def get_purchased_items_by_purchase(purchase_id):
     sql_query = """
-                    SELECT PurchasedItems
+                    SELECT *
                     FROM PurchasedItems
                     WHERE purchaseId = '{}'
                 """.format(purchase_id)

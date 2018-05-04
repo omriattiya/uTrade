@@ -180,3 +180,11 @@ def get_cart_cost(username):
             total_cost = total_cost + shopping_cart_item.item_quantity * new_price
         return total_cost
     return False
+
+
+def get_user_purchases(username):
+    return Purchases.get_user_purchases(username)
+
+
+def get_purchased_items_by_purchase_id(purchase_id):
+    return PurchasedItems.get_purchased_items_by_purchase(purchase_id)
