@@ -3,7 +3,7 @@ from django.urls import path
 from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
     ShoppingService, AuctionService, LotteryService, UsersService
 
-from ServiceLayer.services.PresentationServices import Home, Profile, Shop
+from ServiceLayer.services.PresentationServices import Home, Profile, Shop, Messages
 
 users_urlpatterns = [
     path('users/register/', UsersService.register),
@@ -54,9 +54,9 @@ system_manager_urlpatterns = [
 
 messages_urlpatterns = [
     path('messages/send_message/', MessagesService.send_message),
-    path('messages/send_message_from_shop', MessagesService.send_message_from_shop),
+    path('messages/send_message_from_shop/', MessagesService.send_message_from_shop),
     path('messages/get_all_messages/', MessagesService.get_all_messages),
-    path('messages/get_all_shop_messages', MessagesService.get_all_shop_messages)
+    path('messages/get_all_shop_messages/', MessagesService.get_all_shop_messages)
 ]
 
 shoppingcart_urlpatterns = [
@@ -81,6 +81,7 @@ auction_urlpatterns = [
 home_page_urlpatterns = [
     path('home/', Home.get_home),
     path('home/register/', Home.get_register),
+    path('home/messages/',Messages.get_messages)
 ]
 
 private_area_urlpatterns = [
@@ -91,8 +92,8 @@ private_area_urlpatterns = [
 
 shop_page_urlpatterns = [
     path('shop/', Shop.get_shop),
-    path('shop/reviews/', Shop.get_reviews)
-
+    path('shop/reviews/', Shop.get_reviews),
+    path('shop/messages/',Messages.get_shop_messages)
 ]
 
 urlpatterns = users_urlpatterns + \

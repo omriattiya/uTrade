@@ -90,22 +90,9 @@ _________________________________________________________ -->
         <!--/.navbar-header -->
 
 
-        <div class="navbar-buttons">
-
-            <div class="navbar-collapse collapse right" id="basket-overview">
-                <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span
-                        class="hidden-sm">3 items in cart</span></a>
-            </div>
-            <!--/.nav-collapse -->
-
-            <div class="navbar-collapse collapse right" id="search-not-mobile">
-                <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-                    <span class="sr-only">Toggle search</span>
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-
-        </div>
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
 
         <div class="collapse clearfix" id="search">
 
@@ -161,10 +148,10 @@ _________________________________________________________ -->
                                 <a href="customer-orders.html"><i class="fa fa-list"></i> My Orders</a>
                             </li>
                             <li>
-                                <a href="http://localhost:8000/app/my/shops"><i class="fa fa-heart"></i> My Shops</a>
+                                <a href="http://localhost:8000/app/my/shops/"><i class="fa fa-heart"></i> My Shops</a>
                             </li>
                             <li class="active">
-                                <a href="customer-account.html"><i class="fa fa-user"></i> My Account</a>
+                                <a href="http://localhost:8000/app/my/account/"><i class="fa fa-user"></i> My Account</a>
                             </li>
                             <li>
                                 <a href="javascript:void(0)" onclick="logout();"><i class="fa fa-sign-out"></i>

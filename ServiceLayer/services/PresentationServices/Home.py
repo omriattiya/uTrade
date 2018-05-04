@@ -4,6 +4,7 @@ from django.template import loader
 from ServiceLayer import Consumer
 from DomainLayer import ShoppingLogic
 
+
 def get_home(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
@@ -14,10 +15,10 @@ def get_home(request):
             if username is not None:
                 # html of a logged in user
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = ShoppingLogic.get_cart_items(username)
+                cart_count = len(ShoppingLogic.get_cart_items(username))
 
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-        return render(request, 'index.html', context={'topbar': topbar,'navbar':navbar})
+        return render(request, 'index.html', context={'topbar': topbar, 'navbar': navbar})
 
 
 def get_register(request):

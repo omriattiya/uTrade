@@ -207,3 +207,19 @@ function addOwner() {
     loadHTML.open("POST", "http://localhost:8000/app/users/owner/add_owner/", true);
     loadHTML.send(data);
 }
+
+function gotoMessages(shop_name) {
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("No Permissions!")
+            }
+            else{
+                window.location.href = "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name;
+            }
+        }
+    };
+    loadHTML.open("GET", "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name, true);
+    loadHTML.send();
+}

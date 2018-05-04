@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import UsersLogic, ShopLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic
 from ServiceLayer import Consumer
 
 
@@ -15,7 +15,9 @@ def get_account(request):
             if username is not None:
                 # html of a logged in user
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                return render(request, 'customer-account.html', context={'topbar': topbar})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+                return render(request, 'customer-account.html', context={'topbar': topbar, 'navbar': navbar})
 
         return HttpResponse('You are not logged in!')
 
@@ -50,7 +52,7 @@ def get_shops(request):
 
                 managed_shops_html = ""
                 managed_shops = UsersLogic.get_managed_shops(username)
-                yes_no_array = ['No','Yes']
+                yes_no_array = ['No', 'Yes']
                 for managed_shop in managed_shops:
                     rank = ShopLogic.get_shop_rank(managed_shop.username)
                     _shop = ShopLogic.search_shop(managed_shop.store_name)
@@ -68,10 +70,13 @@ def get_shops(request):
 
                     })
 
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
                 return render(request, 'customer-shops.html', context={
                     'topbar': topbar,
                     'owned_shops': owned_shops_html,
-                    'managed_shops': managed_shops_html})
+                    'managed_shops': managed_shops_html,
+                    'navbar': navbar})
 
         return HttpResponse('You are not logged in!')
 
@@ -92,12 +97,12 @@ def get_managers(request):
                         managers_html += loader.render_to_string('components/ManagersOnShop.html', context={
                             'manager_name': manager.username,
                             'checked_AIP': check_array[manager.permission_add_item],
-                            'checked_RIP':  check_array[manager.permission_remove_item],
+                            'checked_RIP': check_array[manager.permission_remove_item],
                             'checked_EIP': check_array[manager.permission_edit_item],
-                            'checked_RMP':check_array[manager.permission_reply_messages],
+                            'checked_RMP': check_array[manager.permission_reply_messages],
                             'checked_GAP': check_array[manager.permission_get_all_messages],
                             'checked_GPHP': check_array[manager.permission_get_purchased_history],
-                            'checked_DP':  check_array[manager.discount_permission],
+                            'checked_DP': check_array[manager.discount_permission],
                         })
                     return HttpResponse(managers_html)
 

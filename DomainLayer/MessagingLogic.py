@@ -32,11 +32,27 @@ def send_message_from_shop(username, message):
     manager = StoreManagers.get_store_manager(username, message.from_username)
     if manager is not False:
         if manager.permission_reply_messages > 0:
-            if Shops.search_shop(message.to_username) is not False:
-                if Shops.search_shop(message.from_username) is not False:
-                    Messages.send_message_from_shop(message)
-    if Owners.get_owner(username, message.from_username) is not False:
-        if Shops.search_shop(message.to_username) is not False:
             if Shops.search_shop(message.from_username) is not False:
-                Messages.send_message_from_shop(message)
+                return Messages.send_message_from_shop(message)
+    if Owners.get_owner(username, message.from_username) is not False:
+        if Shops.search_shop(message.from_username) is not False:
+                return Messages.send_message_from_shop(message)
+    return False
+
+
+def get_all_sent_messages(username):
+    if username is not None:
+        if get_user(username) is not False:
+            return Messages.get_all_sent_messages(username)
+
+
+def get_all_sent_shop_messages(username, shop_name):
+    manager = StoreManagers.get_store_manager(username, shop_name)
+    if manager is not False:
+        if manager.permission_get_all_messages > 0:
+            if Shops.search_shop(shop_name) is not False:
+                return Messages.get_all_sent_shop_messages(shop_name)
+    if Owners.get_owner(username, shop_name) is not False:
+        if Shops.search_shop(shop_name) is not False:
+            return Messages.get_all_sent_shop_messages(shop_name)
     return False
