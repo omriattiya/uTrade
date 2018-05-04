@@ -43,8 +43,8 @@ items_urlpatterns = [
 shops_urlpatterns = [
     path('shops/create_shop/', ShopsService.create_shop),
     path('shops/add_review_on_shop/', ShopsService.add_review_on_shop),
-    path('shops/get_purchase_history', ShopsService.search_shop_purchase_history),
-    path('shops/close_shop_permanently', ShopsService.close_shop_permanently),
+    path('shops/get_purchase_history/', ShopsService.search_shop_purchase_history),
+    path('shops/close_shop_permanently/', ShopsService.close_shop_permanently),
 ]
 
 system_manager_urlpatterns = [
@@ -87,7 +87,9 @@ home_page_urlpatterns = [
 private_area_urlpatterns = [
     path('my/account/', Profile.get_account),
     path('my/shops/', Profile.get_shops),
-    path('my/shops/manager/', Profile.get_managers)
+    path('my/shops/manager/', Profile.get_managers),
+    path('my/orders/',Profile.get_orders),
+    path('my/orders/order/',Profile.get_order)
 ]
 
 shop_page_urlpatterns = [

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic
 from ServiceLayer import Consumer
 
 
@@ -107,3 +107,57 @@ def get_managers(request):
                     return HttpResponse(managers_html)
 
         return HttpResponse('fail')
+
+
+def get_orders(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+
+                orders_html = ""
+                orders = ShoppingLogic.get_user_purchases(username)
+                for order in orders:
+                    orders_html += loader.render_to_string('components/Order.html', context={
+                        'order_id': order.purchase_id,
+                        'order_date': order.purchase_date,
+                        'total_price': order.total_price,
+                    })
+
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+                return render(request, 'customer-orders.html', context={'topbar': topbar, 'navbar': navbar,'orders':orders_html})
+
+        return HttpResponse('You are not logged in!')
+
+
+def get_order(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+        purchase_id = request.GET.get('order_id')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                items_html = ""
+                items = ShoppingLogic.get_purchased_items_by_purchase_id(purchase_id)
+                for item in items:
+                    full_item = ItemsLogic.get_item(item.item_id)
+                    items_html += loader.render_to_string('components/Order.html', context={
+                        'item_id': item.item_id,
+                        'item_url': full_item.url,
+                        'item_name': full_item.name,
+                        'item_quantity': item.quantity,
+                        'item_price': item.price,
+                        'shop_name': full_item.shop_name,
+                    })
+
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+                return render(request, 'customer-order.html', context={'topbar': topbar, 'navbar': navbar,'items':items_html})
+
+        return HttpResponse('You are not logged in!')

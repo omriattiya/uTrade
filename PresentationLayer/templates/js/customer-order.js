@@ -1,0 +1,74 @@
+var openedItem = "";
+var openedShop = "";
+
+
+$(document).ready(function () {
+    $('#review-shop-form').submit(function () {
+        return false;
+    });
+
+    $('#review-item-form').submit(function () {
+        return false;
+    });
+});
+
+function reviewShop() {
+    if (!checkRank()) {
+        return;
+    }
+
+    var data = new FormData();
+    data.append('shop_name', openedShop);
+    data.append('description', document.getElementById('shop-review-content-modal'));
+    data.append('rank', document.getElementById('shop-rank-modal'));
+
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Failed")
+            }
+            else if (loadHTML.responseText === 'success') {
+                alert("Review has been added!");
+                location.reload()
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/shops/add_review_on_shop/", true);
+    loadHTML.send(data);
+}
+
+function reviewItem() {
+    if (!checkRank()) {
+        return;
+    }
+
+    var data = new FormData();
+    data.append('shop_name', openedShop);
+    data.append('description', document.getElementById('shop-review-content-modal'));
+    data.append('rank', document.getElementById('shop-rank-modal'));
+
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Failed")
+            }
+            else if (loadHTML.responseText === 'success') {
+                alert("Review has been added!");
+                location.reload()
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/items/add_review_on_item/", true);
+    loadHTML.send(data);
+}
+
+function checkRank() {
+    var rank = document.getElementById('shop-rank-modal');
+    if (!(rank < 0 || rank > 5)) {
+        alert('Rank is invalid');
+        return false;
+    }
+    return true;
+}
