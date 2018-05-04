@@ -26,6 +26,7 @@ def add_to_db():
 
 
 def get_shop(request):
+    add_to_db()
     if request.method == 'GET':
         shop_name = request.GET.get('shop_name')
         shop = ShopLogic.search_shop(shop_name)
@@ -34,7 +35,8 @@ def get_shop(request):
             products = ""
             for item in items:
                 products += loader.render_to_string('component/item.html',
-                                                    {'name': item.name, 'price': item.price, 'url': item.url}, None,
+                                                    {'name': item.name, 'price': item.price,
+                                                     'url': item.url, 'item_id': item.id}, None,
                                                     None)
             context = {'shop_name': shop.name,
                        'shop_status': shop.status,

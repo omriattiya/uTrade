@@ -7,7 +7,7 @@ from SharedClasses.Item import Item
 def fetch_items(items):
     items_arr = []
     for item in items:
-        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7]))
+        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8]))
     return items_arr
 
 
@@ -15,7 +15,7 @@ def fetch_item(item):
     if len(item) == 0:
         return False
     item = item[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7])
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8])
     return item
 
 
@@ -41,23 +41,23 @@ def search_items_by_name(item_name):
 
 def add_item_to_shop(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}');
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind)
+                         item.price, item.quantity, item.kind, item.url)
     return commit_command(sql_query)
 
 
 def add_item_to_shop_and_return_id(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}');
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind)
+                         item.price, item.quantity, item.kind, item.url)
     try:
         conn = get_conn()
         c = conn.cursor()

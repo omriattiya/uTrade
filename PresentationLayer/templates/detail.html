@@ -183,7 +183,8 @@
                         <div class="col-sm-6">
                             <div class="box" id="Item_Image">
                                 <div id="mainImage">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
+                                    <img src={{ url }}
+                                        alt="" class="img-responsive" style="align-self:center; max-height: 300px"/>
                                 </div>
                             </div>
                             <div class="box" id="Purchase-Policy">
@@ -196,15 +197,15 @@
                                         <tbody>
                                             <tr>
                                                 <td>Policy</td>
-                                                <th class="text-right">Lottery</th>
+                                                <th class="text-right">{{ policy }}</th>
                                             </tr>
                                             <tr>
                                                 <td>Deadline</td>
-                                                <th class="text-right">05/11/2018</th>
+                                                <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
                                             </tr>
                                             <tr>
-                                                <td>Deadline</td>
-                                                <th class="text-right" style="color: #ab1124">05/11/2018 23:59</th>
+                                                <td>Actuel End Time</td>
+                                                <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
                                             </tr>
                                         </tbody>
                                     </table>

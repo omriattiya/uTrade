@@ -1,7 +1,10 @@
+import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
+from DatabaseLayer import Lotteries, Auctions
 from DomainLayer import ShopLogic, UsersLogic, ItemsLogic
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
@@ -22,6 +25,20 @@ def get_item(request):
             # product += loader.render_to_string('component/item.html',
             #                                   {'name': item.name, 'price': item.price, 'url': item.url}, None,
             #                                  None)
+            policy = "Immediately"
+            deadline = "------"
+            real_end_time = "------"
+            lottery = Lotteries.get_lottery(item_id)
+            if lottery is not False:
+                policy = "Lottery"
+                deadline = datetime.datetime.fromtimestamp(lottery.final_date/1000).strftime('%c')
+                if lottery.real_end_date is not None:
+                    real_end_time = datetime.datetime.fromtimestamp(lottery.real_end_date/1000).strftime('%c')
+            else:
+                auction = Auctions.get_auction(item_id)
+                if auction is not False:
+                    policy = "Auction"
+                    deadline = datetime.datetime.fromtimestamp(auction.end_date/1000).strftime('%c')
             context = {'item_id': item.id,
                        'item_name': item.name,
                        'shop_name': item.shop_name,
@@ -29,7 +46,11 @@ def get_item(request):
                        'keyWords': item.keyWords,
                        'price': item.price,
                        'quantity': item.quantity,
-                       'kind': item.kind}
+                       'kind': item.kind,
+                       'url': item.url,
+                       'policy': policy,
+                       'deadline': deadline,
+                       'real_end_time': real_end_time}
             return render(request, 'detail.html', context=context)
         else:
             return HttpResponse(shop_not_exist)
