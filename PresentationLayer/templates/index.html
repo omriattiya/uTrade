@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="favicon.png">
 
 
-        <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
+    <!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
@@ -57,549 +57,541 @@
 
 <body>
 
-    <!-- *** TOPBAR ***
- _________________________________________________________ -->
-    {% autoescape off %}
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+{% autoescape off %}
     {{ topbar }}
-    {%  endautoescape %}
+{% endautoescape %}
 
-    <!-- *** TOP BAR END *** -->
+<!-- *** TOP BAR END *** -->
 
-    <!-- *** NAVBAR ***
- _________________________________________________________ -->
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
 
-    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
-        <div class="container">
-            <div class="navbar-header">
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
-                </a>
-                <div class="navbar-buttons">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-align-justify"></i>
-                    </button>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
-                    </a>
-                </div>
-            </div>
-            <!--/.navbar-header -->
-
-            <!--/.nav-collapse -->
-
+            <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
             <div class="navbar-buttons">
-
-                <div class="navbar-collapse collapse right" id="basket-overview">
-                    <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
-                </div>
-                <!--/.nav-collapse -->
-
-                <div class="navbar-collapse collapse right" id="search-not-mobile">
-                    <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
+                </a>
             </div>
+        </div>
+        <!--/.navbar-header -->
 
-            <div class="collapse clearfix" id="search">
+        <!--/.nav-collapse -->
 
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <span class="input-group-btn">
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
+
+        <div class="collapse clearfix" id="search">
+
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
 
 			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
 
 		    </span>
-                    </div>
-                </form>
-
-            </div>
-            <!--/.nav-collapse -->
+                </div>
+            </form>
 
         </div>
-        <!-- /.container -->
+        <!--/.nav-collapse -->
+
     </div>
-    <!-- /#navbar -->
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
 
-    <!-- *** NAVBAR END *** -->
+<!-- *** NAVBAR END *** -->
 
 
+<div id="all">
 
-    <div id="all">
+    <div id="content">
 
-        <div id="content">
+        <!-- *** ADVANTAGES HOMEPAGE ***
+_________________________________________________________ -->
+        <div id="advantages">
 
-            <!-- *** ADVANTAGES HOMEPAGE ***
- _________________________________________________________ -->
-            <div id="advantages">
-
-                <!-- /.container -->
-
-            </div>
-            <!-- /#advantages -->
-
-            <!-- *** ADVANTAGES END *** -->
-
-            <!-- *** HOT PRODUCT SLIDESHOW ***
- _________________________________________________________ -->
-            <div id="hot">
-
-                <div class="box">
-                    <div class="container">
-                        <div class="col-md-12">
-                            <h2>Hot Items</h2>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="product-slider">
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product1.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product1_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">Fur coat with very but very very long name</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">White Blouse Armani</a></h3>
-                                    <p class="price"><del>$280</del> $143.00</p>
-                                </div>
-                                <!-- /.text -->
-
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">Black Blouse Versace</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">Black Blouse Versace</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">White Blouse Versace</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-
-                                <div class="ribbon new">
-                                    <div class="theribbon">NEW</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                                <!-- /.ribbon -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product1.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product1_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product1.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">Fur coat</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-
-                                <div class="ribbon gift">
-                                    <div class="theribbon">GIFT</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                                <!-- /.ribbon -->
-
-                            </div>
-                            <!-- /.product -->
-                        </div>
-                        <!-- /.col-md-4 -->
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product2_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product2.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">White Blouse Armani</a></h3>
-                                    <p class="price"><del>$280</del> $143.00</p>
-                                </div>
-                                <!-- /.text -->
-
-                                <div class="ribbon sale">
-                                    <div class="theribbon">SALE</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                                <!-- /.ribbon -->
-
-                                <div class="ribbon new">
-                                    <div class="theribbon">NEW</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                                <!-- /.ribbon -->
-
-                                <div class="ribbon gift">
-                                    <div class="theribbon">GIFT</div>
-                                    <div class="ribbon-background"></div>
-                                </div>
-                                <!-- /.ribbon -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                        <div class="item">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="detail.html">
-                                                <img src="img/product3.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="detail.html">
-                                                <img src="img/product3_2.jpg" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">Black Blouse Versace</a></h3>
-                                    <p class="price">$143.00</p>
-                                </div>
-                                <!-- /.text -->
-                            </div>
-                            <!-- /.product -->
-                        </div>
-
-                    </div>
-                    <!-- /.product-slider -->
-                </div>
-                <!-- /.container -->
-
-            </div>
-            <!-- /#hot -->
-
-            <!-- *** HOT END *** -->
-
-            <!-- *** BLOG HOMEPAGE ***
- _________________________________________________________ -->
-
+            <!-- /.container -->
 
         </div>
-        <!-- /#content -->
+        <!-- /#advantages -->
 
-        <!-- *** FOOTER ***
- _________________________________________________________ -->
-        <div id="footer" data-animate="fadeInUp">
+        <!-- *** ADVANTAGES END *** -->
+
+        <!-- *** HOT PRODUCT SLIDESHOW ***
+_________________________________________________________ -->
+        <div id="hot">
+
+            <div class="box">
+                <div class="container">
+                    <div class="col-md-12">
+                        <h2>Hot Items</h2>
+                    </div>
+                </div>
+            </div>
+
             <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <h4>Pages</h4>
-
-                        <ul>
-                            <li><a href="text.html">About us</a>
-                            </li>
-                            <li><a href="text.html">Terms and conditions</a>
-                            </li>
-                            <li><a href="faq.html">FAQ</a>
-                            </li>
-                            <li><a href="contact.html">Contact us</a>
-                            </li>
-                        </ul>
-
-                        <hr>
-
-                        <h4>User section</h4>
-
-                        <ul>
-                            <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                            </li>
-                            <li><a href="register.html">Regiter</a>
-                            </li>
-                        </ul>
-
-                        <hr class="hidden-md hidden-lg hidden-sm">
-
+                <div class="product-slider">
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product1.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product1_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product1.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">Fur coat with very but very very long name</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+                        </div>
+                        <!-- /.product -->
                     </div>
-                    <!-- /.col-md-3 -->
 
-                    <div class="col-md-3 col-sm-6">
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product2_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product2.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">White Blouse Armani</a></h3>
+                                <p class="price">
+                                    <del>$280</del>
+                                    $143.00
+                                </p>
+                            </div>
+                            <!-- /.text -->
 
-                        <h4>Top categories</h4>
-
-                        <h5>Men</h5>
-
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Shirts</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
-
-                        <h5>Ladies</h5>
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Skirts</a>
-                            </li>
-                            <li><a href="category.html">Pants</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
-
-                        <hr class="hidden-md hidden-lg">
-
+                        </div>
+                        <!-- /.product -->
                     </div>
-                    <!-- /.col-md-3 -->
 
-                    <div class="col-md-3 col-sm-6">
-
-                        <h4>Where to find us</h4>
-
-                        <p><strong>Obaju Ltd.</strong>
-                            <br>13/25 New Avenue
-                            <br>New Heaven
-                            <br>45Y 73J
-                            <br>England
-                            <br>
-                            <strong>Great Britain</strong>
-                        </p>
-
-                        <a href="contact.html">Go to contact page</a>
-
-                        <hr class="hidden-md hidden-lg">
-
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product3.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product3_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product3.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">Black Blouse Versace</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+                        </div>
+                        <!-- /.product -->
                     </div>
-                    <!-- /.col-md-3 -->
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product3.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product3_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product3.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">Black Blouse Versace</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+                        </div>
+                        <!-- /.product -->
+                    </div>
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product2_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product2.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">White Blouse Versace</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+
+                            <div class="ribbon new">
+                                <div class="theribbon">NEW</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+                        </div>
+                        <!-- /.product -->
+                    </div>
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product1.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product1_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product1.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">Fur coat</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+
+                            <div class="ribbon gift">
+                                <div class="theribbon">GIFT</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+
+                        </div>
+                        <!-- /.product -->
+                    </div>
+                    <!-- /.col-md-4 -->
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product2_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product2.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">White Blouse Armani</a></h3>
+                                <p class="price">
+                                    <del>$280</del>
+                                    $143.00
+                                </p>
+                            </div>
+                            <!-- /.text -->
+
+                            <div class="ribbon sale">
+                                <div class="theribbon">SALE</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+
+                            <div class="ribbon new">
+                                <div class="theribbon">NEW</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+
+                            <div class="ribbon gift">
+                                <div class="theribbon">GIFT</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+                        </div>
+                        <!-- /.product -->
+                    </div>
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="detail.html">
+                                            <img src="img/product3.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="detail.html">
+                                            <img src="img/product3_2.jpg" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="detail.html" class="invisible">
+                                <img src="img/product3.jpg" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="detail.html">Black Blouse Versace</a></h3>
+                                <p class="price">$143.00</p>
+                            </div>
+                            <!-- /.text -->
+                        </div>
+                        <!-- /.product -->
+                    </div>
+
+                </div>
+                <!-- /.product-slider -->
+            </div>
+            <!-- /.container -->
+
+        </div>
+        <!-- /#hot -->
+
+        <!-- *** HOT END *** -->
+
+        <!-- *** BLOG HOMEPAGE ***
+_________________________________________________________ -->
 
 
+    </div>
+    <!-- /#content -->
 
-                    <div class="col-md-3 col-sm-6">
+    <!-- *** FOOTER ***
+_________________________________________________________ -->
+    <div id="footer" data-animate="fadeInUp">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <h4>Pages</h4>
 
-                        <h4>Get the news</h4>
+                    <ul>
+                        <li><a href="text.html">About us</a>
+                        </li>
+                        <li><a href="text.html">Terms and conditions</a>
+                        </li>
+                        <li><a href="faq.html">FAQ</a>
+                        </li>
+                        <li><a href="contact.html">Contact us</a>
+                        </li>
+                    </ul>
 
-                        <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                    <hr>
 
-                        <form>
-                            <div class="input-group">
+                    <h4>User section</h4>
 
-                                <input type="text" class="form-control">
+                    <ul>
+                        <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        </li>
+                        <li><a href="register.html">Regiter</a>
+                        </li>
+                    </ul>
 
-                                <span class="input-group-btn">
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-3 col-sm-6">
+
+                    <h4>Top categories</h4>
+
+                    <h5>Men</h5>
+
+                    <ul>
+                        <li><a href="category.html">T-shirts</a>
+                        </li>
+                        <li><a href="category.html">Shirts</a>
+                        </li>
+                        <li><a href="category.html">Accessories</a>
+                        </li>
+                    </ul>
+
+                    <h5>Ladies</h5>
+                    <ul>
+                        <li><a href="category.html">T-shirts</a>
+                        </li>
+                        <li><a href="category.html">Skirts</a>
+                        </li>
+                        <li><a href="category.html">Pants</a>
+                        </li>
+                        <li><a href="category.html">Accessories</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-3 col-sm-6">
+
+                    <h4>Where to find us</h4>
+
+                    <p><strong>Obaju Ltd.</strong>
+                        <br>13/25 New Avenue
+                        <br>New Heaven
+                        <br>45Y 73J
+                        <br>England
+                        <br>
+                        <strong>Great Britain</strong>
+                    </p>
+
+                    <a href="contact.html">Go to contact page</a>
+
+                    <hr class="hidden-md hidden-lg">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+
+                <div class="col-md-3 col-sm-6">
+
+                    <h4>Get the news</h4>
+
+                    <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+                        turpis egestas.</p>
+
+                    <form>
+                        <div class="input-group">
+
+                            <input type="text" class="form-control">
+
+                            <span class="input-group-btn">
 
 			    <button class="btn btn-default" type="button">Subscribe!</button>
 
 			</span>
 
-                            </div>
-                            <!-- /input-group -->
-                        </form>
+                        </div>
+                        <!-- /input-group -->
+                    </form>
 
-                        <hr>
+                    <hr>
 
-                        <h4>Stay in touch</h4>
+                    <h4>Stay in touch</h4>
 
-                        <p class="social">
-                            <a href="#" class="facebook external" data-animate-hover="shake"><i class="fa fa-facebook"></i></a>
-                            <a href="#" class="twitter external" data-animate-hover="shake"><i class="fa fa-twitter"></i></a>
-                            <a href="#" class="instagram external" data-animate-hover="shake"><i class="fa fa-instagram"></i></a>
-                            <a href="#" class="gplus external" data-animate-hover="shake"><i class="fa fa-google-plus"></i></a>
-                            <a href="#" class="email external" data-animate-hover="shake"><i class="fa fa-envelope"></i></a>
-                        </p>
-
-
-                    </div>
-                    <!-- /.col-md-3 -->
-
-                </div>
-                <!-- /.row -->
-
-            </div>
-            <!-- /.container -->
-        </div>
-        <!-- /#footer -->
-
-        <!-- *** FOOTER END *** -->
-
-
-
-
-        <!-- *** COPYRIGHT ***
- _________________________________________________________ -->
-        <div id="copyright">
-            <div class="container">
-                <div class="col-md-6">
-                    <p class="pull-left">© 2015 Your name goes here.</p>
-
-                </div>
-                <div class="col-md-6">
-                    <p class="pull-right">Template by <a href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a href="https://fity.cz">Fity</a>
-                         <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                    <p class="social">
+                        <a href="#" class="facebook external" data-animate-hover="shake"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="twitter external" data-animate-hover="shake"><i
+                                class="fa fa-twitter"></i></a>
+                        <a href="#" class="instagram external" data-animate-hover="shake"><i
+                                class="fa fa-instagram"></i></a>
+                        <a href="#" class="gplus external" data-animate-hover="shake"><i class="fa fa-google-plus"></i></a>
+                        <a href="#" class="email external" data-animate-hover="shake"><i class="fa fa-envelope"></i></a>
                     </p>
+
+
                 </div>
+                <!-- /.col-md-3 -->
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#footer -->
+
+    <!-- *** FOOTER END *** -->
+
+
+    <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+    <div id="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p class="pull-left">© 2015 Your name goes here.</p>
+
+            </div>
+            <div class="col-md-6">
+                <p class="pull-right">Template by <a
+                        href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a
+                        href="https://fity.cz">Fity</a>
+                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                </p>
             </div>
         </div>
-        <!-- *** COPYRIGHT END *** -->
-
-
-
     </div>
-    <!-- /#all -->
+    <!-- *** COPYRIGHT END *** -->
 
 
+</div>
+<!-- /#all -->
 
 
 </body>

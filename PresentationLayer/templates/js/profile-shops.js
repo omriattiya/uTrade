@@ -170,7 +170,7 @@ function shopModalOpened(shop_name) {
                 alert("Failed")
             }
             else {
-                document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText + plus_button_managers;
+                document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText;
             }
         }
     };
@@ -207,23 +207,3 @@ function addOwner() {
     loadHTML.open("POST", "http://localhost:8000/app/users/owner/add_owner/", true);
     loadHTML.send(data);
 }
-
-var plus_button_managers = "<tr>\n" +
-    "                                                <th></th>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td>\n" +
-    "                                                    <button href=\"#\" data-toggle=\"modal\"\n" +
-    "                                                            data-target=\"#add-manager-modal\"\n" +
-    "                                                            class=\"btn btn-default\"> +\n" +
-    "                                                    </button>\n" +
-    "                                                </td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td>\n" +
-    "                                                </td>\n" +
-    "                                                <td><a> </a>\n" +
-    "                                                </td>\n" +
-    "                                            </tr>";

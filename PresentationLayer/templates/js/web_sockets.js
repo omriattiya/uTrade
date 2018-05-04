@@ -73,7 +73,7 @@ var data = new FormData();
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'success') {
                 setCookie('login_hash', "", 7);
-                window.location.href = "http://localhost:8000/app/home/"
+                setTimeout(function() {window.location.href = "http://localhost:8000/app/home/"},200)
             }
         }
     };

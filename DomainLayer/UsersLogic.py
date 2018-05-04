@@ -29,6 +29,8 @@ def get_registered_user(username):
 
 
 def edit_password(user):
+    if user.username == 'System':
+        return False
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
         if re.match(r'[A-Za-z0-9]{8,20}', user.password):
@@ -116,6 +118,8 @@ def modify_notifications(owner_username, should_notify):
 
 
 def add_system_manager(system_manager):
+    if system_manager.username == 'System':
+        return False
     if RegisteredUsers.get_user(system_manager.username) is False and Shops.search_shop(
             system_manager.username) is False:
         return SystemManagers.add_system_manager(system_manager)
