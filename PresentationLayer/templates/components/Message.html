@@ -1,0 +1,11 @@
+<tr>
+    <th># {{ id }}</th>
+    <td>{{ from }}</td>
+    <td>{{ to }}</td>
+    <td>
+        <p id = "{{ id }}" hidden>{{ content }}</p>
+        <button onclick="updateMessageContent({{ id }})" href="#" data-toggle="modal" data-target="#view-message-modal"
+                class="btn btn-primary"> Show
+        </button>
+    </td>
+</tr>
