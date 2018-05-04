@@ -1,20 +1,20 @@
-from channels.generic.websocket import WebsocketConsumer
+#from channels.generic.websocket import WebsocketConsumer
 
 connectedUsers = []
 loggedInUsers = {}
 
 
-class Consumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
+#class Consumer(WebsocketConsumer):
+   # def connect(self):
+    #    self.accept()
 
-    def receive(self, *, text_data):
+   # def receive(self, *, text_data):
         #if connectedUsers.index(text_data) > -1:
         #    self.send("Something")
         #else:
         #    self.send("fail")
-        pass
+     #   pass
 
-    def disconnect(self, message):
+   # def disconnect(self, message):
         #connectedUsers.remove()
-        pass
+     #S   pass

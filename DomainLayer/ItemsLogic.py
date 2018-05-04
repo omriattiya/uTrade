@@ -90,3 +90,9 @@ def get_item(item_id):
 def get_item_by_code(code):
     return Items.get_item_by_code(code)
 
+
+def get_all_reviews_on_item(item_id):
+    if item_id is not None:
+        item = Items.get_item(item_id)
+        if item is not False:
+            return ReviewsOnItems.get_all_reviews_on_item(item_id)
