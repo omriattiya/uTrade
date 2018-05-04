@@ -273,7 +273,7 @@
                                             <tr>
                                                 <td>
                                                     <p class="text-center buttons">
-                                                        <a href="basket.html" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Review</a>
+                                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#review-modal"><i class="fa fa-plus-circle"></i> Add Review</a>
                                                     </p>
                                                 </td>
                                                 <th>
@@ -285,7 +285,33 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="modal fade" id="review-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
 
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                                <h4 class="modal-title" id="Login">Review Item</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="customer-orders.html" method="post">
+                                                    <div class="form-group">
+                                                        <input type="number" class="form-control" id="email-modal" placeholder="Rank" min="0" max="10">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="password-modal" placeholder="Description">
+                                                    </div>
+
+                                                    <p class="text-center">
+                                                        <button class="btn btn-primary"><i class="fa fa-comment"></i> Submit</button>
+                                                    </p>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.col-md-3 -->
                         </div>
