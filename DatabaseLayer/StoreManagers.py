@@ -112,3 +112,7 @@ def update_permissions(store_manager):
                            store_manager.username,
                            store_manager.store_name)
     return commit_command(sql_query)
+
+
+def is_store_manager_of_shop(username, shop_name):
+    return get_store_manager(username, shop_name) is not False
