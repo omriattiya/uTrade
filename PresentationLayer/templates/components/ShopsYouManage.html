@@ -9,8 +9,14 @@
             'reply to messages? : {{ RMP }}\n'+
             'see all messages? : {{ GAP }}\n'+
             'see purchase history? : {{ GPHP }}\n'+
-            'add discount? {{ DP }}')" class="label label-success ">Show</span>
+            'add discount? : {{ DP }}')" class="label label-success ">Show</span>
+
+    <td>
+        <a onclick = "gotoMessages('{{ shop_name }}')" href="javascript:void(0)" class="btn btn-primary btn-sm"><i
+                class="fa fa-envelope"></i></a>
+    </td>
 
     <td><a href="http://localhost:8000/app/shop/?shop_name={{ shop_name }}" class="btn btn-primary btn-sm">Go To Shop</a>
     </td>
+
 </tr>

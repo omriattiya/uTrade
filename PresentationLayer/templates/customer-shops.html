@@ -67,6 +67,56 @@
 <!-- *** NAVBAR ***
 _________________________________________________________ -->
 
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+
+            <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
+                </a>
+            </div>
+        </div>
+        <!--/.navbar-header -->
+
+
+
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
+
+        <div class="collapse clearfix" id="search">
+
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+
+		    </span>
+                </div>
+            </form>
+
+        </div>
+        <!--/.nav-collapse -->
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
 
 <!-- *** NAVBAR END *** -->
 
@@ -78,7 +128,7 @@ _________________________________________________________ -->
             <div class="col-md-12">
 
                 <ul class="breadcrumb">
-                    <li><a href="index.html">Home</a>
+                    <li><a href="http://localhost:8000/app/my/orders">Home</a>
                     </li>
                     <li>My Shops</li>
                 </ul>
@@ -98,13 +148,13 @@ _________________________________________________________ -->
 
                         <ul class="nav nav-pills nav-stacked">
                             <li>
-                                <a href="customer-orders.html"><i class="fa fa-list"></i> My Orders</a>
+                                <a href="http://localhost:8000/app/my/orders"><i class="fa fa-list"></i> My Orders</a>
                             </li>
                             <li class="active">
-                                <a href="customer-shops.html"><i class="fa fa-heart"></i> My Shops</a>
+                                <a href="http://localhost:8000/app/my/shops"><i class="fa fa-heart"></i> My Shops</a>
                             </li>
                             <li>
-                                <a href="customer-account.html"><i class="fa fa-user"></i> My Account</a>
+                                <a href="http://localhost:8000/app/my/account"><i class="fa fa-user"></i> My Account</a>
                             </li>
                             <li>
                                 <a href="javascript:void(0)" onclick="logout();"><i class="fa fa-sign-out"></i>
@@ -139,6 +189,7 @@ _________________________________________________________ -->
                                 <th>Managers</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -148,23 +199,13 @@ _________________________________________________________ -->
                             {% endautoescape %}
 
 
-                            <tr>
-                                <th></th>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <button href="#" data-toggle="modal" data-target="#create-shop-modal"
-                                            class="btn btn-default"> +
-                                    </button>
-                                </td>
-                                <td>
-                                </td>
-                                <td><a> </a>
-                                </td>
-                            </tr>
-
                             </tbody>
                         </table>
+                        <div style="display:flex;justify-content: center">
+                            <button href="#" data-toggle="modal" data-target="#create-shop-modal"
+                                    class="btn btn-default"> +
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Modals -->
@@ -235,9 +276,14 @@ _________________________________________________________ -->
 
                                             </tbody>
                                         </table>
+                                        <div style="display:flex;justify-content: center">
+                                            <button href="#" data-toggle="modal" data-target="#add-manager-modal"
+                                                    class="btn btn-default"> +
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    <p class="text-center text-muted">Here you can control every store manager
+                                    <p style="margin-top: 2em" class="text-center text-muted">Here you can control every store manager
                                     </p>
                                 </div>
                             </div>
@@ -317,7 +363,8 @@ _________________________________________________________ -->
                                 <th>Review</th>
                                 <th>Status</th>
                                 <th>Permissions</th>
-                                <th>Action</th>
+                                <th> </th>
+                                <th> </th>
                             </tr>
                             </thead>
                             <tbody>

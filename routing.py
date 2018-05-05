@@ -4,5 +4,5 @@ from django.conf.urls import url
 from ServiceLayer import Consumer
 
 application = ProtocolTypeRouter({
-    "websocket": URLRouter([url(r"^test/", Consumer.Consumer)]),
+    "websocket": URLRouter([url(r"^live_alerts/$", Consumer.Consumer)]),
 })

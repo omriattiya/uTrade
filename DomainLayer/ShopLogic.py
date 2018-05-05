@@ -1,8 +1,7 @@
-from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops, Items
+from DatabaseLayer import Items
 from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
 from DatabaseLayer.PurchasedItems import get_purchased_item_by_shop_and_username
 from DomainLayer.SearchLogic import search_shop
-from DomainLayer.UsersLogic import get_purchase_history
 from SharedClasses.Owner import Owner
 
 
@@ -24,8 +23,12 @@ def add_review_on_shop(shop_review):
 
 def get_shop_purchase_history(username, shop_name):
     manager = StoreManagers.get_store_manager(username, shop_name)
+    owner = Owners.get_owner(username, shop_name)
     if manager is not False:
         if manager.permission_get_purchased_history > 0:
+            return PurchasedItems.get_purchased_items_by_shop(shop_name)
+    else:
+        if owner is not False:
             return PurchasedItems.get_purchased_items_by_shop(shop_name)
     return False
 
@@ -55,3 +58,11 @@ def get_shop_rank(shop_name):
 
 def get_store_managers(shop_name):
     return StoreManagers.get_store_managers_on_shop(shop_name)
+
+
+def get_all_shops():
+    return Shops.get_all_shops()
+
+
+def get_store_owners(shop_name):
+    return Owners.get_owners_by_shop(shop_name)

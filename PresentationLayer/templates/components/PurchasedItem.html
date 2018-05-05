@@ -1,0 +1,28 @@
+<tr>
+    <td>
+        <a href="http://localhost:8000/app/item/?item_id={{ item_id }}">
+            <img src="{{ item_url }}" alt="{{ item_name }}">
+        </a>
+    </td>
+    <td><a href="http://localhost:8000/app/item/?item_id={{ item_id }}">{{ item_name }}</a>
+    </td>
+    <td>{{ item_quantity }}</td>
+    <td>{{ item_price }} $</td>
+    <td>{{ shop_name }}</td>
+    <td>
+        <button onclick="openedShop='{{ shop_name }}'" href="#" data-toggle="modal" data-target="#review-shop-modal"
+                class="btn btn-primary">Review Shop
+        </button>
+    </td>
+    <td>
+        <button onclick="openedItem='{{ item_name }}'" href="#" data-toggle="modal" data-target="#review-item-modal"
+                class="btn btn-primary">Review Item
+        </button>
+    </td>
+    <td>
+        <button onclick="openedItem='{{ item_name }}';document.getElementById('report-content-modal').innerHTML='Report on purchase item #{{ item_id }}.\n';"
+                href="#" data-toggle="modal" data-target="#report-item-modal"
+                class="btn btn-danger">Report Purchase
+        </button>
+    </td>
+</tr>

@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
     <BASE href="http://localhost:8000/static/">
+
 
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -43,51 +45,9 @@
 <body>
 <!-- *** TOPBAR ***
 _________________________________________________________ -->
-<div id="top">
-    <div class="container">
-        <div class="col-md-6" data-animate="fadeInDown">
-            <ul class="menu">
-                <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                </li>
-                <li><a href="register.html">Register</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="Login">Customer login</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="customer-orders.html" method="post">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="email-modal" placeholder="email">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password-modal" placeholder="password">
-                        </div>
-
-                        <p class="text-center">
-                            <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
-                        </p>
-
-                    </form>
-
-                    <p class="text-center text-muted">Not registered yet?</p>
-                    <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is
-                        easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+{% autoescape off %}
+    {{ every_html.top_bar }}
+{% endautoescape %}
 <!-- *** TOP BAR END *** -->
 
 <!-- *** NAVBAR ***
@@ -127,15 +87,13 @@ _________________________________________________________ -->
                         class="hidden-sm">3 items in cart</span></a>
             </div>
             <!--/.nav-collapse -->
-
-            <div class="navbar-collapse collapse right" id="search-not-mobile">
-                <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-                    <span class="sr-only">Toggle search</span>
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-
         </div>
+
+
+        {% autoescape off %}
+            {{ every_html.nav_bar }}
+        {% endautoescape %}
+
 
         <div class="collapse clearfix" id="search">
 
@@ -184,6 +142,9 @@ _________________________________________________________ -->
                             <a href="../app/shop/reviews/?shop_name={{ shop_name }}" class="btn btn-primary">Watch
                                 Reviews</a>
                         </div>
+                        {% autoescape off %}
+                            {{ owner_manager_options }}
+                        {% endautoescape %}
                     </div>
                 </div>
 

@@ -48,3 +48,39 @@ def send_message_from_shop(message):
                   VALUES ('{}', '{}', '{}')
                   """.format(message.from_username, message.to_username, message.content)
     return commit_command(sql_query)
+
+
+def get_all_sent_messages(username):
+    sql_query = """
+                    SELECT *
+                    FROM Messages
+                    WHERE MessageFrom = '{}'
+                  """.format(username)
+    return fetch_messages(select_command(sql_query))
+
+
+def get_all_sent_shop_messages(shop_name):
+    sql_query = """
+                    SELECT *
+                    FROM Messages
+                    WHERE MessageFrom = '{}'
+                  """.format(shop_name)
+    return fetch_messages(select_command(sql_query))
+
+
+def get_received_system_messages():
+    sql_query = """
+                        SELECT *
+                        FROM Messages
+                        WHERE MessageTo = 'System'
+                      """
+    return fetch_messages(select_command(sql_query))
+
+
+def get_sent_system_messages():
+    sql_query = """
+                        SELECT *
+                        FROM Messages
+                        WHERE MessageFrom = 'System'
+                      """
+    return fetch_messages(select_command(sql_query))

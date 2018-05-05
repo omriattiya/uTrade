@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <BASE href="http://localhost:8000/static/">
+
+
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Obaju e-commerce template">
+    <meta name="author" content="Ondrej Svestka | ondrejsvestka.cz">
+    <meta name="keywords" content="">
+
+    <title>
+        Obaju : e-commerce template
+    </title>
+
+    <meta name="keywords" content="">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/owl.carousel.css" rel="stylesheet">
+    <link href="css/owl.theme.css" rel="stylesheet">
+
+    <!-- theme stylesheet -->
+    <link href="css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- your stylesheet with modifications -->
+    <link href="css/custom.css" rel="stylesheet">
+
+    <script src="js/respond.min.js"></script>
+
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- *** SCRIPTS TO INCLUDE ***
+ _________________________________________________________ -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+
+    <script src="js/web_sockets.js"></script>
+
+</head>
+
+<body>
+{% autoescape off %}
+    {{ topbar }}
+{% endautoescape %}
+
+<!-- *** TOP BAR END *** -->
+
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+
+            <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
+                </a>
+            </div>
+        </div>
+        <!--/.navbar-header -->
+
+
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
+
+        <div class="collapse clearfix" id="search">
+
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+
+		    </span>
+                </div>
+            </form>
+
+        </div>
+        <!--/.nav-collapse -->
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
+
+<div id="all">
+
+    <div id="content">
+        <div class="container">
+
+
+            <div class="col-md-3">
+                <!-- *** CUSTOMER MENU ***
+_________________________________________________________ -->
+                <div class="panel panel-default sidebar-menu">
+
+
+                    <div class="panel-body">
+
+                        <ul class="nav nav-pills nav-stacked">
+                            <li>
+                                <a href="http://localhost:8000/app/system/users/"><i class="fa fa-list"></i> Users</a>
+                            </li>
+                            <li class="active">
+                                <a href="http://localhost:8000/app/system/history/"><i class="fa fa-heart"></i> History</a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:8000/app/system/shops/"><i class="fa fa-user"></i> Shops</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <!-- *** CUSTOMER MENU END *** -->
+            </div>
+
+            <div class="col-md-9">
+                <div class="box">
+                    <h1>Purchase History</h1>
+                    <p class="lead">Here you can see every purchase that was made.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Shop Name</th>
+                                <th>PurchaseID</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% autoescape off %}
+                                {{ history }}
+                            {% endautoescape %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#content -->
+
+
+    <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+    <div id="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p class="pull-left">© 2015 Your name goes here.</p>
+
+            </div>
+            <div class="col-md-6">
+                <p class="pull-right">Template by <a
+                        href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a
+                        href="https://fity.cz">Fity</a>
+                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- *** COPYRIGHT END *** -->
+
+
+</div>
+<!-- /#all -->
+
+
+</body>
+
+</html>

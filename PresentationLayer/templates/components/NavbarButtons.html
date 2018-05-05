@@ -1,0 +1,31 @@
+<div class="navbar-buttons">
+
+    <div class="navbar-collapse collapse right" id="basket-overview">
+        <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i>
+            <span class="hidden-sm">{{ cart_items }} items in cart</span></a>
+    </div>
+    <!--/.nav-collapse -->
+
+    <div class="navbar-collapse collapse right" id="search-not-mobile">
+        <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
+            <span class="sr-only">Toggle search</span>
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+
+    <div class="navbar-collapse collapse right">
+        <button onclick="window.location.href = 'http://localhost:8000/app/home/messages/?content=received'"
+                type="button" class="btn navbar-btn btn-primary">
+            <i class="fa fa-envelope"></i>
+        </button>
+    </div>
+
+    <div class="navbar-collapse collapse right">
+        <button onclick="window.location.href = 'http://localhost:8000/app/home/alerts/'"
+                type="button" class="btn navbar-btn btn-primary">
+            <i class="fa fa-bell"></i>
+            <span id="alerts-count" class="badge badge-secondary"></span>
+        </button>
+    </div>
+
+</div>

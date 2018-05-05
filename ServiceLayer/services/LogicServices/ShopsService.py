@@ -42,13 +42,18 @@ def remove_item(request):
 @csrf_exempt
 def add_review_on_shop(request):
     if request.method == 'POST':
-        # return HttpResponse('item added')
-        writer_id = request.POST.get('writer_id')
         shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
         rank = request.POST.get('rank')
-        shop_review = ShopReview(writer_id, description, rank, shop_name)
-        ShopLogic.add_review_on_shop(shop_review)
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            writer_id = Consumer.loggedInUsers.get(login)
+            shop_review = ShopReview(writer_id, description, rank, shop_name)
+
+            if ShopLogic.add_review_on_shop(shop_review):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 def search_shop_purchase_history(request):
@@ -59,10 +64,14 @@ def search_shop_purchase_history(request):
 @csrf_exempt
 def close_shop_permanently(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
-        # return HttpResponse('no GUI yet')
-        ShopLogic.close_shop_permanently(username, shop_name)
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if ShopLogic.close_shop_permanently(username, shop_name):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 @csrf_exempt

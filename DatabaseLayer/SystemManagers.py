@@ -32,3 +32,12 @@ def login(username, password):
                    SELECT * FROM SystemManagers WHERE username='{}' AND password='{}'
                    """.format(username, password)
     return len(select_command(sql_query)) == 1
+
+
+def get_all_system_managers():
+    sql_query = """
+                    SELECT *
+                    FROM SystemManagers
+                """
+    results = select_command(sql_query)
+    return parse_system_managers(results)

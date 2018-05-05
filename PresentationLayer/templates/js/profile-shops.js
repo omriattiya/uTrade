@@ -170,7 +170,7 @@ function shopModalOpened(shop_name) {
                 alert("Failed")
             }
             else {
-                document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText + plus_button_managers;
+                document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText;
             }
         }
     };
@@ -208,22 +208,18 @@ function addOwner() {
     loadHTML.send(data);
 }
 
-var plus_button_managers = "<tr>\n" +
-    "                                                <th></th>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td>\n" +
-    "                                                    <button href=\"#\" data-toggle=\"modal\"\n" +
-    "                                                            data-target=\"#add-manager-modal\"\n" +
-    "                                                            class=\"btn btn-default\"> +\n" +
-    "                                                    </button>\n" +
-    "                                                </td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td></td>\n" +
-    "                                                <td>\n" +
-    "                                                </td>\n" +
-    "                                                <td><a> </a>\n" +
-    "                                                </td>\n" +
-    "                                            </tr>";
+function gotoMessages(shop_name) {
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("No Permissions!")
+            }
+            else{
+                window.location.href = "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name;
+            }
+        }
+    };
+    loadHTML.open("GET", "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name, true);
+    loadHTML.send();
+}

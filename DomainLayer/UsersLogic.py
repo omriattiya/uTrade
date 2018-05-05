@@ -29,6 +29,8 @@ def get_registered_user(username):
 
 
 def edit_password(user):
+    if user.username == 'System':
+        return False
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
         if re.match(r'[A-Za-z0-9]{8,20}', user.password):
@@ -38,6 +40,8 @@ def edit_password(user):
 
 
 def login(user):
+    if SystemManagers.login(user.username, user.password):
+        return True
     if user.username is not None and user.password is not None:
         user.password = hashlib.sha256(user.password.encode()).hexdigest()
         return RegisteredUsers.login(user)
@@ -116,6 +120,8 @@ def modify_notifications(owner_username, should_notify):
 
 
 def add_system_manager(system_manager):
+    if system_manager.username == 'System':
+        return False
     if RegisteredUsers.get_user(system_manager.username) is False and Shops.search_shop(
             system_manager.username) is False:
         return SystemManagers.add_system_manager(system_manager)
@@ -155,6 +161,13 @@ def get_owned_shops(username):
     return Owners.get_shops_by_owner(username)
 
 
+def is_owner_of_shop(username, shop_name):
+    results = get_owned_shops(username)
+    for owner in results:
+        if owner.shop_name == shop_name:
+            return True
+    return False
+
 def get_managed_shops(username):
     return StoreManagers.get_manager_shops(username)
 
@@ -173,3 +186,19 @@ def update_permissions(username, store_manager):
     if Owners.is_owner_on_shop(username, store_manager.store_name) is not False:
         return StoreManagers.update_permissions(store_manager)
     return False
+
+
+def is_system_manager(username):
+    return SystemManagers.is_system_manager(username)
+
+
+def get_all_users():
+    return RegisteredUsers.get_all_users()
+
+
+def is_manager_of_shop(username, shop_name):
+    return StoreManagers.is_store_manager_of_shop(username, shop_name)
+
+
+def get_manager(username, shop_name):
+    return StoreManagers.get_store_manager(username, shop_name)

@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems, Purchases
+from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems, Purchases, Owners
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
+from ServiceLayer import Consumer
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -126,6 +127,16 @@ def pay_all(username):
                     return False
             status = remove_shopping_cart(username)
             return status
+
+                # live alerts
+                owners = Owners.get_owners_by_shop(item.shop_name)
+                owners_name = []
+                for owner in owners:
+                    owners_name.append(owner.username)
+                Consumer.notify_live_alerts(owners_name,
+                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+item.id+'"># <strong>' + item.id + '</strong></a> from your shop')
+
+            return True
     return False
 
 
@@ -186,3 +197,14 @@ def get_cart_cost(username):
 def remove_shopping_cart(username):
     if username is not None:
         return ShoppingCartItem.remove_shopping_cart(username)
+
+def get_user_purchases(username):
+    return Purchases.get_user_purchases(username)
+
+
+def get_purchased_items_by_purchase_id(purchase_id):
+    return PurchasedItems.get_purchased_items_by_purchase(purchase_id)
+
+
+def get_purchase(purchase_id):
+    return Purchases.get_purchase(purchase_id)
