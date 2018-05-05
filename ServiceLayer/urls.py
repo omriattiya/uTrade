@@ -65,8 +65,11 @@ shoppingcart_urlpatterns = [
     path('shopping_cart/update_item_shopping_cart/', ShoppingService.update_item_shopping_cart),
     path('shopping_cart/update_code_shopping_cart/', ShoppingService.update_code_shopping_cart),
     path('shopping_cart/get_cart_items/', ShoppingService.get_cart_items),
-    path('shopping-cart/pay_all/', ShoppingService.pay_all),
-    path('shopping-cart/delivery/', ShoppingService.deliver)
+    path('shopping_cart/pay_all/', ShoppingService.pay_all),
+    path('shopping_cart/addressing/', ShoppingService.address),
+    path('shopping_cart/delivery/', ShoppingService.deliver),
+    path('shopping_cart/payment_method/', ShoppingService.payment_method),
+    path('shopping_cart/review_order/', ShoppingService.review_order)
 ]
 
 lottery_urlpatterns = [

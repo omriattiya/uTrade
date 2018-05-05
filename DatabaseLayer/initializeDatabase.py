@@ -178,7 +178,6 @@ tables_sql = [
           percentage REAL,
           from_date DATE,
           end_date DATE,
-          code CHAR(15),
           PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )

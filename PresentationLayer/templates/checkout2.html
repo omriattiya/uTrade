@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-
+    <BASE href="http://localhost:8000/static/">
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
     <meta name="googlebot" content="index,follow,snippet,archive">
@@ -417,7 +417,7 @@
                 <div class="col-md-9" id="checkout">
 
                     <div class="box">
-                        <form method="post" action="checkout3.html">
+                        <form method="get" action="http://localhost:8000/app/shopping_cart/payment_method/">
                             <h1>Checkout - Delivery method</h1>
                             <ul class="nav nav-pills nav-justified">
                                 <li><a href="checkout1.html"><i class="fa fa-map-marker"></i><br>Address</a>
