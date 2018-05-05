@@ -64,10 +64,14 @@ def search_shop_purchase_history(request):
 @csrf_exempt
 def close_shop_permanently(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         shop_name = request.POST.get('shop_name')
-        # return HttpResponse('no GUI yet')
-        ShopLogic.close_shop_permanently(username, shop_name)
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if ShopLogic.close_shop_permanently(username, shop_name):
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 @csrf_exempt

@@ -10,6 +10,13 @@ def fetch_purchases(results):
     return array
 
 
+def fetch_purchase(result):
+    array = []
+    for purchase in result:
+        array.append(Purchase(purchase[0], purchase[1], purchase[2], purchase[3]))
+    return array[0]
+
+
 def add_purchase_and_return_id(purchase_date, username, total_price):
     sql_query = """
                     INSERT INTO Purchases(purchaseDate,username,totalPrice)
@@ -42,3 +49,12 @@ def update_purchase_total_price(purchase_id, total_price):
                 WHERE purchaseId = {}
                 """.format(total_price, purchase_id)
     return commit_command(sql_query)
+
+
+def get_purchase(purchase_id):
+    sql_query = """
+                       SELECT *
+                      FROM Purchases
+                      WHERE purchaseId = '{}'
+                     """.format(purchase_id)
+    return fetch_purchase(select_command(sql_query))

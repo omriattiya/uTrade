@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     $('#send-message-form').submit(function () {
         return false;

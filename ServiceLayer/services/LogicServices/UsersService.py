@@ -34,10 +34,18 @@ def register(request):
 @csrf_exempt
 def remove_user(request):
     if request.method == 'POST':
-        # return HttpResponse('user removed')
-        username = request.POST.get('username')
         registered_user = request.POST.get('registered_user')
-        UsersLogic.remove_user(username, registered_user)
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+
+            if UsersLogic.remove_user(username, RegisteredUser(registered_user, None)):
+                for k,v in Consumer.loggedInUsers.items():
+                    if v == registered_user:
+                        del Consumer.loggedInUsers[k]
+                return HttpResponse('success')
+        return HttpResponse('fail')
 
 
 @csrf_exempt

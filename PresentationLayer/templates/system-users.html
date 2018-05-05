@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
     <BASE href="http://localhost:8000/static/">
+
 
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -37,9 +39,8 @@
 
     <link rel="shortcut icon" href="favicon.png">
 
-
     <!-- *** SCRIPTS TO INCLUDE ***
-    _________________________________________________________ -->
+ _________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
@@ -49,14 +50,12 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
 
-    <script src="js/messages.js"></script>
+    <script src="js/system-users.js"></script>
     <script src="js/web_sockets.js"></script>
 
 </head>
 
 <body>
-<!-- *** TOPBAR ***
-_________________________________________________________ -->
 {% autoescape off %}
     {{ topbar }}
 {% endautoescape %}
@@ -91,7 +90,6 @@ _________________________________________________________ -->
         <!--/.navbar-header -->
 
 
-
         {% autoescape off %}
             {{ navbar }}
         {% endautoescape %}
@@ -124,65 +122,57 @@ _________________________________________________________ -->
     <div id="content">
         <div class="container">
 
-            <div>
-                <div class="col-md-3">
-                    <!-- *** CUSTOMER MENU ***
-    _________________________________________________________ -->
-                    <div class="panel panel-default sidebar-menu">
+            <div class="col-md-3">
+                <!-- *** CUSTOMER MENU ***
+_________________________________________________________ -->
+                <div class="panel panel-default sidebar-menu">
 
-                        <div class="panel-body">
+                    <div class="panel-body">
 
-                            <ul class="nav nav-pills nav-stacked">
-                                <li {{ received_on }}>
-                                    <a href="http://localhost:8000/app/home/messages/?content=received"><i
-                                            class="fa fa-list"></i> Received</a>
-                                </li>
-                                <li {{ sent_on }}>
-                                    <a href="http://localhost:8000/app/home/messages/?content=sent"><i
-                                            class="fa fa-heart"></i> Sent</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="panel-body" style="display:flex;justify-content: center">
-                            <button href="#" data-toggle="modal" data-target="#send-message-modal"
-                                    class="btn btn-primary">
-                                <i class="fa fa-pencil-square"></i><strong> Send Message</strong>
-                            </button>
-                        </div>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li class="active">
+                                <a href="http://localhost:8000/app/system/users/"><i class="fa fa-list"></i> Users</a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:8000/app/system/history/"><i class="fa fa-heart"></i> History</a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:8000/app/system/shops/"><i class="fa fa-user"></i> Shops</a>
+                            </li>
+                        </ul>
                     </div>
-                    <!-- /.col-md-3 -->
 
-                    <!-- *** CUSTOMER MENU END *** -->
                 </div>
+                <!-- /.col-md-3 -->
+
+                <!-- *** CUSTOMER MENU END *** -->
             </div>
 
-
-            <div class="col-md-9" id="customer-orders">
+            <div class="col-md-9">
                 <div class="box">
-                    <h1>My Messages</h1>
-
-                    <p class="lead">Your messages in one place.</p>
-                    <hr>
+                    <h1>Users</h1>
+                    <p class="lead">Here you can see every user in the system</p>
 
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Message</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Content</th>
+                                <th>Username</th>
+                                <th>Shops Own</th>
+                                <th>Shops Manage</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
+
                             {% autoescape off %}
-                                {{ messages }}
+                                {{ users }}
                             {% endautoescape %}
 
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
 
@@ -191,56 +181,6 @@ _________________________________________________________ -->
         <!-- /.container -->
     </div>
     <!-- /#content -->
-
-
-    <div class="modal fade" id="view-message-modal" tabindex="-1" role="dialog" aria-labelledby="Login"
-         aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="Login">Message Content:</h4>
-                </div>
-                <div id="message-content" class="modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="send-message-modal" tabindex="-1" role="dialog" aria-labelledby="Login"
-         aria-hidden="true">
-        <div class="modal-dialog modal-md">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="Login">Write Message</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form id="send-message-form" onsubmit="sendMessage()">
-                        <div class="form-group">
-                            <input type="text" placeholder="To" class="form-control" id="message-to-modal">
-                            <hr>
-                            <textarea id="message-content-modal" class="form-control" rows="4" cols="50"
-                                      placeholder="Content" style="resize: none;"></textarea>
-                        </div>
-
-                        <p class="text-center">
-                            <button class="btn btn-primary"><i class="fa fa-arrow-circle-o-up"></i> Send
-                            </button>
-                        </p>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- *** COPYRIGHT ***

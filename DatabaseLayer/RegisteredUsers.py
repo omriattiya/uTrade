@@ -67,3 +67,11 @@ def get_purchase_history(username):
                 WHERE Purchases.purchaseId = PurchasedItems.purchaseId AND Purchases.username = '{}'
               """.format(username)
     return fetch_purchased_items(select_command(sql_query))
+
+
+def get_all_users():
+    sql_query = """
+                SELECT *
+                FROM RegisteredUsers
+              """
+    return fetch_users(select_command(sql_query))
