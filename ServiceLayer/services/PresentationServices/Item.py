@@ -5,11 +5,10 @@ from django.shortcuts import render
 from django.template import loader
 
 from DatabaseLayer import Lotteries, Auctions
-from DomainLayer import ShopLogic, UsersLogic, ItemsLogic
-from SharedClasses.Item import Item
-from SharedClasses.RegisteredUser import RegisteredUser
-from SharedClasses.Shop import Shop
-from SharedClasses.ShopReview import ShopReview
+from DomainLayer import ItemsLogic
+from ServiceLayer import Consumer
+from DomainLayer import ShoppingLogic
+
 
 shop_not_exist = 'shop does not exist'
 not_get_request = 'not a get request'
@@ -39,6 +38,18 @@ def get_item(request):
                 if auction is not False:
                     policy = "Auction"
                     deadline = datetime.datetime.fromtimestamp(auction.end_date/1000).strftime('%c')
+            login = request.COOKIES.get('login_hash')
+            cart_count = 0
+            topbar = loader.render_to_string('components/Topbar.html', context=None)
+            if login is not None:
+                username = Consumer.loggedInUsers.get(login)
+                if username is not None:
+                    # html of a logged in user
+                    topbar = loader.render_to_string('components/TopbarLoggedIn.html',
+                                                     context={'username': username})
+                    cart_count = len(ShoppingLogic.get_cart_items(username))
+
+            navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
             context = {'item_id': item.id,
                        'item_name': item.name,
                        'shop_name': item.shop_name,
@@ -50,7 +61,9 @@ def get_item(request):
                        'url': item.url,
                        'policy': policy,
                        'deadline': deadline,
-                       'real_end_time': real_end_time}
+                       'real_end_time': real_end_time,
+                       'topbar': topbar,
+                       'navbar': navbar}
             return render(request, 'detail.html', context=context)
         else:
             return HttpResponse(shop_not_exist)

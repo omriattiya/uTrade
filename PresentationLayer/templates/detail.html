@@ -36,65 +36,34 @@
 
     <link rel="shortcut icon" href="favicon.png">
 
+        <!-- *** SCRIPTS TO INCLUDE ***
+ _________________________________________________________ -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+
+    <script src="js/web_sockets.js"></script>
 
 
 </head>
 
 <body>
+
     <!-- *** TOPBAR ***
- _________________________________________________________ -->
-    <div id="top">
-        <div class="container">
-            <div class="col-md-6" data-animate="fadeInDown">
-                <ul class="menu">
-                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                    </li>
-                    <li><a href="register.html">Register</a>
-                    </li>
-                    <li><a href="contact.html">Contact</a>
-                    </li>
-                    <li><a href="#">Recently viewed</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="Login">Customer login</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="customer-orders.html" method="post">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="email-modal" placeholder="email">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="password-modal" placeholder="password">
-                            </div>
-
-                            <p class="text-center">
-                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
-                            </p>
-
-                        </form>
-
-                        <p class="text-center text-muted">Not registered yet?</p>
-                        <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    _________________________________________________________ -->
+    {% autoescape off %}
+        {{ topbar }}
+    {% endautoescape %}
 
     <!-- *** TOP BAR END *** -->
 
     <!-- *** NAVBAR ***
- _________________________________________________________ -->
+    _________________________________________________________ -->
 
     <div class="navbar navbar-default yamm" role="navigation" id="navbar">
         <div class="container">
@@ -114,40 +83,62 @@
                         <i class="fa fa-search"></i>
                     </button>
                     <a class="btn btn-default navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
+                        <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
                     </a>
                 </div>
             </div>
             <!--/.navbar-header -->
 
-            <div class="navbar-buttons">
+            <!--/.nav-collapse -->
 
-                <div class="navbar-collapse collapse right" id="basket-overview">
-                    <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
-                </div>
-                <!--/.nav-collapse -->
-
-                <div class="navbar-collapse collapse right" id="search-not-mobile">
-                    <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-
-            </div>
+            {% autoescape off %}
+                {{ navbar }}
+            {% endautoescape %}
 
             <div class="collapse clearfix" id="search">
+                <div class="row">
 
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <span class="input-group-btn">
+                    <div class="row">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group">
+                                <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                                <span class="input-group-btn">
 
-			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
+                        class="fa fa-search"></i></button>
 
-		    </span>
+                </span>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="row">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group">
+                                <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                                <span class="input-group-btn">
+
+                <button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
+                        class="fa fa-search"></i></button>
+
+                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group">
+                                <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                                <span class="input-group-btn">
+
+                <button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
+                        class="fa fa-search"></i></button>
+
+                </span>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
 
             </div>
             <!--/.nav-collapse -->
@@ -159,6 +150,7 @@
 
     <!-- *** NAVBAR END *** -->
 
+
     <div id="all">
 
         <div id="content">
@@ -166,14 +158,13 @@
 
                 <div class="col-md-12">
                     <ul class="breadcrumb">
-                        <li><a href="#">Home</a>
-                        </li>
-                        <li><a href="#">Ladies</a>
-                        </li>
-                        <li><a href="#">Tops</a>
-                        </li>
-                        <li>White Blouse Armani</li>
-                    </ul>
+                    <li><a href="http://localhost:8000/app/home/">Home</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8000/app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a>
+                    </li>
+                    <li>{{ item_name }}</li>
+                </ul>
 
                 </div>
 
@@ -270,47 +261,11 @@
                                                 <td>Ranking</td>
                                                 <th class="text-right">9/10</th>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <p class="text-center buttons">
-                                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#review-modal"><i class="fa fa-plus-circle"></i> Add Review</a>
-                                                    </p>
-                                                </td>
-                                                <th>
-                                                    <p class="text-center buttons">
-                                                        <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i class="fa fa-files-o"></i> Show Reviews</a>
-                                                    </p>
-                                                </th>
-                                            </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                                <div class="modal fade" id="review-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm">
-
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                                                <h4 class="modal-title" id="Login">Review Item</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="customer-orders.html" method="post">
-                                                    <div class="form-group">
-                                                        <input type="number" class="form-control" id="email-modal" placeholder="Rank" min="0" max="10">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="password-modal" placeholder="Description">
-                                                    </div>
-
-                                                    <p class="text-center">
-                                                        <button class="btn btn-primary"><i class="fa fa-comment"></i> Submit</button>
-                                                    </p>
-
-                                                </form>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p class="text-center buttons">
+                                        <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i class="fa fa-files-o"></i> Show Reviews</a>
+                                    </p>
                                 </div>
                             </div>
                             <!-- /.col-md-3 -->
@@ -486,21 +441,6 @@
 
     </div>
     <!-- /#all -->
-
-
-    
-
-    <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
-    <script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/modernizr.js"></script>
-    <script src="js/bootstrap-hover-dropdown.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/front.js"></script>
-
 
 
 
