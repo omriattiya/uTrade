@@ -1,4 +1,6 @@
-from DatabaseLayer import Messages, StoreManagers, Owners, Shops
+from django.http import HttpResponse
+
+from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
 from SharedClasses import Message
 from DatabaseLayer.RegisteredUsers import get_user
 
@@ -8,6 +10,9 @@ def send_message(message):
         if get_user(message.from_username) is not False:
             if get_user(message.to_username) is not False:
                 return Messages.send_message(message)
+        if SystemManagers.is_system_manager(message.from_username):
+            message.from_username = 'System'
+            return Messages.send_message(message)
 
 
 def get_all_messages(username):
@@ -36,7 +41,7 @@ def send_message_from_shop(username, message):
                 return Messages.send_message_from_shop(message)
     if Owners.get_owner(username, message.from_username) is not False:
         if Shops.search_shop(message.from_username) is not False:
-                return Messages.send_message_from_shop(message)
+            return Messages.send_message_from_shop(message)
     return False
 
 
@@ -56,3 +61,11 @@ def get_all_sent_shop_messages(username, shop_name):
         if Shops.search_shop(shop_name) is not False:
             return Messages.get_all_sent_shop_messages(shop_name)
     return False
+
+
+def get_received_system_messages():
+    return Messages.get_received_system_messages()
+
+
+def get_sent_system_messages():
+    return Messages.get_sent_system_messages()

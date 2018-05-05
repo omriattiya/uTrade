@@ -20,7 +20,10 @@ def get_messages(request):
                 cart_count = len(ShoppingLogic.get_cart_items(username))
                 messages_html = ""
                 if content == 'received':
-                    messages = MessagingLogic.get_all_messages(username)
+                    if UsersLogic.is_system_manager(username):
+                        messages = MessagingLogic.get_received_system_messages()
+                    else:
+                        messages = MessagingLogic.get_all_messages(username)
                     for message in messages:
                         messages_html += loader.render_to_string('components/Message.html', context={
                             'id': message.message_id,
@@ -31,7 +34,10 @@ def get_messages(request):
                     received_on = "class=active"
                     sent_on = ""
                 elif content == 'sent':
-                    messages = MessagingLogic.get_all_sent_messages(username)
+                    if UsersLogic.is_system_manager(username):
+                        messages = MessagingLogic.get_sent_system_messages()
+                    else:
+                        messages = MessagingLogic.get_all_sent_messages(username)
                     for message in messages:
                         messages_html += loader.render_to_string('components/Message.html', context={
                             'id': message.message_id,
@@ -48,7 +54,8 @@ def get_messages(request):
                     'navbar': navbar,
                     'messages': messages_html,
                     'received_on': received_on,
-                    'sent_on': sent_on})
+                    'sent_on': sent_on,
+                })
 
         return HttpResponse('You are not logged in!')
 

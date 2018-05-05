@@ -172,7 +172,6 @@ tables_sql = [
     """,
     """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
-          code CHAR(15),
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,

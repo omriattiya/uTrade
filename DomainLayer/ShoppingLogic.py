@@ -188,3 +188,7 @@ def get_user_purchases(username):
 
 def get_purchased_items_by_purchase_id(purchase_id):
     return PurchasedItems.get_purchased_items_by_purchase(purchase_id)
+
+
+def get_purchase(purchase_id):
+    return Purchases.get_purchase(purchase_id)

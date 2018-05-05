@@ -151,60 +151,26 @@ _________________________________________________________ -->
 
             <div class="col-md-9">
                 <div class="box">
-                    <h1>User Purchase History</h1>
-                    <p class="lead">Here you can see every user purchase</p>
+                    <h1>Purchase History</h1>
+                    <p class="lead">Here you can see every purchase that was made.</p>
 
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th>Username</th>
-                                <th>Shops Own</th>
-                                <th>Shops Manage</th>
-                                <th>Action</th>
+                                <th>Shop Name</th>
+                                <th>PurchaseID</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <tr>
-                                <th>Shahar</th>
-                                <td>213</td>
-                                <td>21</td>
-                                <td><a href="http://localhost:8000/app/my/orders/order/?order_id={{ order_id }}"
-                                       class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <div class="box">
-                    <h1>Store Selling History</h1>
-                    <p class="lead">Here you can see every sell by a store</p>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Shops Own</th>
-                                <th>Shops Manage</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr>
-                                <th>Shahar</th>
-                                <td>213</td>
-                                <td>21</td>
-                                <td><a href="http://localhost:8000/app/my/orders/order/?order_id={{ order_id }}"
-                                       class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                            </tr>
+                            {% autoescape off %}
+                                {{ history }}
+                            {% endautoescape %}
 
                             </tbody>
                         </table>

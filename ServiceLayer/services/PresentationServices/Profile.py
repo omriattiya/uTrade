@@ -233,13 +233,25 @@ def get_system_history(request):
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
                 if UsersLogic.is_system_manager(username):
-                    orders_html = ""
+                    history_html = ""
+                    purchased_items = ItemsLogic.get_all_purchased_items(username)
+                    for purchased_item in purchased_items:
+                        item = ItemsLogic.get_item(purchased_item.item_id)
+                        purchase = ShoppingLogic.get_purchased_items_by_purchase_id(purchased_item.purchase_id)
+                        history_html += loader.render_to_string('components/purchase_history.html',context={
+                            'username':purchase.username,
+                            'shop_name':item.shop_name,
+                            'purchase_id':purchased_item.purchase_id,
+                            'item_id': item.id,
+                            'quantity': purchased_item.quantity,
+                            'price':purchased_item.price
+                        })
 
                     topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                     cart_count = len(ShoppingLogic.get_cart_items(username))
                     navbar = loader.render_to_string('components/NavbarButtons.html',
                                                      context={'cart_items': cart_count})
                     return render(request, 'system-history.html',
-                                  context={'topbar': topbar, 'navbar': navbar})
+                                  context={'topbar': topbar, 'navbar': navbar,'history':history_html})
 
         return HttpResponse("You don't have the privilege to be here")

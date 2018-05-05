@@ -66,3 +66,21 @@ def get_all_sent_shop_messages(shop_name):
                     WHERE MessageFrom = '{}'
                   """.format(shop_name)
     return fetch_messages(select_command(sql_query))
+
+
+def get_received_system_messages():
+    sql_query = """
+                        SELECT *
+                        FROM Messages
+                        WHERE MessageTo = 'System'
+                      """
+    return fetch_messages(select_command(sql_query))
+
+
+def get_sent_system_messages():
+    sql_query = """
+                        SELECT *
+                        FROM Messages
+                        WHERE MessageFrom = 'System'
+                      """
+    return fetch_messages(select_command(sql_query))
