@@ -1,3 +1,4 @@
+'''
 from channels.generic.websocket import WebsocketConsumer
 import threading
 
@@ -63,3 +64,4 @@ class Consumer(WebsocketConsumer):
         if username is not None:
             del connectedConsumers[self]
             del connectedUsers[username]
+'''
