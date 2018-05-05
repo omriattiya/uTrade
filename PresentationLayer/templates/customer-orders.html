@@ -184,7 +184,9 @@ _________________________________________________________ -->
                             </tr>
                             </thead>
                             <tbody>
+                            {% autoescape off %}
                                 {{ orders }}
+                            {% endautoescape %}
                             </tbody>
                         </table>
                     </div>

@@ -150,9 +150,19 @@ def get_order(request):
             if username is not None:
                 items_html = ""
                 items = ShoppingLogic.get_purchased_items_by_purchase_id(purchase_id)
+                # delete the row below
+                items = []
+                items_html += loader.render_to_string('components/PurchasedItem.html', context={
+                    'item_id': 12,
+                    'item_url': 'https://www.wallpaperbackgrounds.org/wp-content/uploads/Picture.jpg',
+                    'item_name': 'Banananana',
+                    'item_quantity': 123,
+                    'item_price': 12.00,
+                    'shop_name': 'DickShop',
+                })
                 for item in items:
                     full_item = ItemsLogic.get_item(item.item_id)
-                    items_html += loader.render_to_string('components/order.html', context={
+                    items_html += loader.render_to_string('components/PurchasedItem.html', context={
                         'item_id': item.item_id,
                         'item_url': full_item.url,
                         'item_name': full_item.name,
@@ -164,8 +174,10 @@ def get_order(request):
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))
                 navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+                #date = ShoppingLogic.get_purchase(purchase_id).purchase_date
                 return render(request, 'customer-order.html',
-                              context={'topbar': topbar, 'navbar': navbar, 'items': items_html})
+                              context={'topbar': topbar, 'navbar': navbar, 'items': items_html, 'order_id': purchase_id,
+                                       'order_date': "23/02/1022"})
 
         return HttpResponse('You are not logged in!')
 
@@ -238,13 +250,13 @@ def get_system_history(request):
                     for purchased_item in purchased_items:
                         item = ItemsLogic.get_item(purchased_item.item_id)
                         purchase = ShoppingLogic.get_purchased_items_by_purchase_id(purchased_item.purchase_id)
-                        history_html += loader.render_to_string('components/purchase_history.html',context={
-                            'username':purchase.username,
-                            'shop_name':item.shop_name,
-                            'purchase_id':purchased_item.purchase_id,
+                        history_html += loader.render_to_string('components/purchase_history.html', context={
+                            'username': purchase.username,
+                            'shop_name': item.shop_name,
+                            'purchase_id': purchased_item.purchase_id,
                             'item_id': item.id,
                             'quantity': purchased_item.quantity,
-                            'price':purchased_item.price
+                            'price': purchased_item.price
                         })
 
                     topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
@@ -252,6 +264,6 @@ def get_system_history(request):
                     navbar = loader.render_to_string('components/NavbarButtons.html',
                                                      context={'cart_items': cart_count})
                     return render(request, 'system-history.html',
-                                  context={'topbar': topbar, 'navbar': navbar,'history':history_html})
+                                  context={'topbar': topbar, 'navbar': navbar, 'history': history_html})
 
         return HttpResponse("You don't have the privilege to be here")

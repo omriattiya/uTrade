@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 
 from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
+from DomainLayer import UsersLogic
 from ServiceLayer import Consumer
 from SharedClasses import Message
 from DatabaseLayer.RegisteredUsers import get_user
@@ -12,12 +13,22 @@ def send_message(message):
         if get_user(message.from_username) is not False:
             if get_user(message.to_username) is not False:
                 output = Messages.send_message(message)
+            elif message.to_username == 'System':
+                output = Messages.send_message(message)
         if SystemManagers.is_system_manager(message.from_username):
             message.from_username = 'System'
             output = Messages.send_message(message)
     if output:
-        Consumer.notify_live_alerts([message.to_username],
-                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" > You Have a new message from ' + message.from_username + '</a>')
+        users = [message.to_username]
+        if message.to_username == 'System':
+            SMs = SystemManagers.get_all_system_managers()
+            SM_names = []
+            for sm in SMs:
+                SM_names.append(sm.username)
+            users = SM_names
+        Consumer.notify_live_alerts(users,
+                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" > '
+                                    'You Have a new message from ' + message.from_username + '</a>')
     return output
 
 
@@ -45,12 +56,19 @@ def send_message_from_shop(username, message):
     if manager is not False:
         if manager.permission_reply_messages > 0:
             if Shops.search_shop(message.from_username) is not False:
-                output =  Messages.send_message_from_shop(message)
+                output = Messages.send_message_from_shop(message)
     if Owners.get_owner(username, message.from_username) is not False:
         if Shops.search_shop(message.from_username) is not False:
             output = Messages.send_message_from_shop(message)
     if output:
-        Consumer.notify_live_alerts([message.to_username],
+        users = [message.to_username]
+        if message.to_username == 'System':
+            SMs = SystemManagers.get_all_system_managers()
+            SM_names = []
+            for sm in SMs:
+                SM_names.append(sm.username)
+            users = SM_names
+        Consumer.notify_live_alerts(users,
                                     '<a href = "http://localhost:8000/app/home/messages/?content=received" >'
                                     ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
     return output

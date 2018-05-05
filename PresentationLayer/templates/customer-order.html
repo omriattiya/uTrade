@@ -139,7 +139,7 @@ _________________________________________________________ -->
                 <div class="box">
                     <h1>Order #{{ order_id }}</h1>
 
-                    <p class="lead">Order #{{ order_id }} was placed on <strong>{{ order_data }}</strong>.</p>
+                    <p class="lead">Order #{{ order_id }} was placed on <strong>{{ order_date }}</strong>.</p>
 
                     <hr>
 
@@ -153,36 +153,18 @@ _________________________________________________________ -->
                                 <th>Shop</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {{ items }}
+                            {% autoescape off %}
+                                {{ items }}
+                            {% endautoescape %}
                             </tbody>
                         </table>
 
                     </div>
                     <!-- /.table-responsive -->
-
-                    <!--<div class="row addresses">
-                        <div class="col-md-6">
-                            <h2>Invoice address</h2>
-                            <p>John Brown
-                                <br>13/25 New Avenue
-                                <br>New Heaven
-                                <br>45Y 73J
-                                <br>England
-                                <br>Great Britain</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Shipping address</h2>
-                            <p>John Brown
-                                <br>13/25 New Avenue
-                                <br>New Heaven
-                                <br>45Y 73J
-                                <br>England
-                                <br>Great Britain</p>
-                        </div>
-                    </div>-->
 
                     <div class="modal fade" id="review-shop-modal" tabindex="-1" role="dialog" aria-labelledby="Login"
                          aria-hidden="true">
@@ -199,11 +181,13 @@ _________________________________________________________ -->
 
                                     <form id="review-shop-form" onsubmit="reviewShop()">
 
-                                        <input id="shop-rank-modal" type="text" placeholder="Rank ( 1 to 5 )" class="form-control">
+                                        <input id="shop-rank-modal" type="text" placeholder="Rank ( 1 to 5 )"
+                                               class="form-control">
 
                                         <hr>
                                         <div class="form-group">
-                                            <textarea id="shop-review-content-modal" class="form-control" rows="4" cols="50"
+                                            <textarea id="shop-review-content-modal" class="form-control" rows="4"
+                                                      cols="50"
                                                       placeholder="Description" style="resize: none;"></textarea>
                                         </div>
 
@@ -231,7 +215,8 @@ _________________________________________________________ -->
                                 </div>
                                 <div class="modal-body">
                                     <form id="review-item-form" onsubmit="reviewItem()">
-                                       <input type="text" placeholder="Rank ( 1 to 5 )" class="form-control" id="message-to-modal">
+                                        <input type="text" placeholder="Rank ( 1 to 5 )" class="form-control"
+                                               id="message-to-modal">
 
                                         <hr>
                                         <div class="form-group">
@@ -241,6 +226,36 @@ _________________________________________________________ -->
 
                                         <p class="text-center">
                                             <button class="btn btn-primary"><i class="fa fa-plus-square"></i> Post
+                                            </button>
+                                        </p>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="report-item-modal" tabindex="-1" role="dialog" aria-labelledby="Login"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="Login">Report Item</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="report-item-form" onsubmit="reportItem()">
+                                        <hr>
+                                        <div class="form-group">
+                                            <textarea id="report-content-modal" class="form-control" rows="4" cols="50"
+                                                      placeholder="Report Description" style="resize: none;"></textarea>
+                                        </div>
+
+                                        <p class="text-center">
+                                            <button class="btn btn-primary"><i class="fa fa-flag"></i> Report
                                             </button>
                                         </p>
 

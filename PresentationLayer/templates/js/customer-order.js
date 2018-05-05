@@ -10,6 +10,9 @@ $(document).ready(function () {
     $('#review-item-form').submit(function () {
         return false;
     });
+    $('#report-item-form').submit(function () {
+        return false;
+    });
 });
 
 function reviewShop() {
@@ -19,8 +22,8 @@ function reviewShop() {
 
     var data = new FormData();
     data.append('shop_name', openedShop);
-    data.append('description', document.getElementById('shop-review-content-modal'));
-    data.append('rank', document.getElementById('shop-rank-modal'));
+    data.append('description', document.getElementById('shop-review-content-modal').value);
+    data.append('rank', document.getElementById('shop-rank-modal').value);
 
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
@@ -45,8 +48,8 @@ function reviewItem() {
 
     var data = new FormData();
     data.append('shop_name', openedShop);
-    data.append('description', document.getElementById('shop-review-content-modal'));
-    data.append('rank', document.getElementById('shop-rank-modal'));
+    data.append('description', document.getElementById('shop-review-content-modal').value);
+    data.append('rank', document.getElementById('shop-rank-modal').value);
 
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
@@ -71,4 +74,25 @@ function checkRank() {
         return false;
     }
     return true;
+}
+
+function reportItem() {
+    var data = new FormData();
+    data.append('to', 'System');
+    data.append('content', document.getElementById('report-content-modal').value);
+
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Failed")
+            }
+            else if (loadHTML.responseText === 'success') {
+                alert("Reported successfully!");
+                location.reload()
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/messages/send_message/", true);
+    loadHTML.send(data);
 }
