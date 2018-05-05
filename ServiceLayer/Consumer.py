@@ -1,5 +1,4 @@
-'''
-from channels.generic.websocket import WebsocketConsumer
+# from channels.generic.websocket import WebsocketConsumer
 import threading
 
 connectedUsers = {}
@@ -42,7 +41,7 @@ try:
 except:
     print("Can't start live alerts thread")
 
-
+'''
 class Consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
