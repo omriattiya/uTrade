@@ -20,13 +20,11 @@ def search_item(request):
         items = []
         if search_by == 'name':
             items = SearchLogic.search_by_name(request.GET.get('name'))
-            print(items)
             if items is not False:
                 context = {'topbar': topbar, 'items': items}
                 return render(request, 'SearchView.html', context)
         if search_by == 'category':
             items = SearchLogic.search_by_category(request.GET.get('category'))
-            print(items)
             if items is not False:
                 context = {'topbar': topbar, 'items': items}
                 return render(request, 'SearchView.html', context)
