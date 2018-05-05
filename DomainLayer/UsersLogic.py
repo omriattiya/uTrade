@@ -161,6 +161,13 @@ def get_owned_shops(username):
     return Owners.get_shops_by_owner(username)
 
 
+def is_owner_of_shop(username, shop_name):
+    results = get_owned_shops(username)
+    for owner in results:
+        if owner.shop_name == shop_name:
+            return True
+    return False
+
 def get_managed_shops(username):
     return StoreManagers.get_manager_shops(username)
 
@@ -187,3 +194,11 @@ def is_system_manager(username):
 
 def get_all_users():
     return RegisteredUsers.get_all_users()
+
+
+def is_manager_of_shop(username, shop_name):
+    return StoreManagers.is_store_manager_of_shop(username, shop_name)
+
+
+def get_manager(username, shop_name):
+    return StoreManagers.get_store_manager(username, shop_name)

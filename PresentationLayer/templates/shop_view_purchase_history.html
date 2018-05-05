@@ -126,36 +126,13 @@ _________________________________________________________ -->
 
             <div class="col-md-12">
                 <div class="box">
-                    <h1>{{ shop_name }}</h1>
-                    <p>{{ shop_status }}</p>
+                    <h1>{Purchase History of {{ shop_name }}</h1>
                 </div>
 
-                <div class="box info-bar">
-                    <div class="row">
-                        <div class="col-sm-4 products-showing" style="width: unset">
-                            <button type="button" class="btn btn-primary">
-                                Add Review
-                            </button>
+                {% autoescape off %}
+                    {{ items }}
+                {% endautoescape %}
 
-                        </div>
-                        <div class="col-sm-4 products-showing" style="width: unset">
-                            <a href="../app/shop/reviews/?shop_name={{ shop_name }}" class="btn btn-primary">Watch
-                                Reviews</a>
-                        </div>
-                        {% autoescape off %}
-                            {{ owner_manager_options }}
-                        {% endautoescape %}
-                    </div>
-                </div>
-
-
-                <div class="row products">
-                    {% autoescape off %}
-                        {{ products }}
-                    {% endautoescape %}
-
-                </div>
-                <!-- /.products -->
 
             </div>
             <!-- /.col-md-9 -->

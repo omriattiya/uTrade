@@ -1,6 +1,7 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
-from DomainLayer import ItemsLogic
+from django.views.decorators.csrf import csrf_exempt
+
+from DomainLayer import ItemsLogic, UsersLogic
 from ServiceLayer import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
@@ -23,10 +24,30 @@ def add_item_to_shop(request):
 @csrf_exempt
 def remove_item_from_shop(request):
     if request.method == 'POST':
-        # return HttpResponse('item added')
+        login = request.COOKIES.get('login_hash')
+        username = None
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is None:
+                return HttpResponse('fail')
+
         item_id = request.POST.get('item_id')
-        username = request.POST.get('username')
-        ItemsLogic.remove_item_from_shop(item_id, username)
+
+        item = ItemsLogic.get_item(item_id)
+        if item is False:
+            return HttpResponse('fail')
+        if not UsersLogic.is_owner_of_shop(username, item.shop_name):
+            if UsersLogic.is_manager_of_shop(username, item.shop_name):
+                manager = UsersLogic.get_manager(username, item.shop_name)
+                if manager.permission_remove_item is not 1:  # no permission
+                    return HttpResponse('no permission to remove item')
+            else:
+                return HttpResponse('fail')  # not manager not owner
+
+        status = ItemsLogic.remove_item_from_shop(item_id, username)
+        if status is False:
+            return HttpResponse('fail')
+        return HttpResponse('success')
 
 
 @csrf_exempt
@@ -49,15 +70,37 @@ def add_review_on_item(request):
 @csrf_exempt
 def edit_shop_item(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        login = request.COOKIES.get('login_hash')
+        username = None
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is None:
+                return HttpResponse('fail')
         item_id = request.POST.get('item_id')
-        field_name = request.POST.get('field_name')
-        new_value = request.POST.get('new_value')
-        status = ItemsLogic.edit_shop_item(username, item_id, field_name, new_value)
-        if status:
-            return HttpResponse('item edited successfully')
-        else:
-            return HttpResponse('failed')
+
+        item = ItemsLogic.get_item(item_id)
+        if item is False:
+            return HttpResponse('fail')
+        if not UsersLogic.is_owner_of_shop(username, item.shop_name):
+            if UsersLogic.is_manager_of_shop(username, item.shop_name):
+                manager = UsersLogic.get_manager(username, item.shop_name)
+                if manager.permission_edit_item is not 1:  # no permission
+                    return HttpResponse('no permission to edit item')
+            else:
+                return HttpResponse('fail')  # not manager not owner
+
+        fields = ['quantity', 'category', 'keywords', 'price', 'url']
+        new_values = [request.POST.get('item_quantity'),
+                      request.POST.get('item_category'),
+                      request.POST.get('item_keywords'),
+                      request.POST.get('item_price'),
+                      request.POST.get('item_url')]
+        status = True
+        for i in range(0, len(fields)):
+            status = ItemsLogic.edit_shop_item(username, item_id, fields[i], new_values[i])
+            if status is False:
+                return HttpResponse('fail')
+        return HttpResponse('success')
 
 
 def get_all_purchased_items(request):

@@ -2,7 +2,6 @@ from django.urls import path
 
 from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
     ShoppingService, AuctionService, LotteryService, UsersService
-
 from ServiceLayer.services.PresentationServices import Home, Profile, Shop, Messages, Item
 
 users_urlpatterns = [
@@ -96,8 +95,12 @@ shop_page_urlpatterns = [
     path('shop/', Shop.get_shop),
     path('shop/reviews/', Shop.get_reviews),
     path('shop/messages/', Messages.get_shop_messages),
-    path('shop/get_managers/',Shop.get_shop_managers),
+    path('shop/get_managers/', Shop.get_shop_managers),
     path('shop/get_owners/', Shop.get_shop_owner),
+    path('shop/owner/items/', Shop.get_shop_to_owner),
+    path('shop/owner/items/edit_item/', ItemsService.edit_shop_item),
+    path('shop/owner/items/remove_item/', ItemsService.remove_item_from_shop),
+    path('shop/owner/purchase_history/', Shop.watch_purchase_history)
 ]
 
 item_page_urlpatterns = [
