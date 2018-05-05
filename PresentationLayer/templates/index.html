@@ -68,6 +68,28 @@
                 loadHTML.send(null);
             }
         }
+
+        function onClickOnSearch4() {
+            if (document.getElementById("SearchForm4").value == '') {
+                alert("No Search Value.");
+            }
+            else {
+                var url = 'http://localhost:8000/app/shop/?name=' + document.getElementById("SearchForm4").value;
+                var loadHTML = new XMLHttpRequest();
+                loadHTML.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if (loadHTML.responseText === 'fail') {
+                            alert("Search Failed.")
+                        }
+                        else {
+                            window.location.href = url
+                        }
+                    }
+                };
+                loadHTML.open("GET", url, true);
+                loadHTML.send(null);
+            }
+        }
     </script>
     <BASE href="http://localhost:8000/static/">
 
@@ -201,6 +223,20 @@ _________________________________________________________ -->
                             <span class="input-group-btn">
 
 			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm4" class="form-control" placeholder="Search Shop">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch4();"><i
                     class="fa fa-search"></i></button>
 
 		    </span>

@@ -7,7 +7,6 @@ from ServiceLayer import Consumer
 
 
 def search_item(request):
-    init_database('db.sqlite3')
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
         topbar = loader.render_to_string('components/Topbar.html', context=None)
