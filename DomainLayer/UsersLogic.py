@@ -40,6 +40,8 @@ def edit_password(user):
 
 
 def login(user):
+    if SystemManagers.login(user.username, user.password):
+        return True
     if user.username is not None and user.password is not None:
         user.password = hashlib.sha256(user.password.encode()).hexdigest()
         return RegisteredUsers.login(user)
@@ -177,3 +179,11 @@ def update_permissions(username, store_manager):
     if Owners.is_owner_on_shop(username, store_manager.store_name) is not False:
         return StoreManagers.update_permissions(store_manager)
     return False
+
+
+def is_system_manager(username):
+    return SystemManagers.is_system_manager(username)
+
+
+def get_all_users():
+    return RegisteredUsers.get_all_users()

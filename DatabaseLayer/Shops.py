@@ -63,3 +63,13 @@ def close_shop_permanently(shop_name):
             WHERE name='{}'
             """.format(shop_name)
     return commit_command(sql_query)
+
+
+def get_all_shops():
+    sql_query = """
+                    SELECT *
+                    FROM Shops
+                  """
+    shops = select_command(sql_query)
+    shops = parse_shops(shops)
+    return shops

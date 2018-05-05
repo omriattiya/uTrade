@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 
 from DomainLayer import ShopLogic, UsersLogic, ItemsLogic
+from ServiceLayer import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
@@ -15,8 +16,8 @@ not_get_request = 'not a get request'
 def add_to_db():
     shop_name = 'my_shop'
     username = 'omriatti'
-    #UsersLogic.register(RegisteredUser(username, '12345678'))
-    #ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
+    # UsersLogic.register(RegisteredUser(username, '12345678'))
+    # ShopLogic.create_shop(Shop(shop_name, 'Active'), username)
     ItemsLogic.add_item_to_shop(Item(1, shop_name, 'tomato-2', 'fruits', '', 20, 70, 'regular',
                                      'https://nutriliving-images.imgix.net/images/2014/266/1440/5B26E568-4243-E411-B834-22000AF88B16.jpg?ch=DPR&w=500&h=500&auto=compress,format&dpr=1&ixlib=imgixjs-3.0.4'),
                                 username)
@@ -61,3 +62,37 @@ def get_reviews(request):
             return render(request, 'shop_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)
+
+
+def get_shop_managers(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    shops = ShopLogic.get_store_managers(shop_name)
+                    shops_string = ""
+                    for shop in shops:
+                        shops_string += shop.username + "\n"
+                    return HttpResponse(shops_string)
+        return HttpResponse('fail')
+
+
+def get_shop_owner(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    shops = ShopLogic.get_store_owners(shop_name)
+                    shops_string = ""
+                    for shop in shops:
+                        shops_string += shop.username + "\n"
+                    return HttpResponse(shops_string)
+        return HttpResponse('fail')

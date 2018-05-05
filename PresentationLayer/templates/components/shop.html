@@ -1,0 +1,13 @@
+<tr>
+    <th>{{ shop_name }}</th>
+    <td><a onclick="showOwners('{{ shop_name }}')" href="javascript:void(0)"
+           class="btn btn-primary btn-sm">Show</a></td>
+    <td><a onclick="showManagers('{{ shop_name }}')" href="javascript:void(0)"
+           class="btn btn-primary btn-sm">Show</a></td>
+    <td>{{ status }}
+    </td>
+    <td><a href="http://localhost:8000/app/shop/?shop_name={{ shop_name }}"
+           class="btn btn-primary btn-sm">Go To Shop</a></td>
+    <td><a onclick="closeShop('{{ shop_name }}')" href="javascript:void(0)"
+           class="btn btn-danger btn-sm">Close Shop</a></td>
+</tr>

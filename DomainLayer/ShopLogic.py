@@ -55,3 +55,11 @@ def get_shop_rank(shop_name):
 
 def get_store_managers(shop_name):
     return StoreManagers.get_store_managers_on_shop(shop_name)
+
+
+def get_all_shops():
+    return Shops.get_all_shops()
+
+
+def get_store_owners(shop_name):
+    return Owners.get_owners_by_shop(shop_name)
