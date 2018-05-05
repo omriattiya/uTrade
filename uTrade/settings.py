@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     #'pipeline',
     #'corsheaders',
-    #'channels',
+    'channels',
     'ServiceLayer',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-#MIDDLEWARE_CLASSES = (
-   # 'corsheaders.middleware.CorsMiddleware',
-  #  'django.middleware.common.BrokenLinkEmailsMiddleware',
- #   'django.middleware.common.CommonMiddleware',
-#)
+# MIDDLEWARE_CLASSES = (
+# 'corsheaders.middleware.CorsMiddleware',
+#  'django.middleware.common.BrokenLinkEmailsMiddleware',
+#   'django.middleware.common.CommonMiddleware',
+# )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
