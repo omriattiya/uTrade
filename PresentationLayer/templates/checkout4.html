@@ -2,6 +2,30 @@
 <html lang="en">
 
 <head>
+    <script>
+        function placeOrder()
+        {
+            var data = new FormData();
+            data.append('username', "OmriOmri");
+            var loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (loadHTML.responseText === 'fail') {
+                alert("placing order failed");
+                }
+                else {
+                   //setCookie('login_hash', loadHTML.responseText, 7);
+                   alert("placing order success");
+                   window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/";
+                }
+            }
+            };
+            loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/pay_all/", true);
+            loadHTML.send(data);
+        }
+
+
+    </script>
     <BASE href="http://localhost:8000/static/">
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -417,7 +441,7 @@
                 <div class="col-md-9" id="checkout">
 
                     <div class="box">
-                        <form method="post" action="checkout4.html">
+                        <form>
                             <h1>Checkout - Order review</h1>
                             <ul class="nav nav-pills nav-justified">
                                 <li><a href="http://localhost:8000/app/shopping_cart/addressing/"><i class="fa fa-map-marker"></i><br>Address</a>
@@ -439,37 +463,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for cart_item,item,discount,total_price in cart_items_combined %}
                                             <tr>
                                                 <td>
                                                     <a href="#">
-                                                        <img src="img/detailsquare.jpg" alt="White Blouse Armani">
+                                                        <img src="{{item.url}}">
                                                     </a>
                                                 </td>
-                                                <td><a href="#">White Blouse Armani</a>
+                                                <td><a href="#">{{item.name}}</a>
                                                 </td>
-                                                <td>2</td>
-                                                <td>$123.00</td>
-                                                <td>$0.00</td>
-                                                <td>$246.00</td>
+                                                <td>{{cart_item.item_quantity}}</td>
+                                                <td>${{item.price}}</td>
+                                                <td>${{discount}}</td>
+                                                <td>${{total_price}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#">
-                                                        <img src="img/basketsquare.jpg" alt="Black Blouse Armani">
-                                                    </a>
-                                                </td>
-                                                <td><a href="#">Black Blouse Armani</a>
-                                                </td>
-                                                <td>1</td>
-                                                <td>$200.00</td>
-                                                <td>$0.00</td>
-                                                <td>$200.00</td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th colspan="5">Total</th>
-                                                <th>$446.00</th>
+                                                <th>${{total_price}}</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -484,7 +497,7 @@
                                     <a href="http://localhost:8000/app/shopping_cart/addressing/" class="btn btn-default"><i class="fa fa-chevron-left"></i>Back to Address</a>
                                 </div>
                                 <div class="pull-right">
-                                    <button type="submit" class="btn btn-primary">Place an order<i class="fa fa-chevron-right"></i>
+                                    <button class="btn btn-primary" onclick="placeOrder();">Place an order<i class="fa fa-chevron-right"></i>
                                     </button>
                                 </div>
                             </div>

@@ -76,3 +76,11 @@ def check_empty(username):
               """.format(username)
     items = select_command(sql_query)
     return len(items) == 0
+
+
+def remove_shopping_cart(username):
+    sql_query = """
+                DELETE FROM ShoppingCartItem
+                WHERE userName = '{}'
+              """.format(username)
+    return commit_command(sql_query)

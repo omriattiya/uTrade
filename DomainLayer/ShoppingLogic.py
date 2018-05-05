@@ -124,7 +124,8 @@ def pay_all(username):
                     return False
                 if supply_items(cart_items) is False:
                     return False
-            return True
+            status = remove_shopping_cart(username)
+            return status
     return False
 
 
@@ -180,3 +181,8 @@ def get_cart_cost(username):
             total_cost = total_cost + shopping_cart_item.item_quantity * new_price
         return total_cost
     return False
+
+
+def remove_shopping_cart(username):
+    if username is not None:
+        return ShoppingCartItem.remove_shopping_cart(username)

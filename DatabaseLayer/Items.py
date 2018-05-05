@@ -134,6 +134,6 @@ def get_item_by_code(code):
     sql_query = """
                 SELECT Items.*
                 FROM Items,InvisibleDiscounts
-                WHERE Items.id = InvisibleDiscounts.item_id AND InvisibleDiscounts.code = {}
+                WHERE Items.id = InvisibleDiscounts.item_id AND InvisibleDiscounts.code = '{}'
                 """.format(code)
     return fetch_item(select_command(sql_query))
