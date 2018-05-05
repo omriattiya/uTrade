@@ -125,9 +125,6 @@ def pay_all(username):
                     return False
                 if supply_items(cart_items) is False:
                     return False
-            status = remove_shopping_cart(username)
-            return status
-
                 # live alerts
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
@@ -135,8 +132,8 @@ def pay_all(username):
                     owners_name.append(owner.username)
                 Consumer.notify_live_alerts(owners_name,
                                             '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+item.id+'"># <strong>' + item.id + '</strong></a> from your shop')
-
-            return True
+            status = remove_shopping_cart(username)
+            return status
     return False
 
 
