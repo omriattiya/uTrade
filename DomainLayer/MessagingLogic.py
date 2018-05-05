@@ -1,18 +1,24 @@
 from django.http import HttpResponse
 
 from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
+from ServiceLayer import Consumer
 from SharedClasses import Message
 from DatabaseLayer.RegisteredUsers import get_user
 
 
 def send_message(message):
+    output = False
     if message.from_username is not None and message.to_username is not None and message.content is not None:
         if get_user(message.from_username) is not False:
             if get_user(message.to_username) is not False:
-                return Messages.send_message(message)
+                output = Messages.send_message(message)
         if SystemManagers.is_system_manager(message.from_username):
             message.from_username = 'System'
-            return Messages.send_message(message)
+            output = Messages.send_message(message)
+    if output:
+        Consumer.notify_live_alerts([message.to_username],
+                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" > You Have a new message from ' + message.from_username + '</a>')
+    return output
 
 
 def get_all_messages(username):
@@ -34,15 +40,20 @@ def get_all_shop_messages(username, shop_name):
 
 
 def send_message_from_shop(username, message):
+    output = False
     manager = StoreManagers.get_store_manager(username, message.from_username)
     if manager is not False:
         if manager.permission_reply_messages > 0:
             if Shops.search_shop(message.from_username) is not False:
-                return Messages.send_message_from_shop(message)
+                output =  Messages.send_message_from_shop(message)
     if Owners.get_owner(username, message.from_username) is not False:
         if Shops.search_shop(message.from_username) is not False:
-            return Messages.send_message_from_shop(message)
-    return False
+            output = Messages.send_message_from_shop(message)
+    if output:
+        Consumer.notify_live_alerts([message.to_username],
+                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" >'
+                                    ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
+    return output
 
 
 def get_all_sent_messages(username):

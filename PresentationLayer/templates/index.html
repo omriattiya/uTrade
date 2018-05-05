@@ -2,91 +2,72 @@
 <html lang="en">
 
 <head>
-        <script>
-        function onClickOnSearch1()
-        {
-            if(document.getElementById("SearchForm1").value == '')
-            {
+    <script>
+        function onClickOnSearch1() {
+            if (document.getElementById("SearchForm1").value == '') {
                 alert("No Search Value.");
             }
-            else
-            {
+            else {
                 var url = 'http://localhost:8000/app/search/item/?searchBy=name&name=' + document.getElementById("SearchForm1").value;
                 var loadHTML = new XMLHttpRequest();
-                loadHTML.onreadystatechange = function ()
-                {
-                if (this.readyState === 4 && this.status === 200)
-                {
-                    if (loadHTML.responseText === 'fail')
-                    {
-                        alert("Search Failed.")
+                loadHTML.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if (loadHTML.responseText === 'fail') {
+                            alert("Search Failed.")
+                        }
+                        else {
+                            window.location.href = url
+                        }
                     }
-                    else
-                    {
-                        window.location.href = url
-                    }
-                }
-            };
-            loadHTML.open("GET", url, true);
-            loadHTML.send(null);
+                };
+                loadHTML.open("GET", url, true);
+                loadHTML.send(null);
+            }
         }
-    }
-    function onClickOnSearch2()
-        {
-            if(document.getElementById("SearchForm2").value == '')
-            {
+
+        function onClickOnSearch2() {
+            if (document.getElementById("SearchForm2").value == '') {
                 alert("No Search Value.");
             }
-            else
-            {
+            else {
                 var url = 'http://localhost:8000/app/search/item/?searchBy=category&category=' + document.getElementById("SearchForm2").value;
                 var loadHTML = new XMLHttpRequest();
-                loadHTML.onreadystatechange = function ()
-                {
-                if (this.readyState === 4 && this.status === 200)
-                {
-                    if (loadHTML.responseText === 'fail')
-                    {
-                        alert("Search Failed.")
+                loadHTML.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if (loadHTML.responseText === 'fail') {
+                            alert("Search Failed.")
+                        }
+                        else {
+                            window.location.href = url
+                        }
                     }
-                    else
-                    {
-                        window.location.href = url
-                    }
-                }
-            };
-            loadHTML.open("GET", url, true);
-            loadHTML.send(null);
+                };
+                loadHTML.open("GET", url, true);
+                loadHTML.send(null);
+            }
         }
-    }
-    function onClickOnSearch3()
-        {
-            if(document.getElementById("SearchForm3").value == '')
-            {
+
+        function onClickOnSearch3() {
+            if (document.getElementById("SearchForm3").value == '') {
                 alert("No Search Value.");
             }
-            else
-            {
+            else {
                 var url = 'http://localhost:8000/app/search/item/?searchBy=keywords&keywords=' + document.getElementById("SearchForm3").value;
                 var loadHTML = new XMLHttpRequest();
-                loadHTML.onreadystatechange = function ()
-                {
-                if (this.readyState === 4 && this.status === 200)
-                {
-                    if (loadHTML.responseText === 'fail')
-                    {
-                        alert("Search Failed.")
+                loadHTML.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if (loadHTML.responseText === 'fail') {
+                            alert("Search Failed.")
+                        }
+                        else {
+                            window.location.href = url
+                        }
                     }
-                    else
-                    {
-                        window.location.href = url
-                    }
-                }
-            };
-            loadHTML.open("GET", url, true);
-            loadHTML.send(null);
+                };
+                loadHTML.open("GET", url, true);
+                loadHTML.send(null);
+            }
         }
-    }
     </script>
     <BASE href="http://localhost:8000/static/">
 
@@ -187,44 +168,47 @@ _________________________________________________________ -->
         <div class="collapse clearfix" id="search">
             <div class="row">
 
-             <div class="row">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
-                    <span class="input-group-btn">
-
-			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i class="fa fa-search"></i></button>
-
-		    </span>
-                </div>
-            </form>
-</div>
-              <div class="row">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
-                    <span class="input-group-btn">
-
-			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i class="fa fa-search"></i></button>
-
-		    </span>
-                </div>
-            </form>
-</div>
                 <div class="row">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
-                    <span class="input-group-btn">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                            <span class="input-group-btn">
 
-			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i class="fa fa-search"></i></button>
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
+                    class="fa fa-search"></i></button>
 
 		    </span>
+                        </div>
+                    </form>
                 </div>
-            </form>
-</div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                            <span class="input-group-btn">
 
-        </div>
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
 
         </div>
         <!--/.nav-collapse -->

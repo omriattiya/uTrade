@@ -113,3 +113,28 @@ def get_shop_messages(request):
                     'shop_name': shop_name})
 
         return HttpResponse('You are not logged in!')
+
+
+def get_alerts(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+        cart_count = 0
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+                alert_box = Consumer.user_alerts_box.get(username)
+                alerts_html=""
+                if alert_box is not None:
+                    for alert in alert_box:
+                        alerts_html += "<tr> <td>"+alert+"</td></tr>"
+
+
+                return render(request, 'alerts-page.html', context={
+                    'topbar': topbar,
+                    'navbar': navbar,
+                    'alerts':alerts_html})
+        return HttpResponse('You are not logged in')

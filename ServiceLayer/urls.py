@@ -11,6 +11,7 @@ users_urlpatterns = [
     path('users/edit_password/', UsersService.edit_password),
     path('users/login/', UsersService.login),
     path('users/logout/', UsersService.logout),
+    path('users/clear_alerts/',UsersService.clear_alerts),
 
     path('users/owner/add_owner/', UsersService.add_owner),
     path('users/owner/add_manager/', UsersService.add_manager),
@@ -81,7 +82,8 @@ auction_urlpatterns = [
 home_page_urlpatterns = [
     path('home/', Home.get_home),
     path('home/register/', Home.get_register),
-    path('home/messages/', Messages.get_messages)
+    path('home/messages/', Messages.get_messages),
+    path('home/alerts/',Messages.get_alerts)
 ]
 
 private_area_urlpatterns = [

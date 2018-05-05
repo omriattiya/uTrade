@@ -125,7 +125,7 @@ def get_orders(request):
                 orders_html = ""
                 orders = ShoppingLogic.get_user_purchases(username)
                 for order in orders:
-                    orders_html += loader.render_to_string('components/Order.html', context={
+                    orders_html += loader.render_to_string('components/order.html', context={
                         'order_id': order.purchase_id,
                         'order_date': order.purchase_date,
                         'total_price': order.total_price,
@@ -152,7 +152,7 @@ def get_order(request):
                 items = ShoppingLogic.get_purchased_items_by_purchase_id(purchase_id)
                 for item in items:
                     full_item = ItemsLogic.get_item(item.item_id)
-                    items_html += loader.render_to_string('components/Order.html', context={
+                    items_html += loader.render_to_string('components/order.html', context={
                         'item_id': item.item_id,
                         'item_url': full_item.url,
                         'item_name': full_item.name,

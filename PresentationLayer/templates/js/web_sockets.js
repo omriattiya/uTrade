@@ -3,14 +3,13 @@ var connected = true;
 
 
 $(document).ready(function () {
-    Socket = new WebSocket('ws://localhost:8000/test/');
+    Socket = new WebSocket('ws://localhost:8000/live_alerts/');
     Socket.onopen = function () {
         connected = true;
-        //var result = Socket.send(getCookie('login_hash'));
-        //alert(getCookie('login_hash'))
+        var result = Socket.send(getCookie('login_hash'));
     };
     Socket.onmessage = function (evt) {
-        alert(evt.data)
+        document.getElementById('alerts-count').innerHTML = evt.data
     };
     $('#login-form').submit(function () {
         return false;
@@ -66,17 +65,33 @@ function login() {
 
 
 function logout() {
-var data = new FormData();
-
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'success') {
                 setCookie('login_hash', "", 7);
-                setTimeout(function() {window.location.href = "http://localhost:8000/app/home/"},200)
+                setTimeout(function () {
+                    window.location.href = "http://localhost:8000/app/home/"
+                }, 200)
             }
         }
     };
     loadHTML.open("POST", "http://localhost:8000/app/users/logout/", true);
+    loadHTML.send();
+}
+
+function clearAlerts() {
+    var loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'success'){
+                location.reload()
+            }
+            else {
+                alert(loadHTML.responseText)
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/users/clear_alerts/", true);
     loadHTML.send();
 }
