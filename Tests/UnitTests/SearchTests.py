@@ -16,10 +16,10 @@ class SearchTests(unittest.TestCase):
         register(RegisteredUser('TomerTomer', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular'), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular'), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100, 'regular'), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100, 'regular'), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular', None), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'banana', 'fruit', 'best', 12, 100, 'regular', None), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'water', 'drinks', 'one two', 12, 100, 'regular', None), 'TomerTomer')
 
     def test_search_shop(self):
         shop_founded = Shops.search_shop('My Shop')
@@ -42,8 +42,8 @@ class SearchTests(unittest.TestCase):
         self.assertTrue(items_founded[0].name == 'steak')
 
     def test_search_item_by_like_name(self):
-        ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'green beans', 'fruit', 'best', 12, 100, 'regular'), 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'pink salt', 'drinks', 'one two', 12, 100, 'regular'), 'TomerTomer')
+        status = ItemsLogic.add_item_to_shop(Item(3, 'My Shop', 'green beans', 'fruit', 'best', 12, 100, 'regular', None), 'TomerTomer')
+        status = ItemsLogic.add_item_to_shop(Item(4, 'My Shop', 'pink salt', 'drinks', 'one two', 12, 100, 'regular', None), 'TomerTomer')
         items_founded = SearchLogic.search_by_name('beans')
         self.assertTrue(items_founded[0].name == 'green beans')
         items_founded = SearchLogic.search_by_name('salt')

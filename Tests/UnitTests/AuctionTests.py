@@ -37,7 +37,7 @@ class AuctionTest(unittest.TestCase):
 
     def test_add_auction(self):
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 1, 500, 'auction', None)
-        ret = add_auction(item1, 'YoniYoni', '2018-12-26')
+        ret = add_auction(item1, 'StoreManager1', '2018-12-26')
         lst = get_all_auctions()
         self.assertTrue(ret is not False)
         self.assertTrue(len(lst) == 1)

@@ -17,8 +17,8 @@ class ShoppingCartTests(unittest.TestCase):
         shop_name = 'My New Shop'
         register(RegisteredUser(username, '12341256'))  # register user
         ShopLogic.create_shop(Shop.Shop(shop_name, 'Active'), username)  # add shop
-        ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100, 'regular'), username)
-        ItemsLogic.add_item_to_shop(Item.Item(2, shop_name, 'glue', 'glue', 'keywords', 12, 100, 'regular'), username)
+        ItemsLogic.add_item_to_shop(Item.Item(1, shop_name, 'milk', 'milk', 'keywords', 12, 100, 'regular', None), username)
+        ItemsLogic.add_item_to_shop(Item.Item(2, shop_name, 'glue', 'glue', 'keywords', 12, 100, 'regular', None), username)
 
     def test_add_item_to_cart(self):
         username = 'OmriOmri'

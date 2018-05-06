@@ -131,7 +131,7 @@ def pay_all(username):
                 for owner in owners:
                     owners_name.append(owner.username)
                 Consumer.notify_live_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+item.id+'"># <strong>' + item.id + '</strong></a> from your shop')
+                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+str(item.id)+'"># <strong>' + str(item.id) + '</strong></a> from your shop')
             status = remove_shopping_cart(username)
             return status
     return False
