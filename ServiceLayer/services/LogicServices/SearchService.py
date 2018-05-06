@@ -46,7 +46,7 @@ def search_shop(request):
         shop = SearchLogic.search_shop(request.GET.get('name'))
         if shop is not False:
             context = {'topbar': topbar}
-            return render(request, 'SearchView.html', context)
+            return render(request, 'shop.html', context)
 
 
 def search_item_in_shop(request):
