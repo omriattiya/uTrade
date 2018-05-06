@@ -60,7 +60,7 @@ messages_urlpatterns = [
 ]
 
 shoppingcart_urlpatterns = [
-    path('shopping_cart/add_item_shopping_cart', ShoppingService.add_item_shopping_cart),
+    path('shopping_cart/add_item_shopping_cart/', ShoppingService.add_item_to_cart),
     path('shopping_cart/remove_item_shopping_cart/', ShoppingService.remove_item_shopping_cart),
     path('shopping_cart/update_item_shopping_cart/', ShoppingService.update_item_shopping_cart),
     path('shopping_cart/update_code_shopping_cart/', ShoppingService.update_code_shopping_cart),
