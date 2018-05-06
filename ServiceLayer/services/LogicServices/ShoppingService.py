@@ -1,3 +1,4 @@
+from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -5,6 +6,7 @@ from DomainLayer import ShoppingLogic, ItemsLogic
 from DomainLayer.ItemsLogic import get_item
 from DomainLayer.UsersLogic import get_visible_discount, get_invisible_discount
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
+from ServiceLayer import Consumer
 
 
 @csrf_exempt
@@ -19,9 +21,36 @@ def remove_item_shopping_cart(request):
             return HttpResponse('OK')
 
 
+@csrf_exempt
+def add_item_to_cart(request):
+    if request.method == 'POST':
+        login = request.COOKIES.get('login_hash')
+        item_id = int(request.POST.get('item_id'))
+        quantity = int(request.POST.get('quantity'))
+        status = ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(Consumer.loggedInUsers.get(login), item_id, quantity, None))
+        if status is False:
+            return HttpResponse('fail')
+        else:
+            return HttpResponse('OK')
+
+
 def get_cart_items(request):
     if request.method == 'GET':
-        return render(request, 'basket.html', context=order_helper())
+        login = request.COOKIES.get('login_hash')
+        guest = request.COOKIES.get('guest_hash')
+        cart_count = 0
+        topbar = loader.render_to_string('components/Topbar.html', context=None)
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+        navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+        context = order_helper(Consumer.loggedInUsers.get(login))
+        context['topbar'] = topbar
+        context['navbar'] = navbar
+        return render(request, 'basket.html', context=context)
 
 
 @csrf_exempt
@@ -60,7 +89,8 @@ def update_code_shopping_cart(request):
 @csrf_exempt
 def pay_all(request):
     if request.method == 'POST':
-        username = 'OmriOmri'
+        login = request.COOKIES.get('login_hash')
+        username = Consumer.loggedInUsers.get(login)
         # return HttpResponse('item added to cart')
         status = ShoppingLogic.pay_all(username)
         if status is False:
@@ -92,15 +122,30 @@ def payment_method(request):
 
 def review_order(request):
     if request.method == 'GET':
-        username = 'OmriOmri'
-        context = {'username': username}
-        return render(request, 'checkout4.html', context=order_helper())
+        login = request.COOKIES.get('login_hash')
+        cart_count = 0
+        topbar = loader.render_to_string('components/Topbar.html', context=None)
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+        navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+        context = order_helper(Consumer.loggedInUsers.get(login))
+        context['topbar'] = topbar
+        context['navbar'] = navbar
+        username = Consumer.loggedInUsers.get(login)
+        context['username'] = username
+        return render(request, 'checkout4.html', context=context)
 
 
-def order_helper():
+def order_helper(username):
     # username = request.GET.get('username')
-    username = 'OmriOmri'
-    cart_items = ShoppingLogic.get_cart_items(username)
+    if username is None:
+        cart_items = ShoppingLogic.get_cart_items_by_cookies()
+    else:
+        cart_items = ShoppingLogic.get_cart_items(username)
     items = []
     discount_prices = []
     total_prices = []

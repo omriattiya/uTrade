@@ -2,6 +2,44 @@
 <html lang="en">
 
 <head>
+    <script>
+       function addToCart(item_id)
+        {
+            if(getCookie('login_hash') == '')
+            {
+                if(getCookie('guest_hash') == '')
+                {
+                    setCookie('guest_hash', item_id+"|1;", 7);
+                }
+                else
+                {
+                    setCookie('guest_hash', getCookie('guest_hash')+item_id+"|1;", 7);
+                }
+            }
+            else
+            {
+                var data = new FormData();
+                data.append('item_id', item_id);
+                data.append('quantity', 1);
+                var loadHTML = new XMLHttpRequest();
+                loadHTML.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    if (loadHTML.responseText === 'fail') {
+                    alert("add to cart fail");
+                    }
+                    else{
+                   //setCookie('login_hash', loadHTML.responseText, 7);
+                   alert("add to cart success");
+                   location.reload();
+                    }
+                }
+                };
+                loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/add_item_shopping_cart/", true);
+                loadHTML.send(data);
+            }
+
+        }
+    </script>
     <BASE href="http://localhost:8000/static/">
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -233,7 +271,7 @@
                             </div>
 
                                     <p class="text-center buttons">
-                                        <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href="javascript:void(0)" class="btn btn-primary" onclick="addToCart({{item_id}});"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                                     </p>
 
                             </div>
