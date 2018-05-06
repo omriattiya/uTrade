@@ -19,7 +19,7 @@ def add_to_db():
     shop_name = 'my_shop'
     username = 'omriatti'
     UsersLogic.register(RegisteredUser(username, '12345678'))
-    ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
+    ShopLogic.create_shop(Shop(shop_name, 'Active'), username)
     ItemsLogic.add_item_to_shop(Item(1, shop_name, 'tomato-2', 'fruits', '', 20, 70, 'regular',
                                      'https://nutriliving-images.imgix.net/images/2014/266/1440/5B26E568-4243-E411-B834-22000AF88B16.jpg?ch=DPR&w=500&h=500&auto=compress,format&dpr=1&ixlib=imgixjs-3.0.4'),
                                 username)

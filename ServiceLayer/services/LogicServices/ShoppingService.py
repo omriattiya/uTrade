@@ -37,6 +37,7 @@ def add_item_to_cart(request):
 def get_cart_items(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
+        guest = request.COOKIES.get('guest_hash')
         cart_count = 0
         topbar = loader.render_to_string('components/Topbar.html', context=None)
         if login is not None:
