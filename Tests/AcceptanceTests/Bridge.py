@@ -26,8 +26,8 @@ def is_owner(username, shop_name):
     return Owners.get_owner(username, shop_name) is not False
 
 
-def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quantity, username, kind):
-    return ItemsLogic.add_item_to_shop(Item(0, shop_name, item_name, item_category, keywords, price, quantity, kind),
+def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quantity, username, kind, url):
+    return ItemsLogic.add_item_to_shop(Item(0, shop_name, item_name, item_category, keywords, price, quantity, kind, url),
                                        username)
 
 
