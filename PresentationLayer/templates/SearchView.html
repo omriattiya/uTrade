@@ -59,88 +59,114 @@ _________________________________________________________ -->
 
 <body>
     <!-- *** TOPBAR ***
- _________________________________________________________ -->
-    {% autoescape off %}
+_________________________________________________________ -->
+{% autoescape off %}
     {{ topbar }}
-    {%  endautoescape %}
+{% endautoescape %}
 
-    <!-- *** TOP BAR END *** -->
+<!-- *** TOP BAR END *** -->
 
-    <!-- *** NAVBAR ***
- _________________________________________________________ -->
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
 
-    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
-        <div class="container">
-            <div class="navbar-header">
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
-                </a>
-                <div class="navbar-buttons">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-align-justify"></i>
-                    </button>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
-                    </a>
-                </div>
-            </div>
-            <!--/.navbar-header -->
-
-            <div class="navbar-collapse collapse" id="navigation">
-
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="index.html">Home</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!--/.nav-collapse -->
-
+            <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
             <div class="navbar-buttons">
-
-                <div class="navbar-collapse collapse right" id="basket-overview">
-                    <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items in cart</span></a>
-                </div>
-                <!--/.nav-collapse -->
-
-                <div class="navbar-collapse collapse right" id="search-not-mobile">
-                    <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
+                </a>
             </div>
+        </div>
+        <!--/.navbar-header -->
 
-            <div class="collapse clearfix" id="search">
+        <!--/.nav-collapse -->
 
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <span class="input-group-btn">
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
 
-			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        <div class="collapse clearfix" id="search">
+            <div class="row">
+
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
+                    class="fa fa-search"></i></button>
 
 		    </span>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm4" class="form-control" placeholder="Search Shop">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary" onclick="onClickOnSearch4();"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
 
             </div>
-            <!--/.nav-collapse -->
 
         </div>
-        <!-- /.container -->
-    </div>
-    <!-- /#navbar -->
+        <!--/.nav-collapse -->
 
-    <!-- *** NAVBAR END *** -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
 
     <div id="all">
 
