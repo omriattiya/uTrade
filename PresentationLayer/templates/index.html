@@ -74,7 +74,7 @@
                 alert("No Search Value.");
             }
             else {
-                var url = 'http://localhost:8000/app/shop_name/?name=' + document.getElementById("SearchForm4").value;
+                var url = 'http://localhost:8000/app/shop/?shop_name=' + document.getElementById("SearchForm4").value;
                 var loadHTML = new XMLHttpRequest();
                 loadHTML.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
