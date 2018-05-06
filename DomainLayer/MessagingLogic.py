@@ -1,10 +1,6 @@
-from django.http import HttpResponse
-
 from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
-from DomainLayer import UsersLogic
-from ServiceLayer import Consumer
-from SharedClasses import Message
 from DatabaseLayer.RegisteredUsers import get_user
+from ServiceLayer import Consumer
 
 
 def send_message(message):
@@ -27,7 +23,7 @@ def send_message(message):
                 SM_names.append(sm.username)
             users = SM_names
         Consumer.notify_live_alerts(users,
-                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" > '
+                                    '<a href = "../app/home/messages/?content=received" > '
                                     'You Have a new message from ' + message.from_username + '</a>')
     return output
 
@@ -69,7 +65,7 @@ def send_message_from_shop(username, message):
                 SM_names.append(sm.username)
             users = SM_names
         Consumer.notify_live_alerts(users,
-                                    '<a href = "http://localhost:8000/app/home/messages/?content=received" >'
+                                    '<a href = "../app/home/messages/?content=received" >'
                                     ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
     return output
 

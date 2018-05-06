@@ -2,37 +2,21 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import ShopLogic, UsersLogic, ItemsLogic
+from DomainLayer import ShopLogic, UsersLogic
 from DomainLayer import ShoppingLogic
 from ServiceLayer import Consumer
-from SharedClasses.Item import Item
-from SharedClasses.RegisteredUser import RegisteredUser
-from SharedClasses.Shop import Shop
-from SharedClasses.ShopReview import ShopReview
 
 shop_not_exist = 'shop does not exist'
 not_get_request = 'not a get request'
 error_login_owner = 'must be logged in as owner'
-
-
-def add_to_db():
-    shop_name = 'my_shop'
-    username = 'omriatti'
-    UsersLogic.register(RegisteredUser(username, '12345678'))
-    ShopLogic.create_shop(Shop(shop_name, 'ACTIVE'), username)
-    ItemsLogic.add_item_to_shop(Item(1, shop_name, 'tomato-2', 'fruits', '', 20, 70, 'regular',
-                                     'https://nutriliving-images.imgix.net/images/2014/266/1440/5B26E568-4243-E411-B834-22000AF88B16.jpg?ch=DPR&w=500&h=500&auto=compress,format&dpr=1&ixlib=imgixjs-3.0.4'),
-                                username)
-    ShopLogic.add_review_on_shop(ShopReview(username, "THIS IS AMAZING SHOP I BUT HERE EVERY DAY", 5, shop_name))
+error_login = 'must be logged in'
 
 
 def get_shop(request):
-    add_to_db()
     if request.method == 'GET':
         shop_name = request.GET.get('shop_name')
         shop = ShopLogic.search_shop(shop_name)
         if shop is not False:
-
             login = request.COOKIES.get('login_hash')
             cart_count = 0
             top_bar = loader.render_to_string('components/Topbar.html', context=None)
@@ -44,13 +28,12 @@ def get_shop(request):
                     top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                     cart_count = len(ShoppingLogic.get_cart_items(username))
             nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-            every_html = {'top_bar': top_bar, 'nav_bar': nav_bar}
 
             items = ShopLogic.get_shop_items(shop.name)
             products = ""
             for item in items:
                 products += loader.render_to_string('component/item.html',
-                                                    {'every_html': every_html, 'name': item.name, 'price': item.price,
+                                                    {'name': item.name, 'price': item.price,
                                                      'url': item.url, 'item_id': item.id}, None,
                                                     None)
             owner_manager_options = ""
@@ -62,20 +45,27 @@ def get_shop(request):
                                                               {'path': 'owner/purchase_history',
                                                                'shop_name': shop_name,
                                                                'button_text': 'Purchase History'})
+            render_add_item = loader.render_to_string('component/owner_manager_options.html',
+                                                      {'path': 'owner/items/add_item',
+                                                       'shop_name': shop_name,
+                                                       'button_text': 'Add Item'})
 
             if UsersLogic.is_owner_of_shop(username, shop_name):
-                owner_manager_options += render_purchase_history + render_edit_remove
+                owner_manager_options += render_purchase_history + render_edit_remove + render_add_item
             if UsersLogic.is_manager_of_shop(username, shop_name):
                 manager = UsersLogic.get_manager(username, shop_name)
                 if manager.permission_get_purchased_history == 1:
                     owner_manager_options += render_purchase_history
                 if manager.permission_edit_item == 1 or manager.permission_remove_item == 1:
                     owner_manager_options += render_edit_remove
+                if manager.permission_add_item == 1:
+                    owner_manager_options += render_add_item
 
             context = {'shop_name': shop.name,
                        'shop_status': shop.status,
                        'products': products,
-                       'owner_manager_options': owner_manager_options}
+                       'owner_manager_options': owner_manager_options,
+                       'topbar': top_bar, 'navbar': nav_bar, }
             return render(request, 'shop.html', context=context)
         else:
             return HttpResponse(shop_not_exist)
@@ -84,6 +74,20 @@ def get_shop(request):
 
 def get_reviews(request):
     if request.method == 'GET':
+
+        login = request.COOKIES.get('login_hash')
+        cart_count = 0
+        top_bar = loader.render_to_string('components/Topbar.html', context=None)
+        username = None
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+
+        nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+
         shop_name = request.GET.get('shop_name')
         shop = ShopLogic.search_shop(shop_name)
         if shop is not False:
@@ -94,7 +98,7 @@ def get_reviews(request):
                                                           {'writer_name': review.writerId,
                                                            'rank': review.rank,
                                                            'description': review.description}, None, None)
-            context = {'shop_name': shop_name, 'reviews': string_reviews}
+            context = {'topbar': top_bar, 'navbar': nav_bar, 'shop_name': shop_name, 'reviews': string_reviews}
             return render(request, 'shop_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)
@@ -132,9 +136,10 @@ def get_shop_to_owner(request):
                                                          'item_keywords': item.keyWords,
                                                          'item_price': item.price,
                                                          'item_url': item.url,
-                                                         'item_id': item.id})
+                                                         'item_id': item.id,
+                                                         'shop_name': item.shop_name})
             return render(request, 'shop_view_for_owner.html',
-                          context={'every_html': every_html, 'items': string_items})
+                          context={'topbar': top_bar, 'navbar': nav_bar, 'items': string_items, 'shop_name': shop_name})
         return HttpResponse(shop_not_exist + " with username=" + username)
     return HttpResponse(not_get_request)
 
@@ -202,16 +207,72 @@ def watch_purchase_history(request):
 
         nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         every_html = {'top_bar': top_bar, 'nav_bar': nav_bar}
-        if UsersLogic.is_owner_of_shop(username, shop_name) is not False:
-            shop_items = ShopLogic.get_shop_purchase_history(username, shop_name)
-            string_items = ""
-            for item in shop_items:
-                string_items += loader.render_to_string('component/purchase_item_owner.html',
-                                                        {'purchase_id': item.purchase_id,
-                                                         'item_id': item.item_id,
-                                                         'quantity': item.quantity,
-                                                         'price': item.price})
-            return render(request, 'shop_view_purchase_history.html',
-                          context={'every_html': every_html, 'items': string_items})
-        return HttpResponse(shop_not_exist + " with username=" + username)
+        shop_items = ShopLogic.get_shop_purchase_history(username, shop_name)
+        string_items = ""
+        for item in shop_items:
+            string_items += loader.render_to_string('component/purchase_item_owner.html',
+                                                    {'purchase_id': item.purchase_id,
+                                                     'item_id': item.item_id,
+                                                     'quantity': item.quantity,
+                                                     'price': item.price})
+        return render(request, 'shop_view_purchase_history.html',
+                      context={'every_html': every_html, 'items': string_items, 'shop_name': shop_name})
     return HttpResponse(not_get_request)
+
+
+def add_item_to_shop(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+
+        login = request.COOKIES.get('login_hash')
+        cart_count = 0
+        top_bar = loader.render_to_string('components/Topbar.html', context=None)
+        username = None
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+            else:
+                return HttpResponse(error_login_owner)
+        else:
+            return HttpResponse(error_login_owner)
+
+        if not UsersLogic.is_owner_of_shop(username, shop_name):
+            if UsersLogic.is_manager_of_shop(username, shop_name):
+                manager = UsersLogic.get_manager(username, shop_name)
+                if manager.permission_add_item is not 1:  # no permission
+                    return HttpResponse('no permission to add item')
+            else:
+                return HttpResponse('fail')  # not manager not owner
+
+        nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+        every_html = {'top_bar': top_bar, 'nav_bar': nav_bar}
+        return render(request, 'shop_add_item.html',
+                      context={'every_html': every_html, 'shop_name': shop_name})
+
+
+def add_review(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+
+        login = request.COOKIES.get('login_hash')
+        cart_count = 0
+        top_bar = loader.render_to_string('components/Topbar.html', context=None)
+        username = None
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                # html of a logged in user
+                top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(ShoppingLogic.get_cart_items(username))
+            else:
+                return HttpResponse(error_login)
+        else:
+            return HttpResponse(error_login)
+
+        nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+
+        return render(request, 'add_review.html',
+                      context={'topbar': top_bar, 'navbar': nav_bar, 'shop_name': shop_name})

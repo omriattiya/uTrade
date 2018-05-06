@@ -24,10 +24,10 @@ function sendMessage() {
             }
             else if (loadHTML.responseText === 'success') {
                 alert("Message Sent!");
-                window.location.href = "http://localhost:8000/app/home/messages/?content=sent"
+                window.location.href = "../app/home/messages/?content=sent"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/messages/send_message/", true);
+    loadHTML.open("POST", "../app/messages/send_message/", true);
     loadHTML.send(data);
 }

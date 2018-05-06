@@ -14,6 +14,6 @@ function deleteUser(username) {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/remove_user/", true);
+    loadHTML.open("POST", "../app/users/remove_user/", true);
     loadHTML.send(data);
 }

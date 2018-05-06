@@ -47,7 +47,8 @@ def add_item_to_shop(item):
                          item.name, item.category,
                          item.keyWords,
                          item.price, item.quantity, item.kind, item.url)
-    return commit_command(sql_query)
+    result = commit_command(sql_query)
+    return result
 
 
 def add_item_to_shop_and_return_id(item):

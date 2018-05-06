@@ -37,7 +37,7 @@ function reviewShop() {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/shops/add_review_on_shop/", true);
+    loadHTML.open("POST", "../app/shops/add_review_on_shop/", true);
     loadHTML.send(data);
 }
 
@@ -63,7 +63,7 @@ function reviewItem() {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/items/add_review_on_item/", true);
+    loadHTML.open("POST", "../app/items/add_review_on_item/", true);
     loadHTML.send(data);
 }
 
@@ -93,6 +93,6 @@ function reportItem() {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/messages/send_message/", true);
+    loadHTML.open("POST", "../app/messages/send_message/", true);
     loadHTML.send(data);
 }

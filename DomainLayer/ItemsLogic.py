@@ -38,6 +38,9 @@ def remove_item_from_shop(item_id, username):
                 remove_item_permission = manager.permission_remove_item
                 if remove_item_permission > 0:
                     return Items.remove_item_from_shop(item_id)
+            elif Owners.is_owner(username):
+                return Items.remove_item_from_shop(item_id)
+
     return False
 
 

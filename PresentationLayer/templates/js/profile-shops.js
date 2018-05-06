@@ -32,11 +32,11 @@ function addManager() {
             }
             else {
                 alert("Manager has been added!");
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/owner/add_manager/", true);
+    loadHTML.open("POST", "../app/users/owner/add_manager/", true);
     loadHTML.send(data);
 }
 
@@ -53,11 +53,11 @@ function removeManager(manager_name) {
             }
             else if (loadHTML.responseText === 'success') {
                 alert("Manager has been removed!");
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/owner/remove_manager/", true);
+    loadHTML.open("POST", "../app/users/owner/remove_manager/", true);
     loadHTML.send(data);
 }
 
@@ -81,11 +81,11 @@ function applyPermissions(manager_name) {
             }
             else if (loadHTML.responseText === 'success') {
                 alert("Manager permissions has been updated!");
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/owner/update_permissions/", true);
+    loadHTML.open("POST", "../app/users/owner/update_permissions/", true);
     loadHTML.send(data);
 }
 
@@ -105,11 +105,11 @@ function createShop() {
             }
             else {
                 alert("Your shop has been opened!");
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/shops/create_shop/", true);
+    loadHTML.open("POST", "../app/shops/create_shop/", true);
     loadHTML.send(data);
 }
 
@@ -127,11 +127,11 @@ function createShop() {
                 //alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/owner/modify_notifications/", true);
+    loadHTML.open("POST", "../app/users/owner/modify_notifications/", true);
     loadHTML.send(data);
 
 }
@@ -149,13 +149,13 @@ function setStatus(shop_name) {
                 alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
     var route = current_status === 'Active' ?
         "close_shop/" : "re_open_shop/";
-    loadHTML.open("POST", "http://localhost:8000/app/users/owner/" + route, true);
+    loadHTML.open("POST", "../app/users/owner/" + route, true);
     loadHTML.send(data);
 
 }

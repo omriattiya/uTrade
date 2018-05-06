@@ -25,10 +25,10 @@ function changePassword() {
                 alert("Failed")
             }
             else if (loadHTML.responseText === 'success') {
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.href = "../app/my/shops/"
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/edit_password/", true);
+    loadHTML.open("POST", "../app/users/edit_password/", true);
     loadHTML.send(data);
 }

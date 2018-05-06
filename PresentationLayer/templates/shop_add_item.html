@@ -177,12 +177,55 @@ _________________________________________________________ -->
 
             <div class="col-md-12">
                 <div class="box">
-                    <h1>Purchase History of {{ shop_name }}</h1>
+                    <h1>Add Item To {{ shop_name }}</h1>
                 </div>
 
-                {% autoescape off %}
-                    {{ items }}
-                {% endautoescape %}
+                <div class="box info-bar" style="position: relative">
+                    <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input name="name" id="name" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input name="quantity" id="quantity" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <input name="category" id="category" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="keywords">Key Words</label>
+                                <input name="keywords" id="keywords" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input name="price" id="price" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="url">URL</label>
+                                <input name="url" id="url" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="kind">Kind</label>
+                                <select name="kind" id="kind" class="form-control">
+                                    <option value="regular">Regular</option>
+                                    <option value="ticket">Ticket</option>
+                                    <option value="prize">Prize</option>
+                                    <option value="auction">Auction</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="addItem('{{ shop_name }}');">
+                                    Add Item
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
 
 
             </div>

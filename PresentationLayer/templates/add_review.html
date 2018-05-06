@@ -4,6 +4,7 @@
 <head>
     <BASE href="http://localhost:8000/static/">
 
+
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
     <meta name="googlebot" content="index,follow,snippet,archive">
@@ -34,11 +35,14 @@
     <link href="css/custom.css" rel="stylesheet">
 
     <script src="js/respond.min.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/shop_owner_actions.js"></script>
 
     <link rel="shortcut icon" href="favicon.png">
 
+
     <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
+_________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
@@ -48,12 +52,13 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
 
-    <script src="js/customer-orders.js"></script>
     <script src="js/web_sockets.js"></script>
+
 
 </head>
 
 <body>
+
 <!-- *** TOPBAR ***
 _________________________________________________________ -->
 {% autoescape off %}
@@ -89,23 +94,70 @@ _________________________________________________________ -->
         </div>
         <!--/.navbar-header -->
 
+        <!--/.nav-collapse -->
 
         {% autoescape off %}
             {{ navbar }}
         {% endautoescape %}
 
         <div class="collapse clearfix" id="search">
+            <div class="row">
+                <div class="row">
+                    <form class="navbar-form">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                            <span class="input-group-btn">
 
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                    <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
+                                        class="fa fa-search"></i></button>
 
-			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-
-		    </span>
+		                    </span>
+                        </div>
+                    </form>
                 </div>
-            </form>
+
+                <div class="row">
+                    <form class="navbar-form">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                            <span class="input-group-btn">
+
+			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
+                                        class="fa fa-search"></i></button>
+
+                		    </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <form class="navbar-form">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                            <span class="input-group-btn">
+
+			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
+                                        class="fa fa-search"></i></button>
+
+		                    </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <form class="navbar-form">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm4" class="form-control" placeholder="Search Shop">
+                            <span class="input-group-btn">
+
+			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch4();"><i
+                                        class="fa fa-search"></i></button>
+
+		                    </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
         </div>
         <!--/.nav-collapse -->
@@ -120,94 +172,56 @@ _________________________________________________________ -->
 <div id="all">
 
     <div id="content">
+
         <div class="container">
 
             <div class="col-md-12">
-
-                <ul class="breadcrumb">
-                    <li><a href="../app/home/">Home</a>
-                    </li>
-                    <li>My orders</li>
-                </ul>
-
-            </div>
-
-            <div class="col-md-3">
-                <!-- *** CUSTOMER MENU ***
-_________________________________________________________ -->
-                <div class="panel panel-default sidebar-menu">
-
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Customer section</h3>
-                    </div>
-
-                    <div class="panel-body">
-
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active">
-                                <a href="../app/my/orders"><i class="fa fa-list"></i> My Orders</a>
-                            </li>
-                            <li>
-                                <a href="../app/my/shops"><i class="fa fa-heart"></i> My Shops</a>
-                            </li>
-                            <li>
-                                <a href="../app/my/account"><i class="fa fa-user"></i> My Account</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" onclick="logout();"><i class="fa fa-sign-out"></i>
-                                    Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                <!-- /.col-md-3 -->
-
-                <!-- *** CUSTOMER MENU END *** -->
-            </div>
-
-            <div class="col-md-9" id="customer-orders">
                 <div class="box">
-                    <h1>My orders</h1>
+                    <h1>Add Review On {{ shop_name }}</h1>
+                </div>
 
-                    <p class="lead">Your orders on one place.</p>
-                    <hr>
+                <div class="box info-bar" style="position: relative">
+                    <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
+                        <form>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input name="description" id="description" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="rank">Rank</label>
+                                <select name="rank" id="rank" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="addReview('{{ shop_name }}');">
+                                    Add Review
+                                </button>
+                            </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Order</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% autoescape off %}
-                                {{ orders }}
-                            {% endautoescape %}
-                            </tbody>
-                        </table>
+                        </form>
                     </div>
                 </div>
-            </div>
 
+
+            </div>
+            <!-- /.col-md-9 -->
         </div>
         <!-- /.container -->
     </div>
     <!-- /#content -->
-
-
-    <!-- *** FOOTER END *** -->
-
 
     <!-- *** COPYRIGHT ***
 _________________________________________________________ -->
     <div id="copyright">
         <div class="container">
             <div class="col-md-6">
-                <p class="pull-left">© 2015 Your name goes here.</p>
+                <p class="pull-left">© 2018 OMRI</p>
 
             </div>
             <div class="col-md-6">
@@ -224,6 +238,18 @@ _________________________________________________________ -->
 
 </div>
 <!-- /#all -->
+
+
+<!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/bootstrap-hover-dropdown.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/front.js"></script>
 
 
 </body>

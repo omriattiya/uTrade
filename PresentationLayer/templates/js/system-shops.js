@@ -14,7 +14,7 @@ function closeShop(shop_name) {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/shops/close_shop_permanently/", true);
+    loadHTML.open("POST", "../app/shops/close_shop_permanently/", true);
     loadHTML.send(data);
 }
 
@@ -30,7 +30,7 @@ function showOwners(shop_name) {
             }
         }
     };
-    loadHTML.open("GET", "http://localhost:8000/app/shop/get_owners/?shop_name="+shop_name, true);
+    loadHTML.open("GET", "../app/shop/get_owners/?shop_name=" + shop_name, true);
     loadHTML.send();
 }
 
@@ -46,7 +46,7 @@ function showManagers(shop_name) {
             }
         }
     };
-    loadHTML.open("GET", "http://localhost:8000/app/shop/get_managers/?shop_name="+shop_name, true);
+    loadHTML.open("GET", "../app/shop/get_managers/?shop_name=" + shop_name, true);
     loadHTML.send();
 }
 

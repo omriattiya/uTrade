@@ -1,13 +1,12 @@
 <div class="col-md-4 col-sm-6">
     <div class="product">
-        <a href="detail.html">
+        <a href="../app/item/?item_id={{ item_id }}">
             <div style="height:300px; align-items: center;">
-                <img src={{ url }}
-                             alt="" class="img-responsive" style="align-self:center; max-height: 300px"/>
+                <img src={{ url }} class="img-responsive" style="align-self:center; max-height: 300px"/>
             </div>
         </a>
         <div class="text">
-            <h3><a href=detail.html">{{ name }}</a></h3>
+            <h3><a href=../app/item/?item_id={{ item_id }}">{{ name }}</a></h3>
             <p class="price">${{ price }}</p>
             <p class="buttons">
                 <a href="../app/item/?item_id={{ item_id }}" class="btn btn-default">View detail</a>

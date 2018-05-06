@@ -6,9 +6,8 @@ from django.template import loader
 
 from DatabaseLayer import Lotteries, Auctions
 from DomainLayer import ItemsLogic
-from ServiceLayer import Consumer
 from DomainLayer import ShoppingLogic
-
+from ServiceLayer import Consumer
 
 shop_not_exist = 'shop does not exist'
 not_get_request = 'not a get request'
@@ -102,3 +101,4 @@ def get_reviews(request):
             return render(request, 'item_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)
+

@@ -3,9 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
+from ServiceLayer import Consumer
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
-from ServiceLayer import Consumer
 
 
 @csrf_exempt
@@ -44,7 +44,7 @@ def add_review_on_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         description = request.POST.get('description')
-        rank = request.POST.get('rank')
+        rank = int(request.POST.get('rank'))
 
         login = request.COOKIES.get('login_hash')
         if login is not None:

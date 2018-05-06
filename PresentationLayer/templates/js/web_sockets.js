@@ -55,11 +55,11 @@ function login() {
             }
             else {
                 setCookie('login_hash', loadHTML.responseText, 7);
-                window.location.href = "http://localhost:8000/app/home/"
+                location.reload(true)
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/login/", true);
+    loadHTML.open("POST", "../app/users/login/", true);
     loadHTML.send(data);
 }
 
@@ -71,12 +71,12 @@ function logout() {
             if (loadHTML.responseText === 'success') {
                 setCookie('login_hash', "", 7);
                 setTimeout(function () {
-                    window.location.href = "http://localhost:8000/app/home/"
+                    window.location.href = "../app/home/"
                 }, 200)
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/logout/", true);
+    loadHTML.open("POST", "../app/users/logout/", true);
     loadHTML.send();
 }
 
@@ -92,6 +92,6 @@ function clearAlerts() {
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/users/clear_alerts/", true);
+    loadHTML.open("POST", "../app/users/clear_alerts/", true);
     loadHTML.send();
 }

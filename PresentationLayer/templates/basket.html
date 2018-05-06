@@ -15,11 +15,11 @@
             }
             else {
                 //setCookie('login_hash', loadHTML.responseText, 7);
-                window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/";
+                window.location.href = "../app/shopping_cart/get_cart_items/";
             }
         }
         };
-        loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/remove_item_shopping_cart/", true);
+        loadHTML.open("POST", "../app/shopping_cart/remove_item_shopping_cart/", true);
         loadHTML.send(data);
     }
     function addCouponCode()
@@ -41,17 +41,17 @@
                 }
                 else {
                     //setCookie('login_hash', loadHTML.responseText, 7);
-                    window.location.href = "http://localhost:8000/app/shopping_cart/get_cart_items/";
+                    window.location.href = "../app/shopping_cart/get_cart_items/";
                 }
             }
             };
-        loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/update_code_shopping_cart/", true);
+            loadHTML.open("POST", "../app/shopping_cart/update_code_shopping_cart/", true);
         loadHTML.send(data);
         }
     }
     function checkConnected()
     {
-        window.location.href = "http://localhost:8000/app/shopping_cart/addressing/";
+        window.location.href = "../app/shopping_cart/addressing/";
     }
     </script>
     <BASE href="http://localhost:8000/static/">
@@ -65,7 +65,7 @@
     <meta name="keywords" content="">
 
     <title>
-        Obaju : e-commerce template
+        uTrade
     </title>
 
     <meta name="keywords" content="">
@@ -100,7 +100,7 @@
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
+                <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
                     <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
                     <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
                 </a>
@@ -123,7 +123,7 @@
             <div class="navbar-collapse collapse" id="navigation">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="index.html">Home</a>
+                    <li class="active"><a href="../app/home/">Home</a>
                     </li>
                     <li class="dropdown yamm-fw">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Men <b class="caret"></b></a>
@@ -287,7 +287,7 @@
                                         <div class="col-sm-3">
                                             <h5>Shop</h5>
                                             <ul>
-                                                <li><a href="index.html">Homepage</a>
+                                                <li><a href="../app/home/">Homepage</a>
                                                 </li>
                                                 <li><a href="category.html">Category - sidebar left</a>
                                                 </li>
@@ -415,7 +415,7 @@
 
                     <div class="box">
 
-                        <form method="get" action="http://localhost:8000/app/shopping_cart/addressing/">
+                        <form method="get" action="../app/shopping_cart/addressing/">
 
                             <h1>Shopping cart</h1>
                             <p class="text-muted">You currently have 3 item(s) in your cart.</p>
