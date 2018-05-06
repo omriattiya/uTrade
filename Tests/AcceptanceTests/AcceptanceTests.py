@@ -48,15 +48,15 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular')
+                                quantity=100, username='username', kind='regular', url=None)
         # item is = 2
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular')
+                                quantity=100, username='username', kind='regular', url=None)
         # item is = 3
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular')
+                                quantity=100, username='username', kind='regular', url=None)
 
         Bridge.buy_item(username='username', shop_name='shop_name', item_id=1, quantity=10)
         self.assertTrue(Bridge.is_item_bought(username='username', item_id=1))
@@ -96,17 +96,17 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular')
+                                           quantity=100, username='username', kind='regular', url=None)
         self.assertTrue(is_added)
         # item is = 2
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular')
+                                           quantity=100, username='username', kind='regular', url=None)
         self.assertTrue(is_added)
         # item is = 3
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular')
+                                           quantity=100, username='username', kind='regular', url=None)
         self.assertTrue(is_added)
 
         is_edited = Bridge.edit_item_name(item_id=1, username='username', item_name='NEW NAME')
@@ -123,19 +123,19 @@ class CusTomerTomer(unittest.TestCase):
         # add items to shop
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=10, username='ownerUser', kind='regular')
+                                quantity=10, username='ownerUser', kind='regular', url=None)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=20, username='ownerUser', kind='regular')
+                                quantity=20, username='ownerUser', kind='regular', url=None)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name3',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=30, username='ownerUser', kind='regular')
+                                quantity=30, username='ownerUser', kind='regular', url=None)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name4',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=40, username='ownerUser', kind='regular')
+                                quantity=40, username='ownerUser', kind='regular', url=None)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name5',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=50, username='ownerUser', kind='regular')
+                                quantity=50, username='ownerUser', kind='regular', url=None)
 
         # add items to cart
         Bridge.buy_item('clientUser', 'my_shop', 1, 10)
