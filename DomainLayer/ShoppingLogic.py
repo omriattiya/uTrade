@@ -56,6 +56,10 @@ def update_code_shopping_cart(username, item_id, code):
     return False
 
 
+def check_empty_cart(username):
+    return ShoppingCartItem.check_empty(username)
+
+
 def pay_all(username):
     if username is not None:
         #  check if cart has items
@@ -66,16 +70,14 @@ def pay_all(username):
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)
             # cart_items is a array consist of shopping_cart objects
-            for shopping_cart_item in cart_items:
-                if ItemsLogic.check_in_stock(shopping_cart_item.item_id, shopping_cart_item.item_quantity) is False:
-                    return False
+            message = check_stock_for_shopping_cart(cart_items)
+            if message is not True:
+                return message
             # if so, sum all items costs, get from costumer his credentials
             total_cost = 0
             # for each item, calculate visible_discount
             for shopping_cart_item in cart_items:
                 item = get_item(shopping_cart_item.item_id)
-                if shopping_cart_item.item_quantity > item.quantity:
-                    return False
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
@@ -86,55 +88,73 @@ def pay_all(username):
                     if discount is not False:
                         percentage = discount.percentage
                     new_price = new_price * (1 - percentage)
-                lottery = get_lottery(item.id)
-                if item.kind == 'ticket':
-                    final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
-                    if final_date > datetime.now():
-                        lottery_sum = get_lottery_sum(lottery.lotto_id)
-                        if lottery_sum + shopping_cart_item.item_quantity * item.price < lottery.max_price:
-                            lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart_item.item_id,
-                                                                                       username,
-                                                                                       shopping_cart_item.item_quantity * item.price)
-                            if lotto_status is False:
-                                return False
-                        else:
-                            return False
-                    else:
-                        return False
+                lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
+                if lottery_message is not True:
+                    return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
                 if actual_pay(total_cost) is False:
-                    return False
+                    return 'Something went wrong with the payment service'
                 # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
 
                 if toCreatePurchase is True:
                     toCreatePurchase = False
                     purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
                     if purchase_id is False:
-                        return False
+                        return 'Something went wrong with the purchase'
                 status = PurchasedItems.add_purchased_item(purchase_id, shopping_cart_item.item_id,
                                                            shopping_cart_item.item_quantity,
                                                            shopping_cart_item.item_quantity * new_price)
                 if status is False:
-                    return False
+                    return 'Something went wrong with the purchase'
                 status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
-                    return False
+                    return 'Something went wrong with the purchase'
                 new_quantity = item.quantity - shopping_cart_item.item_quantity
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
-                    return False
+                    return 'Something went wrong with the purchase'
                 if supply_items(cart_items) is False:
-                    return False
+                    return 'Something went wrong with the supply service'
                 # live alerts
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
                 for owner in owners:
                     owners_name.append(owner.username)
                 Consumer.notify_live_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="../app/item/?item_id=' + item.id + '"># <strong>' + item.id + '</strong></a> from your shop')
+                                            '<strong>' + username + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
             status = remove_shopping_cart(username)
-            return status
-    return False
+            if status is False:
+                return 'Something went wrong with the purchase'
+            else:
+                return True
+    return 'Shopping cart is empty'
+
+
+def check_stock_for_shopping_cart(cart_items):
+    for cart_item in cart_items:
+        if ItemsLogic.check_in_stock(cart_item.item_id, cart_item.item_quantity) is False:
+            item = ItemsLogic.get_item(cart_item.item_id)
+            return 'Only ' + str(item.quantity) + ' ' + item.name + ' exist in the system'
+    return True
+
+
+def check_lottery_ticket(item, cart_item, username):
+    if item.kind == 'ticket':
+        lottery = get_lottery(item.id)
+        final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
+        if final_date > datetime.now():
+            lottery_sum = get_lottery_sum(lottery.lotto_id)
+            if lottery_sum + cart_item.item_quantity * item.price < lottery.max_price:
+                lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
+                                                                           username,
+                                                                           cart_item.item_quantity * item.price)
+                if lotto_status is False:
+                    return 'Something went wrong with the lottery ticket'
+            else:
+                return 'Purchase violates lottery policy'
+        else:
+            return 'Lottery has ended'
+    return True
 
 
 def actual_pay(total_cost):
@@ -195,6 +215,7 @@ def remove_shopping_cart(username):
     if username is not None:
         return ShoppingCartItem.remove_shopping_cart(username)
 
+
 def get_user_purchases(username):
     return Purchases.get_user_purchases(username)
 
@@ -205,3 +226,40 @@ def get_purchased_items_by_purchase_id(purchase_id):
 
 def get_purchase(purchase_id):
     return Purchases.get_purchase(purchase_id)
+
+
+def order_helper(username):
+    # username = request.GET.get('username')
+    if username is None:
+        cart_items = get_cart_items_by_cookies()
+    else:
+        cart_items = get_cart_items(username)
+    items = []
+    discount_prices = []
+    total_prices = []
+    number_of_items = 0
+    if len(cart_items) == 0:
+        return {'username': username, 'total_price': 0, 'cart_items_combined': cart_items, 'number_of_items': number_of_items}
+    else:
+        total_price = 0
+        for i in [0, len(cart_items) - 1]:
+            item = get_item(cart_items[i].item_id)
+            visible_discount = get_visible_discount(item.id, item.shop_name)
+            percentage_visible = 0
+            percentage_invisible = 0
+            if visible_discount is not False:
+                percentage_visible = visible_discount.percentage
+            if cart_items[i].code is not None:
+                invisible_discount = get_invisible_discount(item.id, item.shop_name, cart_items[i].code)
+                percentage_invisible = invisible_discount.percentage
+            discount_money = percentage_visible * item.price + percentage_invisible * (
+                        1 - percentage_visible) * item.price
+            discount_prices.append(discount_money)
+            items.append(item)
+            total_prices.append(item.price * cart_items[i].item_quantity - discount_money * cart_items[i].item_quantity)
+            total_price = total_price + item.price * cart_items[i].item_quantity - discount_money * cart_items[
+                i].item_quantity
+            number_of_items = number_of_items + cart_items[i].item_quantity
+        if cart_items is not False:
+            return {'username': username, 'total_price': total_price,
+                    'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
