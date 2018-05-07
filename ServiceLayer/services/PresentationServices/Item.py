@@ -77,8 +77,9 @@ def get_reviews(request):
             reviews = ItemsLogic.get_all_reviews_on_item(item.id)
             string_reviews = ""
             for review in reviews:
-                string_reviews += loader.render_to_string('component/review.html',
-                                                          {'writer_name': review.writerId,
+                string_reviews += loader.render_to_string(
+                    'component/../../../PresentationLayer/templates/components/review.html',
+                    {'writer_name': review.writerId,
                                                            'rank': review.rank,
                                                            'description': review.description}, None, None)
             login = request.COOKIES.get('login_hash')
