@@ -21,25 +21,27 @@ def remove_item_shopping_cart(request):
 @csrf_exempt
 def add_item_to_cart(request):
     if request.method == 'POST':
-        login = request.COOKIES.get('login_hash')
         item_id = int(request.POST.get('item_id'))
         quantity = int(request.POST.get('quantity'))
-        status = ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(Consumer.loggedInUsers.get(login), item_id, quantity, None))
-        if status is False:
-            return HttpResponse('fail')
+        login = request.COOKIES.get('login_hash')
+        if login is None:
+            guest = request.COOKIES.get('guest_hash')
+            if guest is None:
+                guest = ShoppingLogic.get_new_guest_name()
+            if guest is False:
+                return HttpResponse('fail')
+            status = ShoppingLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
+            if status is False:
+                return HttpResponse('fail')
+            else:
+                string_guest = str(guest)
+                return HttpResponse(string_guest)
         else:
-            return HttpResponse('OK')
-
-
-@csrf_exempt
-def add_item_shopping_cart(request):
-    if request.method == 'POST':
-        username = request.POST.get("username")
-        item_id = request.POST.get("item_id")
-        quantity = request.POST.get("quantity")
-        shop_cart = ShoppingCartItem(username, item_id, quantity, None)
-        ShoppingLogic.add_item_shopping_cart(shop_cart)
-        return HttpResponse('item added to cart')
+            status = ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(Consumer.loggedInUsers.get(login), item_id, quantity, None))
+            if status is False:
+                return HttpResponse('fail')
+            else:
+                return HttpResponse('OK')
 
 
 @csrf_exempt

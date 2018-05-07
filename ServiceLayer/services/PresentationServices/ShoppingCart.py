@@ -37,7 +37,10 @@ def get_cart_items(request):
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-        context = ShoppingLogic.order_helper(Consumer.loggedInUsers.get(login))
+        if login is None:
+            context = ShoppingLogic.order_helper(guest)
+        else:
+            context = ShoppingLogic.order_helper(Consumer.loggedInUsers.get(login))
         context['topbar'] = topbar
         context['navbar'] = navbar
         return render(request, 'basket.html', context=context)

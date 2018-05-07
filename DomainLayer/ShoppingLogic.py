@@ -231,7 +231,7 @@ def get_purchase(purchase_id):
 def order_helper(username):
     # username = request.GET.get('username')
     if username is None:
-        cart_items = get_cart_items_by_cookies()
+        cart_items = get_guest_shopping_cart_item(username)
     else:
         cart_items = get_cart_items(username)
     items = []
@@ -263,3 +263,19 @@ def order_helper(username):
         if cart_items is not False:
             return {'username': username, 'total_price': total_price,
                     'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
+
+
+def get_new_guest_name():
+        name = ShoppingCartItem.get_new_guest_name()
+        if name is False:
+            return 1
+        else:
+            return name.username + 1
+
+
+def add_guest_item_shopping_cart(guest, item_id, quantity):
+    return ShoppingCartItem.add_guest_shopping_cart(guest, item_id, quantity)
+
+
+def get_guest_shopping_cart_item(username):
+    return ShoppingCartItem.get_guest_shopping_cart_item(username)

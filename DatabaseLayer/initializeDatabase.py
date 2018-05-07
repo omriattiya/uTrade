@@ -231,6 +231,18 @@ tables_sql = [
           PRIMARY KEY(auction_id, username, price)
         )
     """,
+
+    """
+        CREATE TABLE IF NOT EXISTS GuestShoppingCartItem(
+          userName INTEGER,
+          itemId INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
+          itemQuantity INTEGER,
+          code CHAR(15) DEFAULT NULL,
+          PRIMARY KEY(userName,itemId),
+          CONSTRAINT userName_size CHECK(length(userName) <= 30),
+          CONSTRAINT code_size CHECK(length(code) <= 15)
+        )
+    """,
 ]
 values_sql = [
 
