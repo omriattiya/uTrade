@@ -2,47 +2,7 @@
 <html lang="en">
 
 <head>
-    <script>
-       function addToCart(item_id)
-       {
-            var data = new FormData();
-            data.append('item_id', item_id);
-            data.append('quantity', 1);
-            var loadHTML = new XMLHttpRequest();
-            loadHTML.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                if (loadHTML.responseText === 'fail')
-                {
-                    alert("add to cart fail");
-                }
-                else
-                {
-                   if(getCookie('login_hash') === '')
-                   {
-                        if(getCookie('guest_hash') === '')
-                        {
-                            alert("new guest");
-                            setCookie('guest_hash',loadHTML.responseTEXT,7);
-                            document.write(loadHTML.responseTEXT);
-                            // location.reload()
-                        }
-                        else
-                        {
-                            alert("old guest");
-                            location.reload()
-                        }
-                   }
-                   else
-                   {
-                        alert("user");
-                   }
-                }
-            }
-            };
-            loadHTML.open("POST", "http://localhost:8000/app/shopping_cart/add_item_shopping_cart/", true);
-            loadHTML.send(data);
-       }
-    </script>
+
     <BASE href="http://localhost:8000/static/">
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -77,8 +37,8 @@
 
     <link rel="shortcut icon" href="favicon.png">
 
-        <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
+    <!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
@@ -89,117 +49,118 @@
     <script src="js/front.js"></script>
 
     <script src="js/web_sockets.js"></script>
+    <script src="js/add_to_cart.js"></script>
 
 
 </head>
 
 <body>
 
-    <!-- *** TOPBAR ***
-    _________________________________________________________ -->
-    {% autoescape off %}
-        {{ topbar }}
-    {% endautoescape %}
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+{% autoescape off %}
+    {{ topbar }}
+{% endautoescape %}
 
-    <!-- *** TOP BAR END *** -->
+<!-- *** TOP BAR END *** -->
 
-    <!-- *** NAVBAR ***
-    _________________________________________________________ -->
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
 
-    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
-        <div class="container">
-            <div class="navbar-header">
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
 
-                <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
                 </a>
-                <div class="navbar-buttons">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-align-justify"></i>
-                    </button>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
-                    </a>
-                </div>
             </div>
-            <!--/.navbar-header -->
+        </div>
+        <!--/.navbar-header -->
 
-            <!--/.nav-collapse -->
+        <!--/.nav-collapse -->
 
-            {% autoescape off %}
-                {{ navbar }}
-            {% endautoescape %}
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
 
-            <div class="collapse clearfix" id="search">
+        <div class="collapse clearfix" id="search">
+            <div class="row">
+
                 <div class="row">
-
-                    <div class="row">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group">
-                                <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
-                                <span class="input-group-btn">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                            <span class="input-group-btn">
 
                 <button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
                         class="fa fa-search"></i></button>
 
                 </span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group">
-                                <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
-                                <span class="input-group-btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                            <span class="input-group-btn">
 
                 <button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
                         class="fa fa-search"></i></button>
 
                 </span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group">
-                                <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
-                                <span class="input-group-btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                            <span class="input-group-btn">
 
                 <button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
                         class="fa fa-search"></i></button>
 
                 </span>
-                            </div>
-                        </form>
-                    </div>
-
+                        </div>
+                    </form>
                 </div>
 
             </div>
-            <!--/.nav-collapse -->
 
         </div>
-        <!-- /.container -->
+        <!--/.nav-collapse -->
+
     </div>
-    <!-- /#navbar -->
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
 
-    <!-- *** NAVBAR END *** -->
+<!-- *** NAVBAR END *** -->
 
 
-    <div id="all">
+<div id="all">
 
-        <div id="content">
-            <div class="container">
+    <div id="content">
+        <div class="container">
 
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li><a href="../app/home/">Home</a>
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="../app/home/">Home</a>
                     </li>
                     <li>
                         <a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a>
@@ -207,284 +168,278 @@
                     <li>{{ item_name }}</li>
                 </ul>
 
-                </div>
+            </div>
 
-                <div class="col-md-12">
+            <div class="col-md-12">
 
-                    <div class="row" id="productMain">
-                        <div class="col-sm-6">
-                            <div class="box" id="Item_Image">
-                                <div id="mainImage">
-                                    <img src={{ url }}
-                                        alt="" class="img-responsive" style="align-self:center; max-height: 300px"/>
-                                </div>
+                <div class="row" id="productMain">
+                    <div class="col-sm-6">
+                        <div class="box" id="Item_Image">
+                            <div id="mainImage">
+                                <img src={{ url }}
+                                             alt="" class="img-responsive"
+                                     style="align-self:center; max-height: 300px"/>
                             </div>
-                            <div class="box" id="Purchase-Policy">
-                                <div class="box-header">
-                                    <h3 class="text-center">Purchase Policy</h3>
-                                </div>
+                        </div>
+                        <div class="box" id="Purchase-Policy">
+                            <div class="box-header">
+                                <h3 class="text-center">Purchase Policy</h3>
+                            </div>
 
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td>Policy</td>
-                                                <th class="text-right">{{ policy }}</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Deadline</td>
-                                                <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Actuel End Time</td>
-                                                <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Policy</td>
+                                        <th class="text-right">{{ policy }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Deadline</td>
+                                        <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Actuel End Time</td>
+                                        <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
-                        <div class="col-sm-6">
-                            <div class="box">
-                                <h1 class="text-center">{{ item_name }}</h1>
-                                <div class="table-responsive">
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="box">
+                            <h1 class="text-center">{{ item_name }}</h1>
+                            <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="img/cost.png" alt=""  height="89" width="89">
-                                            </td>
-                                            <td>
-                                                <h3 style="margin-top: 32px;">${{ price }}</h3>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="img/storage.png" style="margin-left: 12px;" alt=""  height="63" width="63">
-                                            </td>
-                                            <td>
-                                                <h3 style="margin-top: 22px;color: #4d8537;">{{ quantity }}</h3>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/cost.png" alt="" height="89" width="89">
+                                        </td>
+                                        <td>
+                                            <h3 style="margin-top: 32px;">${{ price }}</h3>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/storage.png" style="margin-left: 12px;" alt="" height="63"
+                                                 width="63">
+                                        </td>
+                                        <td>
+                                            <h3 style="margin-top: 22px;color: #4d8537;">{{ quantity }}</h3>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
 
                             </div>
 
-                                    <p class="text-center buttons">
-                                        <a href="javascript:void(0)" class="btn btn-primary" onclick="addToCart({{item_id}});"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                    </p>
+                            <p class="text-center buttons">
+                                <a href="javascript:void(0)" class="btn btn-primary"
+                                   onclick="addToCart({{ item_id }});"><i class="fa fa-shopping-cart"></i> Add to
+                                    cart</a>
+                            </p>
 
-                            </div>
-                            <div class="box" id="Product-Details">
-                                <div class="box-header">
-                                    <h3 class="text-center">Product Details</h3>
-                                </div>
-
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td>Shop</td>
-                                                <th class="text-right">{{ shop_name }}</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Category</td>
-                                                <th class="text-right">{{ category }}</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Kind</td>
-                                                <th class="text-right">{{ kind }}</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Ranking</td>
-                                                <th class="text-right">9/10</th>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <p class="text-center buttons">
-                                        <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i class="fa fa-files-o"></i> Show Reviews</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /.col-md-3 -->
                         </div>
+                        <div class="box" id="Product-Details">
+                            <div class="box-header">
+                                <h3 class="text-center">Product Details</h3>
+                            </div>
 
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Shop</td>
+                                        <th class="text-right">{{ shop_name }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Category</td>
+                                        <th class="text-right">{{ category }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Kind</td>
+                                        <th class="text-right">{{ kind }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Ranking</td>
+                                        <th class="text-right">9/10</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <p class="text-center buttons">
+                                    <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i
+                                            class="fa fa-files-o"></i> Show Reviews</a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- /.col-md-3 -->
                     </div>
-
-
 
                 </div>
-                <!-- /.col-md-9 -->
+
+
             </div>
-            <!-- /.container -->
+            <!-- /.col-md-9 -->
         </div>
-        <!-- /#content -->
+        <!-- /.container -->
+    </div>
+    <!-- /#content -->
 
 
+    <!-- *** FOOTER ***
+_________________________________________________________ -->
+    <div id="footer" data-animate="fadeInUp">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <h4>Pages</h4>
+
+                    <ul>
+                        <li><a href="text.html">About us</a>
+                        </li>
+                        <li><a href="text.html">Terms and conditions</a>
+                        </li>
+                        <li><a href="faq.html">FAQ</a>
+                        </li>
+                        <li><a href="contact.html">Contact us</a>
+                        </li>
+                    </ul>
+
+                    <hr>
+
+                    <h4>User section</h4>
+
+                    <ul>
+                        <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        </li>
+                        <li><a href="register.html">Regiter</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-3 col-sm-6">
+
+                    <h4>Top categories</h4>
+
+                    <h5>Men</h5>
+
+                    <ul>
+                        <li><a href="category.html">T-shirts</a>
+                        </li>
+                        <li><a href="category.html">Shirts</a>
+                        </li>
+                        <li><a href="category.html">Accessories</a>
+                        </li>
+                    </ul>
+
+                    <h5>Ladies</h5>
+                    <ul>
+                        <li><a href="category.html">T-shirts</a>
+                        </li>
+                        <li><a href="category.html">Skirts</a>
+                        </li>
+                        <li><a href="category.html">Pants</a>
+                        </li>
+                        <li><a href="category.html">Accessories</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-3 col-sm-6">
+
+                    <h4>Where to find us</h4>
+
+                    <p><strong>Obaju Ltd.</strong>
+                        <br>13/25 New Avenue
+                        <br>New Heaven
+                        <br>45Y 73J
+                        <br>England
+                        <br>
+                        <strong>Great Britain</strong>
+                    </p>
+
+                    <a href="contact.html">Go to contact page</a>
+
+                    <hr class="hidden-md hidden-lg">
+
+                </div>
+                <!-- /.col-md-3 -->
 
 
+                <div class="col-md-3 col-sm-6">
 
+                    <h4>Get the news</h4>
 
+                    <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+                        turpis egestas.</p>
 
+                    <form>
+                        <div class="input-group">
 
-        <!-- *** FOOTER ***
- _________________________________________________________ -->
-        <div id="footer" data-animate="fadeInUp">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <h4>Pages</h4>
+                            <input type="text" class="form-control">
 
-                        <ul>
-                            <li><a href="text.html">About us</a>
-                            </li>
-                            <li><a href="text.html">Terms and conditions</a>
-                            </li>
-                            <li><a href="faq.html">FAQ</a>
-                            </li>
-                            <li><a href="contact.html">Contact us</a>
-                            </li>
-                        </ul>
-
-                        <hr>
-
-                        <h4>User section</h4>
-
-                        <ul>
-                            <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                            </li>
-                            <li><a href="register.html">Regiter</a>
-                            </li>
-                        </ul>
-
-                        <hr class="hidden-md hidden-lg hidden-sm">
-
-                    </div>
-                    <!-- /.col-md-3 -->
-
-                    <div class="col-md-3 col-sm-6">
-
-                        <h4>Top categories</h4>
-
-                        <h5>Men</h5>
-
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Shirts</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
-
-                        <h5>Ladies</h5>
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Skirts</a>
-                            </li>
-                            <li><a href="category.html">Pants</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
-
-                        <hr class="hidden-md hidden-lg">
-
-                    </div>
-                    <!-- /.col-md-3 -->
-
-                    <div class="col-md-3 col-sm-6">
-
-                        <h4>Where to find us</h4>
-
-                        <p><strong>Obaju Ltd.</strong>
-                            <br>13/25 New Avenue
-                            <br>New Heaven
-                            <br>45Y 73J
-                            <br>England
-                            <br>
-                            <strong>Great Britain</strong>
-                        </p>
-
-                        <a href="contact.html">Go to contact page</a>
-
-                        <hr class="hidden-md hidden-lg">
-
-                    </div>
-                    <!-- /.col-md-3 -->
-
-
-
-                    <div class="col-md-3 col-sm-6">
-
-                        <h4>Get the news</h4>
-
-                        <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-
-                        <form>
-                            <div class="input-group">
-
-                                <input type="text" class="form-control">
-
-                                <span class="input-group-btn">
+                            <span class="input-group-btn">
 
 			    <button class="btn btn-default" type="button">Subscribe!</button>
 
 			</span>
 
-                            </div>
-                            <!-- /input-group -->
-                        </form>
+                        </div>
+                        <!-- /input-group -->
+                    </form>
 
-                        <hr>
+                    <hr>
 
-                        <h4>Stay in touch</h4>
+                    <h4>Stay in touch</h4>
 
-
-                    </div>
-                    <!-- /.col-md-3 -->
 
                 </div>
-                <!-- /.row -->
+                <!-- /.col-md-3 -->
 
             </div>
-            <!-- /.container -->
+            <!-- /.row -->
+
         </div>
-        <!-- /#footer -->
-
-        <!-- *** FOOTER END *** -->
-
-
-
-
-        <!-- *** COPYRIGHT ***
- _________________________________________________________ -->
-        <div id="copyright">
-            <div class="container">
-                <div class="col-md-6">
-                    <p class="pull-left">© 2015 Your name goes here.</p>
-
-                </div>
-                <div class="col-md-6">
-                    <p class="pull-right">Template by <a href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a href="https://fity.cz">Fity</a>
-                         <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!-- *** COPYRIGHT END *** -->
-
-
-
+        <!-- /.container -->
     </div>
-    <!-- /#all -->
+    <!-- /#footer -->
+
+    <!-- *** FOOTER END *** -->
 
 
+    <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+    <div id="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p class="pull-left">© 2015 Your name goes here.</p>
 
+            </div>
+            <div class="col-md-6">
+                <p class="pull-right">Template by <a
+                        href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a
+                        href="https://fity.cz">Fity</a>
+                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- *** COPYRIGHT END *** -->
+
+
+</div>
+<!-- /#all -->
 
 
 </body>

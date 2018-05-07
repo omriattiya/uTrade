@@ -54,6 +54,44 @@ _________________________________________________________ -->
 
     <script src="js/web_sockets.js"></script>
 
+    <script>
+        function change_kind() {
+            let kind_element = document.getElementById("kind");
+            let selected_kind = kind_element.options[kind_element.selectedIndex].value;
+            let kind_box = document.getElementById("kind_box");
+            let what_to_add = "";
+            if (selected_kind === "regular") {
+                kind_box.innerHTML = "";
+            } else if (selected_kind === "ticket") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="ticket_for_item">Item ID for the ticket</label>\
+                                <input name="ticket_for_item" id="ticket_for_item" min="0" type="number" class="form-control">\
+                            </div>\
+               ';
+            } else if (selected_kind === "auction") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="auction_initial_price">Initial Price</label>\
+                                <input name="auction_initial_price" id="auction_initial_price" min="1" type="number" class="form-control">\
+                            </div>\
+                            <div class="form-group">\
+                                <label for="auction_sale_duration">Sale Duration (in days)</label>\
+                                <input name="auction_sale_duration" id="auction_sale_duration" min="1" type="number" class="form-control">\
+                            </div>\
+                ';
+            }
+            else if (selected_kind === "prize") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="sale_duration">Sale Duration (in days)</label>\
+                                <input name="sale_duration" id="sale_duration" min="1" type="number" class="form-control">\
+                            </div>\
+                ';
+            }
+
+        }
+    </script>
 
 </head>
 
@@ -87,7 +125,7 @@ _________________________________________________________ -->
                     <span class="sr-only">Toggle search</span>
                     <i class="fa fa-search"></i>
                 </button>
-                <a class="btn btn-default navbar-toggle" href="basket.html">
+                <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
                     <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
                 </a>
             </div>
@@ -209,14 +247,17 @@ _________________________________________________________ -->
                             </div>
                             <div class="form-group">
                                 <label for="kind">Kind</label>
-                                <select name="kind" id="kind" class="form-control">
+                                <select name="kind" id="kind" class="form-control" onchange="change_kind()">
                                     <option value="regular">Regular</option>
                                     <option value="ticket">Ticket</option>
                                     <option value="prize">Prize</option>
                                     <option value="auction">Auction</option>
                                 </select>
                             </div>
-                            <div class="text-center">
+                            <div style="margin: 10px" id="kind_box"></div>
+
+
+                            <div style="margin: 10px" class="text-center">
                                 <button type="button" class="btn btn-primary"
                                         onclick="addItem('{{ shop_name }}');">
                                     Add Item

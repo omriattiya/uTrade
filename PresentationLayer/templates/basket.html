@@ -165,7 +165,7 @@ _________________________________________________________ -->
                         <span class="sr-only">Toggle search</span>
                         <i class="fa fa-search"></i>
                     </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
+                    <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
                         <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs"> {{number_of_items}} items in cart</span>
                     </a>
                 </div>
@@ -291,7 +291,8 @@ _________________________________________________________ -->
                                             <td><a href="#">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input id="quantity{{item.id}}" type="number" value="{{cart_item.item_quantity}}" class="form-control" onchange="changeAmount({{item.id}},'quantity{{item.id}}');">
+                                                <input type="number" value="{{ cart_item.item_quantity }}"
+                                                       class="form-control">
                                             </td>
                                             <td>${{item.price}}</td>
                                             <td>${{discount}}</td>
