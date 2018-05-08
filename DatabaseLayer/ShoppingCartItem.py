@@ -78,6 +78,16 @@ def check_empty(username):
     return len(items) == 0
 
 
+def check_empty_guest(username):
+    sql_query = """
+                SELECT *
+                FROM GuestShoppingCartItem
+                WHERE userName = {}
+              """.format(username)
+    items = select_command(sql_query)
+    return len(items) == 0
+
+
 def remove_shopping_cart(username):
     sql_query = """
                 DELETE FROM ShoppingCartItem
@@ -111,3 +121,37 @@ def get_guest_shopping_cart_item(username):
     shop_carts_items = select_command(sql_query)
     shop_carts_items = parse_shopping_carts(shop_carts_items)
     return shop_carts_items
+
+
+def update_code_shopping_cart_guest(guest, item_id, code):
+    sql = """
+                UPDATE GuestShoppingCartItem
+                SET code = '{}'
+                WHERE username = {} AND itemId = {}
+                  """.format(code, guest, item_id)
+    return commit_command(sql)
+
+
+def remove_item_shopping_cart_guest(guest, item_id):
+    sql_query = """
+                    DELETE FROM GuestShoppingCartItem
+                    WHERE userName = {} AND itemId = {}
+                  """.format(guest, item_id)
+    return commit_command(sql_query)
+
+
+def update_item_shopping_cart_guest(guest, item_id, new_quantity):
+    sql = """
+                UPDATE GuestShoppingCartItem
+                SET itemQuantity = {}
+                WHERE username = {} AND itemId = {}
+                  """.format(new_quantity, guest, item_id)
+    return commit_command(sql)
+
+
+def remove_shopping_cart_guest(guest):
+    sql_query = """
+                    DELETE FROM GuestShoppingCartItem
+                    WHERE userName = {}
+                  """.format(guest)
+    return commit_command(sql_query)

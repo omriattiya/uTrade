@@ -56,8 +56,72 @@ def update_code_shopping_cart(username, item_id, code):
     return False
 
 
-def check_empty_cart(username):
+def check_empty_cart_user(username):
     return ShoppingCartItem.check_empty(username)
+
+
+def check_empty_cart_guest(username):
+    return ShoppingCartItem.check_empty_guest(username)
+
+
+def remove_shopping_cart_guest(guest):
+    if guest is not None:
+        return ShoppingCartItem.remove_shopping_cart_guest(guest)
+
+
+def pay_all_guest(guest):
+    if guest is not None:
+        #  check if cart has items
+        empty = ShoppingCartItem.check_empty_guest(guest)
+        if empty is not True:
+            toCreatePurchase = True
+            purchase_id = 0
+            #  if so, check foreach item if the requested amount exist
+            cart_items = get_guest_shopping_cart_item(guest)
+            # cart_items is a array consist of shopping_cart objects
+            message = check_stock_for_shopping_cart(cart_items)
+            if message is not True:
+                return message
+            # if so, sum all items costs, get from costumer his credentials
+            total_cost = 0
+            # for each item, calculate visible_discount
+            for shopping_cart_item in cart_items:
+                item = get_item(shopping_cart_item.item_id)
+                discount = get_visible_discount(item.id, item.shop_name)
+                percentage = 0
+                if discount is not False:
+                    percentage = discount.percentage
+                new_price = item.price * (1 - percentage)
+                if shopping_cart_item.code is not None:
+                    discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
+                    if discount is not False:
+                        percentage = discount.percentage
+                    new_price = new_price * (1 - percentage)
+                lottery_message = check_lottery_ticket(item, shopping_cart_item, guest)
+                if lottery_message is not True:
+                    return lottery_message
+                total_cost = total_cost + shopping_cart_item.item_quantity * new_price
+                if actual_pay(total_cost) is False:
+                    return 'Something went wrong with the payment service'
+                new_quantity = item.quantity - shopping_cart_item.item_quantity
+                status = ItemsLogic.update_stock(item.id, new_quantity)
+                if status is False:
+                    return 'Something went wrong with the purchase'
+                if supply_items(cart_items) is False:
+                    return 'Something went wrong with the supply service'
+                # live alerts
+                owners = Owners.get_owners_by_shop(item.shop_name)
+                owners_name = []
+                for owner in owners:
+                    owners_name.append(owner.username)
+                Consumer.notify_live_alerts(owners_name,
+                                            '<strong>guest' + guest + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
+            status = remove_shopping_cart_guest(guest)
+            if status is False:
+                return 'Something went wrong with the purchase'
+            else:
+                return True
+    return 'Shopping cart is empty'
 
 
 def pay_all(username):
@@ -228,21 +292,26 @@ def get_purchase(purchase_id):
     return Purchases.get_purchase(purchase_id)
 
 
-def order_helper(username):
-    # username = request.GET.get('username')
-    if username is None:
-        cart_items = get_guest_shopping_cart_item(username)
-    else:
-        cart_items = get_cart_items(username)
+def order_of_guest(username):
+    cart_items = get_guest_shopping_cart_item(username)
+    return order_helper(cart_items)
+
+
+def order_of_user(username):
+    cart_items = get_cart_items(username)
+    return order_helper(cart_items)
+
+
+def order_helper(cart_items):
     items = []
     discount_prices = []
     total_prices = []
     number_of_items = 0
     if len(cart_items) == 0:
-        return {'username': username, 'total_price': 0, 'cart_items_combined': cart_items, 'number_of_items': number_of_items}
+        return {'total_price': 0, 'cart_items_combined': cart_items, 'number_of_items': number_of_items}
     else:
         total_price = 0
-        for i in [0, len(cart_items) - 1]:
+        for i in range(0, len(cart_items)):
             item = get_item(cart_items[i].item_id)
             visible_discount = get_visible_discount(item.id, item.shop_name)
             percentage_visible = 0
@@ -261,7 +330,7 @@ def order_helper(username):
                 i].item_quantity
             number_of_items = number_of_items + cart_items[i].item_quantity
         if cart_items is not False:
-            return {'username': username, 'total_price': total_price,
+            return {'total_price': total_price,
                     'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
 
 
@@ -279,3 +348,25 @@ def add_guest_item_shopping_cart(guest, item_id, quantity):
 
 def get_guest_shopping_cart_item(username):
     return ShoppingCartItem.get_guest_shopping_cart_item(username)
+
+
+def update_code_shopping_cart_guest(guest, item_id, code):
+    if guest is not None and id is not None and code is not None:
+        if len(code) == 15 and isinstance(code, str):
+            return ShoppingCartItem.update_code_shopping_cart_guest(guest, item_id, code)
+    return False
+
+
+def remove_item_shopping_cart_guest(guest, item_id):
+    if guest is not None and item_id is not None:
+        return ShoppingCartItem.remove_item_shopping_cart_guest(guest, item_id)
+
+
+def update_item_shopping_cart_guest(guest, item_id, new_quantity):
+    if guest is not None and item_id is not None and new_quantity >= 0:
+        if new_quantity is 0:
+            return remove_item_shopping_cart_guest(guest, item_id)
+        if ItemsLogic.check_in_stock(item_id, new_quantity) is False:
+            return False
+        return ShoppingCartItem.update_item_shopping_cart_guest(guest, item_id, new_quantity)
+    return False

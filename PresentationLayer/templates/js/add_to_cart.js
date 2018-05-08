@@ -4,24 +4,28 @@ function addToCart(item_id) {
     data.append('quantity', 1);
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
+        if (this.readyState === 4 && this.status === 200)
+        {
+            if (loadHTML.responseText === 'fail')
+            {
                 alert("add to cart fail");
             }
-            else {
-                if (getCookie('login_hash') === '') {
-                    if (getCookie('guest_hash') === '') {
-                        alert("new guest");
-                        setCookie('guest_hash', loadHTML.responseTEXT, 7);
-                        document.write(loadHTML.responseTEXT);
-                        // location.reload()
+            else
+            {
+                if (getCookie('login_hash') === '')
+                {
+                    if (getCookie('guest_hash') === '')
+                    {
+                        setCookie('guest_hash', loadHTML.responseText, 7);
+                        location.reload()
                     }
-                    else {
-                        alert("old guest");
+                    else
+                    {
                         location.reload()
                     }
                 }
-                else {
+                else
+                {
                     alert("user");
                 }
             }

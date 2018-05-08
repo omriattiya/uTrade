@@ -62,11 +62,11 @@
         loadHTML.open("GET", "../app/shopping_cart/check_empty_cart/", true);
         loadHTML.send(data);
     }
-    function changeAmount(item_id,quantity_id)
+    function changeAmount(item_id)
     {
         var data = new FormData();
         data.append('item_id',item_id);
-        data.append('quantity',document.getElementById(quantity_id).value);
+        data.append('quantity',document.getElementById('quantity'+item_id).value);
         var loadHTML = new XMLHttpRequest();
         loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -291,8 +291,8 @@ _________________________________________________________ -->
                                             <td><a href="#">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input type="number" value="{{ cart_item.item_quantity }}"
-                                                       class="form-control">
+                                                <input id="quantity{{item.id}}" type="number" value="{{ cart_item.item_quantity }}"
+                                                        class="form-control" style="width: 80px" onchange="changeAmount({{item.id}});">
                                             </td>
                                             <td>${{item.price}}</td>
                                             <td>${{discount}}</td>
