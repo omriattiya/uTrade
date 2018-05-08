@@ -9,7 +9,7 @@ from DomainLayer import ItemsLogic
 from DomainLayer import ShoppingLogic
 from ServiceLayer import Consumer
 
-shop_not_exist = 'shop does not exist'
+shop_not_exist = 'item does not exist'
 not_get_request = 'not a get request'
 is_used = False
 
