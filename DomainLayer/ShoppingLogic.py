@@ -65,7 +65,7 @@ def pay_all(username):
         #  check if cart has items
         empty = ShoppingCartItem.check_empty(username)
         if empty is not True:
-            toCreatePurchase = True
+            to_create_purchase = True
             purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)
@@ -92,12 +92,13 @@ def pay_all(username):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                if actual_pay(total_cost) is False:
+                pay_confirmation = PaymentSystem.pay(total_cost, username)
+                if pay_confirmation is False:
                     return 'Something went wrong with the payment service'
-                # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
-
-                if toCreatePurchase is True:
-                    toCreatePurchase = False
+                # TODO print payment confirmation or something
+                print(pay_confirmation)
+                if to_create_purchase is True:
+                    to_create_purchase = False
                     purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
                     if purchase_id is False:
                         return 'Something went wrong with the purchase'
@@ -106,6 +107,11 @@ def pay_all(username):
                                                            shopping_cart_item.item_quantity * new_price)
                 if status is False:
                     return 'Something went wrong with the purchase'
+                sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
+                if sup_confirmation is False:
+                    return 'Supply system denied.'
+                # TODO print supply confirmation or something
+                print(sup_confirmation)
                 status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
                     return 'Something went wrong with the purchase'
@@ -113,15 +119,14 @@ def pay_all(username):
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
                     return 'Something went wrong with the purchase'
-                if supply_items(cart_items) is False:
-                    return 'Something went wrong with the supply service'
+
                 # live alerts
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
                 for owner in owners:
                     owners_name.append(owner.username)
                 Consumer.notify_live_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
+                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+item.id+'"># <strong>' + item.id + '</strong></a> from your shop')
             status = remove_shopping_cart(username)
             if status is False:
                 return 'Something went wrong with the purchase'
@@ -155,14 +160,6 @@ def check_lottery_ticket(item, cart_item, username):
         else:
             return 'Lottery has ended'
     return True
-
-
-def actual_pay(total_cost):
-    return PaymentSystem.pay(total_cost)
-
-
-def supply_items(items):
-    return SupplySystem.supply_my_items(items)
 
 
 def get_cart_cost(username):
