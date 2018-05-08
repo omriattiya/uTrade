@@ -53,7 +53,7 @@ class ShoppingTests(unittest.TestCase):
         item2 = ItemsLogic.Items.search_item_in_shop('My Shop', 'steak')
         remove_item_shopping_cart('ToniToni', item1.id)
         remove_item_shopping_cart('ToniToni', item2.id)
-        self.assertFalse(pay_all('ToniToni'))
+        self.assertEqual(pay_all('ToniToni'), "Shopping cart is empty")
 
     def test_bad_out_of_stock_cart_pay_all(self):
         item3 = Item(3, 'My Shop', 'asado', 'meat', 'bad', 12, 100, 'regular', "https://cdn3.iconfinder.com/data/icons/user-interface-icons-bundle-18/32/910-512.png")
@@ -63,7 +63,7 @@ class ShoppingTests(unittest.TestCase):
         add_item_shopping_cart(ShoppingCartItem('ToniToni1', item3.id, 100, None))
         self.assertTrue(pay_all('ToniToni'))
         # TODO fix this test.
-        # self.assertFalse(pay_all('ToniToni1'))
+        self.assertEqual(pay_all('ToniToni1'), "Only 0 asado exist in the system")
 
     def tearDown(self):
         os.remove('db.sqlite3')

@@ -94,8 +94,8 @@ def pay_all(username):
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
                 pay_confirmation = PaymentSystem.pay(total_cost, username)
                 if pay_confirmation is False:
-                    return 'Something went wrong with the payment service'
-                # TODO print payment confirmation or something
+                    return 'Payment System Denied.'
+                # TODO print to GUI payment confirmation or something
                 print(pay_confirmation)
                 if to_create_purchase is True:
                     to_create_purchase = False
@@ -109,8 +109,8 @@ def pay_all(username):
                     return 'Something went wrong with the purchase'
                 sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
                 if sup_confirmation is False:
-                    return 'Supply system denied.'
-                # TODO print supply confirmation or something
+                    return 'Supply System Denied.'
+                # TODO print to GUI supply confirmation or something
                 print(sup_confirmation)
                 status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
@@ -126,7 +126,7 @@ def pay_all(username):
                 for owner in owners:
                     owners_name.append(owner.username)
                 Consumer.notify_live_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id='+item.id+'"># <strong>' + item.id + '</strong></a> from your shop')
+                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
             status = remove_shopping_cart(username)
             if status is False:
                 return 'Something went wrong with the purchase'
