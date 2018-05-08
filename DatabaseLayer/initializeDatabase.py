@@ -178,7 +178,6 @@ tables_sql = [
           percentage REAL,
           from_date DATE,
           end_date DATE,
-          code CHAR(15),
           PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
@@ -194,7 +193,6 @@ tables_sql = [
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS Lotteries(
           lotto_id INTEGER REFERENCES Items(id),
@@ -206,7 +204,6 @@ tables_sql = [
           PRIMARY KEY(lotto_id)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS CustomersInLotteries(
           lotto_id INTEGER REFERENCES Lotteries(lotto_id) ON DELETE CASCADE ,
@@ -215,7 +212,6 @@ tables_sql = [
           PRIMARY KEY(lotto_id,username)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS Auctions(
           auction_id INTEGER REFERENCES Items(id),
@@ -223,7 +219,6 @@ tables_sql = [
           PRIMARY KEY(auction_id)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS AuctionCustomers(
           auction_id INTEGER REFERENCES Auctions(auction_id),
@@ -232,7 +227,6 @@ tables_sql = [
           PRIMARY KEY(auction_id, username, price)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS GuestShoppingCartItem(
           userName INTEGER,

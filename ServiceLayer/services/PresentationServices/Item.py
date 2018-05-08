@@ -26,9 +26,11 @@ def get_item(request):
             policy = "Immediately"
             deadline = "------"
             real_end_time = "------"
+            icon = "money-bag"
             lottery = Lotteries.get_lottery(item_id)
             if lottery is not False:
                 policy = "Lottery"
+                icon = "ticket"
                 deadline = datetime.datetime.fromtimestamp(lottery.final_date/1000).strftime('%c')
                 if lottery.real_end_date is not None:
                     real_end_time = datetime.datetime.fromtimestamp(lottery.real_end_date/1000).strftime('%c')
@@ -36,6 +38,7 @@ def get_item(request):
                 auction = Auctions.get_auction(item_id)
                 if auction is not False:
                     policy = "Auction"
+                    icon = "hammer"
                     deadline = datetime.datetime.fromtimestamp(auction.end_date/1000).strftime('%c')
             login = request.COOKIES.get('login_hash')
             cart_count = 0
@@ -64,6 +67,7 @@ def get_item(request):
                        'kind': item.kind,
                        'item_rank': item_rank,
                        'url': item.url,
+                       'icon': icon,
                        'policy': policy,
                        'deadline': deadline,
                        'real_end_time': real_end_time,
