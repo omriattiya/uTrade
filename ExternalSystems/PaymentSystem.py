@@ -3,4 +3,8 @@ from datetime import datetime
 
 def pay(total_cost, username):
     purchase_time = datetime.now()
-    return "On " + purchase_time.strftime("%c") + " a payment of " + total_cost + " was made by the user:" + username
+    if total_cost > 0 and username is not None and username != "":
+        return "On " + purchase_time.strftime("%c") + " a payment of " + str(total_cost) + " was made by the user:" +\
+               username + " and APPROVED by the Payment System."
+    else:
+        return False

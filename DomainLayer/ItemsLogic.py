@@ -80,7 +80,7 @@ def get_all_purchased_items(username):
 
 def update_stock(item_id, quantity):
     if item_id is not None and quantity is not None:
-        update_item(item_id, 'quantity', quantity)
+        return update_item(item_id, 'quantity', quantity)
 
 
 def get_item(item_id):
