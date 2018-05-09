@@ -32,27 +32,29 @@ def get_shop(request):
             items = ShopLogic.get_shop_items(shop.name)
             products = ""
             for item in items:
+                if item.kind == 'prize':
+                    continue
                 products += loader.render_to_string(
-                    'component/../../../PresentationLayer/templates/components/item.html',
+                    'components/item.html',
                     {'name': item.name, 'price': item.price,
-                                                     'url': item.url, 'item_id': item.id}, None,
+                     'url': item.url, 'item_id': item.id}, None,
                     None)
             owner_manager_options = ""
             render_edit_remove = loader.render_to_string(
-                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                'components/owner_manager_options.html',
                 {'path': 'owner/items',
-                                                          'shop_name': shop_name,
-                                                          'button_text': 'Edit & Remove Items'})
+                 'shop_name': shop_name,
+                 'button_text': 'Edit & Remove Items'})
             render_purchase_history = loader.render_to_string(
-                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                'components/owner_manager_options.html',
                 {'path': 'owner/purchase_history',
-                                                               'shop_name': shop_name,
-                                                               'button_text': 'Purchase History'})
+                 'shop_name': shop_name,
+                 'button_text': 'Purchase History'})
             render_add_item = loader.render_to_string(
-                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                'components/owner_manager_options.html',
                 {'path': 'owner/items/add_item',
-                                                       'shop_name': shop_name,
-                                                       'button_text': 'Add Item'})
+                 'shop_name': shop_name,
+                 'button_text': 'Add Item'})
 
             if UsersLogic.is_owner_of_shop(username, shop_name):
                 owner_manager_options += render_purchase_history + render_edit_remove + render_add_item
@@ -99,10 +101,10 @@ def get_reviews(request):
             string_reviews = ""
             for review in reviews:
                 string_reviews += loader.render_to_string(
-                    'component/../../../PresentationLayer/templates/components/review.html',
+                    'components/review.html',
                     {'writer_name': review.writerId,
-                                                           'rank': review.rank,
-                                                           'description': review.description}, None, None)
+                     'rank': review.rank,
+                     'description': review.description}, None, None)
             context = {'topbar': top_bar, 'navbar': nav_bar, 'shop_name': shop_name, 'reviews': string_reviews}
             return render(request, 'shop_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
@@ -115,38 +117,37 @@ def get_shop_to_owner(request):
 
         login = request.COOKIES.get('login_hash')
         cart_count = 0
-        top_bar = loader.render_to_string('components/Topbar.html', context=None)
-        username = None
+        topbar = loader.render_to_string('components/Topbar.html', context=None)
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
                 # html of a logged in user
-                top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))
             else:
                 return HttpResponse(error_login_owner)
         else:
             return HttpResponse(error_login_owner)
+        navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
 
-        nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-        every_html = {'top_bar': top_bar, 'nav_bar': nav_bar}
         if UsersLogic.is_owner_of_shop(username, shop_name) is not False:
             shop_items = ShopLogic.get_shop_items(shop_name)
             string_items = ""
             for item in shop_items:
                 string_items += loader.render_to_string(
-                    'component/../../../PresentationLayer/templates/components/item_owner.html',
+                    'components/item_owner.html',
                     {'item_name': item.name,
-                                                         'item_quantity': item.quantity,
-                                                         'item_category': item.category,
-                                                         'item_keywords': item.keyWords,
-                                                         'item_price': item.price,
-                                                         'item_url': item.url,
-                                                         'item_id': item.id,
-                                                         'shop_name': item.shop_name})
-            return render(request, 'shop_view_for_owner.html',
-                          context={'topbar': top_bar, 'navbar': nav_bar, 'items': string_items, 'shop_name': shop_name})
-        return HttpResponse(shop_not_exist + " with username=" + username)
+                     'item_quantity': item.quantity,
+                     'item_category': item.category,
+                     'item_keywords': item.keyWords,
+                     'item_price': item.price,
+                     'item_url': item.url,
+                     'item_id': item.id,
+                     'shop_name': item.shop_name})
+            return render(request, 'shop_items_management.html',
+                          context={'topbar': topbar, 'navbar': navbar, 'items': string_items, 'shop_name': shop_name})
+        else:
+            return HttpResponse(shop_not_exist + " with username=" + username)
     return HttpResponse(not_get_request)
 
 
@@ -217,11 +218,11 @@ def watch_purchase_history(request):
         string_items = ""
         for item in shop_items:
             string_items += loader.render_to_string(
-                'component/../../../PresentationLayer/templates/components/purchase_item_owner.html',
+                'components/purchase_item_owner.html',
                 {'purchase_id': item.purchase_id,
-                                                     'item_id': item.item_id,
-                                                     'quantity': item.quantity,
-                                                     'price': item.price})
+                 'item_id': item.item_id,
+                 'quantity': item.quantity,
+                 'price': item.price})
         return render(request, 'shop_view_purchase_history.html',
                       context={'every_html': every_html, 'items': string_items, 'shop_name': shop_name})
     return HttpResponse(not_get_request)
@@ -258,28 +259,3 @@ def add_item_to_shop(request):
         every_html = {'top_bar': top_bar, 'nav_bar': nav_bar}
         return render(request, 'shop_add_item.html',
                       context={'every_html': every_html, 'shop_name': shop_name})
-
-
-def add_review(request):
-    if request.method == 'GET':
-        shop_name = request.GET.get('shop_name')
-
-        login = request.COOKIES.get('login_hash')
-        cart_count = 0
-        top_bar = loader.render_to_string('components/Topbar.html', context=None)
-        username = None
-        if login is not None:
-            username = Consumer.loggedInUsers.get(login)
-            if username is not None:
-                # html of a logged in user
-                top_bar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-            else:
-                return HttpResponse(error_login)
-        else:
-            return HttpResponse(error_login)
-
-        nav_bar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-
-        return render(request, 'add_review.html',
-                      context={'topbar': top_bar, 'navbar': nav_bar, 'shop_name': shop_name})

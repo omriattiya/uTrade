@@ -35,8 +35,6 @@
     <link href="css/custom.css" rel="stylesheet">
 
     <script src="js/respond.min.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/shop_owner_actions.js"></script>
 
     <link rel="shortcut icon" href="favicon.png">
 
@@ -51,9 +49,9 @@ _________________________________________________________ -->
     <script src="js/bootstrap-hover-dropdown.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
-
+    <script src="js/search.js"></script>
     <script src="js/web_sockets.js"></script>
-
+    <script src="js/shop_owner_actions.js"></script>
 
 </head>
 
@@ -65,7 +63,6 @@ _________________________________________________________ -->
     {{ topbar }}
 {% endautoescape %}
 
-<!-- *** TOP BAR END *** -->
 
 <!-- *** NAVBAR ***
 _________________________________________________________ -->
@@ -176,8 +173,17 @@ _________________________________________________________ -->
         <div class="container">
 
             <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="../app/home">Home</a></li>
+                    <li><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></li>
+                    <li>Items Management</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12">
                 <div class="box">
-                    <h1>Owner Page of {{ shop_name }}</h1>
+                    <h1>Items Management of {{ shop_name }}</h1>
+                    <h5 style="color: #00b478">(*) required field</h5>
                 </div>
 
                 {% autoescape off %}
@@ -218,14 +224,6 @@ _________________________________________________________ -->
 
 <!-- *** SCRIPTS TO INCLUDE ***
 _________________________________________________________ -->
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script src="js/waypoints.min.js"></script>
-<script src="js/modernizr.js"></script>
-<script src="js/bootstrap-hover-dropdown.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/front.js"></script>
 
 
 </body>

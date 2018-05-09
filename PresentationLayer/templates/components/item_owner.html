@@ -2,31 +2,32 @@
     <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
         <h2>{{ item_name }}</h2>
         <h4>ITEM ID: {{ item_id }}</h4>
-        <form>
+        <form id="update-item-form" onsubmit="updateItem({{ item_id }}, '{{ shop_name }}')">
             <div class="form-group">
-                <label for="name">Update Quantity</label>
-                <input name="quantity" id="quantity" type="text" class="form-control" value={{ item_quantity }}>
+                <label for="quantity">* Update Quantity</label>
+                <input required name="quantity" id="quantity" type="number" min="0" class="form-control"
+                       value={{ item_quantity }}>
             </div>
             <div class="form-group">
-                <label for="name">Update Category</label>
-                <input name="category" id="category" type="text" class="form-control" value={{ item_category }}>
+                <label for="category">* Update Category</label>
+                <input required name="category" id="category" type="text" class="form-control"
+                       value={{ item_category }}>
             </div>
             <div class="form-group">
-                <label for="name">Update Key Words</label>
+                <label for="keywords">Update Key Words</label>
                 <input name="keywords" id="keywords" type="text" class="form-control" value={{ item_keywords }}>
             </div>
             <div class="form-group">
-                <label for="name">Update Price</label>
-                <input name="price" id="price" type="text" class="form-control" value={{ item_price }}>
+                <label for="price">* Update Price</label>
+                <input required name="price" id="price" type="number" min="1" class="form-control"
+                       value={{ item_price }}>
             </div>
             <div class="form-group">
-                <label for="name">Update URL</label>
-                <input name="url" id="url" type="text" class="form-control" value={{ item_url }}>
+                <label for="url">Update URL</label>
+                <input name="url" id="url" type="url" class="form-control" value={{ item_url }}>
             </div>
-            <div class="text-center">
-                <button type="button" class="btn btn-primary"
-                        onclick="updateItem({{ item_id }}, '{{ shop_name }}');">Update Properties
-                </button>
+            <div style="margin: 10px" class="text-center">
+                <input value="Update Item Properties" type="submit" class="btn btn-primary">
             </div>
             <div class="text-center">
                 <button type="button" class="btn btn-primary"
@@ -36,7 +37,6 @@
             </div>
         </form>
     </div>
-    <img src={{ item_url }}
-                 alt="" class="img-responsive" style="position: absolute; right:5%; top:5%; max-height: 300px;"/>
+    <img src={{ item_url }} class="img-responsive" style="position: absolute; right:5%; top:5%; max-height: 300px;"/>
 
 </div>

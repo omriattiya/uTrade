@@ -21,13 +21,13 @@ def add_or_update_lottery_customer(purchased_item, username, price):
     return False
 
 
-def add_lottery_and_items(item, ticket, item_price, final_date, username):
-    if item is not None and ticket is not None and item_price is not None and final_date is not None and username is not None:
-        item_id = ItemsLogic.add_item_to_shop_and_return_id(item, username)
+def add_lottery_and_items(prize, ticket, ticket_price, final_date, username):
+    if prize is not None and ticket is not None and ticket_price is not None and final_date is not None and username is not None:
+        item_id = ItemsLogic.add_item_to_shop_and_return_id(prize, username)
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
             if ticket_id is not False:
-                lottery = Lottery(ticket_id, item_price, final_date, None, None, item_id)
+                lottery = Lottery(ticket_id, ticket_price, final_date, None, None, item_id)
                 status = Lotteries.add_lottery(lottery)
                 if status is not False:
                     return True

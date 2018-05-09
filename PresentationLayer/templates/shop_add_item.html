@@ -4,7 +4,6 @@
 <head>
     <BASE href="http://localhost:8000/static/">
 
-
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
     <meta name="googlebot" content="index,follow,snippet,archive">
@@ -55,47 +54,63 @@ _________________________________________________________ -->
     <script src="js/web_sockets.js"></script>
 
     <script>
+        function change_labels(kind) {
+            let quantity = document.getElementById("label_quantity");
+            let price = document.getElementById("label_price");
+            let name = document.getElementById("label_name");
+
+            if (kind === "prize") {
+                quantity.innerHTML = "* Amount of Tickets";
+                quantity.style.color = "#ff9933";
+                price.innerHTML = "* Ticket Price";
+                price.style.color = "#ff9933";
+                name.innerHTML = "* Prize Name";
+                name.style.color = "#ff9933";
+            }
+            else {
+                price.innerHTML = "* Price";
+                price.style.color = "";
+                if (kind === "auction") {
+                    price.innerHTML = "* Initial Price";
+                    price.style.color = "#ff9933";
+                }
+                quantity.innerHTML = "* Quantity";
+                quantity.style.color = "";
+                name.innerHTML = "* Name";
+                name.style.color = "";
+            }
+        }
+
         function change_kind() {
             let kind_element = document.getElementById("kind");
             let selected_kind = kind_element.options[kind_element.selectedIndex].value;
             let kind_box = document.getElementById("kind_box");
             let what_to_add = "";
+            change_labels(selected_kind);
             if (selected_kind === "regular") {
                 kind_box.innerHTML = "";
-            } else if (selected_kind === "ticket") {
-                kind_box.innerHTML = '\
-                            <div class="form-group">\
-                                <label for="ticket_for_item">Item ID for the ticket</label>\
-                                <input name="ticket_for_item" id="ticket_for_item" min="0" type="number" class="form-control">\
-                            </div>\
-               ';
             } else if (selected_kind === "auction") {
                 kind_box.innerHTML = '\
                             <div class="form-group">\
-                                <label for="auction_initial_price">Initial Price</label>\
-                                <input name="auction_initial_price" id="auction_initial_price" min="1" type="number" class="form-control">\
-                            </div>\
-                            <div class="form-group">\
-                                <label for="auction_sale_duration">Sale Duration (in days)</label>\
-                                <input name="auction_sale_duration" id="auction_sale_duration" min="1" type="number" class="form-control">\
+                                <label for="auction_sale_duration">* Sale Duration (in days)</label>\
+                                <input required name="auction_sale_duration" id="auction_sale_duration" min="1" type="number" class="form-control">\
                             </div>\
                 ';
             }
             else if (selected_kind === "prize") {
                 kind_box.innerHTML = '\
                             <div class="form-group">\
-                                <label for="sale_duration">Sale Duration (in days)</label>\
-                                <input name="sale_duration" id="sale_duration" min="1" type="number" class="form-control">\
+                                <label for="sale_duration">* Sale Duration (in days)</label>\
+                                <input required name="sale_duration" id="sale_duration" min="1" type="number" class="form-control">\
                             </div>\
                 ';
             }
-
         }
     </script>
 
 </head>
 
-<body>
+<body onload="change_kind()">
 
 <!-- *** TOPBAR ***
 _________________________________________________________ -->
@@ -214,42 +229,52 @@ _________________________________________________________ -->
         <div class="container">
 
             <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="../app/home">Home</a></li>
+                    <li><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></li>
+                    <li>Add Item</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12">
                 <div class="box">
                     <h1>Add Item To {{ shop_name }}</h1>
+                    <h5 style="color: #00b478">(*) required field</h5>
+                    <h5 style="color: #ff9933">(*) field changed due to kind</h5>
                 </div>
 
                 <div class="box info-bar" style="position: relative">
                     <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
-                        <form>
+                        <form id="form-add-item" onsubmit="addItem('{{ shop_name }}')">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input name="name" id="name" type="text" class="form-control">
+                                <label id="label_name" for="name">* Name</label>
+                                <input required name="name" id="name" type="text" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input name="quantity" id="quantity" type="text" class="form-control">
+                                <label id="label_quantity" for="quantity">* Quantity</label>
+                                <input required name="quantity" id="quantity" type="number" min="0"
+                                       class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="category">Category</label>
-                                <input name="category" id="category" type="text" class="form-control">
+                                <label for="category">* Category</label>
+                                <input required name="category" id="category" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="keywords">Key Words</label>
                                 <input name="keywords" id="keywords" type="text" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="price">Price</label>
-                                <input name="price" id="price" type="text" class="form-control">
+                                <label id="label_price" for="price">* Price</label>
+                                <input required name="price" id="price" type="number" min="1" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="url">URL</label>
-                                <input name="url" id="url" type="text" class="form-control">
+                                <input name="url" id="url" type="url" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="kind">Kind</label>
+                                <label for="kind">* Kind</label>
                                 <select name="kind" id="kind" class="form-control" onchange="change_kind()">
                                     <option value="regular">Regular</option>
-                                    <option value="ticket">Ticket</option>
                                     <option value="prize">Prize</option>
                                     <option value="auction">Auction</option>
                                 </select>
@@ -258,10 +283,7 @@ _________________________________________________________ -->
 
 
                             <div style="margin: 10px" class="text-center">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="addItem('{{ shop_name }}');">
-                                    Add Item
-                                </button>
+                                <input value="Add Item" type="submit" class="btn btn-primary">
                             </div>
 
                         </form>
@@ -298,18 +320,6 @@ _________________________________________________________ -->
 
 </div>
 <!-- /#all -->
-
-
-<!-- *** SCRIPTS TO INCLUDE ***
-_________________________________________________________ -->
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script src="js/waypoints.min.js"></script>
-<script src="js/modernizr.js"></script>
-<script src="js/bootstrap-hover-dropdown.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/front.js"></script>
 
 
 </body>

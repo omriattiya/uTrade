@@ -52,9 +52,9 @@ _________________________________________________________ -->
     <script src="js/bootstrap-hover-dropdown.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
-
+    <script src="js/search.js"></script>
     <script src="js/web_sockets.js"></script>
-
+    <script src="js/customer-order.js"></script>
 
 </head>
 
@@ -177,17 +177,22 @@ _________________________________________________________ -->
         <div class="container">
 
             <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="../app/home">Home</a>
+                    </li>
+                    <li>{{ shop_name }}</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12">
                 <div class="box">
                     <h1>{{ shop_name }}</h1>
                     <p>{{ shop_status }}</p>
                 </div>
 
+
                 <div class="box info-bar">
                     <div class="row">
-                        <div class="col-sm-4 products-showing" style="width: unset">
-                            <a href="../app/shop/reviews/add_review/?shop_name={{ shop_name }}" class="btn btn-primary">
-                                Add Review</a>
-                        </div>
                         <div class="col-sm-4 products-showing" style="width: unset">
                             <a href="../app/shop/reviews/?shop_name={{ shop_name }}" class="btn btn-primary">Watch
                                 Reviews</a>
@@ -236,18 +241,6 @@ _________________________________________________________ -->
 
 </div>
 <!-- /#all -->
-
-
-<!-- *** SCRIPTS TO INCLUDE ***
-_________________________________________________________ -->
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script src="js/waypoints.min.js"></script>
-<script src="js/modernizr.js"></script>
-<script src="js/bootstrap-hover-dropdown.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/front.js"></script>
 
 
 </body>
