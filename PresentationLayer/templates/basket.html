@@ -5,16 +5,14 @@
     <script>
     function deleteItemFromCart(item_id) {
         var data = new FormData();
-        data.append('username', "OmriOmri");
         data.append('item_id', item_id);
         var loadHTML = new XMLHttpRequest();
         loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
-                alert("Wrong Credentials")
+                alert("Deletion of item failed")
             }
             else {
-                //setCookie('login_hash', loadHTML.responseText, 7);
                 window.location.href = "../app/shopping_cart/get_cart_items/";
             }
         }
@@ -31,16 +29,14 @@
         else
         {
             var data = new FormData();
-            data.append('username', "OmriOmri");
             data.append('code',document.getElementById("code").value);
             var loadHTML = new XMLHttpRequest();
             loadHTML.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 if (loadHTML.responseText === 'fail') {
-                    alert("Wrong Credentials")
+                    alert("No such code exists for the cart")
                 }
                 else {
-                    //setCookie('login_hash', loadHTML.responseText, 7);
                     window.location.href = "../app/shopping_cart/get_cart_items/";
                 }
             }
@@ -49,9 +45,41 @@
         loadHTML.send(data);
         }
     }
-    function checkConnected()
+    function checkNotEmptyCart()
     {
-        window.location.href = "../app/shopping_cart/addressing/";
+        var data = new FormData();
+        var loadHTML = new XMLHttpRequest();
+        loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'OK') {
+                    window.location.href = "../app/shopping_cart/addressing/";
+            }
+            else {
+                 alert('Shopping cart is empty');
+            }
+        }
+        };
+        loadHTML.open("GET", "../app/shopping_cart/check_empty_cart/", true);
+        loadHTML.send(data);
+    }
+    function changeAmount(item_id,quantity_id)
+    {
+        var data = new FormData();
+        data.append('item_id',item_id);
+        data.append('quantity',document.getElementById(quantity_id).value);
+        var loadHTML = new XMLHttpRequest();
+        loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'OK') {
+                    location.reload();
+            }
+            else {
+                 location.reload();
+            }
+        }
+        };
+        loadHTML.open("POST", "../app/shopping_cart/update_item_shopping_cart/", true);
+        loadHTML.send(data);
     }
     </script>
     <BASE href="http://localhost:8000/static/">
@@ -137,8 +165,8 @@ _________________________________________________________ -->
                         <span class="sr-only">Toggle search</span>
                         <i class="fa fa-search"></i>
                     </button>
-                    <a class="btn btn-default navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
+                    <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
+                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs"> {{number_of_items}} items in cart</span>
                     </a>
                 </div>
             </div>
@@ -237,10 +265,10 @@ _________________________________________________________ -->
 
                     <div class="box">
 
-                        <form method="get" action="http://localhost:8000/app/shopping_cart/addressing/">
+                        <form action="javascript:checkNotEmptyCart()">
 
                             <h1>Shopping cart</h1>
-                            <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                            <p class="text-muted">You currently have {{number_of_items}} item(s) in your cart.</p>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -263,7 +291,8 @@ _________________________________________________________ -->
                                             <td><a href="#">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input type="number" value="{{cart_item.item_quantity}}" class="form-control">
+                                                <input type="number" value="{{ cart_item.item_quantity }}"
+                                                       class="form-control">
                                             </td>
                                             <td>${{item.price}}</td>
                                             <td>${{discount}}</td>
@@ -316,38 +345,6 @@ _________________________________________________________ -->
                 <!-- /.col-md-9 -->
 
                 <div class="col-md-3">
-                    <div class="box" id="order-summary">
-                        <div class="box-header">
-                            <h3>Order summary</h3>
-                        </div>
-                        <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
-
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>Order subtotal</td>
-                                        <th>$446.00</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping and handling</td>
-                                        <th>$10.00</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax</td>
-                                        <th>$0.00</th>
-                                    </tr>
-                                    <tr class="total">
-                                        <td>Total</td>
-                                        <th>$456.00</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-
                     <div class="box">
                         <div class="box-header">
                             <h4>Coupon code</h4>

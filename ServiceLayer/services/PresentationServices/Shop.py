@@ -32,21 +32,25 @@ def get_shop(request):
             items = ShopLogic.get_shop_items(shop.name)
             products = ""
             for item in items:
-                products += loader.render_to_string('component/item.html',
-                                                    {'name': item.name, 'price': item.price,
+                products += loader.render_to_string(
+                    'component/../../../PresentationLayer/templates/components/item.html',
+                    {'name': item.name, 'price': item.price,
                                                      'url': item.url, 'item_id': item.id}, None,
-                                                    None)
+                    None)
             owner_manager_options = ""
-            render_edit_remove = loader.render_to_string('component/owner_manager_options.html',
-                                                         {'path': 'owner/items',
+            render_edit_remove = loader.render_to_string(
+                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                {'path': 'owner/items',
                                                           'shop_name': shop_name,
                                                           'button_text': 'Edit & Remove Items'})
-            render_purchase_history = loader.render_to_string('component/owner_manager_options.html',
-                                                              {'path': 'owner/purchase_history',
+            render_purchase_history = loader.render_to_string(
+                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                {'path': 'owner/purchase_history',
                                                                'shop_name': shop_name,
                                                                'button_text': 'Purchase History'})
-            render_add_item = loader.render_to_string('component/owner_manager_options.html',
-                                                      {'path': 'owner/items/add_item',
+            render_add_item = loader.render_to_string(
+                'component/../../../PresentationLayer/templates/components/owner_manager_options.html',
+                {'path': 'owner/items/add_item',
                                                        'shop_name': shop_name,
                                                        'button_text': 'Add Item'})
 
@@ -94,8 +98,9 @@ def get_reviews(request):
             reviews = ShopLogic.get_shop_reviews(shop_name)
             string_reviews = ""
             for review in reviews:
-                string_reviews += loader.render_to_string('component/review.html',
-                                                          {'writer_name': review.writerId,
+                string_reviews += loader.render_to_string(
+                    'component/../../../PresentationLayer/templates/components/review.html',
+                    {'writer_name': review.writerId,
                                                            'rank': review.rank,
                                                            'description': review.description}, None, None)
             context = {'topbar': top_bar, 'navbar': nav_bar, 'shop_name': shop_name, 'reviews': string_reviews}
@@ -129,8 +134,9 @@ def get_shop_to_owner(request):
             shop_items = ShopLogic.get_shop_items(shop_name)
             string_items = ""
             for item in shop_items:
-                string_items += loader.render_to_string('component/item_owner.html',
-                                                        {'item_name': item.name,
+                string_items += loader.render_to_string(
+                    'component/../../../PresentationLayer/templates/components/item_owner.html',
+                    {'item_name': item.name,
                                                          'item_quantity': item.quantity,
                                                          'item_category': item.category,
                                                          'item_keywords': item.keyWords,
@@ -210,8 +216,9 @@ def watch_purchase_history(request):
         shop_items = ShopLogic.get_shop_purchase_history(username, shop_name)
         string_items = ""
         for item in shop_items:
-            string_items += loader.render_to_string('component/purchase_item_owner.html',
-                                                    {'purchase_id': item.purchase_id,
+            string_items += loader.render_to_string(
+                'component/../../../PresentationLayer/templates/components/purchase_item_owner.html',
+                {'purchase_id': item.purchase_id,
                                                      'item_id': item.item_id,
                                                      'quantity': item.quantity,
                                                      'price': item.price})

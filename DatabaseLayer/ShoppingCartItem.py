@@ -84,3 +84,30 @@ def remove_shopping_cart(username):
                 WHERE userName = '{}'
               """.format(username)
     return commit_command(sql_query)
+
+
+def get_new_guest_name():
+    sql_query = """
+                    SELECT *
+                    FROM GuestShoppingCartItem
+                    ORDER BY userName DESC
+                  """
+    return fetch_cart_item(select_command(sql_query))
+
+
+def add_guest_shopping_cart(guest, item_id, quantity):
+    sql = """
+                    INSERT INTO GuestShoppingCartItem (userName, itemId, itemQuantity) 
+                    VALUES ({},{},{})
+                  """.format(guest, item_id, quantity)
+    return commit_command(sql)
+
+
+def get_guest_shopping_cart_item(username):
+    sql_query = """
+            SELECT * FROM GuestShoppingCartItem WHERE username = {}
+            """.format(username)
+
+    shop_carts_items = select_command(sql_query)
+    shop_carts_items = parse_shopping_carts(shop_carts_items)
+    return shop_carts_items

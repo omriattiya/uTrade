@@ -62,7 +62,19 @@ function addItem(shop_name) {
     data.append('item_keywords', document.getElementById("keywords").value);
     data.append('item_price', document.getElementById("price").value);
     data.append('item_url', document.getElementById("url").value);
-    data.append('item_kind', document.getElementById("kind").value);
+    let item_kind = document.getElementById("kind").value;
+    data.append('item_kind', item_kind);
+
+    if (item_kind === 'ticket') {
+        data.append('item_ticket_item_id_attached', document.getElementById("ticket_for_item").value);
+    }
+    else if (item_kind === 'auction') {
+        data.append('item_auction_initial_price', document.getElementById("auction_initial_price").value);
+        data.append('item_auction_sale_duration', document.getElementById("auction_sale_duration").value);
+    }
+    else if (item_kind === 'prize') {
+        data.append('item_prize_sale_duration', document.getElementById("sale_duration").value);
+    }
     let loadHTML = new XMLHttpRequest();
     loadHTML.shop_name = shop_name;
     loadHTML.onreadystatechange = function () {
