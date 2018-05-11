@@ -25,15 +25,6 @@ def get_purchased_items_by_shop(shop_name):
     return fetch_purchased_items(select_command(sql_query))
 
 
-def get_purchased_items_by_purchase(purchase_id):
-    sql_query = """
-                    SELECT *
-                    FROM Purchases
-                    WHERE purchaseId = '{}'
-                """.format(purchase_id)
-    return fetch_purchased_item(select_command(sql_query))
-
-
 def get_all_purchased_items():
     sql_query = """
                 SELECT *
@@ -64,7 +55,7 @@ def get_purchased_item_by_user(item_id, username):
                         SELECT PurchasedItems.*
                         FROM PurchasedItems,Purchases
                         WHERE PurchasedItems.purchasedItem = {} AND PurchasedItems.purchaseId = Purchases.purchaseId AND Purchases.username = '{}'
-                    """.format(item_id,username)
+                    """.format(item_id, username)
     return fetch_purchased_item(select_command(sql_query))
 
 
@@ -73,5 +64,5 @@ def get_purchased_item_by_shop_and_username(shop_name, username):
                 SELECT PurchasedItems.*
                 FROM PurchasedItems, Items, Purchases
                 WHERE Items.shop_name = '{}' AND PurchasedItems.purchasedItem = Items.id AND Purchases.purchaseId = PurchasedItems.purchaseId AND Purchases.username='{}'
-            """.format(shop_name,username)
+            """.format(shop_name, username)
     return fetch_purchased_item(select_command(sql_query))

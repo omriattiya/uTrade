@@ -1,16 +1,16 @@
 from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
 from DatabaseLayer.RegisteredUsers import get_user
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer, MessagingAlerts
 
 
 def send_message(message):
     output = False
     if message.from_username is not None and message.to_username is not None and message.content is not None:
         if get_user(message.from_username) is not False:
-            #if get_user(message.to_username) is not False:
-                output = Messages.send_message(message)
-           # elif message.to_username == 'System':
-              #  output = Messages.send_message(message)
+            # if get_user(message.to_username) is not False:
+            output = Messages.send_message(message)
+            # elif message.to_username == 'System':
+            #  output = Messages.send_message(message)
         if SystemManagers.is_system_manager(message.from_username):
             message.from_username = 'System'
             output = Messages.send_message(message)
@@ -22,9 +22,9 @@ def send_message(message):
             for sm in SMs:
                 SM_names.append(sm.username)
             users = SM_names
-        Consumer.notify_live_alerts(users,
-                                    '<a href = "../app/home/messages/?content=received" > '
-                                    'You Have a new message from ' + message.from_username + '</a>')
+        MessagingAlerts.notify_messaging_alerts(users,
+                                                '<a href = "../app/home/messages/?content=received" > '
+                                                'You Have a new message from ' + message.from_username + '</a>')
     return output
 
 
@@ -64,9 +64,9 @@ def send_message_from_shop(username, message):
             for sm in SMs:
                 SM_names.append(sm.username)
             users = SM_names
-        Consumer.notify_live_alerts(users,
-                                    '<a href = "../app/home/messages/?content=received" >'
-                                    ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
+        MessagingAlerts.notify_messaging_alerts(users,
+                                                '<a href = "../app/home/messages/?content=received" >'
+                                                ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
     return output
 
 

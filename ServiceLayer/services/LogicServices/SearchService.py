@@ -2,9 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import SearchLogic, ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def search_item(request):

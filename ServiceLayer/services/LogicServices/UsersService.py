@@ -3,14 +3,14 @@ import hashlib
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from SharedClasses.VisibleDiscount import VisibleDiscount
+from DomainLayer import UsersLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
-from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Owner import Owner
+from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
-from DomainLayer import UsersLogic
-from ServiceLayer import Consumer
+from SharedClasses.VisibleDiscount import VisibleDiscount
 
 
 def get_purchase_history(request):

@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
 from DomainLayer import MessagingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Message import Message
 
 

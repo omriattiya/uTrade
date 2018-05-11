@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
 

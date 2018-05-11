@@ -7,7 +7,7 @@ from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -125,7 +125,7 @@ def pay_all(username):
                 owners_name = []
                 for owner in owners:
                     owners_name.append(owner.username)
-                Consumer.notify_live_alerts(owners_name,
+                PurchasesAlerts.notify_purchasing_alerts(owners_name,
                                             '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
             status = remove_shopping_cart(username)
             if status is False:
@@ -218,7 +218,7 @@ def get_user_purchases(username):
 
 
 def get_purchased_items_by_purchase_id(purchase_id):
-    return PurchasedItems.get_purchased_items_by_purchase(purchase_id)
+    return Purchases.get_purchased_items_by_purchase(purchase_id)
 
 
 def get_purchase(purchase_id):

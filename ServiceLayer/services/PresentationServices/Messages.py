@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 
 from DomainLayer import ShoppingLogic, MessagingLogic, UsersLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def get_messages(request):

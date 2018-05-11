@@ -82,11 +82,14 @@ def get_purchase_history(username):
 #
 
 def add_owner(username, owner):
+    result = True
     if username is not None and \
                     Owners.get_owner(username, owner.shop_name) is not False and \
                     RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
-        return Owners.add_owner(owner)
-    return False
+        result = Owners.add_owner(owner)
+        if result and is_manager_of_shop(username, owner.shop_name):
+            remove_store_manager(username, owner.shop_name, owner.username)
+    return result
 
 
 def add_manager(username, store_manager):
@@ -167,6 +170,7 @@ def is_owner_of_shop(username, shop_name):
         if owner.shop_name == shop_name:
             return True
     return False
+
 
 def get_managed_shops(username):
     return StoreManagers.get_manager_shops(username)

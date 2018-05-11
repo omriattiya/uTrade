@@ -4,7 +4,7 @@ from django.template import loader
 
 from DomainLayer import ShopLogic, UsersLogic
 from DomainLayer import ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 shop_not_exist = 'shop does not exist'
 not_get_request = 'not a get request'
