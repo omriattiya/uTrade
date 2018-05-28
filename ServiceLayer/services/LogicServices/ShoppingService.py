@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import ShoppingLogic, ItemsLogic
+from DomainLayer import ShoppingLogic, ItemsLogic, ShoppingCartLogic
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from ServiceLayer import Consumer
 
@@ -14,12 +14,12 @@ def remove_item_shopping_cart(request):
             username = Consumer.loggedInUsers.get(login)
             if username is None:
                 guest = request.COOKIES.get('guest_hash')
-                status = ShoppingLogic.remove_item_shopping_cart_guest(guest, item_id)
+                status = ShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
             else:
-                status = ShoppingLogic.remove_item_shopping_cart(username, item_id)
+                status = ShoppingCartLogic.remove_item_shopping_cart(login, item_id)
         else:
             guest = request.COOKIES.get('guest_hash')
-            status = ShoppingLogic.remove_item_shopping_cart_guest(guest, item_id)
+            status = ShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
         if status is False:
             return HttpResponse('fail')
         else:
@@ -35,7 +35,7 @@ def add_item_to_cart(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                status = ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(username, item_id, quantity, None))
+                status = ShoppingCartLogic.add_item_shopping_cart(login, ShoppingCartItem(username, item_id, quantity, None))
                 if status is False:
                     return HttpResponse('fail')
                 else:
@@ -43,10 +43,10 @@ def add_item_to_cart(request):
             else:
                 guest = request.COOKIES.get('guest_hash')
                 if guest is None:
-                    guest = ShoppingLogic.get_new_guest_name()
+                    guest = ShoppingCartLogic.get_new_guest_name()
                 if guest is False:
                     return HttpResponse('fail')
-                status = ShoppingLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
+                status = ShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
                 if status is False:
                     return HttpResponse('fail')
                 else:
@@ -55,16 +55,15 @@ def add_item_to_cart(request):
         else:
             guest = request.COOKIES.get('guest_hash')
             if guest is None:
-                guest = ShoppingLogic.get_new_guest_name()
+                guest = ShoppingCartLogic.get_new_guest_name()
             if guest is False:
                 return HttpResponse('fail')
-            status = ShoppingLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
+            status = ShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
             if status is False:
                 return HttpResponse('fail')
             else:
                 string_guest = str(guest)
                 return HttpResponse(string_guest)
-
 
 
 @csrf_exempt

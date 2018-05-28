@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+
 # MIDDLEWARE_CLASSES = (
 # 'corsheaders.middleware.CorsMiddleware',
 #  'django.middleware.common.BrokenLinkEmailsMiddleware',
@@ -82,7 +84,7 @@ WSGI_APPLICATION = 'uTrade.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
     }
 }
 

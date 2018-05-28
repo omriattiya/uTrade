@@ -9,7 +9,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Owner import Owner
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
-from DomainLayer import UsersLogic
+from DomainLayer import UsersLogic, ShoppingLogic
 from ServiceLayer import Consumer
 
 
@@ -73,6 +73,7 @@ def login(request):
         if UsersLogic.login(user):
             access_token = hashlib.md5(username.encode()).hexdigest()
             Consumer.loggedInUsers[access_token] = username
+            Consumer.loggedInUsersShoppingCart[access_token] = ShoppingLogic.get_cart_items(username)
             return HttpResponse(access_token)
         else:
             return HttpResponse('fail')
@@ -85,6 +86,7 @@ def logout(request):
         if login is not None:
             if Consumer.loggedInUsers.get(login) is not None:
                 del Consumer.loggedInUsers[login]
+                del Consumer.loggedInUsersShoppingCart[login]
                 return HttpResponse('success')
 
         return HttpResponse('fail')

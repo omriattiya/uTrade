@@ -1,6 +1,6 @@
 from django.template import loader
 from django.shortcuts import render
-from DomainLayer import ShoppingLogic
+from DomainLayer import ShoppingLogic, ShoppingCartLogic
 from ServiceLayer import Consumer
 
 
@@ -40,14 +40,14 @@ def get_cart_items(request):
             if username is not None:
                 # html of a logged in user
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                context = ShoppingLogic.order_of_user(Consumer.loggedInUsers.get(login))
+                cart_count = len(ShoppingCartLogic.get_cart_items(login))
+                context = ShoppingCartLogic.order_of_user(login)
             else:
-                cart_count = len(ShoppingLogic.get_guest_shopping_cart_item(guest))
-                context = ShoppingLogic.order_of_guest(guest)
+                cart_count = len(ShoppingCartLogic.get_guest_shopping_cart_item(guest))
+                context = ShoppingCartLogic.order_of_guest(guest)
         else:
-            cart_count = len(ShoppingLogic.get_guest_shopping_cart_item(guest))
-            context = ShoppingLogic.order_of_guest(guest)
+            cart_count = len(ShoppingCartLogic.get_guest_shopping_cart_item(guest))
+            context = ShoppingCartLogic.order_of_guest(guest)
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         context['topbar'] = topbar
         context['navbar'] = navbar

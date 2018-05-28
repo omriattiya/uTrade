@@ -5,6 +5,7 @@ connectedUsers = {}
 connectedConsumers = {}
 
 loggedInUsers = {}
+loggedInUsersShoppingCart = {}
 event = threading.Event()
 alerts_queue = []
 user_alerts_box = {}
