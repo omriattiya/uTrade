@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from DatabaseLayer import ShoppingCartItem, RegisteredUsers, PurchasedItems, Purchases, Owners
+from DatabaseLayer import ShoppingCartDB, RegisteredUsers, PurchasedItems, Purchases, Owners
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
@@ -14,24 +14,24 @@ def remove_item_shopping_cart(username, item_id):
     if username is not None and item_id is not None:
         user = RegisteredUsers.get_user(username)
         if user is not False:
-            return ShoppingCartItem.remove_item_shopping_cart(username, item_id)
+            return ShoppingCartDB.remove_item_shopping_cart(username, item_id)
 
 
 def get_cart_items(username):
     if username is not None:
-        return ShoppingCartItem.get_cart_items(username)
+        return ShoppingCartDB.get_cart_items(username)
 
 
 def add_item_shopping_cart(shop_cart_item):
     if shop_cart_item.username is not None and shop_cart_item.item_id is not None and shop_cart_item.item_quantity > 0:
         if ItemsLogic.check_in_stock(shop_cart_item.item_id, shop_cart_item.item_quantity) is False:
             return False
-        existing = ShoppingCartItem.get_shopping_cart_item(shop_cart_item)
+        existing = ShoppingCartDB.get_shopping_cart_item(shop_cart_item)
         if existing is not False:
             return update_item_shopping_cart(shop_cart_item.username, shop_cart_item.item_id,
                                              shop_cart_item.item_quantity + existing.item_quantity)
         else:
-            return ShoppingCartItem.add_item_shopping_cart(shop_cart_item)
+            return ShoppingCartDB.add_item_shopping_cart(shop_cart_item)
     return False
 
 
@@ -43,7 +43,7 @@ def update_item_shopping_cart(username, item_id, new_quantity):
             return False
         user = RegisteredUsers.get_user(username)
         if user is not False:
-            return ShoppingCartItem.update_item_shopping_cart(username, item_id, new_quantity)
+            return ShoppingCartDB.update_item_shopping_cart(username, item_id, new_quantity)
     return False
 
 
@@ -52,27 +52,27 @@ def update_code_shopping_cart(username, item_id, code):
         user = RegisteredUsers.get_user(username)
         if user is not False:
             if len(code) == 15 and isinstance(code, str):
-                return ShoppingCartItem.update_code_shopping_cart(username, item_id, code)
+                return ShoppingCartDB.update_code_shopping_cart(username, item_id, code)
     return False
 
 
 def check_empty_cart_user(username):
-    return ShoppingCartItem.check_empty(username)
+    return ShoppingCartDB.check_empty(username)
 
 
 def check_empty_cart_guest(username):
-    return ShoppingCartItem.check_empty_guest(username)
+    return ShoppingCartDB.check_empty_guest(username)
 
 
 def remove_shopping_cart_guest(guest):
     if guest is not None:
-        return ShoppingCartItem.remove_shopping_cart_guest(guest)
+        return ShoppingCartDB.remove_shopping_cart_guest(guest)
 
 
 def pay_all_guest(guest):
     if guest is not None:
         #  check if cart has items
-        empty = ShoppingCartItem.check_empty_guest(guest)
+        empty = ShoppingCartDB.check_empty_guest(guest)
         if empty is not True:
             toCreatePurchase = True
             purchase_id = 0
@@ -127,7 +127,7 @@ def pay_all_guest(guest):
 def pay_all(username):
     if username is not None:
         #  check if cart has items
-        empty = ShoppingCartItem.check_empty(username)
+        empty = ShoppingCartDB.check_empty(username)
         if empty is not True:
             toCreatePurchase = True
             purchase_id = 0
@@ -230,7 +230,7 @@ def supply_items(items):
 
 
 def get_cart_cost(username):
-    empty = ShoppingCartItem.check_empty(username)
+    empty = ShoppingCartDB.check_empty(username)
     if empty is not True:
         #  if so, check foreach item if the requested amount exist
         cart_items = get_cart_items(username)
@@ -277,7 +277,7 @@ def get_cart_cost(username):
 
 def remove_shopping_cart(username):
     if username is not None:
-        return ShoppingCartItem.remove_shopping_cart(username)
+        return ShoppingCartDB.remove_shopping_cart(username)
 
 
 def get_user_purchases(username):
@@ -335,7 +335,7 @@ def order_helper(cart_items):
 
 
 def get_new_guest_name():
-        name = ShoppingCartItem.get_new_guest_name()
+        name = ShoppingCartDB.get_new_guest_name()
         if name is False:
             return 1
         else:
@@ -343,23 +343,23 @@ def get_new_guest_name():
 
 
 def add_guest_item_shopping_cart(guest, item_id, quantity):
-    return ShoppingCartItem.add_guest_shopping_cart(guest, item_id, quantity)
+    return ShoppingCartDB.add_guest_shopping_cart(guest, item_id, quantity)
 
 
 def get_guest_shopping_cart_item(username):
-    return ShoppingCartItem.get_guest_shopping_cart_item(username)
+    return ShoppingCartDB.get_guest_shopping_cart_item(username)
 
 
 def update_code_shopping_cart_guest(guest, item_id, code):
     if guest is not None and id is not None and code is not None:
         if len(code) == 15 and isinstance(code, str):
-            return ShoppingCartItem.update_code_shopping_cart_guest(guest, item_id, code)
+            return ShoppingCartDB.update_code_shopping_cart_guest(guest, item_id, code)
     return False
 
 
 def remove_item_shopping_cart_guest(guest, item_id):
     if guest is not None and item_id is not None:
-        return ShoppingCartItem.remove_item_shopping_cart_guest(guest, item_id)
+        return ShoppingCartDB.remove_item_shopping_cart_guest(guest, item_id)
 
 
 def update_item_shopping_cart_guest(guest, item_id, new_quantity):
@@ -368,5 +368,5 @@ def update_item_shopping_cart_guest(guest, item_id, new_quantity):
             return remove_item_shopping_cart_guest(guest, item_id)
         if ItemsLogic.check_in_stock(item_id, new_quantity) is False:
             return False
-        return ShoppingCartItem.update_item_shopping_cart_guest(guest, item_id, new_quantity)
+        return ShoppingCartDB.update_item_shopping_cart_guest(guest, item_id, new_quantity)
     return False

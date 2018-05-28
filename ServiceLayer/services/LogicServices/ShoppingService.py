@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import ShoppingLogic, ItemsLogic, ShoppingCartLogic
+from DomainLayer import ItemsLogic, UserShoppingCartLogic, GuestShoppingCartLogic
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from ServiceLayer import Consumer
 
@@ -14,12 +14,16 @@ def remove_item_shopping_cart(request):
             username = Consumer.loggedInUsers.get(login)
             if username is None:
                 guest = request.COOKIES.get('guest_hash')
-                status = ShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
+                if guest is None:
+                    return HttpResponse('fail')
+                status = GuestShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
             else:
-                status = ShoppingCartLogic.remove_item_shopping_cart(login, item_id)
+                status = UserShoppingCartLogic.remove_item_shopping_cart(login, item_id)
         else:
             guest = request.COOKIES.get('guest_hash')
-            status = ShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
+            if guest is None:
+                return HttpResponse('fail')
+            status = GuestShoppingCartLogic.remove_item_shopping_cart_guest(guest, item_id)
         if status is False:
             return HttpResponse('fail')
         else:
@@ -35,7 +39,7 @@ def add_item_to_cart(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                status = ShoppingCartLogic.add_item_shopping_cart(login, ShoppingCartItem(username, item_id, quantity, None))
+                status = UserShoppingCartLogic.add_item_shopping_cart(login, ShoppingCartItem(username, item_id, quantity, None))
                 if status is False:
                     return HttpResponse('fail')
                 else:
@@ -43,10 +47,9 @@ def add_item_to_cart(request):
             else:
                 guest = request.COOKIES.get('guest_hash')
                 if guest is None:
-                    guest = ShoppingCartLogic.get_new_guest_name()
-                if guest is False:
-                    return HttpResponse('fail')
-                status = ShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
+                    guest = 'guest' + str(Consumer.guestIndex)
+                    Consumer.guestIndex += 1
+                status = GuestShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
                 if status is False:
                     return HttpResponse('fail')
                 else:
@@ -55,10 +58,9 @@ def add_item_to_cart(request):
         else:
             guest = request.COOKIES.get('guest_hash')
             if guest is None:
-                guest = ShoppingCartLogic.get_new_guest_name()
-            if guest is False:
-                return HttpResponse('fail')
-            status = ShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
+                guest = 'guest' + Consumer.guestIndex
+                Consumer.guestIndex += 1
+            status = GuestShoppingCartLogic.add_guest_item_shopping_cart(guest, item_id, quantity)
             if status is False:
                 return HttpResponse('fail')
             else:
@@ -74,14 +76,18 @@ def update_item_shopping_cart(request):
         login = request.COOKIES.get('login_hash')
         if login is None:
             guest = request.COOKIES.get('guest_hash')
-            status = ShoppingLogic.update_item_shopping_cart_guest(guest, item_id, new_quantity)
+            if guest is None:
+                return HttpResponse('fail')
+            status = GuestShoppingCartLogic.update_item_shopping_cart_guest(guest, item_id, new_quantity)
         else:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                status = ShoppingLogic.update_item_shopping_cart(username, item_id, new_quantity)
+                status = UserShoppingCartLogic.update_item_shopping_cart(login, item_id, new_quantity)
             else:
                 guest = request.COOKIES.get('guest_hash')
-                status = ShoppingLogic.update_item_shopping_cart_guest(guest, item_id, new_quantity)
+                if guest is None:
+                    return HttpResponse('fail')
+                status = GuestShoppingCartLogic.update_item_shopping_cart_guest(guest, item_id, new_quantity)
         if status is False:
             return HttpResponse('fail')
         else:
@@ -98,14 +104,18 @@ def update_code_shopping_cart(request):
         login = request.COOKIES.get('login_hash')
         if login is None:
             guest = request.COOKIES.get('guest_hash')
-            status = ShoppingLogic.update_code_shopping_cart_guest(guest, item.id, code)
+            if guest is None:
+                return HttpResponse('fail')
+            status = GuestShoppingCartLogic.update_code_shopping_cart_guest(guest, item.id, code)
         else:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                status = ShoppingLogic.update_code_shopping_cart(username, item.id, code)
+                status = UserShoppingCartLogic.update_code_shopping_cart(login, item.id, code)
             else:
                 guest = request.COOKIES.get('guest_hash')
-                status = ShoppingLogic.update_code_shopping_cart_guest(guest, item.id, code)
+                if guest is None:
+                    return HttpResponse('fail')
+                status = GuestShoppingCartLogic.update_code_shopping_cart_guest(guest, item.id, code)
         if status is False:
             return HttpResponse('fail')
         else:
@@ -118,14 +128,18 @@ def pay_all(request):
         login = request.COOKIES.get('login_hash')
         if login is None:
             guest = request.COOKIES.get('guest_hash')
-            message = ShoppingLogic.pay_all_guest(guest)
+            if guest is None:
+                return HttpResponse('fail')
+            message = GuestShoppingCartLogic.pay_all_guest(guest)
         else:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                message = ShoppingLogic.pay_all(username)
+                message = UserShoppingCartLogic.pay_all(login)
             else:
                 guest = request.COOKIES.get('guest_hash')
-                message = ShoppingLogic.pay_all_guest(guest)
+                if guest is None:
+                    return HttpResponse('fail')
+                message = GuestShoppingCartLogic.pay_all_guest(guest)
         if message is True:
             return HttpResponse('OK')
         else:
@@ -136,14 +150,18 @@ def check_empty_cart(request):
     login = request.COOKIES.get('login_hash')
     if login is None:
         guest = request.COOKIES.get('guest_hash')
-        status = ShoppingLogic.check_empty_cart_guest(guest)
+        if guest is None:
+            return HttpResponse('fail')
+        status = GuestShoppingCartLogic.check_empty_cart_guest(guest)
     else:
         username = Consumer.loggedInUsers.get(login)
         if username is not None:
-            status = ShoppingLogic.check_empty_cart_user(username)
+            status = UserShoppingCartLogic.check_empty_cart_user(login)
         else:
             guest = request.COOKIES.get('guest_hash')
-            status = ShoppingLogic.check_empty_cart_guest(guest)
+            if guest is None:
+                return HttpResponse('fail')
+            status = GuestShoppingCartLogic.check_empty_cart_guest(guest)
     if status is True:
         return HttpResponse('fail')
     else:

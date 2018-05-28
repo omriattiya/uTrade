@@ -5,7 +5,7 @@ from datetime import date
 
 from DatabaseLayer.Lotteries import get_lotteries, get_lottery_customer
 from DatabaseLayer.RegisteredUsers import get_user
-from DatabaseLayer.ShoppingCartItem import add_item_shopping_cart
+from DatabaseLayer.ShoppingCartDB import add_item_shopping_cart
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, UsersLogic

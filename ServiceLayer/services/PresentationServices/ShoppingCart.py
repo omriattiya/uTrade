@@ -1,6 +1,6 @@
 from django.template import loader
 from django.shortcuts import render
-from DomainLayer import ShoppingLogic, ShoppingCartLogic
+from DomainLayer import ShoppingLogic, UserShoppingCartLogic, GuestShoppingCartLogic
 from ServiceLayer import Consumer
 
 
@@ -13,16 +13,15 @@ def review_order(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                # html of a logged in user
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
+                cart_count = len(UserShoppingCartLogic.get_cart_items(login))
         else:
-            cart_count = len(ShoppingLogic.get_guest_shopping_cart_item(guest))
+            cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         if login is None:
-            context = ShoppingLogic.order_of_guest(guest)
+            context = GuestShoppingCartLogic.order_of_guest(guest)
         else:
-            context = ShoppingLogic.order_of_user(Consumer.loggedInUsers.get(login))
+            context = UserShoppingCartLogic.order_of_user(login)
         context['topbar'] = topbar
         context['navbar'] = navbar
         return render(request, 'checkout4.html', context=context)
@@ -40,14 +39,16 @@ def get_cart_items(request):
             if username is not None:
                 # html of a logged in user
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingCartLogic.get_cart_items(login))
-                context = ShoppingCartLogic.order_of_user(login)
+                cart_count = len(UserShoppingCartLogic.get_cart_items(login))
+                context = UserShoppingCartLogic.order_of_user(login)
             else:
-                cart_count = len(ShoppingCartLogic.get_guest_shopping_cart_item(guest))
-                context = ShoppingCartLogic.order_of_guest(guest)
+                if guest is not None:
+                    cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
+                    context = GuestShoppingCartLogic.order_of_guest(guest)
         else:
-            cart_count = len(ShoppingCartLogic.get_guest_shopping_cart_item(guest))
-            context = ShoppingCartLogic.order_of_guest(guest)
+            if guest is not None:
+                cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
+                context = GuestShoppingCartLogic.order_of_guest(guest)
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         context['topbar'] = topbar
         context['navbar'] = navbar
