@@ -1,7 +1,8 @@
-from django.template import loader
 from django.shortcuts import render
+from django.template import loader
+
 from DomainLayer import ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def review_order(request):

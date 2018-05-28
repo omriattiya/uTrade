@@ -58,3 +58,12 @@ def get_purchase(purchase_id):
                       WHERE purchaseId = '{}'
                      """.format(purchase_id)
     return fetch_purchase(select_command(sql_query))
+
+
+def get_purchased_items_by_purchase(purchase_id):
+    sql_query = """
+                    SELECT *
+                    FROM Purchases
+                    WHERE purchaseId = '{}'
+                """.format(purchase_id)
+    return fetch_purchases(select_command(sql_query))

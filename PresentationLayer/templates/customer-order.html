@@ -181,14 +181,14 @@ _________________________________________________________ -->
 
                                     <form id="review-shop-form" onsubmit="reviewShop()">
 
-                                        <input id="shop-rank-modal" type="text" placeholder="Rank ( 1 to 5 )"
+                                        <input required id="shop-rank-modal" type="text" placeholder="* Rank ( 1 to 5 )"
                                                class="form-control">
 
                                         <hr>
                                         <div class="form-group">
-                                            <textarea id="shop-review-content-modal" class="form-control" rows="4"
+                                            <textarea required id="shop-review-content-modal" class="form-control" rows="4"
                                                       cols="50"
-                                                      placeholder="Description" style="resize: none;"></textarea>
+                                                      placeholder="* Description" style="resize: none;"></textarea>
                                         </div>
 
                                         <p class="text-center">
@@ -215,13 +215,13 @@ _________________________________________________________ -->
                                 </div>
                                 <div class="modal-body">
                                     <form id="review-item-form" onsubmit="reviewItem()">
-                                        <input type="text" placeholder="Rank ( 1 to 5 )" class="form-control"
+                                        <input required type="text" placeholder="* Rank ( 1 to 5 )" class="form-control"
                                                id="message-to-modal">
 
                                         <hr>
                                         <div class="form-group">
-                                            <textarea id="message-content-modal" class="form-control" rows="4" cols="50"
-                                                      placeholder="Description" style="resize: none;"></textarea>
+                                            <textarea required id="message-content-modal" class="form-control" rows="4" cols="50"
+                                                      placeholder="* Description" style="resize: none;"></textarea>
                                         </div>
 
                                         <p class="text-center">
@@ -250,7 +250,7 @@ _________________________________________________________ -->
                                     <form id="report-item-form" onsubmit="reportItem()">
                                         <hr>
                                         <div class="form-group">
-                                            <textarea id="report-content-modal" class="form-control" rows="4" cols="50"
+                                            <textarea required id="report-content-modal" class="form-control" rows="4" cols="50"
                                                       placeholder="Report Description" style="resize: none;"></textarea>
                                         </div>
 

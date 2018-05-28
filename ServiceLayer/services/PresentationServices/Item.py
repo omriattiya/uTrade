@@ -4,12 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DatabaseLayer import Lotteries, Auctions
+from DatabaseLayer import Lotteries, Auctions, ReviewsOnItems
 from DomainLayer import ItemsLogic
 from DomainLayer import ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
-shop_not_exist = 'shop does not exist'
+shop_not_exist = 'item does not exist'
 not_get_request = 'not a get request'
 is_used = False
 
@@ -49,6 +49,11 @@ def get_item(request):
                     cart_count = len(ShoppingLogic.get_cart_items(username))
 
             navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+            item_rank = ReviewsOnItems.get_item_rank(item.id)
+            if item_rank is False:
+                item_rank = "-----"
+            else:
+                item_rank = str(item_rank)
             context = {'item_id': item.id,
                        'item_name': item.name,
                        'shop_name': item.shop_name,
@@ -57,6 +62,7 @@ def get_item(request):
                        'price': item.price,
                        'quantity': item.quantity,
                        'kind': item.kind,
+                       'item_rank': item_rank,
                        'url': item.url,
                        'policy': policy,
                        'deadline': deadline,

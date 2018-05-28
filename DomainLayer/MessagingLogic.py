@@ -1,19 +1,20 @@
-from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers
+from DatabaseLayer import Messages, StoreManagers, Owners, Shops, SystemManagers, RegisteredUsers
 from DatabaseLayer.RegisteredUsers import get_user
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer, MessagingAlerts
 
 
 def send_message(message):
-    output = False
     if message.from_username is not None and message.to_username is not None and message.content is not None:
-        if get_user(message.from_username) is not False:
-            #if get_user(message.to_username) is not False:
-                output = Messages.send_message(message)
-           # elif message.to_username == 'System':
-              #  output = Messages.send_message(message)
-        if SystemManagers.is_system_manager(message.from_username):
-            message.from_username = 'System'
+        if get_user(message.to_username) is not False or Shops.search_shop(message.to_username) is not False:
+            # output = Messages.send_message(message)
+
+            if SystemManagers.is_system_manager(message.from_username):
+                message.from_username = 'System'
             output = Messages.send_message(message)
+        else:
+            return "FAILED: Target user is incorrect"
+    else:
+        return "FAILED: Missing Parameters"
     if output:
         users = [message.to_username]
         if message.to_username == 'System':
@@ -22,10 +23,12 @@ def send_message(message):
             for sm in SMs:
                 SM_names.append(sm.username)
             users = SM_names
-        Consumer.notify_live_alerts(users,
-                                    '<a href = "../app/home/messages/?content=received" > '
-                                    'You Have a new message from ' + message.from_username + '</a>')
-    return output
+        MessagingAlerts.notify_messaging_alerts(users,
+                                                '<a href = "../app/home/messages/?content=received" > '
+                                                'You Have a new message from ' + message.from_username + '</a>')
+        return "SUCCESS"
+    else:
+        return "FAILED"
 
 
 def get_all_messages(username):
@@ -49,13 +52,18 @@ def get_all_shop_messages(username, shop_name):
 def send_message_from_shop(username, message):
     output = False
     manager = StoreManagers.get_store_manager(username, message.from_username)
+    if Shops.search_shop(message.to_username) is False and RegisteredUsers.is_user_exists(
+            message.to_username) is False:
+        return "FAILED: Target does not exists"
     if manager is not False:
         if manager.permission_reply_messages > 0:
-            if Shops.search_shop(message.from_username) is not False:
-                output = Messages.send_message_from_shop(message)
-    if Owners.get_owner(username, message.from_username) is not False:
-        if Shops.search_shop(message.from_username) is not False:
             output = Messages.send_message_from_shop(message)
+        else:
+            return "FAILED: You don't have the permissions"
+    if Owners.get_owner(username, message.from_username) is not False:
+        output = Messages.send_message_from_shop(message)
+    else:
+        return "FAILED: You are not authorized"
     if output:
         users = [message.to_username]
         if message.to_username == 'System':
@@ -64,10 +72,12 @@ def send_message_from_shop(username, message):
             for sm in SMs:
                 SM_names.append(sm.username)
             users = SM_names
-        Consumer.notify_live_alerts(users,
-                                    '<a href = "../app/home/messages/?content=received" >'
-                                    ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
-    return output
+        MessagingAlerts.notify_messaging_alerts(users,
+                                                '<a href = "../app/home/messages/?content=received" >'
+                                                ' You Have a new message from <strong>Shop</strong>' + message.from_username + '</a>')
+        return "SUCCESS"
+    else:
+        return "FAILED"
 
 
 def get_all_sent_messages(username):

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.template import loader
 
-from ServiceLayer import Consumer
 from DomainLayer import ShoppingLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def get_home(request):

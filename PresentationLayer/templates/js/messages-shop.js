@@ -19,16 +19,15 @@ function sendMessage() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed. Check You Permissions...")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText)
             }
-            else if (loadHTML.responseText === 'success') {
-
+            else if (loadHTML.responseText === 'SUCCESS') {
                 alert("Message Sent!");
-                window.location.href = "http://localhost:8000/app/shop/messages/?content=sent&shop_name="+document.getElementById('shop-name').innerHTML;
+                window.location.href = "../app/shop/messages/?content=sent&shop_name="+document.getElementById('shop-name').innerHTML;
             }
         }
     };
-    loadHTML.open("POST", "http://localhost:8000/app/messages/send_message_from_shop/", true);
+    loadHTML.open("POST", "../app/messages/send_message_from_shop/", true);
     loadHTML.send(data);
 }

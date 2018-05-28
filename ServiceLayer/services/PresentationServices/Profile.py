@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.template import loader
 
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
+from SharedClasses.Item import Item
 
 
 def get_account(request):
@@ -174,7 +175,7 @@ def get_order(request):
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))
                 navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                #date = ShoppingLogic.get_purchase(purchase_id).purchase_date
+                # date = ShoppingLogic.get_purchase(purchase_id).purchase_date
                 return render(request, 'customer-order.html',
                               context={'topbar': topbar, 'navbar': navbar, 'items': items_html, 'order_id': purchase_id,
                                        'order_date': "23/02/1022"})
@@ -249,7 +250,9 @@ def get_system_history(request):
                     purchased_items = ItemsLogic.get_all_purchased_items(username)
                     for purchased_item in purchased_items:
                         item = ItemsLogic.get_item(purchased_item.item_id)
-                        purchase = ShoppingLogic.get_purchased_items_by_purchase_id(purchased_item.purchase_id)
+                        if item is False:
+                            item = Item(purchased_item.item_id, None, None, None, None, None, None, None, None)
+                        purchase = ShoppingLogic.get_purchase(purchased_item.purchase_id)
                         history_html += loader.render_to_string('components/purchase_history.html', context={
                             'username': purchase.username,
                             'shop_name': item.shop_name,
