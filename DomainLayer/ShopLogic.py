@@ -8,8 +8,13 @@ from SharedClasses.Owner import Owner
 def create_shop(shop, username):
     if shop is not None and username is not None:
         if Shops.search_shop(shop.name) is False:
-            return Shops.create_shop(shop) and Owners.add_owner(Owner(username, shop.name, None))
-    return False
+            if Shops.create_shop(shop):
+                if Owners.add_owner(Owner(username, shop.name, None)):
+                    return "SUCCESS"
+                return "FAILED: Adding Owner"
+            return "FAILED: Adding Shop"
+        return "FAILED: Shop name is taken"
+    return "FAILED: Missing parameters"
 
 
 def add_review_on_shop(shop_review):

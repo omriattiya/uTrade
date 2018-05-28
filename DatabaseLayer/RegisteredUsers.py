@@ -75,3 +75,12 @@ def get_all_users():
                 FROM RegisteredUsers
               """
     return fetch_users(select_command(sql_query))
+
+
+def is_user_exists(username):
+    sql_query = """
+                SELECT *
+                FROM RegisteredUsers
+                WHERE username = '{}'
+                """.format(username)
+    return len(select_command(sql_query)) == 1

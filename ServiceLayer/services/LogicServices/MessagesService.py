@@ -16,9 +16,8 @@ def send_message(request):
             message_from = Consumer.loggedInUsers.get(login)
 
             message = Message(None, message_from, message_to, content)
-            if MessagingLogic.send_message(message):
-                return HttpResponse('success')
-        return HttpResponse('fail')
+            return HttpResponse(MessagingLogic.send_message(message))
+        return HttpResponse('FAILED: You are not logged in')
 
 
 def get_all_messages(request):
@@ -33,6 +32,7 @@ def get_all_shop_messages(request):
         shop_name = request.GET.get('shop_name')
         MessagingLogic.get_all_shop_messages(username, shop_name)
 
+
 @csrf_exempt
 def send_message_from_shop(request):
     if request.method == 'POST':
@@ -44,7 +44,6 @@ def send_message_from_shop(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             message = Message(None, from_shop, to, content)
-            if MessagingLogic.send_message_from_shop(username, message):
-                return HttpResponse('success')
+            return HttpResponse(MessagingLogic.send_message_from_shop(username, message))
 
-        return HttpResponse('fail')
+        return HttpResponse('FAILED: You are not logged in')

@@ -38,8 +38,8 @@
 
     <link rel="shortcut icon" href="favicon.png">
 
-        <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
+    <!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
@@ -50,7 +50,38 @@
     <script src="js/front.js"></script>
 
     <script src="js/web_sockets.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#register-form').submit(function () {
+                return false;
+            });
 
+        });
+
+        function register() {
+            var username = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+
+            var data = new FormData();
+            data.append('username', username);
+            data.append('password', password);
+
+            var loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                        alert(loadHTML.responseText)
+                    }
+                    else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+                        alert("User added successfully");
+                        window.location.href = "../app/home/"
+                    }
+                }
+            };
+            loadHTML.open("POST", "../app/users/register/", true);
+            loadHTML.send(data);
+        }
+    </script>
 
 </head>
 
@@ -58,32 +89,32 @@
 {% autoescape off %}
     {{ topbar }}
 {% endautoescape %}
-    <!-- *** NAVBAR ***
- _________________________________________________________ -->
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
 
-    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
-        <div class="container">
-            <div class="navbar-header">
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
 
-                <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
                 </a>
-                <div class="navbar-buttons">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-align-justify"></i>
-                    </button>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
-                    </a>
-                </div>
             </div>
-            <!--/.navbar-header -->
+        </div>
+        <!--/.navbar-header -->
 
 
 
@@ -92,102 +123,101 @@
         {% endautoescape %}
 
 
-            <div class="collapse clearfix" id="search">
+        <div class="collapse clearfix" id="search">
 
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <span class="input-group-btn">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
 
 			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
 
 		    </span>
-                    </div>
-                </form>
+                </div>
+            </form>
+
+        </div>
+        <!--/.nav-collapse -->
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
+
+<div id="all">
+
+    <div id="content">
+        <div class="container">
+
+            <div class="col-md-12">
+
+                <ul class="breadcrumb">
+                    <li><a href="../app/home/">Home</a>
+                    </li>
+                    <li>New account / Sign in</li>
+                </ul>
 
             </div>
-            <!--/.nav-collapse -->
+
+            <div class="col-md-12">
+                <div class="box">
+                    <h1>New account</h1>
+
+                    <p class="lead">Not our registered customer yet?</p>
+                    <p>With registration with us new world of products, fantastic discounts and much more opens to you!
+                        The whole process will not take you more than a minute!</p>
+
+
+                    <hr>
+
+                    <form id="register-form" onsubmit="register()">
+                        <div class="form-group">
+                            <label for="name">* Username</label>
+                            <input name="username" type="text" required class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">* Password</label>
+                            <input name="password" type="password" required class="form-control" id="password">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
         </div>
         <!-- /.container -->
     </div>
-    <!-- /#navbar -->
+    <!-- /#content -->
 
-    <!-- *** NAVBAR END *** -->
 
-    <div id="all">
-
-        <div id="content">
-            <div class="container">
-
-                <div class="col-md-12">
-
-                    <ul class="breadcrumb">
-                        <li><a href="../app/home/">Home</a>
-                        </li>
-                        <li>New account / Sign in</li>
-                    </ul>
-
-                </div>
-
-                <div class="col-md-12">
-                    <div class="box">
-                        <h1>New account</h1>
-
-                        <p class="lead">Not our registered customer yet?</p>
-                        <p>With registration with us new world of products, fantastic discounts and much more opens to you! The whole process will not take you more than a minute!</p>
-                        
-
-                        <hr>
-
-                        <form action="../app/users/register/" method="post">
-                            <div class="form-group">
-                                <label for="name">Username</label>
-                                <input name="username" type="text" class="form-control" id="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input name="password" type="password" class="form-control" id="password">
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
+    <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+    <div id="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p class="pull-left">© 2015 Your name goes here.</p>
 
             </div>
-            <!-- /.container -->
-        </div>
-        <!-- /#content -->
-
-
-
-        <!-- *** COPYRIGHT ***
- _________________________________________________________ -->
-        <div id="copyright">
-            <div class="container">
-                <div class="col-md-6">
-                    <p class="pull-left">© 2015 Your name goes here.</p>
-
-                </div>
-                <div class="col-md-6">
-                    <p class="pull-right">Template by <a href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a href="https://fity.cz">Fity</a>
-                         <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
-                    </p>
-                </div>
+            <div class="col-md-6">
+                <p class="pull-right">Template by <a
+                        href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a
+                        href="https://fity.cz">Fity</a>
+                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                </p>
             </div>
         </div>
-        <!-- *** COPYRIGHT END *** -->
-
-
-
     </div>
-    <!-- /#all -->
+    <!-- *** COPYRIGHT END *** -->
 
 
-
+</div>
+<!-- /#all -->
 
 
 </body>

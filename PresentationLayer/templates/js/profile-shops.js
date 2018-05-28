@@ -6,13 +6,16 @@ $(document).ready(function () {
     $('#add-manager-form').submit(function () {
         return false;
     });
+    $('#add-owner-form').submit(function () {
+        return false;
+    });
 });
 
-var currentlyWorkingOnShop = "";
+let currentlyWorkingOnShop = "";
 
 function addManager() {
-    var data = new FormData();
-    var name = document.getElementById("manager-name-modal").value;
+    let data = new FormData();
+    let name = document.getElementById("manager-name-modal").value;
     data.append('shop_name', currentlyWorkingOnShop);
     data.append('target_id', name);
     data.append('add_item_permission', 0);
@@ -24,15 +27,15 @@ function addManager() {
     data.append('get_discount_permission', 0);
 
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText);
             }
             else {
                 alert("Manager has been added!");
-                window.location.href = "../app/my/shops/"
+                window.location.reload();
             }
         }
     };
@@ -41,11 +44,11 @@ function addManager() {
 }
 
 function removeManager(manager_name) {
-    var data = new FormData();
+    let data = new FormData();
     data.append('shop_name', currentlyWorkingOnShop);
     data.append('target_id', manager_name);
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
@@ -62,7 +65,7 @@ function removeManager(manager_name) {
 }
 
 function applyPermissions(manager_name) {
-    var data = new FormData();
+    let data = new FormData();
     data.append('shop_name', currentlyWorkingOnShop);
     data.append('target_id', manager_name);
     data.append('add_item_permission', +document.getElementById("AIP_" + manager_name).checked);
@@ -73,7 +76,7 @@ function applyPermissions(manager_name) {
     data.append('get_purchase_history_permission', +document.getElementById("GPHP_" + manager_name).checked);
     data.append('get_discount_permission', +document.getElementById("DP_" + manager_name).checked);
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
@@ -91,21 +94,21 @@ function applyPermissions(manager_name) {
 
 
 function createShop() {
-    var data = new FormData();
-    var name = document.getElementById("shop-name-modal").value;
+    let data = new FormData();
+    let name = document.getElementById("shop-name-modal").value;
     data.append('name', name);
     data.append('status', "Inactive");
 
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText)
             }
             else {
                 alert("Your shop has been opened!");
-                window.location.href = "../app/my/shops/"
+                window.location.reload();
             }
         }
     };
@@ -114,13 +117,13 @@ function createShop() {
 }
 
 /*function setNotification() {
-    var current_status = document.getElementById(shop_name + "_notify").textContent;
+    let current_status = document.getElementById(shop_name + "_notify").textContent;
 
-    var data = new FormData();
+    let data = new FormData();
     data.append('modify_notifications', current_status === 'On' ? 0 : 1);
     alert(current_status);
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
@@ -137,12 +140,12 @@ function createShop() {
 }
 */
 function setStatus(shop_name) {
-    var current_status = document.getElementById(shop_name + "_status").textContent;
+    let current_status = document.getElementById(shop_name + "_status").textContent;
 
-    var data = new FormData();
+    let data = new FormData();
     data.append('shop_name', shop_name);
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
@@ -153,7 +156,7 @@ function setStatus(shop_name) {
             }
         }
     };
-    var route = current_status === 'Active' ?
+    let route = current_status === 'Active' ?
         "close_shop/" : "re_open_shop/";
     loadHTML.open("POST", "../app/users/owner/" + route, true);
     loadHTML.send(data);
@@ -163,7 +166,7 @@ function setStatus(shop_name) {
 function shopModalOpened(shop_name) {
     currentlyWorkingOnShop = shop_name;
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
@@ -187,20 +190,20 @@ function addOwnerOpened(shop_name) {
 }
 
 function addOwner() {
-    var data = new FormData();
-    var name = document.getElementById("owner-name-modal").value;
+    let data = new FormData();
+    let name = document.getElementById("owner-name-modal").value;
     data.append('shop_name', currentlyWorkingOnShop);
     data.append('target_id', name);
 
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText);
             }
-            else if(loadHTML.responseText === 'success'){
+            else if(loadHTML.responseText.substring(0,7) === 'SUCCESS'){
                 alert("Owner has been added!");
-                window.location.href = "http://localhost:8000/app/my/shops/"
+                window.location.reload();
             }
         }
     };
@@ -209,7 +212,7 @@ function addOwner() {
 }
 
 function gotoMessages(shop_name) {
-    var loadHTML = new XMLHttpRequest();
+    let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (loadHTML.responseText === 'fail') {
