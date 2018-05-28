@@ -42,5 +42,5 @@ def search_by_keywords(item_keywords):
 
 
 def get_similar_words(word):
-    d = enchant.Dict()
+    d = enchant.Dict("en_US")
     return d.suggest(word)

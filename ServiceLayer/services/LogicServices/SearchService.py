@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
-
 from DomainLayer import SearchLogic, ShoppingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 
@@ -20,27 +19,37 @@ def search_item(request):
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         search_by = request.GET.get('searchBy')
         items = []
+        words = []
         if search_by == 'name':
             items = SearchLogic.search_by_name(request.GET.get('name'))
             if len(items) != 0:
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar}
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar , 'len' : len(items)}
                 return render(request, 'SearchView.html', context)
             else:
-                return HttpResponse('There Are Not Match Items.')
+                words = SearchLogic.get_similar_words(request.GET.get('name'))
+                words = words[10:]
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
+                return render(request, 'ItemsNotFound.html', context)
         if search_by == 'category':
             items = SearchLogic.search_by_category(request.GET.get('category'))
             if len(items) != 0:
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar}
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar , 'len' : len(items)}
                 return render(request, 'SearchView.html', context)
             else:
-                return HttpResponse('There Are Not Match Items.')
+                words = SearchLogic.get_similar_words(request.GET.get('category'))
+                words = words[10:]
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
+                return render(request, 'ItemsNotFound.html', context)
         if search_by == 'keywords':
             items = SearchLogic.search_by_keywords(request.GET.get('keywords'))
             if len(items) != 0:
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar}
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar , 'len' : len(items)}
                 return render(request, 'SearchView.html', context)
             else:
-                return HttpResponse('There Are Not Match Items.')
+                words = SearchLogic.get_similar_words(request.GET.get('keywords'))
+                words = words[10:]
+                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
+                return render(request, 'ItemsNotFound.html', context)
 
 
 def search_shop(request):
