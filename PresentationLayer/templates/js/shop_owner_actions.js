@@ -1,3 +1,12 @@
+$(document).ready(function () {
+    $('#update-item-form').submit(function () {
+        return false;
+    });
+    $('#form-add-item').submit(function () {
+        return false;
+    });
+});
+
 function updateItem(item_id, shop_name) {
     let data = new FormData();
     data.append('item_id', item_id);
@@ -65,10 +74,7 @@ function addItem(shop_name) {
     let item_kind = document.getElementById("kind").value;
     data.append('item_kind', item_kind);
 
-    if (item_kind === 'ticket') {
-        data.append('item_ticket_item_id_attached', document.getElementById("ticket_for_item").value);
-    }
-    else if (item_kind === 'auction') {
+    if (item_kind === 'auction') {
         data.append('item_auction_initial_price', document.getElementById("auction_initial_price").value);
         data.append('item_auction_sale_duration', document.getElementById("auction_sale_duration").value);
     }
@@ -79,53 +85,20 @@ function addItem(shop_name) {
     loadHTML.shop_name = shop_name;
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
-            }
-            else if (loadHTML.responseText === 'no permission to add item') {
-                alert(loadHTML.responseText);
-
-            }
-            else if (loadHTML.responseText === 'invalid values') {
-                alert(loadHTML.responseText);
-            }
-            else if (loadHTML.responseText === 'success') {
+            if (loadHTML.responseText === 'success') {
                 alert("Item Added Successfully");
                 window.location.href = "../app/shop/?shop_name=" + loadHTML.shop_name;
-
             }
+            else if (loadHTML.responseText === 'user not logged in' ||
+                loadHTML.responseText === 'not owner or manager in this shop') {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home"
+            }
+            else alert(loadHTML.responseText);
+
         }
-    }
-    ;
+    };
 
     loadHTML.open("POST", "../app/shop/owner/items/add_item/post", true);
-    loadHTML.send(data);
-}
-
-function addReview(shop_name) {
-    let data = new FormData();
-    data.append('shop_name', shop_name);
-    data.append('description', document.getElementById("description").value);
-    data.append('rank', document.getElementById("rank").value);
-
-    let loadHTML = new XMLHttpRequest();
-    loadHTML.shop_name = shop_name;
-    loadHTML.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
-            }
-            else if (loadHTML.responseText === 'success') {
-                alert("Review Added Successfully");
-                window.location.href = "../app/shop/?shop_name=" + loadHTML.shop_name;
-
-            }
-        }
-    }
-    ;
-
-    loadHTML.open("POST", "../app/shop/reviews/add_review/post", true);
     loadHTML.send(data);
 }

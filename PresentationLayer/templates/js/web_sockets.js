@@ -50,8 +50,8 @@ function login() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Wrong Credentials")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText);
             }
             else {
                 setCookie('login_hash', loadHTML.responseText, 7);

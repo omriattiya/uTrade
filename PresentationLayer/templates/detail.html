@@ -216,7 +216,7 @@ _________________________________________________________ -->
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <img src="img/cost.png" alt="" height="89" width="89">
+                                            <img src="img/money-bag.png" style="margin-left: 67px;" alt="" height="69" width="69">
                                         </td>
                                         <td>
                                             <h3 style="margin-top: 32px;">${{ price }}</h3>
@@ -224,11 +224,19 @@ _________________________________________________________ -->
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/storage.png" style="margin-left: 12px;" alt="" height="63"
+                                            <img src="img/icon-inventory.png" style="margin-left: 67px;" alt="" height="63"
                                                  width="63">
                                         </td>
                                         <td>
                                             <h3 style="margin-top: 22px;color: #4d8537;">{{ quantity }}</h3>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h3 style="margin-top: 22px; margin-left: 30px;color: #141414;">Select Quantity:</h3>
+                                        </td>
+                                        <td>
+                                            <input id = "quantity_input" style="margin-top: 22px; width: 100px;" type="number" max="999" min="0" class="form-control">
                                         </td>
                                     </tr>
                                     </tbody>
@@ -265,7 +273,7 @@ _________________________________________________________ -->
                                     </tr>
                                     <tr>
                                         <td>Ranking</td>
-                                        <th class="text-right">9/10</th>
+                                        <th class="text-right">{{ item_rank }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -423,7 +431,7 @@ _________________________________________________________ -->
     <div id="copyright">
         <div class="container">
             <div class="col-md-6">
-                <p class="pull-left">© 2015 Your name goes here.</p>
+                <p class="pull-left">© 2018 uTrade Groud</p>
 
             </div>
             <div class="col-md-6">

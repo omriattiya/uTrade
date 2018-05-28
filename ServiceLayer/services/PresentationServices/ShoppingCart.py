@@ -1,7 +1,10 @@
-from django.template import loader
 from django.shortcuts import render
 from DomainLayer import ShoppingLogic, UserShoppingCartLogic, GuestShoppingCartLogic
 from ServiceLayer import Consumer
+from django.template import loader
+
+from DomainLayer import ShoppingLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def review_order(request):
@@ -24,6 +27,8 @@ def review_order(request):
             context = UserShoppingCartLogic.order_of_user(login)
         context['topbar'] = topbar
         context['navbar'] = navbar
+        username = Consumer.loggedInUsers.get(login)
+        context['username'] = username
         return render(request, 'checkout4.html', context=context)
 
 
@@ -50,6 +55,10 @@ def get_cart_items(request):
                 cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
                 context = GuestShoppingCartLogic.order_of_guest(guest)
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+        if login is None:
+            context = ShoppingLogic.order_helper(guest)
+        else:
+            context = ShoppingLogic.order_helper(Consumer.loggedInUsers.get(login))
         context['topbar'] = topbar
         context['navbar'] = navbar
         return render(request, 'basket.html', context=context)

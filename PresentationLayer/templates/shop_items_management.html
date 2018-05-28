@@ -35,9 +35,6 @@
     <link href="css/custom.css" rel="stylesheet">
 
     <script src="js/respond.min.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/shop_owner_actions.js"></script>
-    <script src="js/add_to_cart.js"></script>
 
     <link rel="shortcut icon" href="favicon.png">
 
@@ -54,7 +51,7 @@ _________________________________________________________ -->
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
     <script src="js/web_sockets.js"></script>
-    <script src="js/customer-order.js"></script>
+    <script src="js/shop_owner_actions.js"></script>
 
 </head>
 
@@ -66,7 +63,6 @@ _________________________________________________________ -->
     {{ topbar }}
 {% endautoescape %}
 
-<!-- *** TOP BAR END *** -->
 
 <!-- *** NAVBAR ***
 _________________________________________________________ -->
@@ -178,39 +174,22 @@ _________________________________________________________ -->
 
             <div class="col-md-12">
                 <ul class="breadcrumb">
-                    <li><a href="../app/home">Home</a>
-                    </li>
-                    <li>{{ shop_name }}</li>
+                    <li><a href="../app/home">Home</a></li>
+                    <li><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></li>
+                    <li>Items Management</li>
                 </ul>
             </div>
 
             <div class="col-md-12">
                 <div class="box">
-                    <h1>{{ shop_name }}</h1>
-                    <p>{{ shop_status }}</p>
+                    <h1>Items Management of {{ shop_name }}</h1>
+                    <h5 style="color: #00b478">(*) required field</h5>
                 </div>
 
+                {% autoescape off %}
+                    {{ items }}
+                {% endautoescape %}
 
-                <div class="box info-bar">
-                    <div class="row">
-                        <div class="col-sm-4 products-showing" style="width: unset">
-                            <a href="../app/shop/reviews/?shop_name={{ shop_name }}" class="btn btn-primary">Watch
-                                Reviews</a>
-                        </div>
-                        {% autoescape off %}
-                            {{ owner_manager_options }}
-                        {% endautoescape %}
-                    </div>
-                </div>
-
-
-                <div class="row products">
-                    {% autoescape off %}
-                        {{ products }}
-                    {% endautoescape %}
-
-                </div>
-                <!-- /.products -->
 
             </div>
             <!-- /.col-md-9 -->
@@ -241,6 +220,10 @@ _________________________________________________________ -->
 
 </div>
 <!-- /#all -->
+
+
+<!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
 
 
 </body>

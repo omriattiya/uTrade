@@ -1,8 +1,8 @@
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import ItemsLogic, UsersLogic, ShopLogic
-from ServiceLayer import Consumer
+from DomainLayer import ItemsLogic, UsersLogic, ShopLogic, LotteryLogic, AuctionLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
 
@@ -12,57 +12,102 @@ def add_item_to_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         item_name = request.POST.get('item_name')
-        item_quantity = request.POST.get('item_quantity')
+        try:
+            item_quantity = int(request.POST.get('item_quantity'))
+        except:
+            return HttpResponse('invalid quantity')
         item_category = request.POST.get('item_category')
         item_keywords = request.POST.get('item_keywords')
-        item_price = request.POST.get('item_price')
+        try:
+            item_price = int(request.POST.get('item_price'))
+        except:
+            return HttpResponse('invalid price')
         item_url = request.POST.get('item_url')
         item_kind = request.POST.get('item_kind')
 
-        if shop_name is None or \
-                item_name is None or \
-                item_quantity is None or \
-                item_category is None or \
-                item_keywords is None or \
-                item_price is None or \
-                item_url is None or \
-                item_kind is None:
-            return HttpResponse('fail')
+        if shop_name is None or ShopLogic.search_shop(shop_name) is False:
+            return HttpResponse('invalid shop')
 
-        item = None
+        if item_name is None or item_name == '':
+            return HttpResponse('invalid item name')
+
+        if item_quantity < 0:
+            return HttpResponse('invalid quantity')
+
+        if item_category is None or item_category == '':
+            return HttpResponse('invalid category')
+
+        if item_keywords is None:
+            return HttpResponse('invalid keywords')
+
+        if item_price <= 0:
+            return HttpResponse('invalid price')
+
         if item_url == '':
             item_url = None
-        try:
-            int(item_quantity)
-            int(item_price)
-            item = Item(None, shop_name, item_name, item_category, item_keywords, int(item_price), int(item_quantity),
-                        item_kind,
-                        item_url)
-            if ShopLogic.search_shop(shop_name) is False or item_name is "" \
-                    or item_category is "" or item_kind != 'regular':
-                return HttpResponse('invalid values')
-        except:
-            return HttpResponse('invalid values')
+
+        item_ticket_item_id_attached = None
+        item_auction_sale_duration = None
+        item_prize_sale_duration = None
+
+        if item_kind == 'ticket':
+            try:
+                item_ticket_item_id_attached = int(request.POST.get('item_ticket_item_id_attached'))
+            except:
+                return HttpResponse('invalid ticket item id')
+            if ItemsLogic.get_item(item_ticket_item_id_attached) is False:
+                return HttpResponse('ticket item id does not exist')
+            if ItemsLogic.get_item(item_ticket_item_id_attached).kind != 'prize':
+                return HttpResponse('ticket item id is of kind prize')
+
+        if item_kind == 'auction':
+            try:
+                item_auction_sale_duration = int(request.POST.get('item_auction_sale_duration'))
+            except:
+                return HttpResponse('invalid sale duration')
+        if item_kind == 'prize':
+            try:
+                item_prize_sale_duration = int(request.POST.get('item_prize_sale_duration'))
+            except:
+                return HttpResponse('invalid sale duration')
+        else:
+            return HttpResponse('invalid kind')
 
         login = request.COOKIES.get('login_hash')
         username = None
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is None:
-                return HttpResponse('fail')
-        if item is False:
-            return HttpResponse('fail')
+                return HttpResponse('user not logged in')
         if not UsersLogic.is_owner_of_shop(username, shop_name):
             if UsersLogic.is_manager_of_shop(username, shop_name):
                 manager = UsersLogic.get_manager(username, shop_name)
                 if manager.permission_add_item is not 1:  # no permission
                     return HttpResponse('no permission to add item')
             else:
-                return HttpResponse('fail')  # not manager not owner
+                return HttpResponse('not owner or manager in this shop')  # not manager not owner
 
-        status = ItemsLogic.add_item_to_shop(item, username)
+        status = False
+        if item_kind == 'regular':
+            regular_item = Item(None, shop_name, item_name, item_category, item_keywords,
+                                item_price, item_quantity, item_kind, item_url)
+            status = ItemsLogic.add_item_to_shop(regular_item, username)
+        elif item_kind == 'prize':
+            prize = Item(None, shop_name, item_name, item_category, item_keywords,
+                         item_price, 1, item_kind, item_url)
+            ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
+                          item_price, item_quantity, 'ticket', item_url)
+            status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
+                                                        datetime.datetime.now() + datetime.timedelta(
+                                                            days=item_prize_sale_duration), username)
+        elif item_kind == 'auction':
+            auction_item = Item(None, shop_name, item_name, item_category, item_keywords,
+                                item_price, item_quantity, item_kind, item_url)
+            status = AuctionLogic.add_auction(auction_item, username,
+                                              datetime.datetime.now() + datetime.timedelta(
+                                                  days=item_prize_sale_duration))
         if status is False:
-            return HttpResponse('fail')
+            return HttpResponse('could not add item')
         return HttpResponse('success')
 
 

@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from DomainLayer import ItemsLogic
 from DomainLayer import ShopLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
 
@@ -17,17 +17,13 @@ def create_shop(request):
 
         login = request.COOKIES.get('login_hash')
         if login is None:
-            return HttpResponse('fail')
+            return HttpResponse('FAILED: You are not logged in')
         username = Consumer.loggedInUsers.get(login)
         if username is None:
-            return HttpResponse('fail')
+            return HttpResponse('FAILED: You are not logged in')
 
         shop = Shop(shop_name, shop_status)
-        result = ShopLogic.create_shop(shop, username)
-        if result:
-            return HttpResponse('success')
-        else:
-            return HttpResponse('fail')
+        return HttpResponse(ShopLogic.create_shop(shop, username))
 
 
 @csrf_exempt

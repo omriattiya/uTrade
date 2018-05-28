@@ -12,16 +12,18 @@ def register(user):
             if re.match(r'[A-Za-z0-9]{8,20}', user.password):
                 user.password = hashlib.sha256(user.password.encode()).hexdigest()
                 if Shops.search_shop(user.username) is not False:
-                    return False
+                    return 'FAILED: Username is already taken'
                 if RegisteredUsers.get_user(user.username) is not False:
-                    return False
-                return RegisteredUsers.add_user(user)
+                    return 'FAILED: Username is already taken'
+                if RegisteredUsers.add_user(user):
+                    return 'SUCCESS'
+                return 'FAILED'
             else:
-                return False
+                return 'FAILED: Password must be 8 to 20 alphabetic letters and numbers'
         else:
-            return False
+            return 'FAILED: Username must be 8 to 20 alphabetic letters and numbers'
     else:
-        return False
+        return 'FAILED: Username is already taken'
 
 
 def get_registered_user(username):
@@ -30,21 +32,29 @@ def get_registered_user(username):
 
 def edit_password(user):
     if user.username == 'System':
-        return False
+        return "FAILED: System Can't changed password"
     status = RegisteredUsers.get_user(user.username)
     if status and user.username is not None and user.password is not None:
         if re.match(r'[A-Za-z0-9]{8,20}', user.password):
             user.password = hashlib.sha256(user.password.encode()).hexdigest()
-            return RegisteredUsers.edit_user_password(user)
-    return False
+            if RegisteredUsers.edit_user_password(user):
+                return 'SUCCESS'
+            return 'FAILED'
+        return 'FAILED: Password must be 8 to 20 alphabetic letters and numbers'
+    return "FAILED: username not exists"
 
 
 def login(user):
     if SystemManagers.login(user.username, user.password):
         return True
     if user.username is not None and user.password is not None:
-        user.password = hashlib.sha256(user.password.encode()).hexdigest()
-        return RegisteredUsers.login(user)
+        if RegisteredUsers.is_user_exists(user.username):
+            user.password = hashlib.sha256(user.password.encode()).hexdigest()
+            if RegisteredUsers.login(user):
+                return "SUCCESS"
+            return "FAILED:Password in incorrect"
+        return "FAILED: Username is incorrect"
+    return "FAILED: Missing Parameters"
 
 
 # @username wants to remove the user @registered_user and if he is the last owner - delete the shop as well !
@@ -82,21 +92,42 @@ def get_purchase_history(username):
 #
 
 def add_owner(username, owner):
-    if username is not None and \
-                    Owners.get_owner(username, owner.shop_name) is not False and \
-                    RegisteredUsers.get_user(owner.username) is not False and owner.shop_name is not None:
-        return Owners.add_owner(owner)
-    return False
+    if username is not None:
+        if Owners.get_owner(username, owner.shop_name) is not False:
+            if RegisteredUsers.get_user(owner.username) is not False:
+                result = Owners.add_owner(owner)
+                if result and is_manager_of_shop(username, owner.shop_name):
+                    remove_store_manager(username, owner.shop_name, owner.username)
+                    return "SUCCESS"
+                elif result:
+                    return "SUCCESS"
+                else:
+                    return "FAILED"
+            else:
+                return "FAILED: Username does not exists"
+        else:
+            return "FAILED: You are not the owner of this shop"
+    else:
+        return "FAILED: Missing Parameters"
 
 
 def add_manager(username, store_manager):
-    if username is not None and \
-                    Owners.get_owner(username, store_manager.store_name) is not False and \
-                    RegisteredUsers.get_user(
-                        store_manager.username) is not False and store_manager.store_name is not None:
-        return StoreManagers.add_manager(store_manager)
+    if username is not None:
+        if Owners.get_owner(username, store_manager.store_name) is not False:
+            if RegisteredUsers.get_user(
+                                store_manager.username) is not False:
+                if store_manager.store_name is not None:
+                    if StoreManagers.add_manager(store_manager):
+                        return 'SUCCESS'
+                    return "FAILED"
+                else:
+                    return "FAILED: Shop does not exists"
+            else:
+                return "FAILED: User does not exists"
+        else:
+            return "FAILED: You are not the owner of this shop"
     else:
-        return False
+        return "FAILED: Missing Parameters"
 
 
 def close_shop(username, shop_name):
@@ -167,6 +198,7 @@ def is_owner_of_shop(username, shop_name):
         if owner.shop_name == shop_name:
             return True
     return False
+
 
 def get_managed_shops(username):
     return StoreManagers.get_manager_shops(username)

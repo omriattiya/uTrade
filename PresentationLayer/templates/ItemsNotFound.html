@@ -35,8 +35,6 @@
     <link href="css/custom.css" rel="stylesheet">
 
     <script src="js/respond.min.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/shop_owner_actions.js"></script>
 
     <link rel="shortcut icon" href="favicon.png">
 
@@ -51,7 +49,8 @@ _________________________________________________________ -->
     <script src="js/bootstrap-hover-dropdown.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
-
+    <script src="js/search.js"></script>
+    <script src="js/filter.js"></script>
     <script src="js/web_sockets.js"></script>
 
 
@@ -102,65 +101,66 @@ _________________________________________________________ -->
 
         <div class="collapse clearfix" id="search">
             <div class="row">
+
                 <div class="row">
-                    <form class="navbar-form">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch1()">
                         <div class="input-group">
                             <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
                             <span class="input-group-btn">
 
-                                <button type="submit" class="btn btn-primary" onclick="onClickOnSearch1();"><i
-                                        class="fa fa-search"></i></button>
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
 
-		                    </span>
+		    </span>
                         </div>
                     </form>
                 </div>
-
                 <div class="row">
-                    <form class="navbar-form">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch2()">
                         <div class="input-group">
                             <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
                             <span class="input-group-btn">
 
-			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch2();"><i
-                                        class="fa fa-search"></i></button>
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
 
-                		    </span>
+		    </span>
                         </div>
                     </form>
                 </div>
-
                 <div class="row">
-                    <form class="navbar-form">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch3()">
                         <div class="input-group">
                             <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
                             <span class="input-group-btn">
 
-			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch3();"><i
-                                        class="fa fa-search"></i></button>
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
 
-		                    </span>
+		    </span>
                         </div>
                     </form>
                 </div>
 
                 <div class="row">
-                    <form class="navbar-form">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch4()">
                         <div class="input-group">
                             <input type="text" id="SearchForm4" class="form-control" placeholder="Search Shop">
                             <span class="input-group-btn">
 
-			                    <button type="submit" class="btn btn-primary" onclick="onClickOnSearch4();"><i
-                                        class="fa fa-search"></i></button>
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
 
-		                    </span>
+		    </span>
                         </div>
                     </form>
                 </div>
+
             </div>
 
         </div>
         <!--/.nav-collapse -->
+
 
     </div>
     <!-- /.container -->
@@ -169,63 +169,52 @@ _________________________________________________________ -->
 
 <!-- *** NAVBAR END *** -->
 
-<div id="all">
+    <div id="all">
 
-    <div id="content">
+        <div id="content">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row" id="error-page">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="box">
+                                <h3>We are sorry - Items Doesnt Found</h3>
+                                <h3>Maybe Do You Mean :</h3>
+                                {% for word in words %}
+                                <h1> {{ word }}</h1>
+                                {% endfor %}
+                                <p class="text-center">To continue please use the <strong>Search form</strong> or <strong>Menu</strong> above.</p>
+                                <p class="buttons"><a href="../app/home/" class="btn btn-primary"><i
+                                        class="fa fa-home"></i> Go to Homepage</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="container">
 
-            <div class="col-md-12">
-                <div class="box">
-                    <h1>Owner Page of {{ shop_name }}</h1>
                 </div>
-
-                {% autoescape off %}
-                    {{ items }}
-                {% endautoescape %}
-
-
+                <!-- /.col-md-9 -->
             </div>
-            <!-- /.col-md-9 -->
+            <!-- /.container -->
         </div>
-        <!-- /.container -->
+        <!-- /#content -->
     </div>
-    <!-- /#content -->
-
-    <!-- *** COPYRIGHT ***
-_________________________________________________________ -->
-    <div id="copyright">
-        <div class="container">
-            <div class="col-md-6">
-                <p class="pull-left">© 2018 OMRI</p>
-
-            </div>
-            <div class="col-md-6">
-                <p class="pull-right">Template by <a
-                        href="https://bootstrapious.com/e-commerce-templates">Bootstrapious</a> & <a
-                        href="https://fity.cz">Fity</a>
-                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- *** COPYRIGHT END *** -->
+    <!-- /#all -->
 
 
-</div>
-<!-- /#all -->
 
 
-<!-- *** SCRIPTS TO INCLUDE ***
-_________________________________________________________ -->
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script src="js/waypoints.min.js"></script>
-<script src="js/modernizr.js"></script>
-<script src="js/bootstrap-hover-dropdown.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/front.js"></script>
+    <!-- *** SCRIPTS TO INCLUDE ***
+ _________________________________________________________ -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+
+
 
 
 </body>

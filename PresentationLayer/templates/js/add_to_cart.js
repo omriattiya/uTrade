@@ -2,7 +2,7 @@ function addToCart(item_id) {
     alert("5");
     let data = new FormData();
     data.append('item_id', item_id);
-    data.append('quantity', 1);
+    data.append('quantity', document.getElementById("quantity_input").value);
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200)

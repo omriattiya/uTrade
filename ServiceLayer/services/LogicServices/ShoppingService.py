@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic, UserShoppingCartLogic, GuestShoppingCartLogic
+
+from DomainLayer import ShoppingLogic, ItemsLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from ServiceLayer import Consumer
 
@@ -97,6 +100,8 @@ def update_item_shopping_cart(request):
 @csrf_exempt
 def update_code_shopping_cart(request):
     if request.method == 'POST':
+        login = request.COOKIES.get('login_hash')
+        username = Consumer.loggedInUsers.get(login)
         code = request.POST.get("code")
         item = ItemsLogic.get_item_by_code(code)
         if item is False:

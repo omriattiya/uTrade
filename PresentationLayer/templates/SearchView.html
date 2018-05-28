@@ -50,6 +50,7 @@ _________________________________________________________ -->
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/filter.js"></script>
     <script src="js/web_sockets.js"></script>
 
 
@@ -160,6 +161,7 @@ _________________________________________________________ -->
         </div>
         <!--/.nav-collapse -->
 
+
     </div>
     <!-- /.container -->
 </div>
@@ -175,7 +177,99 @@ _________________________________________________________ -->
 
                 <div class="col-md-12">
 
+                					<!-- BEGIN FILTERS -->
 
+					<div class="col-md-3">
+                        <div class="box">
+						<h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+						<hr>
+
+						<!-- BEGIN FILTER BY CATEGORY -->
+						<h4>By Category:</h4>
+                        <form class="navbar-form" role="search" action="javascript:filterByCategory()">
+                        <div class="input-group">
+                        <input type="text" id="SearchForm5" class="form-control" placeholder="Search By Category">
+                        </div>
+                        <span class="input-group-btn">
+                        <div class="col-md-12 text-center">
+			            <button type="submit" class="btn btn-primary "><i
+                        class="fa fa-search"></i></button>
+                        </div>
+		                </span>
+                        </form>
+						<!-- END FILTER BY CATEGORY -->
+
+						<!-- BEGIN FILTER BY DATE -->
+						<h4>By Price:</h4>
+						From
+                        <form class="navbar-form" role="search" action="javascript:filterByPrice()">
+                        <div class="input-group">
+                        <input type="text" id="SearchForm6" class="form-control" placeholder="From Price :">
+                        <span class="input-group-btn">
+		                </span>
+                        </div>
+
+						To
+                        <div class="input-group">
+                        <input type="text" id="SearchForm7" class="form-control" placeholder="To Price :">
+                        </div>
+                        <span class="input-group-btn">
+                        <div class="col-md-12 text-center">
+			            <button type="submit" class="btn btn-primary "><i
+                        class="fa fa-search"></i></button>
+                        </div>
+		                </span>
+                        </form>
+						<input type="hidden" id="dtp_input2" value="">
+
+                        <h4>By Item Rating:</h4>
+						From
+                        <form class="navbar-form" role="search" action="javascript:onClickOnSearch8()">
+                        <div class="input-group">
+                        <input type="text" id="SearchForm8" class="form-control" placeholder="From Rating :">
+                        <span class="input-group-btn">
+		                </span>
+                        </div>
+
+						To
+                        <div class="input-group">
+                        <input type="text" id="SearchForm9" class="form-control" placeholder="To Rating :">
+                        </div>
+                        <span class="input-group-btn">
+                        <div class="col-md-12 text-center">
+			            <button type="submit" class="btn btn-primary "><i
+                        class="fa fa-search"></i></button>
+                        </div>
+		                </span>
+                        </form>
+
+                        <h4>By Shop Rating:</h4>
+						From
+                        <form class="navbar-form" role="search" action="javascript:onClickOnSearch10()">
+                        <div class="input-group">
+                        <input type="text" id="SearchForm10" class="form-control" placeholder="From Rating :">
+                        <span class="input-group-btn">
+		                </span>
+                        </div>
+						To
+                        <div class="input-group">
+                        <input type="text" id="SearchForm11" class="form-control" placeholder="To Rating :">
+                        </div>
+                        <span class="input-group-btn">
+                        <div class="col-md-12 text-center ">
+			            <button type="submit" class="btn btn-primary "><i
+                        class="fa fa-search"></i></button>
+                        </div>
+		                </span>
+                        </form>
+						<input type="hidden" id="dtp_input2" value="">
+						<!-- END FILTER BY DATE -->
+
+
+					</div>
+                </div>
+					<!-- END FILTERS -->
+                <div class="col-md-9">
                     <div class="box">
                         <h3>Here is the products we have found for you :</h3>
                     </div>
@@ -183,7 +277,7 @@ _________________________________________________________ -->
                     <div class="box info-bar">
                         <div class="row">
                             <div class="col-sm-12 col-md-4 products-showing">
-                                Showing <strong>12</strong> of <strong>25</strong> products
+                                Showing <strong>{{len}}</strong> of <strong>{{len}}</strong> products
                             </div>
 
                             <div class="col-sm-12 col-md-8  products-number-sort">
@@ -209,11 +303,13 @@ _________________________________________________________ -->
                             </div>
                         </div>
                     </div>
-
+</div>
                     <div class="row products">
                         {% for item in items %}
+                        <div class="itemJS" price = {{item.price}} category = {{item.category}}>
                         <div class="col-md-3 col-sm-4">
                             <div class="product">
+
                                 <div class="flip-container">
                                     <div class="flipper">
                                         <div class="front">
@@ -223,6 +319,7 @@ _________________________________________________________ -->
                                         </div>
                                     </div>
                                 </div>
+
                                 <a href="detail.html" class="invisible">
                                     <img src="img/product3.jpg" alt="" class="img-responsive">
                                 </a>
@@ -237,6 +334,7 @@ _________________________________________________________ -->
                                 <!-- /.text -->
                             </div>
                             <!-- /.product -->
+                        </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -420,7 +518,7 @@ _________________________________________________________ -->
         <div id="copyright">
             <div class="container">
                 <div class="col-md-6">
-                    <p class="pull-left">© 2015 Your name goes here.</p>
+                    <p class="pull-left">© 2018 uTrade Groud</p>
 
                 </div>
                 <div class="col-md-6">
@@ -432,29 +530,8 @@ _________________________________________________________ -->
         </div>
         <!-- *** COPYRIGHT END *** -->
 
-
-
     </div>
     <!-- /#all -->
-
-
-
-
-    <!-- *** SCRIPTS TO INCLUDE ***
- _________________________________________________________ -->
-    <script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/modernizr.js"></script>
-    <script src="js/bootstrap-hover-dropdown.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/front.js"></script>
-
-
-
-
-
 
 </body>
 

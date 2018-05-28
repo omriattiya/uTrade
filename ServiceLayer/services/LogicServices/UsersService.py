@@ -3,14 +3,16 @@ import hashlib
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from SharedClasses.VisibleDiscount import VisibleDiscount
+from DomainLayer import UsersLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
-from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Owner import Owner
+from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic, ShoppingLogic
 from ServiceLayer import Consumer
+from SharedClasses.VisibleDiscount import VisibleDiscount
 
 
 def get_purchase_history(request):
@@ -24,11 +26,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        status = UsersLogic.register(RegisteredUser(username, password))
-        if status:
-            return HttpResponse('added successfully')
-        else:
-            return HttpResponse('failed')
+        return HttpResponse(UsersLogic.register(RegisteredUser(username, password)))
 
 
 @csrf_exempt
@@ -58,10 +56,10 @@ def edit_password(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
 
-            if UsersLogic.login(RegisteredUser(username, current_password)) and \
-                    UsersLogic.edit_password(RegisteredUser(username, new_password)):
-                return HttpResponse('success')
-        return HttpResponse('fail')
+            if UsersLogic.login(RegisteredUser(username, current_password)):
+                return HttpResponse(UsersLogic.edit_password(RegisteredUser(username, new_password)))
+
+        return HttpResponse('FAILED: You are not logged in.')
 
 
 @csrf_exempt
@@ -70,13 +68,14 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = RegisteredUser(username, password)
-        if UsersLogic.login(user):
+        result = UsersLogic.login(user)
+        if result[:7] == 'SUCCESS':
             access_token = hashlib.md5(username.encode()).hexdigest()
             Consumer.loggedInUsers[access_token] = username
             Consumer.loggedInUsersShoppingCart[access_token] = ShoppingLogic.get_cart_items(username)
             return HttpResponse(access_token)
         else:
-            return HttpResponse('fail')
+            return HttpResponse(result)
 
 
 @csrf_exempt
@@ -110,10 +109,8 @@ def add_owner(request):
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
-
-            if UsersLogic.add_owner(username, owner):
-                return HttpResponse('success')
-        return HttpResponse('fail')
+            return HttpResponse(UsersLogic.add_owner(username, owner))
+        return HttpResponse('FAILED: You are not logged in')
 
 
 @csrf_exempt
@@ -135,9 +132,9 @@ def add_manager(request):
                                          request.POST.get('get_purchase_history_permission'),
                                          request.POST.get('get_discount_permission'))
 
-            if UsersLogic.add_manager(username, store_manager):
-                return HttpResponse('success')
-        return HttpResponse('fail')
+            if username is not None:
+                return HttpResponse(UsersLogic.add_manager(username, store_manager))
+        return HttpResponse('FAILED: You are not logged in')
 
 
 @csrf_exempt

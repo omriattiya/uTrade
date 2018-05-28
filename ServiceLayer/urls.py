@@ -1,4 +1,5 @@
 from django.urls import path
+
 from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
     ShoppingService, AuctionService, LotteryService, UsersService
 from ServiceLayer.services.PresentationServices import Home, Profile, Shop, Messages, Item, ShoppingCart
@@ -97,8 +98,6 @@ private_area_urlpatterns = [
 shop_page_urlpatterns = [
     path('shop/', Shop.get_shop),
     path('shop/reviews/', Shop.get_reviews),
-    path('shop/reviews/add_review/', Shop.add_review),
-    path('shop/reviews/add_review/post', ShopsService.add_review_on_shop),
     path('shop/messages/', Messages.get_shop_messages),
     path('shop/get_managers/', Shop.get_shop_managers),
     path('shop/get_owners/', Shop.get_shop_owner),
