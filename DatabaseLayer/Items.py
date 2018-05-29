@@ -51,9 +51,9 @@ def add_item_to_shop(item):
 def update_ranks(item):
     sql_query = """
             UPDATE Items 
-            SET item_rating = {} AND shop_rating = {}
+            SET shop_rating = {}
             WHERE item_id = {}
-            """.format(get_item_rank(item.id), get_shop_rank(item.id), item.id)
+            """.format(get_shop_rank(item.shop_name), item.id)
     result = commit_command(sql_query)
     return result
 
