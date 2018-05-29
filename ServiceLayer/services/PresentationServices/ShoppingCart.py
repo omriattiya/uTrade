@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from DomainLayer import ShoppingLogic, UserShoppingCartLogic, GuestShoppingCartLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from django.template import loader
 
 from DomainLayer import ShoppingLogic

@@ -8,6 +8,7 @@ users_urlpatterns = [
     path('users/register/', UsersService.register),
     path('users/remove_user/', UsersService.remove_user),
     path('users/edit_password/', UsersService.edit_password),
+    path('users/update_details/', UsersService.update_details),
     path('users/login/', UsersService.login),
     path('users/logout/', UsersService.logout),
     path('users/clear_alerts/',UsersService.clear_alerts),

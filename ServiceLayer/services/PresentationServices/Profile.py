@@ -19,11 +19,16 @@ def get_account(request):
                 if UsersLogic.is_system_manager(username):
                     system_hidden = ""
 
+                details = UsersLogic.get_user_details(username)
+
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))
                 navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
                 return render(request, 'customer-account.html',
-                              context={'topbar': topbar, 'navbar': navbar, 'system_hidden': system_hidden})
+                              context={'topbar': topbar, 'navbar': navbar, 'system_hidden': system_hidden,
+                                       'state': details.get('state'),
+                                       'age': details.get('age'),
+                                       'sex': details.get('sex')})
 
         return HttpResponse('You are not logged in!')
 

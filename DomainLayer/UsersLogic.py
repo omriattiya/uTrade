@@ -1,7 +1,7 @@
 import hashlib
 import re
 
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails
 
 min_password_len = 6
 
@@ -16,6 +16,7 @@ def register(user):
                 if RegisteredUsers.get_user(user.username) is not False:
                     return 'FAILED: Username is already taken'
                 if RegisteredUsers.add_user(user):
+                    UserDetails.insert(user.username)
                     return 'SUCCESS'
                 return 'FAILED'
             else:
@@ -83,6 +84,19 @@ def get_purchase_history(username):
         return RegisteredUsers.get_purchase_history(username)
 
 
+def update_details(username, state, age, sex):
+    if 0 < int(age) < 120:
+        if sex is not 'Male' and sex is not 'Female':
+            if UserDetails.update(username, state, age, sex):
+                return "SUCCESS"
+            else:
+                return "FAILED"
+        else:
+            return "FAILED: sex must be Male or Female"
+    else:
+        return "FAILED: age is invalid"
+
+
 # _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___
@@ -115,7 +129,7 @@ def add_manager(username, store_manager):
     if username is not None:
         if Owners.get_owner(username, store_manager.store_name) is not False:
             if RegisteredUsers.get_user(
-                                store_manager.username) is not False:
+                    store_manager.username) is not False:
                 if store_manager.store_name is not None:
                     if StoreManagers.add_manager(store_manager):
                         return 'SUCCESS'
@@ -234,3 +248,7 @@ def is_manager_of_shop(username, shop_name):
 
 def get_manager(username, shop_name):
     return StoreManagers.get_store_manager(username, shop_name)
+
+
+def get_user_details(username):
+    return UserDetails.get(username)

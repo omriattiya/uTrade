@@ -11,7 +11,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic, ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.VisibleDiscount import VisibleDiscount
 
 
@@ -89,6 +89,21 @@ def logout(request):
                 return HttpResponse('success')
 
         return HttpResponse('fail')
+
+
+@csrf_exempt
+def update_details(request):
+    if request.method == 'POST':
+        state = request.POST.get('state')
+        age = request.POST.get('age')
+        sex = request.POST.get('sex')
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            return HttpResponse(UsersLogic.update_details(username, state, age, sex))
+
+        return HttpResponse('FAILED: You are not logged in.')
 
 
 # _____
