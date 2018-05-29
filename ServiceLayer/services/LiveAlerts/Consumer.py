@@ -5,6 +5,10 @@ loggedInUsers = {}
 
 connectedUsers = {}
 connectedConsumers = {}
+
+loggedInUsersShoppingCart = {}
+
+guestShoppingCart = {}
 user_alerts_box = {}
 
 MessagingAlerts.init_thread()

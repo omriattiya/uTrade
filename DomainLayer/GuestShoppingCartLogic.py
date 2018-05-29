@@ -7,7 +7,7 @@ from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
 from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
 

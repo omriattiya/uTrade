@@ -11,7 +11,7 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
 from DomainLayer import UsersLogic, ShoppingLogic
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.VisibleDiscount import VisibleDiscount
 
 

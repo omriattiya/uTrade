@@ -5,7 +5,7 @@ from DomainLayer import ItemsLogic, UserShoppingCartLogic, GuestShoppingCartLogi
 from DomainLayer import ShoppingLogic, ItemsLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 @csrf_exempt

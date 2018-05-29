@@ -7,7 +7,7 @@ from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer
 
 
 def remove_item_shopping_cart(login_token, item_id):

@@ -1,5 +1,7 @@
 from sqlite3 import Error
 
+from DatabaseLayer.ReviewsOnItems import get_item_rank
+from DatabaseLayer.ReviewsOnShops import get_shop_rank
 from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
 
@@ -40,25 +42,30 @@ def search_items_by_name(item_name):
 
 
 def add_item_to_shop(item):
+    id = add_item_to_shop_and_return_id(item)
+    item.id = id
+    return update_ranks(item)
+
+
+def update_ranks(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}');
-              """.format(item.shop_name,
-                         item.name, item.category,
-                         item.keyWords,
-                         item.price, item.quantity, item.kind, item.url)
+            UPDATE Items(item_rating,shop_rating) 
+            SET item_rating = {} AND shop_rating = {}
+            WHERE item_id = {}
+            """.format(get_item_rank(item.id), get_shop_rank(item.id), item.id)
     result = commit_command(sql_query)
     return result
 
 
 def add_item_to_shop_and_return_id(item):
     sql_query = """
-                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}');
+                INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url , item_rating,
+                 shop_rating)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind, item.url)
+                         item.price, item.quantity, item.kind, item.url, 0, 0)
     try:
         conn = get_conn()
         c = conn.cursor()

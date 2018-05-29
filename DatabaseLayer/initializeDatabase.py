@@ -53,7 +53,9 @@ tables_sql = [
         price REAL NOT NULL,
         quantity INTEGER,
         kind TEXT,
-        url TEXT
+        url TEXT,
+        item_rating REAL,
+        shop_rating REAL
     )""",
     """
         CREATE TABLE IF NOT EXISTS Shops(
@@ -178,7 +180,6 @@ tables_sql = [
           percentage REAL,
           from_date DATE,
           end_date DATE,
-          code CHAR(15),
           PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
