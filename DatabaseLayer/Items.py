@@ -9,7 +9,8 @@ from SharedClasses.Item import Item
 def fetch_items(items):
     items_arr = []
     for item in items:
-        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8]))
+        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
+                              item[10]))
     return items_arr
 
 
@@ -17,7 +18,7 @@ def fetch_item(item):
     if len(item) == 0:
         return False
     item = item[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8])
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9], item[10])
     return item
 
 
@@ -49,7 +50,7 @@ def add_item_to_shop(item):
 
 def update_ranks(item):
     sql_query = """
-            UPDATE Items(item_rating,shop_rating) 
+            UPDATE Items 
             SET item_rating = {} AND shop_rating = {}
             WHERE item_id = {}
             """.format(get_item_rank(item.id), get_shop_rank(item.id), item.id)
@@ -65,7 +66,7 @@ def add_item_to_shop_and_return_id(item):
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind, item.url, 0, 0)
+                         item.price, item.quantity, item.kind, item.url, 5, 5)
     try:
         conn = get_conn()
         c = conn.cursor()
