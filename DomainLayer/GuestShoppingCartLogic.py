@@ -5,9 +5,7 @@ from DatabaseLayer import RegisteredUsers, PurchasedItems, Purchases, Owners, Sh
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic
-from DomainLayer.ShoppingLogic import actual_pay
-from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart, \
-    supply_items
+from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
 from ExternalSystems import PaymentSystem, SupplySystem
 from ServiceLayer import Consumer
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
@@ -29,7 +27,7 @@ def remove_shopping_cart_guest(guest):
 def pay_all_guest(guest):
     if guest is not None:
         #  check if cart has items
-        empty = ShoppingCartDB.check_empty_guest(guest)
+        empty = check_empty_cart_guest(guest)
         if empty is not True:
             toCreatePurchase = True
             purchase_id = 0
@@ -58,14 +56,10 @@ def pay_all_guest(guest):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                if actual_pay(total_cost) is False:
-                    return 'Something went wrong with the payment service'
                 new_quantity = item.quantity - shopping_cart_item.item_quantity
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
                     return 'Something went wrong with the purchase'
-                if supply_items(cart_items) is False:
-                    return 'Something went wrong with the supply service'
                 # live alerts
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
@@ -115,7 +109,10 @@ def add_guest_item_shopping_cart(guest, item_id, quantity):
 
 def get_guest_shopping_cart_item(guest):
     if guest is not None:
-        return Consumer.guestShoppingCart[guest]
+        if guest in Consumer.guestShoppingCart:
+            return Consumer.guestShoppingCart[guest]
+        else:
+            return {}
     return False
 
 

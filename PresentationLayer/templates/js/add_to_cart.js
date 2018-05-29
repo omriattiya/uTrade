@@ -1,5 +1,4 @@
 function addToCart(item_id) {
-    alert("5");
     let data = new FormData();
     data.append('item_id', item_id);
     data.append('quantity', document.getElementById("quantity_input").value);
@@ -13,17 +12,15 @@ function addToCart(item_id) {
             }
             else
             {
-                if (getCookie('login_hash') === '')
+                if (loadHTML.responseText !== 'OK')
                 {
                     if (getCookie('guest_hash') === '')
                     {
-                        alert("add to cart fail1");
                         setCookie('guest_hash', loadHTML.responseText, 7);
                         location.reload();
                     }
                     else
                     {
-                        alert("add to cart fail2");
                         location.reload();
                     }
                 }
