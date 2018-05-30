@@ -4,11 +4,11 @@ from django.db import connection
 
 
 def get_conn():
-    '''conn = sqlite3.connect('db.sqlite3')
+    conn = sqlite3.connect('db.sqlite3')
     conn.execute("""
                       PRAGMA foreign_keys = ON
-              """)'''
-    return connection
+              """)
+    return conn
 
 
 def commit_command(sql_query):

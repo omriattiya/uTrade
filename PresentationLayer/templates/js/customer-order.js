@@ -68,8 +68,8 @@ function reviewItem() {
 }
 
 function checkRank() {
-    var rank = document.getElementById('shop-rank-modal');
-    if (!(rank < 0 || rank > 5)) {
+    var rank = document.getElementById('shop-rank-modal').value;
+    if (!(rank < 0 || rank > 10)) {
         alert('Rank is invalid');
         return false;
     }

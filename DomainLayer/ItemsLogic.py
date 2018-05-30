@@ -48,7 +48,7 @@ def add_review_on_item(review):
     if review.writerId is not None and review.itemId is not None and review.description is not None and review.rank is not None:
         purchased_item = PurchasedItems.get_purchased_item_by_user(review.itemId, review.writerId)
         if purchased_item is not False:
-            return ReviewsOnItems.add_review_on_item(review)
+            return ReviewsOnItems.add_review_on_item(review) and update_rating(review.itemId, review.rank)
     return False
 
 
@@ -99,3 +99,12 @@ def get_all_reviews_on_item(item_id):
         item = Items.get_item(item_id)
         if item is not False:
             return ReviewsOnItems.get_all_reviews_on_item(item_id)
+
+
+def update_rating(item_id, rank):
+    if item_id is not None and 0 <= rank <= 10:
+        sum = Items.get_item(item_id).sum_of_rankings + rank
+        num = Items.get_item(item_id).num_of_reviews + 1
+        return Items.update_item(item_id, 'sum_of_rankings', sum) and \
+               Items.update_item(item_id, 'num_of_reviews', num) and \
+               Items.update_item(item_id, 'item_rating', sum / num)
