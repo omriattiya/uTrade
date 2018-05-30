@@ -37,8 +37,7 @@ def search_by_category(item_category):
 
 def search_by_keywords(item_keywords):
     if item_keywords is not None:
-        keywords_array = item_keywords.replace(';', ' ')
-        return Items.search_items_by_keywords(keywords_array)
+        return Items.search_items_by_keywords(item_keywords)
 
 
 def get_similar_words(word):

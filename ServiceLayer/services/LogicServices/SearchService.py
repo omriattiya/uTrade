@@ -27,7 +27,7 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('name'))
-                words = words[10:]
+                words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
                 return render(request, 'ItemsNotFound.html', context)
         if search_by == 'category':
@@ -37,7 +37,7 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('category'))
-                words = words[10:]
+                words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
                 return render(request, 'ItemsNotFound.html', context)
         if search_by == 'keywords':
@@ -47,7 +47,7 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('keywords'))
-                words = words[10:]
+                words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
                 return render(request, 'ItemsNotFound.html', context)
 
@@ -56,6 +56,7 @@ def search_shop(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
         topbar = loader.render_to_string('components/Topbar.html', context=None)
+        words = []
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
@@ -66,7 +67,10 @@ def search_shop(request):
             context = {'topbar': topbar}
             return render(request, 'shop.html', context)
         else:
-            return HttpResponse('There Is Not Shop With This Name.')
+            words = SearchLogic.get_similar_words(request.GET.get('name'))
+            words = words[:5]
+            context = {'topbar': topbar,'words': words}
+            return render(request, 'ItemsNotFound.html', context)
 
 
 def search_item_in_shop(request):
