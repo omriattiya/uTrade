@@ -2,25 +2,6 @@
 <html lang="en">
 
 <head>
-    <script>
-
-    function getHistory(shop_name)
-    {
-        let loadHTML = new XMLHttpRequest();
-        loadHTML.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                if (loadHTML.responseText === 'fail') {
-                    alert("Failed");
-                }
-                else {
-                    document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
-                }
-            }
-        };
-        loadHTML.open("GET", "http://localhost:8000/app/my/historyappointings/?shop_name=" + shop_name, true);
-        loadHTML.send();
-    }
-    </script>
     <BASE href="http://localhost:8000/static/">
 
     <meta charset="utf-8">

@@ -228,21 +228,17 @@ function gotoMessages(shop_name) {
 
 function getHistory(shop_name)
 {
-    document.write(5);
-    var data = new FormData();
-    data.append('shop_name', shop_name);
-    let loadHTML = new XMLHttpRequest();
-    loadHTML.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
+        let loadHTML = new XMLHttpRequest();
+        loadHTML.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (loadHTML.responseText === 'fail') {
+                    alert("Failed");
+                }
+                else {
+                    document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
+                }
             }
-            else {
-                document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
-            }
-        }
-    };
-
-    loadHTML.open("GET", "http://localhost:8000/app/my/historyappointings", true);
-    loadHTML.send(data);
+        };
+        loadHTML.open("GET", "http://localhost:8000/app/my/historyappointings/?shop_name=" + shop_name, true);
+        loadHTML.send();
 }

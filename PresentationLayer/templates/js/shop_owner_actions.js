@@ -1,13 +1,5 @@
-$(document).ready(function () {
-    $('#update-item-form').submit(function () {
-        return false;
-    });
-    $('#form-add-item').submit(function () {
-        return false;
-    });
-});
-
-function updateItem(item_id, shop_name) {
+function updateItem(item_id, shop_name)
+{
     let data = new FormData();
     data.append('item_id', item_id);
     data.append('item_quantity', document.getElementById("quantity").value);
@@ -62,8 +54,58 @@ function removeItem(item_id, shop_name) {
 }
 
 function addItem(shop_name) {
+    if(document.getElementById("name").value == '')
+    {
+        alert("Field Name Must Not Be Empty");
+        return;
+    }
+    if(document.getElementById("quantity").value  == '')
+    {
+        alert("Field Quantity Must Not Be Empty");
+        return;
+    }
+    if(document.getElementById("category").value  == '')
+    {
+        alert("Field Quantity Must Not Be Empty");
+        return;
+    }
+    else
+    {
+        var re = new RegExp("^([a-zA-Z]{1,20})$");
+        if(!re.test(document.getElementById("category").value ))
+        {
+            alert("Field Category Must Contain Only Letters");
+            return;
+        }
+    }
+    if(document.getElementById("keywords").value  == '')
+    {
+        alert("Field Keywords Must Not Be Empty");
+        return;
+    }
+    if(document.getElementById("price").value  == '')
+    {
+        alert("Field Price Must Not Be Empty");
+        return;
+    }
+    let item_kind = document.getElementById("kind").value;
+    if (item_kind === 'auction')
+    {
+        if(document.getElementById("auction_sale_duration").value  == '')
+        {
+            alert("Field Sale Duration Must Not Be Empty");
+            return;
+        }
+    }
+    else if (item_kind === 'prize')
+    {
+        if(document.getElementById("sale_duration").value  == '')
+        {
+            alert("Field Sale Duration Must Not Be Empty");
+            return;
+        }
+    }
     let data = new FormData();
-
     data.append('shop_name', shop_name);
     data.append('item_name', document.getElementById("name").value);
     data.append('item_quantity', document.getElementById("quantity").value);
@@ -71,14 +113,15 @@ function addItem(shop_name) {
     data.append('item_keywords', document.getElementById("keywords").value);
     data.append('item_price', document.getElementById("price").value);
     data.append('item_url', document.getElementById("url").value);
-    let item_kind = document.getElementById("kind").value;
     data.append('item_kind', item_kind);
 
-    if (item_kind === 'auction') {
+    if (item_kind === 'auction')
+    {
         data.append('item_auction_initial_price', document.getElementById("auction_initial_price").value);
         data.append('item_auction_sale_duration', document.getElementById("auction_sale_duration").value);
     }
-    else if (item_kind === 'prize') {
+    else if (item_kind === 'prize')
+    {
         data.append('item_prize_sale_duration', document.getElementById("sale_duration").value);
     }
     let loadHTML = new XMLHttpRequest();
@@ -98,7 +141,6 @@ function addItem(shop_name) {
 
         }
     };
-
     loadHTML.open("POST", "../app/shop/owner/items/add_item/post", true);
     loadHTML.send(data);
 }
