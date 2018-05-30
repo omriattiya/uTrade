@@ -18,8 +18,11 @@ def get_account(request):
                 system_hidden = "hidden"
                 if UsersLogic.is_system_manager(username):
                     system_hidden = ""
-
-                details = UsersLogic.get_user_details(username)
+                    details = {'state': "AFG",
+                               'age': "AFG",
+                               'sex': "AFG"}
+                else:
+                    details = UsersLogic.get_user_details(username)
 
                 topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 cart_count = len(ShoppingLogic.get_cart_items(username))

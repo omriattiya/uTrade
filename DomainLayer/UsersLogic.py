@@ -47,7 +47,7 @@ def edit_password(user):
 
 def login(user):
     if SystemManagers.login(user.username, user.password):
-        return True
+        return "SUCCESS"
     if user.username is not None and user.password is not None:
         if RegisteredUsers.is_user_exists(user.username):
             user.password = hashlib.sha256(user.password.encode()).hexdigest()

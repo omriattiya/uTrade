@@ -6,6 +6,7 @@ $(document).ready(function () {
     $('#update-details-form').submit(function () {
         return false;
     });
+
 });
 
 
