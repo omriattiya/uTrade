@@ -7,7 +7,7 @@ from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
 from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
 
@@ -56,6 +56,16 @@ def pay_all_guest(guest):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
+                pay_confirmation = PaymentSystem.pay(total_cost, guest)
+                if pay_confirmation is False:
+                    return 'Payment System Denied.'
+                # TODO print to GUI payment confirmation or something
+                print(pay_confirmation)
+                sup_confirmation = SupplySystem.supply_a_purchase(guest, 0)
+                if sup_confirmation is False:
+                    return 'Supply System Denied.'
+                # TODO print to GUI supply confirmation or something
+                print(sup_confirmation)
                 new_quantity = item.quantity - shopping_cart_item.item_quantity
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
@@ -65,8 +75,10 @@ def pay_all_guest(guest):
                 owners_name = []
                 for owner in owners:
                     owners_name.append(owner.username)
-                Consumer.notify_live_alerts(owners_name,
-                                            '<strong>guest' + guest + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
+                PurchasesAlerts.notify_purchasing_alerts(owners_name,
+                                                         '<strong>' + guest + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
+                                                             item.id) + '"># <strong>' + str(
+                                                             item.id) + '</strong></a> from your shop')
             status = remove_shopping_cart_guest(guest)
             if status is False:
                 return 'Something went wrong with the purchase'

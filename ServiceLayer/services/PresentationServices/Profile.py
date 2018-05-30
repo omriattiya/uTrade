@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 
@@ -270,3 +270,26 @@ def get_system_history(request):
                                   context={'topbar': topbar, 'navbar': navbar, 'history': history_html})
 
         return HttpResponse("You don't have the privilege to be here")
+
+
+def get_history_appoitings(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                shop_name = request.GET.get('shop_name')
+                history = HistoryAppointingLogic.get_history_apppoitings(shop_name)
+                history_html = ''
+                for hist in history:
+                    history_html += loader.render_to_string('components/historyappointings.html', context={
+                        'appointing_user': hist.appointing_user,
+                        'appointed_user': hist.appointed_user,
+                        'position': hist.position,
+                        'date': hist.date,
+                        'permissions': hist.permissions,
+                    })
+                return HttpResponse(history_html)
+    return HttpResponse('fail')
+

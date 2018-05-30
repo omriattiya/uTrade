@@ -7,7 +7,7 @@ from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 
 
 def remove_item_shopping_cart(login_token, item_id):
@@ -90,7 +90,7 @@ def pay_all(login_token):
         empty = check_empty_cart_user(login_token)
         if empty is not True:
             username = Consumer.loggedInUsers[login_token]
-            toCreatePurchase = True
+            to_create_purchase = True
             purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(login_token)
@@ -117,12 +117,14 @@ def pay_all(login_token):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                if actual_pay(total_cost) is False:
-                    return 'Something went wrong with the payment service'
-                # TODO make sure to reduce the amount of purchased items in shops & active shopping carts...
+                pay_confirmation = PaymentSystem.pay(total_cost, username)
+                if pay_confirmation is False:
+                    return 'Payment System Denied.'
+                # TODO print to GUI payment confirmation or something
+                print(pay_confirmation)
 
-                if toCreatePurchase is True:
-                    toCreatePurchase = False
+                if to_create_purchase is True:
+                    to_create_purchase = False
                     purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
                     if purchase_id is False:
                         return 'Something went wrong with the purchase'
@@ -131,6 +133,11 @@ def pay_all(login_token):
                                                            shopping_cart_item.item_quantity * new_price)
                 if status is False:
                     return 'Something went wrong with the purchase'
+                sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
+                if sup_confirmation is False:
+                    return 'Supply System Denied.'
+                # TODO print to GUI supply confirmation or something
+                print(sup_confirmation)
                 status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
                     return 'Something went wrong with the purchase'
@@ -138,16 +145,17 @@ def pay_all(login_token):
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
                     return 'Something went wrong with the purchase'
-                if supply_items(cart_items) is False:
-                    return 'Something went wrong with the supply service'
                 # live alerts
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
                 for owner in owners:
                     owners_name.append(owner.username)
-                Consumer.notify_live_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
+                PurchasesAlerts.notify_purchasing_alerts(owners_name,
+                                                         '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
+                                                             item.id) + '"># <strong>' + str(
+                                                             item.id) + '</strong></a> from your shop')
             remove_shopping_cart(login_token)
+            return True
     return 'Shopping cart is empty'
 
 
@@ -178,8 +186,8 @@ def check_lottery_ticket(item, cart_item, username):
     return True
 
 
-def actual_pay(total_cost):
-    return PaymentSystem.pay(total_cost)
+def actual_pay(total_cost, username):
+    return PaymentSystem.pay(total_cost, username)
 
 
 def supply_items(items):
