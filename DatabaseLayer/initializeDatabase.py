@@ -246,6 +246,41 @@ tables_sql = [
           permissions CHAR(30)
         )
     """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingPolicyOnShop(
+          policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          shop_name CHAR(30) REFERENCES Shops(name),
+          conditions TEXT,
+          restrict TEXT,
+          quantity INTEGER
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingPolicyOnItems(
+          policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          item_name TEXT,
+          conditions TEXT,
+          restrict TEXT,
+          quantity INTEGER
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingPolicyOnCategory(
+          policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          category TEXT,
+          conditions TEXT,
+          restrict TEXT,
+          quantity INTEGER
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS ShoppingPolicyOnIdentity(
+          policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          conditions TEXT,
+          restrict TEXT,
+          quantity INTEGER
+        )
+    """,
 ]
 values_sql = [
 
