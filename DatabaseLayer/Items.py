@@ -10,7 +10,7 @@ def fetch_items(items):
     items_arr = []
     for item in items:
         items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
-                              item[10]))
+                              item[10], item[11], item[12]))
     return items_arr
 
 
@@ -18,7 +18,8 @@ def fetch_item(item):
     if len(item) == 0:
         return False
     item = item[0]
-    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9], item[10])
+    item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
+                item[10], item[11], item[12])
     return item
 
 
@@ -61,12 +62,12 @@ def update_ranks(item):
 def add_item_to_shop_and_return_id(item):
     sql_query = """
                 INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url , item_rating,
-                 shop_rating)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}');
+                 shop_rating, sum_of_rankings, num_of_reviews)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind, item.url, 5, 5)
+                         item.price, item.quantity, item.kind, item.url, 5, 5, 0, 0)
     try:
         conn = get_conn()
         c = conn.cursor()

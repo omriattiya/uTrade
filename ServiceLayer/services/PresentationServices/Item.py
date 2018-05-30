@@ -49,7 +49,7 @@ def get_item(request):
                     cart_count = len(ShoppingLogic.get_cart_items(username))
 
             navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-            item_rank = ReviewsOnItems.get_item_rank(item.id)
+            item_rank = item.item_rating
             if item_rank is False:
                 item_rank = "-----"
             else:
