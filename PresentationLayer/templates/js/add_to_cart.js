@@ -17,13 +17,9 @@ function addToCart(item_id) {
                     if (getCookie('guest_hash') === '')
                     {
                         setCookie('guest_hash', loadHTML.responseText, 7);
-                        location.reload();
-                    }
-                    else
-                    {
-                        location.reload();
                     }
                 }
+                location.reload();
             }
         }
     };

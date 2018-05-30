@@ -2,6 +2,81 @@
 <html lang="en">
 
 <head>
+    <script>
+        function checkEmptyText() {
+        if(document.getElementById("firstname").value == '')
+        {
+            alert("Field First Name Must Not Be Empty");
+            return;
+        }
+        else
+        {
+            var re = new RegExp("^([A-Z][a-z]{1,19})$");
+            if(!re.test(document.getElementById("firstname").value))
+            {
+                alert("Field First Name Must Contain A Capital Letter Followed By Lower Case Letters");
+                return;
+            }
+        }
+        if(document.getElementById("lastname").value == '')
+        {
+            alert("Field Last Name Must Not Be Empty");
+            return;
+        }
+        else
+        {
+            var re = new RegExp("^([A-Z][a-z]{1,19})$");
+            if(!re.test(document.getElementById("lastname").value))
+            {
+                alert("Field Last Name Must Contain A Capital Letter Followed By Lower Case Letters");
+                return;
+            }
+        }
+        if(document.getElementById("company").value == '')
+        {
+            alert("Field Company Must Not Be Empty");
+            return;
+        }
+        if(document.getElementById("street").value == '')
+        {
+            alert("Field Street Must Not Be Empty");
+            return;
+        }
+        if(document.getElementById("phone").value == '')
+        {
+            alert("Field Phone Must Not Be Empty");
+            return;
+        }
+        else
+        {
+            var re = new RegExp("^([0-9]{10})$");
+            if(!re.test(document.getElementById("phone").value))
+            {
+                alert("Field Phone Must Contain 10 Digits");
+                return;
+            }
+        }
+        if(document.getElementById("email").value == '')
+        {
+            alert("Field Email Must Not Be Empty");
+            return;
+        }
+        else
+        {
+            if(!validateEmail(document.getElementById("email").value))
+            {
+                alert("Field Email Must Be Valid");
+                return;
+            }
+        }
+        window.location.href = "../app/shopping_cart/review_order/";
+    }
+    function validateEmail(email)
+    {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    </script>
     <BASE href="http://localhost:8000/static/">
     <meta charset="utf-8">
     <meta name="robots" content="all,follow">
@@ -167,7 +242,7 @@ _________________________________________________________ -->
                 <div class="col-md-12" id="checkout">
 
                     <div class="box">
-                        <form method="get" action="../app/shopping_cart/review_order/">
+                        <form action="javascript:checkEmptyText()">
                             <h1>Checkout</h1>
                             <ul class="nav nav-pills nav-justified">
                                 <li class="active"><a href="#"><i class="fa fa-map-marker"></i><br>Address</a>

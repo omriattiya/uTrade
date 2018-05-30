@@ -1,3 +1,5 @@
+import datetime
+
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -12,19 +14,12 @@ def add_item_to_shop(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         item_name = request.POST.get('item_name')
-        try:
-            item_quantity = int(request.POST.get('item_quantity'))
-        except:
-            return HttpResponse('invalid quantity')
+        item_quantity = int(request.POST.get('item_quantity'))
         item_category = request.POST.get('item_category')
         item_keywords = request.POST.get('item_keywords')
-        try:
-            item_price = int(request.POST.get('item_price'))
-        except:
-            return HttpResponse('invalid price')
+        item_price = int(request.POST.get('item_price'))
         item_url = request.POST.get('item_url')
         item_kind = request.POST.get('item_kind')
-
         if shop_name is None or ShopLogic.search_shop(shop_name) is False:
             return HttpResponse('invalid shop')
 
@@ -49,29 +44,10 @@ def add_item_to_shop(request):
         item_ticket_item_id_attached = None
         item_auction_sale_duration = None
         item_prize_sale_duration = None
-
-        if item_kind == 'ticket':
-            try:
-                item_ticket_item_id_attached = int(request.POST.get('item_ticket_item_id_attached'))
-            except:
-                return HttpResponse('invalid ticket item id')
-            if ItemsLogic.get_item(item_ticket_item_id_attached) is False:
-                return HttpResponse('ticket item id does not exist')
-            if ItemsLogic.get_item(item_ticket_item_id_attached).kind != 'prize':
-                return HttpResponse('ticket item id is of kind prize')
-
         if item_kind == 'auction':
-            try:
-                item_auction_sale_duration = int(request.POST.get('item_auction_sale_duration'))
-            except:
-                return HttpResponse('invalid sale duration')
+            item_auction_sale_duration = int(request.POST.get('item_auction_sale_duration'))
         if item_kind == 'prize':
-            try:
-                item_prize_sale_duration = int(request.POST.get('item_prize_sale_duration'))
-            except:
-                return HttpResponse('invalid sale duration')
-        else:
-            return HttpResponse('invalid kind')
+            item_prize_sale_duration = int(request.POST.get('item_prize_sale_duration'))
 
         login = request.COOKIES.get('login_hash')
         username = None
@@ -90,19 +66,19 @@ def add_item_to_shop(request):
         status = False
         if item_kind == 'regular':
             regular_item = Item(None, shop_name, item_name, item_category, item_keywords,
-                                item_price, item_quantity, item_kind, item_url)
+                                item_price, item_quantity, item_kind, item_url, 0, 0)
             status = ItemsLogic.add_item_to_shop(regular_item, username)
         elif item_kind == 'prize':
             prize = Item(None, shop_name, item_name, item_category, item_keywords,
-                         item_price, 1, item_kind, item_url)
+                         item_price, 1, item_kind, item_url, 0, 0)
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
-                          item_price, item_quantity, 'ticket', item_url)
+                          item_price, item_quantity, 'ticket', item_url, 0, 0)
             status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
                                                         datetime.datetime.now() + datetime.timedelta(
                                                             days=item_prize_sale_duration), username)
         elif item_kind == 'auction':
             auction_item = Item(None, shop_name, item_name, item_category, item_keywords,
-                                item_price, item_quantity, item_kind, item_url)
+                                item_price, item_quantity, item_kind, item_url, 0, 0)
             status = AuctionLogic.add_auction(auction_item, username,
                                               datetime.datetime.now() + datetime.timedelta(
                                                   days=item_prize_sale_duration))

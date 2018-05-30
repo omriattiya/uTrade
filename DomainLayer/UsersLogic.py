@@ -1,7 +1,7 @@
 import hashlib
 import re
-
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount
+from time import gmtime, strftime
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, HistoryAppointings
 
 min_password_len = 6
 
@@ -96,6 +96,8 @@ def add_owner(username, owner):
         if Owners.get_owner(username, owner.shop_name) is not False:
             if RegisteredUsers.get_user(owner.username) is not False:
                 result = Owners.add_owner(owner)
+                if result:
+                    result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner', owner.shop_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
                 if result and is_manager_of_shop(username, owner.shop_name):
                     remove_store_manager(username, owner.shop_name, owner.username)
                     return "SUCCESS"
@@ -111,6 +113,11 @@ def add_owner(username, owner):
         return "FAILED: Missing Parameters"
 
 
+'''def get_permissions(store_manager):
+        permission_string = ''
+        if store_manager.permission_add_item == 1:'''
+
+
 def add_manager(username, store_manager):
     if username is not None:
         if Owners.get_owner(username, store_manager.store_name) is not False:
@@ -118,7 +125,10 @@ def add_manager(username, store_manager):
                                 store_manager.username) is not False:
                 if store_manager.store_name is not None:
                     if StoreManagers.add_manager(store_manager):
-                        return 'SUCCESS'
+                        if HistoryAppointings.add_history_appointing(username, store_manager.username, 'Store Manager',
+                                                                     store_manager.store_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):
+                            return 'SUCCESS'
+                        return "FAILED"
                     return "FAILED"
                 else:
                     return "FAILED: Shop does not exists"
@@ -216,8 +226,57 @@ def remove_store_manager(username, shop_name, target_id):
 
 def update_permissions(username, store_manager):
     if Owners.is_owner_on_shop(username, store_manager.store_name) is not False:
-        return StoreManagers.update_permissions(store_manager)
+        previous_store_manager = StoreManagers.get_store_manager(store_manager.username, store_manager.store_name)
+        status = StoreManagers.update_permissions(store_manager)
+        if status:
+            if isEmptyPermissions(previous_store_manager):
+                status = HistoryAppointings.update_history_appointing(username, store_manager.username, store_manager.store_name, getPermissionsString(store_manager))
+        return status
     return False
+
+
+def isEmptyPermissions(previous_store_manager):
+    cond = previous_store_manager.permission_add_item == 0
+    cond = cond and previous_store_manager.permission_edit_item == 0
+    cond = cond and previous_store_manager.permission_get_all_messages == 0
+    cond = cond and previous_store_manager.permission_get_purchased_history == 0
+    cond = cond and previous_store_manager.permission_reply_messages == 0
+    cond = cond and previous_store_manager.permission_remove_item == 0
+    cond = cond and previous_store_manager.discount_permission == 0
+    return cond
+
+
+def getPermissionsString(store_manager):
+    perm_str = ''
+    if store_manager.permission_add_item == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'adding item'
+    if store_manager.permission_edit_item == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'editing item'
+    if store_manager.permission_get_all_messages == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'getting all messages'
+    if store_manager.permission_get_purchased_history == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'getting purchase history'
+    if store_manager.permission_reply_messages == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'replying messages'
+    if store_manager.permission_remove_item == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'removing item'
+    if store_manager.discount_permission == '1':
+        if perm_str != '':
+            perm_str += ','
+        perm_str += 'discounting item'
+    return perm_str
 
 
 def is_system_manager(username):

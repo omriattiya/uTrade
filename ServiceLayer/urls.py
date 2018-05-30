@@ -92,7 +92,8 @@ private_area_urlpatterns = [
     path('my/shops/', Profile.get_shops),
     path('my/shops/manager/', Profile.get_managers),
     path('my/orders/', Profile.get_orders),
-    path('my/orders/order/', Profile.get_order)
+    path('my/orders/order/', Profile.get_order),
+    path('my/historyappointings/', Profile.get_history_appoitings)
 ]
 
 shop_page_urlpatterns = [

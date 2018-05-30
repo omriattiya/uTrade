@@ -9,6 +9,7 @@ connectedConsumers = {}
 loggedInUsersShoppingCart = {}
 
 guestShoppingCart = {}
+guestIndex = 0
 user_alerts_box = {}
 
 MessagingAlerts.init_thread()
