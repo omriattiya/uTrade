@@ -44,19 +44,15 @@ def search_items_by_name(item_name):
 
 
 def add_item_to_shop(item):
-    id = add_item_to_shop_and_return_id(item)
-    item.id = id
-    return update_ranks(item)
-
-
-def update_ranks(item):
     sql_query = """
-            UPDATE Items 
-            SET shop_rating = {}
-            WHERE item_id = {}
-            """.format(get_shop_rank(item.shop_name), item.id)
-    result = commit_command(sql_query)
-    return result
+                    INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url , item_rating,
+                     shop_rating)  
+                    VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}');
+                  """.format(item.shop_name,
+                             item.name, item.category,
+                             item.keyWords,
+                             item.price, item.quantity, item.kind, item.url, 5, 5)
+    return commit_command(sql_query)
 
 
 def add_item_to_shop_and_return_id(item):

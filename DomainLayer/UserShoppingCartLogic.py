@@ -85,6 +85,8 @@ def check_empty_cart_user(login_token):
 
 
 def pay_all(login_token):
+    pay_confirmation = ''
+    sup_confirmation = ''
     if login_token is not None:
         #  check if cart has items
         empty = check_empty_cart_user(login_token)
@@ -117,12 +119,6 @@ def pay_all(login_token):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                pay_confirmation = PaymentSystem.pay(total_cost, username)
-                if pay_confirmation is False:
-                    return 'Payment System Denied.'
-                # TODO print to GUI payment confirmation or something
-                print(pay_confirmation)
-
                 if to_create_purchase is True:
                     to_create_purchase = False
                     purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
@@ -133,11 +129,6 @@ def pay_all(login_token):
                                                            shopping_cart_item.item_quantity * new_price)
                 if status is False:
                     return 'Something went wrong with the purchase'
-                sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
-                if sup_confirmation is False:
-                    return 'Supply System Denied.'
-                # TODO print to GUI supply confirmation or something
-                print(sup_confirmation)
                 status = update_purchase_total_price(purchase_id, total_cost)
                 if status is False:
                     return 'Something went wrong with the purchase'
@@ -154,8 +145,16 @@ def pay_all(login_token):
                                                          '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
                                                              item.id) + '"># <strong>' + str(
                                                              item.id) + '</strong></a> from your shop')
+            pay_confirmation = PaymentSystem.pay(total_cost, username)
+            if pay_confirmation is False:
+                return 'Payment System Denied.'
+            sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
+            if sup_confirmation is False:
+                return 'Supply System Denied.'
             remove_shopping_cart(login_token)
-            return True
+            status = ShoppingCartDB.remove_shopping_cart(username)
+            if status:
+                return [purchase_id, total_cost]
     return 'Shopping cart is empty'
 
 
@@ -245,6 +244,10 @@ def remove_shopping_cart(login_token):
         Consumer.loggedInUsersShoppingCart[login_token] = {}
 
 
+def remove_shopping_cart_db(username):
+    return ShoppingCartDB.remove_shopping_cart(username)
+
+
 def order_of_user(login_token):
     cart_items = Consumer.loggedInUsersShoppingCart[login_token]
     return order_helper(cart_items)
@@ -280,5 +283,18 @@ def order_helper(cart_items):
         if cart_items is not False:
             return {'total_price': total_price,
                     'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
+
+
+def add_all_shopping_cart_to_user(shopping_cart):
+    for cart_item in shopping_cart:
+        status = ShoppingCartDB.add_item_shopping_cart(cart_item)
+        if status is False:
+            return False
+        if cart_item.code is not None:
+            status = ShoppingCartDB.update_code_shopping_cart(cart_item.username, cart_item.item_id, cart_item.code)
+            if status is False:
+                return False
+
+    return True
 
 

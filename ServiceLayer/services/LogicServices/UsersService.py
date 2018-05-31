@@ -3,7 +3,7 @@ import hashlib
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import UsersLogic
+from DomainLayer import UsersLogic, UserShoppingCartLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.Owner import Owner
@@ -84,10 +84,11 @@ def logout(request):
         login = request.COOKIES.get('login_hash')
         if login is not None:
             if Consumer.loggedInUsers.get(login) is not None:
+                UserShoppingCartLogic.remove_shopping_cart_db(Consumer.loggedInUsers.get(login))
+                UserShoppingCartLogic.add_all_shopping_cart_to_user(Consumer.loggedInUsersShoppingCart[login])
                 del Consumer.loggedInUsers[login]
                 del Consumer.loggedInUsersShoppingCart[login]
                 return HttpResponse('success')
-
         return HttpResponse('fail')
 
 

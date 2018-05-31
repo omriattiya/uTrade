@@ -56,16 +56,6 @@ def pay_all_guest(guest):
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                pay_confirmation = PaymentSystem.pay(total_cost, guest)
-                if pay_confirmation is False:
-                    return 'Payment System Denied.'
-                # TODO print to GUI payment confirmation or something
-                print(pay_confirmation)
-                sup_confirmation = SupplySystem.supply_a_purchase(guest, 0)
-                if sup_confirmation is False:
-                    return 'Supply System Denied.'
-                # TODO print to GUI supply confirmation or something
-                print(sup_confirmation)
                 new_quantity = item.quantity - shopping_cart_item.item_quantity
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
@@ -79,11 +69,16 @@ def pay_all_guest(guest):
                                                          '<strong>' + guest + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
                                                              item.id) + '"># <strong>' + str(
                                                              item.id) + '</strong></a> from your shop')
+            pay_confirmation = PaymentSystem.pay(total_cost, guest)
+            if pay_confirmation is False:
+                return 'Payment System Denied.'
+            sup_confirmation = SupplySystem.supply_a_purchase(guest, purchase_id)
+            if sup_confirmation is False:
+                return 'Supply System Denied.'
             status = remove_shopping_cart_guest(guest)
             if status is False:
                 return 'Something went wrong with the purchase'
-            else:
-                return True
+            return [purchase_id, total_cost]
     return 'Shopping cart is empty'
 
 
