@@ -92,6 +92,21 @@ def logout(request):
         return HttpResponse('fail')
 
 
+@csrf_exempt
+def update_details(request):
+    if request.method == 'POST':
+        state = request.POST.get('state')
+        age = request.POST.get('age')
+        sex = request.POST.get('sex')
+
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            return HttpResponse(UsersLogic.update_details(username, state, age, sex))
+
+        return HttpResponse('FAILED: You are not logged in.')
+
+
 # _____
 #   / ___ \
 #  | |   | | _ _ _  ____    ____   ____   ___

@@ -246,6 +246,15 @@ tables_sql = [
           permissions CHAR(30)
         )
     """,
+    """
+        CREATE TABLE IF NOT EXISTS UserDetails(
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE, 
+          state CHAR(30) DEFAULT NULL,
+          age INTEGER DEFAULT NULL,
+          sex INTEGER DEFAULT NULL,
+          PRIMARY KEY(username)
+        )
+    """
 ]
 values_sql = [
 

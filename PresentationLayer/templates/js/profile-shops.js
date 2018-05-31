@@ -9,6 +9,7 @@ $(document).ready(function () {
     $('#add-owner-form').submit(function () {
         return false;
     });
+
 });
 
 let currentlyWorkingOnShop = "";
@@ -186,6 +187,21 @@ function shopModalOpened(shop_name) {
 
 function addOwnerOpened(shop_name) {
     currentlyWorkingOnShop = shop_name;
+}
+
+function shoppingPoliciesOpened(shop_name){
+    currentlyWorkingOnShop = shop_name;
+}
+
+function addNewPolicy(){
+
+}
+
+function qualifierChanged(){
+    let currentQualifier = document.getElementById("select-qualifier").value;
+
+    document.getElementById("policy-quantity").disabled = currentQualifier === "N";
+
 }
 
 function addOwner() {
