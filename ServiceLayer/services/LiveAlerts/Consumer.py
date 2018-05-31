@@ -2,6 +2,7 @@
 from ServiceLayer.services.LiveAlerts import MessagingAlerts, PurchasesAlerts
 
 loggedInUsers = {}
+loggedInUsersShoppingCart = {}
 
 connectedUsers = {}
 connectedConsumers = {}
@@ -11,6 +12,10 @@ loggedInUsersShoppingCart = {}
 guestShoppingCart = {}
 guestIndex = 0
 user_alerts_box = {}
+
+guestShoppingCart = {}
+guestIndex = 0
+
 
 MessagingAlerts.init_thread()
 PurchasesAlerts.init_thread()

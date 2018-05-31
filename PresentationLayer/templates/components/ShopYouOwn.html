@@ -1,5 +1,5 @@
 <tr>
-    <th>{{ shop_name }}</th>
+    <th><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></th>
     <td>{{ review }}</td>
     <td>
         <button id="{{ shop_name }}_status" onclick="setStatus('{{ shop_name }}')"
@@ -10,6 +10,13 @@
         <button href="#" onclick="shopModalOpened('{{ shop_name }}')" data-toggle="modal"
                 data-target="#edit-managers-modal"
                 class="btn btn-primary btn-sm">View
+        </button>
+    </td>
+
+    <td>
+        <button href="#" onclick="shoppingPoliciesOpened('{{ shop_name }}')" data-toggle="modal"
+                data-target="#shopping-policies-modal"
+                class="btn btn-primary btn-sm">Shopping Policies
         </button>
     </td>
 
@@ -26,14 +33,10 @@
     </td>
 
     <td>
-        <a href="../app/shop/?shop_name={{ shop_name }}" class="btn btn-primary btn-sm">Go to
-            Shop</a>
-    </td>
-
-    <td>
         <button href="#" onclick="getHistory('{{ shop_name }}')" data-toggle="modal"
                 data-target="#show-history-appointings-modal"
                 class="btn btn-primary btn-sm">Show Appointings
         </button>
     </td>
+
 </tr>

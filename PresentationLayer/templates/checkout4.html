@@ -3,21 +3,36 @@
 
 <head>
     <script>
-        function placeOrder()
+        function placeOrder(payment,delivery)
         {
             var data = new FormData();
             data.append('username', "OmriOmri");
             var loadHTML = new XMLHttpRequest();
             loadHTML.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
-                if (loadHTML.responseText === 'OK') {
-                    alert("placing order success");
-                    window.location.href = "../app/shopping_cart/get_cart_items/";
+            if (loadHTML.responseText.substring(0,2) === 'OK')
+                {
+                    var purchase_id = '';
+                    var amount = '';
+                    var found = false;
+                    for(var i=2;i<loadHTML.responseText.length && !found ;i++)
+                    {
+                        if(loadHTML.responseText.charAt(i) == '}')
+                        {
+                            purchase_id = loadHTML.responseText.substring(2,i);
+                            amount = loadHTML.responseText.substring(i+1);
+                            found = true;
+                        }
+                    }
+                    window.location.href = "http://localhost:8000/app/shopping_cart/receipt/?purchase_id=" + purchase_id + "&amount=" + amount;
+
                 }
-                else {
-                   alert(loadHTML.responseText);
+                else
+                {
+                    alert(loadHTML.responseText);
                    location.reload();
                 }
+
             }
             };
             loadHTML.open("POST", "../app/shopping_cart/pay_all/", true);

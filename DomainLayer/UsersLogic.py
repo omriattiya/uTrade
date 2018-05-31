@@ -1,7 +1,7 @@
 import hashlib
 import re
 from time import gmtime, strftime
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, HistoryAppointings
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails,HistoryAppointings
 
 min_password_len = 6
 
@@ -16,6 +16,7 @@ def register(user):
                 if RegisteredUsers.get_user(user.username) is not False:
                     return 'FAILED: Username is already taken'
                 if RegisteredUsers.add_user(user):
+                    UserDetails.insert(user.username)
                     return 'SUCCESS'
                 return 'FAILED'
             else:
@@ -46,7 +47,7 @@ def edit_password(user):
 
 def login(user):
     if SystemManagers.login(user.username, user.password):
-        return True
+        return "SUCCESS"
     if user.username is not None and user.password is not None:
         if RegisteredUsers.is_user_exists(user.username):
             user.password = hashlib.sha256(user.password.encode()).hexdigest()
@@ -81,6 +82,19 @@ def remove_user(username, registered_user):
 def get_purchase_history(username):
     if username is not None:
         return RegisteredUsers.get_purchase_history(username)
+
+
+def update_details(username, state, age, sex):
+    if 0 < int(age) < 120:
+        if sex is not 'Male' and sex is not 'Female':
+            if UserDetails.update(username, state, age, sex):
+                return "SUCCESS"
+            else:
+                return "FAILED"
+        else:
+            return "FAILED: sex must be Male or Female"
+    else:
+        return "FAILED: age is invalid"
 
 
 # _____
@@ -122,7 +136,7 @@ def add_manager(username, store_manager):
     if username is not None:
         if Owners.get_owner(username, store_manager.store_name) is not False:
             if RegisteredUsers.get_user(
-                                store_manager.username) is not False:
+                    store_manager.username) is not False:
                 if store_manager.store_name is not None:
                     if StoreManagers.add_manager(store_manager):
                         if HistoryAppointings.add_history_appointing(username, store_manager.username, 'Store Manager',
@@ -293,3 +307,7 @@ def is_manager_of_shop(username, shop_name):
 
 def get_manager(username, shop_name):
     return StoreManagers.get_store_manager(username, shop_name)
+
+
+def get_user_details(username):
+    return UserDetails.get(username)

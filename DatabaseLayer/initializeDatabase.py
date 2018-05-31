@@ -247,6 +247,15 @@ tables_sql = [
         )
     """,
     """
+        CREATE TABLE IF NOT EXISTS UserDetails(
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE, 
+          state CHAR(30) DEFAULT NULL,
+          age INTEGER DEFAULT NULL,
+          sex INTEGER DEFAULT NULL,
+          PRIMARY KEY(username)
+        )
+    """
+    """
         CREATE TABLE IF NOT EXISTS ShoppingPolicyOnShop(
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
           shop_name CHAR(30) REFERENCES Shops(name),

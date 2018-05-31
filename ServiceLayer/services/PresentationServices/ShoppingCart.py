@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from DomainLayer import ShoppingLogic, UserShoppingCartLogic, GuestShoppingCartLogic
+from ServiceLayer.services.LiveAlerts import Consumer
 from django.template import loader
 
 from DomainLayer import ShoppingLogic
+from ExternalSystems import PaymentSystem, SupplySystem
 from ServiceLayer.services.LiveAlerts import Consumer
 
 
@@ -74,3 +76,41 @@ def address(request):
         navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
         context = {'topbar': topbar, 'navbar': navbar}
         return render(request, 'checkout1.html', context=context)
+
+
+def show_receipt(request):
+    if request.method == 'GET':
+        name = ''
+        purchase_id = request.GET.get("purchase_id")
+        amount = request.GET.get("amount")
+        login = request.COOKIES.get('login_hash')
+        guest = request.COOKIES.get('guest_hash')
+        cart_count = 0
+        topbar = loader.render_to_string('components/Topbar.html', context=None)
+        context = {}
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                name = username
+                # html of a logged in user
+                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                cart_count = len(UserShoppingCartLogic.get_cart_items(login))
+                context = UserShoppingCartLogic.order_of_user(login)
+            else:
+                if guest is not None:
+                    cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
+                    context = GuestShoppingCartLogic.order_of_guest(guest)
+                    name = guest
+        else:
+            if guest is not None:
+                cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
+                context = GuestShoppingCartLogic.order_of_guest(guest)
+                name = guest
+        navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+        context['topbar'] = topbar
+        context['navbar'] = navbar
+        payment = PaymentSystem.pay(float(amount), name)
+        delivery = SupplySystem.supply_a_purchase(name, int(purchase_id))
+        context['payment'] = payment
+        context['delivery'] = delivery
+        return render(request, 'receipt.html', context=context)

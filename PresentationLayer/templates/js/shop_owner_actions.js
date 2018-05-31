@@ -78,11 +78,6 @@ function addItem(shop_name) {
             return;
         }
     }
-    if(document.getElementById("keywords").value  == '')
-    {
-        alert("Field Keywords Must Not Be Empty");
-        return;
-    }
     if(document.getElementById("price").value  == '')
     {
         alert("Field Price Must Not Be Empty");
@@ -117,8 +112,8 @@ function addItem(shop_name) {
 
     if (item_kind === 'auction')
     {
-        data.append('item_auction_initial_price', document.getElementById("auction_initial_price").value);
-        data.append('item_auction_sale_duration', document.getElementById("auction_sale_duration").value);
+        data.append('item_auction_initial_price', document.getElementById("price").value);
+        data.append('item_auction_sale_duration', document.getElementById("sale_duration").value);
     }
     else if (item_kind === 'prize')
     {
