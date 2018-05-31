@@ -78,11 +78,6 @@ function addItem(shop_name) {
             return;
         }
     }
-    if(document.getElementById("keywords").value  == '')
-    {
-        alert("Field Keywords Must Not Be Empty");
-        return;
-    }
     if(document.getElementById("price").value  == '')
     {
         alert("Field Price Must Not Be Empty");

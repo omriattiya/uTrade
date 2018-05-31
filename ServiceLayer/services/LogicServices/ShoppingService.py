@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import ItemsLogic, UserShoppingCartLogic, GuestShoppingCartLogic
 
@@ -145,8 +146,9 @@ def pay_all(request):
                 if guest is None:
                     return HttpResponse('fail')
                 message = GuestShoppingCartLogic.pay_all_guest(guest)
-        if message is True:
-            return HttpResponse('OK')
+        if isinstance(message, list):
+            to_send = 'OK' + str(message[0]) + '}' + str(message[1])
+            return HttpResponse(to_send)
         else:
             return HttpResponse(message)
 

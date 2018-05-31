@@ -1,4 +1,10 @@
-function addToCart(item_id) {
+function addToCart(item_id)
+{
+    if(document.getElementById("quantity_input").value === '')
+    {
+        alert("Item Quantity Should Not Be Empty");
+        return;
+    }
     let data = new FormData();
     data.append('item_id', item_id);
     data.append('quantity', document.getElementById("quantity_input").value);
@@ -19,6 +25,7 @@ function addToCart(item_id) {
                         setCookie('guest_hash', loadHTML.responseText, 7);
                     }
                 }
+                alert("add to cart success");
                 location.reload();
             }
         }

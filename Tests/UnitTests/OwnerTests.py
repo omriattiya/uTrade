@@ -45,14 +45,14 @@ class OwnerTests(unittest.TestCase):
         manager = StoreManager(OTHER_USERNAME, SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1],
                                PERMISSIONS[2], PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], PERMISSIONS[6], )
         is_added = UsersLogic.add_manager(USERNAME, manager)
-        self.assertFalse(is_added)
+        self.assertNotEqual(is_added, 'SUCCESS')
 
     def test_add_manager_bad_shop(self):
         ShopLogic.create_shop(SHOP, USERNAME)
         manager = StoreManager(OTHER_USERNAME, OTHER_SHOP_NAME, PERMISSIONS[0], PERMISSIONS[1], PERMISSIONS[2],
                                PERMISSIONS[3], PERMISSIONS[4], PERMISSIONS[5], PERMISSIONS[6], )
         is_added = UsersLogic.add_manager(USERNAME, manager)
-        self.assertFalse(is_added)
+        self.assertNotEqual(is_added, 'SUCCESS')
 
     def test_close_shop(self):
         ShopLogic.create_shop(SHOP, USERNAME)
