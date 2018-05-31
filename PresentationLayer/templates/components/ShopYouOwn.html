@@ -1,5 +1,5 @@
 <tr>
-    <th>{{ shop_name }}</th>
+    <th><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></th>
     <td>{{ review }}</td>
     <td>
         <button id="{{ shop_name }}_status" onclick="setStatus('{{ shop_name }}')"
@@ -30,11 +30,6 @@
     <td>
         <a href="../app/shop/messages/?content=received&shop_name={{ shop_name }}" class="btn btn-primary btn-sm"><i
                 class="fa fa-envelope"></i></a>
-    </td>
-
-    <td>
-        <a href="../app/shop/?shop_name={{ shop_name }}" class="btn btn-primary btn-sm">Go to
-            Shop</a>
     </td>
 
     <td>
