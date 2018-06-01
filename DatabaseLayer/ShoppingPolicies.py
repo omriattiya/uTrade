@@ -9,8 +9,6 @@ from SharedClasses.ShoppingPolicyOnCategory import ShoppingPolicyOnCategory
 
 
 def fetch_shopping_policies_on_identity(results):
-    if len(results) == 0:
-        return False
     array = []
     for item in results:
         array.append(ShoppingPolicyOnIdentity(item[0], item[1], item[2], item[3]))
@@ -27,8 +25,6 @@ def fetch_shopping_policies_on_items(results):
 
 
 def fetch_shopping_policies_on_category(results):
-    if len(results) == 0:
-        return False
     array = []
     for item in results:
         array.append(ShoppingPolicyOnCategory(item[0], item[1], item[2], item[3], item[4]))
@@ -36,8 +32,6 @@ def fetch_shopping_policies_on_category(results):
 
 
 def fetch_shopping_policies_on_shop(results):
-    if len(results) == 0:
-        return False
     array = []
     for item in results:
         array.append(ShoppingPolicyOnShop(item[0], item[1], item[2], item[3], item[4]))
@@ -78,11 +72,12 @@ def fetch_shopping_policy_on_shops(result):
 #    ____________________________________   GET ALL     ___________________________________________________
 
 
-def get_all_shopping_policy_on_shop():
+def get_all_shopping_policy_on_shop(shop_name):
     sql_query = """
                 SELECT *
                FROM ShoppingPolicyOnShop
-              """
+               WHERE shop_name='{}'
+              """.format(shop_name)
     return fetch_shopping_policies_on_shop(select_command(sql_query))
 
 

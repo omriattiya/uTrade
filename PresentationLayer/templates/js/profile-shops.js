@@ -31,7 +31,7 @@ function addManager() {
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
             else {
@@ -104,7 +104,7 @@ function createShop() {
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
             else {
@@ -189,19 +189,98 @@ function addOwnerOpened(shop_name) {
     currentlyWorkingOnShop = shop_name;
 }
 
-function shoppingPoliciesOpened(shop_name){
+function shoppingPoliciesOpened(shop_name) {
     currentlyWorkingOnShop = shop_name;
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText)
+            }
+            else {
+                document.getElementById("shop-policies-modal-body").innerHTML = loadHTML.responseText;
+            }
+        }
+    };
+    loadHTML.open("GET", "http://localhost:8000/app/policies/shopping/shop/?shop_name=" + shop_name, true);
+    loadHTML.send();
+
 }
 
-function addNewPolicy(){
+function addNewPolicy() {
+    let data = new FormData();
+
+    data.append('shop_name', currentlyWorkingOnShop);
+    data.append('conditions', "");
+    data.append('restrict', "N");
+    data.append('quantity', "0");
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+                alert("new policy has been added");
+                window.location.reload();
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/policies/shopping/shop/add/", true);
+    loadHTML.send(data);
+}
+
+function qualifierChanged(id) {
+    let currentQualifier = document.getElementById("select-qualifier" + id).value;
+    document.getElementById("policy-quantity" + id).disabled = currentQualifier === "N";
+
+
+    let data = new FormData();
+
+    data.append('policy_id', id);
+    data.append('field_name', 'restrict');
+    data.append('new_value', currentQualifier);
+    data.append('shop_name', currentlyWorkingOnShop);
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/policies/shopping/shop/update/", true);
+    loadHTML.send(data);
 
 }
 
-function qualifierChanged(){
-    let currentQualifier = document.getElementById("select-qualifier").value;
+function quantityChange(id) {
+    let currentQuantity = document.getElementById("policy-quantity" + id).value;
 
-    document.getElementById("policy-quantity").disabled = currentQualifier === "N";
+    let data = new FormData();
 
+    data.append('policy_id', id);
+    data.append('field_name', 'quantity');
+    data.append('new_value', currentQuantity);
+    data.append('shop_name', currentlyWorkingOnShop);
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/policies/shopping/shop/update/", true);
+    loadHTML.send(data);
 }
 
 function addOwner() {
@@ -213,10 +292,10 @@ function addOwner() {
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
-            else if(loadHTML.responseText.substring(0,7) === 'SUCCESS'){
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Owner has been added!");
                 window.location.reload();
             }
@@ -233,28 +312,91 @@ function gotoMessages(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("No Permissions!")
             }
-            else{
-                window.location.href = "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name;
+            else {
+                window.location.href = "http://localhost:8000/app/shop/messages/?content=received&shop_name=" + shop_name;
             }
         }
     };
-    loadHTML.open("GET", "http://localhost:8000/app/shop/messages/?content=received&shop_name="+shop_name, true);
+    loadHTML.open("GET", "http://localhost:8000/app/shop/messages/?content=received&shop_name=" + shop_name, true);
     loadHTML.send();
 }
 
-function getHistory(shop_name)
-{
-        let loadHTML = new XMLHttpRequest();
-        loadHTML.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                if (loadHTML.responseText === 'fail') {
-                    alert("Failed");
-                }
-                else {
-                    document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
-                }
+function getHistory(shop_name) {
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Failed");
             }
-        };
-        loadHTML.open("GET", "http://localhost:8000/app/my/historyappointings/?shop_name=" + shop_name, true);
-        loadHTML.send();
+            else {
+                document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
+            }
+        }
+    };
+    loadHTML.open("GET", "http://localhost:8000/app/my/historyappointings/?shop_name=" + shop_name, true);
+    loadHTML.send();
+}
+
+let currentlyOpenedPolicy;
+
+function logicOpened(id) {
+    currentlyOpenedPolicy = id;
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText)
+            }
+            else {
+                document.getElementById("expressions-modal-body").innerHTML = loadHTML.responseText;
+            }
+        }
+    };
+    loadHTML.open("GET", "http://localhost:8000/app/policies/shopping/shop/conditions/?shop_name=" + currentlyWorkingOnShop + "&policy_id="+id, true);
+    loadHTML.send();
+}
+
+function SavePolicyChanges() {
+    let data = new FormData();
+    let conditions = document.getElementById("expressions-modal-body").value;
+    data.append('policy_id', currentlyOpenedPolicy);
+    data.append('field_name', 'conditions');
+    data.append('new_value', conditions);
+    data.append('shop_name', currentlyWorkingOnShop);
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+                alert("Rules saved!");
+                //window.location.reload();
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/policies/shopping/shop/update/", true);
+    loadHTML.send(data);
+}
+
+
+function insertAtCursor(myField, myValue) {
+    //IE support
+    if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+        sel.text = myValue;
+    }
+    //MOZILLA and others
+    else if (myField.selectionStart || myField.selectionStart === '0') {
+        let startPos = myField.selectionStart;
+        let endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos)
+            + myValue
+            + myField.value.substring(endPos, myField.value.length);
+    } else {
+        myField.value += myValue;
+    }
 }
