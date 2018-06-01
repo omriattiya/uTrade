@@ -1,12 +1,15 @@
+import sqlite3
+
 from DatabaseLayer import ShoppingPolicies
 from DatabaseLayer import SystemManagers
 from DatabaseLayer import Owners
 
+
 #    ____________________________________   GET ALL     ___________________________________________________
 
 
-def get_all_shopping_policy_on_shop():
-    return ShoppingPolicies.get_all_shopping_policy_on_shop()
+def get_all_shopping_policy_on_shop(shop_name):
+    return ShoppingPolicies.get_all_shopping_policy_on_shop(shop_name)
 
 
 def get_all_shopping_policy_on_items():
@@ -55,7 +58,7 @@ def add_shopping_policy_on_category(username, category, conditions, restrict, qu
 def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quantity):
     if shop_name is not None and conditions is not None:
         if restrict is not None and quantity is not None:
-            if quantity < 0:
+            if int(quantity) < 0:
                 return "FAILED: Negative quantity is invalid."
             if Owners.get_owner(username, shop_name) is not False:
                 if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restrict, quantity):
@@ -140,11 +143,29 @@ def update_shopping_policy_on_identity(username, policy_id, field_name, new_valu
 
 def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, shop_name):
     if policy_id is not None and field_name is not None and new_value is not None:
-        if policy_id < 0:
+        if int(policy_id) < 0:
             return "FAILED: Invalid id of Policy"
         if field_name not in ['shop_name', 'conditions', 'restrict', 'quantity']:
             return "FAILED: Invalid field name"
         if Owners.get_owner(username, shop_name) is not False:
+            if field_name in ['conditions']:
+                # WHAT I'M DOING HERE IS DUMB IN SO MANY WAYS. DON'T EVER DO THAT
+                try:
+                    conn = sqlite3.connect('./checking_syntax')
+                    c = conn.cursor()
+                    c.execute("""CREATE TABLE IF NOT EXISTS UserDetails(
+                                  username CHAR(30), 
+                                  state CHAR(30) DEFAULT NULL,
+                                  age INTEGER DEFAULT NULL,
+                                  sex INTEGER DEFAULT NULL,
+                                  PRIMARY KEY(username)
+                                )""")
+                    c.execute("""SELECT *
+                                FROM UserDetails
+                                WHERE {}""".format(new_value.replace("''","'")))
+                    conn.close()
+                except sqlite3.Error as e:
+                    return "FAILED: {}".format(e)
             if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
                 return "FAILED: DB error."
             return True

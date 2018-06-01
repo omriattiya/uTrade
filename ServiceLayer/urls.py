@@ -1,8 +1,8 @@
 from django.urls import path
 
 from ServiceLayer.services.LogicServices import SearchService, ItemsService, ShopsService, MessagesService, \
-    ShoppingService, AuctionService, LotteryService, UsersService
-from ServiceLayer.services.PresentationServices import Home, Profile, Shop, Messages, Item, ShoppingCart
+    ShoppingService, AuctionService, LotteryService, UsersService, ShoppingPolicyService
+from ServiceLayer.services.PresentationServices import Home, Profile, Shop, Messages, Item, ShoppingCart, Policy
 
 users_urlpatterns = [
     path('users/register/', UsersService.register),
@@ -11,7 +11,7 @@ users_urlpatterns = [
     path('users/update_details/', UsersService.update_details),
     path('users/login/', UsersService.login),
     path('users/logout/', UsersService.logout),
-    path('users/clear_alerts/',UsersService.clear_alerts),
+    path('users/clear_alerts/', UsersService.clear_alerts),
 
     path('users/owner/add_owner/', UsersService.add_owner),
     path('users/owner/add_manager/', UsersService.add_manager),
@@ -86,7 +86,7 @@ home_page_urlpatterns = [
     path('home/', Home.get_home),
     path('home/register/', Home.get_register),
     path('home/messages/', Messages.get_messages),
-    path('home/alerts/',Messages.get_alerts)
+    path('home/alerts/', Messages.get_alerts)
 ]
 
 private_area_urlpatterns = [
@@ -124,6 +124,13 @@ system_urlpatterns = [
     path('system/history/', Profile.get_system_history)
 ]
 
+policies_urlpatterns = [
+    path('policies/shopping/shop/', Policy.getShopShoppingPolicies),
+    path('policies/shopping/shop/add/', ShoppingPolicyService.add_shopping_policy_on_shop),
+    path('policies/shopping/shop/conditions/', Policy.getShopShoppingPolicyConditions),
+    path('policies/shopping/shop/update/', ShoppingPolicyService.update_shopping_policy_on_shop)
+]
+
 urlpatterns = users_urlpatterns + \
               search_urlpatterns + \
               items_urlpatterns + \
@@ -137,4 +144,5 @@ urlpatterns = users_urlpatterns + \
               private_area_urlpatterns + \
               shop_page_urlpatterns + \
               item_page_urlpatterns + \
-              system_urlpatterns  # add more here using '+'
+              system_urlpatterns + \
+              policies_urlpatterns  # add more here using '+'
