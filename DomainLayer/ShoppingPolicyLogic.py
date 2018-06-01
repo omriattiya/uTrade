@@ -27,6 +27,8 @@ def get_all_shopping_policy_on_identity():
 def add_shopping_policy_on_items(username, item_name, conditions, restrict, quantity):
     if item_name is not None and conditions is not None:
         if restrict is not None and quantity is not None:
+            if restrict not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restrict."
             if quantity < 0:
                 return "FAILED: Negative quantity is invalid."
             if SystemManagers.is_system_manager(username) is not False:
@@ -41,6 +43,8 @@ def add_shopping_policy_on_items(username, item_name, conditions, restrict, quan
 def add_shopping_policy_on_category(username, category, conditions, restrict, quantity):
     if category is not None and conditions is not None:
         if restrict is not None and quantity is not None:
+            if restrict not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restrict."
             if quantity < 0:
                 return "FAILED: Negative quantity is invalid."
             if SystemManagers.is_system_manager(username) is not False:
@@ -55,6 +59,8 @@ def add_shopping_policy_on_category(username, category, conditions, restrict, qu
 def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quantity):
     if shop_name is not None and conditions is not None:
         if restrict is not None and quantity is not None:
+            if restrict not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restrict."
             if quantity < 0:
                 return "FAILED: Negative quantity is invalid."
             if Owners.get_owner(username, shop_name) is not False:
@@ -68,6 +74,8 @@ def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quant
 
 def add_shopping_policy_on_identity(username, conditions, restrict, quantity):
     if conditions is not None and restrict is not None and quantity is not None:
+        if restrict not in ['N', 'AL', 'E', 'UT']:
+            return "FAILED: Invalid value of restrict."
         if quantity < 0:
             return "FAILED: Negative quantity is invalid."
         if SystemManagers.is_system_manager(username) is not False:
