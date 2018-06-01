@@ -102,8 +102,8 @@ def get_all_reviews_on_item(item_id):
 
 
 def update_rating(item_id, rank):
-    if item_id is not None and 0 <= rank <= 10:
-        sum = Items.get_item(item_id).sum_of_rankings + rank
+    if item_id is not None and 0 <= int(rank) <= 10:
+        sum = Items.get_item(item_id).sum_of_rankings + int(rank)
         num = Items.get_item(item_id).num_of_reviews + 1
         return Items.update_item(item_id, 'sum_of_rankings', sum) and \
                Items.update_item(item_id, 'num_of_reviews', num) and \

@@ -284,11 +284,11 @@ _________________________________________________________ -->
                                         {% for cart_item,item,discount,total_price in cart_items_combined %}
                                         <tr>
                                             <td>
-                                                <a href="#">
+                                                <a href="http://localhost:8000/app/item?item_id={{item.id}}">
                                                     <img src="{{item.url}}">
                                                 </a>
                                             </td>
-                                            <td><a href="#">{{item.name}}</a>
+                                            <td><a href="http://localhost:8000/app/item?item_id={{item.id}}">{{item.name}}</a>
                                             </td>
                                             <td>
                                                 <input id="quantity{{item.id}}" type="number" value="{{ cart_item.item_quantity }}"

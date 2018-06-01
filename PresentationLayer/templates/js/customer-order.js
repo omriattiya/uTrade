@@ -16,7 +16,8 @@ $(document).ready(function () {
 });
 
 function reviewShop() {
-    if (!checkRank()) {
+    if (!checkRank(Number(document.getElementById('shop-rank-modal').value)))
+    {
         return;
     }
 
@@ -41,15 +42,16 @@ function reviewShop() {
     loadHTML.send(data);
 }
 
-function reviewItem() {
-    if (!checkRank()) {
+function reviewItem()
+{
+    if (!checkRank(Number(document.getElementById('message-to-modal').value)))
+    {
         return;
     }
-
     var data = new FormData();
-    data.append('shop_name', openedShop);
-    data.append('description', document.getElementById('shop-review-content-modal').value);
-    data.append('rank', document.getElementById('shop-rank-modal').value);
+    data.append('item_id', openedItem);
+    data.append('description', document.getElementById('message-content-modal').value);
+    data.append('rank', document.getElementById('message-to-modal').value);
 
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
@@ -67,9 +69,10 @@ function reviewItem() {
     loadHTML.send(data);
 }
 
-function checkRank() {
-    var rank = document.getElementById('shop-rank-modal').value;
-    if (!(rank < 0 || rank > 10)) {
+function checkRank(rank)
+{
+    if (rank < 0 || rank > 10)
+    {
         alert('Rank is invalid');
         return false;
     }

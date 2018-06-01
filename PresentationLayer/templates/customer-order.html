@@ -179,9 +179,9 @@ _________________________________________________________ -->
                                 </div>
                                 <div class="modal-body">
 
-                                    <form id="review-shop-form" onsubmit="reviewShop()">
+                                    <form action="javascript:reviewShop()">
 
-                                        <input required id="shop-rank-modal" type="text" placeholder="* Rank ( 1 to 5 )"
+                                        <input required id="shop-rank-modal" type="text" placeholder="* Rank ( 1 to 10 )"
                                                class="form-control">
 
                                         <hr>
@@ -214,8 +214,8 @@ _________________________________________________________ -->
                                     <h4 class="modal-title" id="Login">Review Item</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="review-item-form" onsubmit="reviewItem()">
-                                        <input required type="text" placeholder="* Rank ( 1 to 5 )" class="form-control"
+                                    <form action="javascript:reviewItem()">
+                                        <input required type="text" placeholder="* Rank ( 1 to 10 )" class="form-control"
                                                id="message-to-modal">
 
                                         <hr>
@@ -225,7 +225,7 @@ _________________________________________________________ -->
                                         </div>
 
                                         <p class="text-center">
-                                            <button class="btn btn-primary"><i class="fa fa-plus-square"></i> Post
+                                            <button type ="submit" class="btn btn-primary"><i class="fa fa-plus-square"></i> Post
                                             </button>
                                         </p>
 
