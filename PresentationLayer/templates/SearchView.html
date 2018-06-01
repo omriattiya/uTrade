@@ -50,8 +50,7 @@ _________________________________________________________ -->
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
-    <script src="js/filter.js"></script>
-    <script src="js/filter2.js"></script>
+    <script src="js/filterNew.js"></script>
     <script src="js/web_sockets.js"></script>
 
 
@@ -253,7 +252,7 @@ _________________________________________________________ -->
                     </div>
                     <div class="row products">
                         {% for item in items %}
-                        <div class="itemJS" price = {{item.price}} category = {{item.category}} item_rating = {{ item.item_rating }} shop_rating = {{ item.shop_rating }}>
+                        <div class="itemJS" price = {{item.price}} category = {{item.category}} item_rating = {{ item.item_rating }}>
                         <div class="col-md-3 col-sm-4">
                             <div class="product">
                                 <div class="flip-container">
