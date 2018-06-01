@@ -253,7 +253,7 @@ tables_sql = [
           sex INTEGER DEFAULT NULL,
           PRIMARY KEY(username)
         )
-    """
+    """,
     """
         CREATE TABLE IF NOT EXISTS ShoppingPolicyOnShop(
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,

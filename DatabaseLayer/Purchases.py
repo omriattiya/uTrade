@@ -2,6 +2,15 @@ from DatabaseLayer.getConn import select_command, commit_command, get_conn
 from SharedClasses.Purchase import Purchase
 from sqlite3 import Error
 
+from SharedClasses.PurchasedItem import PurchasedItem
+
+
+def fetch_purchased_items(results):
+    array = []
+    for purchased_item in results:
+        array.append(PurchasedItem(purchased_item[0], purchased_item[1], purchased_item[2], purchased_item[3]))
+    return array
+
 
 def fetch_purchases(results):
     array = []
@@ -63,7 +72,7 @@ def get_purchase(purchase_id):
 def get_purchased_items_by_purchase(purchase_id):
     sql_query = """
                     SELECT *
-                    FROM Purchases
+                    FROM PurchasedItems
                     WHERE purchaseId = '{}'
                 """.format(purchase_id)
-    return fetch_purchases(select_command(sql_query))
+    return fetch_purchased_items(select_command(sql_query))

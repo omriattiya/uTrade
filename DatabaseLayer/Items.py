@@ -46,24 +46,24 @@ def search_items_by_name(item_name):
 def add_item_to_shop(item):
     sql_query = """
                     INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url , item_rating,
-                     shop_rating)  
-                    VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}');
+                      sum_of_rankings, num_of_reviews)  
+                    VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}', '{}');
                   """.format(item.shop_name,
                              item.name, item.category,
                              item.keyWords,
-                             item.price, item.quantity, item.kind, item.url, 5, 5)
+                             item.price, item.quantity, item.kind, item.url, 5, 0, 0)
     return commit_command(sql_query)
 
 
 def add_item_to_shop_and_return_id(item):
     sql_query = """
                 INSERT INTO Items (shop_name, name, category, keyWords, price, quantity, kind, url , item_rating,
-                 shop_rating, sum_of_rankings, num_of_reviews)  
-                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}', '{}', '{}');
+                  sum_of_rankings, num_of_reviews)  
+                VALUES ('{}', '{}', '{}', '{}', {}, {}, '{}', '{}', '{}', '{}', '{}');
               """.format(item.shop_name,
                          item.name, item.category,
                          item.keyWords,
-                         item.price, item.quantity, item.kind, item.url, 5, 5, 0, 0)
+                         item.price, item.quantity, item.kind, item.url, 5, 0, 0)
     try:
         conn = get_conn()
         c = conn.cursor()

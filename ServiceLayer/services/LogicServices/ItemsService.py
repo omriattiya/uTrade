@@ -41,7 +41,6 @@ def add_item_to_shop(request):
         if item_url == '':
             item_url = None
 
-        item_ticket_item_id_attached = None
         item_auction_sale_duration = None
         item_prize_sale_duration = None
         if item_kind == 'auction':
@@ -66,22 +65,22 @@ def add_item_to_shop(request):
         status = False
         if item_kind == 'regular':
             regular_item = Item(None, shop_name, item_name, item_category, item_keywords,
-                                item_price, item_quantity, item_kind, item_url, 0, 0)
+                                item_price, item_quantity, item_kind, item_url, 0, 0, 0)
             status = ItemsLogic.add_item_to_shop(regular_item, username)
         elif item_kind == 'prize':
             prize = Item(None, shop_name, item_name, item_category, item_keywords,
-                         item_price, 1, item_kind, item_url, 0, 0)
+                         item_price, 1, item_kind, item_url, 0, 0, 0)
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
-                          item_price, item_quantity, 'ticket', item_url, 0, 0)
+                          item_price, item_quantity, 'ticket', item_url, 0, 0, 0)
             status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
                                                         datetime.datetime.now() + datetime.timedelta(
                                                             days=item_prize_sale_duration), username)
         elif item_kind == 'auction':
             auction_item = Item(None, shop_name, item_name, item_category, item_keywords,
-                                item_price, item_quantity, item_kind, item_url, 0, 0)
+                                item_price, item_quantity, item_kind, item_url, 0, 0, 0)
             status = AuctionLogic.add_auction(auction_item, username,
                                               datetime.datetime.now() + datetime.timedelta(
-                                                  days=item_prize_sale_duration))
+                                                  days=item_auction_sale_duration))
         if status is False:
             return HttpResponse('could not add item')
         return HttpResponse('success')
@@ -126,7 +125,7 @@ def add_review_on_item(request):
         login = request.COOKIES.get('login_hash')
         if login is not None:
             writer_name = Consumer.loggedInUsers.get(login)
-            review = ItemReview(writer_name, description, rank, item_id)
+            review = ItemReview(writer_name, item_id, description, rank)
 
             if ItemsLogic.add_review_on_item(review):
                 return HttpResponse('success')
@@ -161,7 +160,6 @@ def edit_shop_item(request):
                       request.POST.get('item_keywords'),
                       request.POST.get('item_price'),
                       request.POST.get('item_url')]
-        status = True
         for i in range(0, len(fields)):
             status = ItemsLogic.edit_shop_item(username, item_id, fields[i], new_values[i])
             if status is False:

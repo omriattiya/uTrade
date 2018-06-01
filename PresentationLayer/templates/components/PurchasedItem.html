@@ -15,12 +15,12 @@
         </button>
     </td>
     <td>
-        <button onclick="openedItem='{{ item_name }}'" href="#" data-toggle="modal" data-target="#review-item-modal"
+        <button onclick="openedItem='{{ item_id }}'" href="#" data-toggle="modal" data-target="#review-item-modal"
                 class="btn btn-primary">Review Item
         </button>
     </td>
     <td>
-        <button onclick="openedItem='{{ item_name }}';document.getElementById('report-content-modal').innerHTML='Report on purchase item #{{ item_id }}.\n';"
+        <button onclick="openedItem='{{ item_id }}';document.getElementById('report-content-modal').innerHTML='Report on purchase item #{{ item_id }}.\n';"
                 href="#" data-toggle="modal" data-target="#report-item-modal"
                 class="btn btn-danger">Report Purchase
         </button>
