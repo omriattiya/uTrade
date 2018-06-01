@@ -10,7 +10,7 @@ def fetch_items(items):
     items_arr = []
     for item in items:
         items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
-                              item[10], item[11], item[12]))
+                              item[10], item[11]))
     return items_arr
 
 
@@ -19,7 +19,7 @@ def fetch_item(item):
         return False
     item = item[0]
     item = Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
-                item[10], item[11], item[12])
+                item[10], item[11])
     return item
 
 
@@ -36,7 +36,7 @@ def search_items_by_name(item_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Items.name LIKE '%{}%' AND
+                WHERE Items.name = '{}' AND
                 Shops.status = 'Active' AND
                 Items.shop_name = Shops.name AND Items.kind <> 'prize'
               """.format(item_name)
@@ -97,7 +97,7 @@ def search_items_in_shop(shop_name):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE Shops.name = Items.shop_name AND Items.shop_name LIKE '%{}%' AND Items.kind <> 'prize'
+                WHERE Shops.name = Items.shop_name AND Items.shop_name = '{}' AND Items.kind <> 'prize'
               """.format(shop_name)
     return fetch_items(select_command(sql_query))
 
@@ -106,7 +106,7 @@ def search_items_by_category(item_category):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE category LIKE '%{}%' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
+                WHERE category = '{}' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_category)
     return fetch_items(select_command(sql_query))
 
@@ -115,7 +115,7 @@ def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE keyWords = '{}' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
+                WHERE keyWords LIKE '%{}%' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_keyword)
     return fetch_items(select_command(sql_query))
 

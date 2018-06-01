@@ -55,7 +55,6 @@ tables_sql = [
         kind TEXT,
         url TEXT,
         item_rating REAL,
-        shop_rating REAL,
         sum_of_rankings INTEGER,
         num_of_reviews INTEGER
     )""",

@@ -37,7 +37,18 @@ def search_by_category(item_category):
 
 def search_by_keywords(item_keywords):
     if item_keywords is not None:
-        return Items.search_items_by_keywords(item_keywords)
+        matched_items = []
+        splitted_keywords = item_keywords.split()
+        for keyword in splitted_keywords:
+            matched_items.append(Items.search_items_by_keywords(keyword))
+        seen = set()
+        set_to_return = []
+        for my_list in matched_items:
+            for obj in my_list:
+                if obj.id not in seen:
+                    set_to_return.append(obj)
+                    seen.add(obj.id)
+        return set_to_return
 
 
 def get_similar_words(word):
