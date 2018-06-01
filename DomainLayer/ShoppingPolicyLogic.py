@@ -63,7 +63,7 @@ def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quant
         if restrict is not None and quantity is not None:
             if restrict not in ['N', 'AL', 'E', 'UT']:
                 return "FAILED: Invalid value of restrict."
-            if quantity < 0:
+            if int(quantity) < 0:
                 return "FAILED: Negative quantity is invalid."
             if Owners.get_owner(username, shop_name) is not False:
                 if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restrict, quantity):
