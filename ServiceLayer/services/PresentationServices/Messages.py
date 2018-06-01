@@ -4,20 +4,17 @@ from django.template import loader
 
 from DomainLayer import ShoppingLogic, MessagingLogic, UsersLogic
 from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
 
 def get_messages(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
         content = request.GET.get('content')
-        cart_count = 0
-        topbar = loader.render_to_string('components/Topbar.html', context=None)
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
                 # html of a logged in user
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
                 messages_html = ""
                 if content == 'received':
                     if UsersLogic.is_system_manager(username):
@@ -48,14 +45,9 @@ def get_messages(request):
                     sent_on = "class=active"
                 else:
                     return HttpResponse('You are not logged in!')
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                return render(request, 'messages.html', context={
-                    'topbar': topbar,
-                    'navbar': navbar,
-                    'messages': messages_html,
-                    'received_on': received_on,
-                    'sent_on': sent_on,
-                })
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'messages': messages_html, 'received_on': received_on, 'sent_on': sent_on})
+                return render(request, 'messages.html', context=context)
 
         return HttpResponse('You are not logged in!')
 
@@ -65,14 +57,9 @@ def get_shop_messages(request):
         login = request.COOKIES.get('login_hash')
         content = request.GET.get('content')
         shop_name = request.GET.get('shop_name')
-        cart_count = 0
-        topbar = loader.render_to_string('components/Topbar.html', context=None)
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                # html of a logged in user
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
                 messages_html = ""
                 if content == 'received':
                     messages = MessagingLogic.get_all_shop_messages(username, shop_name)
@@ -103,14 +90,9 @@ def get_shop_messages(request):
                         return HttpResponse('fail')
                 else:
                     return HttpResponse('You are not logged in!')
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                return render(request, 'shop-messages.html', context={
-                    'topbar': topbar,
-                    'navbar': navbar,
-                    'messages': messages_html,
-                    'received_on': received_on,
-                    'sent_on': sent_on,
-                    'shop_name': shop_name})
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'messages': messages_html, 'received_on': received_on, 'sent_on': sent_on, 'shop_name': shop_name})
+                return render(request, 'shop-messages.html', context=context)
 
         return HttpResponse('You are not logged in!')
 
@@ -118,23 +100,16 @@ def get_shop_messages(request):
 def get_alerts(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
-        cart_count = 0
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                # html of a logged in user
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
                 alert_box = Consumer.user_alerts_box.get(username)
                 alerts_html=""
                 if alert_box is not None:
                     for alert in alert_box:
                         alerts_html += "<tr> <td>"+alert+"</td></tr>"
 
-
-                return render(request, 'alerts-page.html', context={
-                    'topbar': topbar,
-                    'navbar': navbar,
-                    'alerts':alerts_html})
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'alerts': alerts_html})
+                return render(request, 'alerts-page.html', context=context)
         return HttpResponse('You are not logged in')

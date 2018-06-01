@@ -8,6 +8,7 @@ from DatabaseLayer import Lotteries, Auctions, ReviewsOnItems
 from DomainLayer import ItemsLogic
 from DomainLayer import ShoppingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
 shop_not_exist = 'item does not exist'
 not_get_request = 'not a get request'
@@ -38,23 +39,14 @@ def get_item(request):
                     policy = "Auction"
                     deadline = datetime.datetime.fromtimestamp(auction.end_date/1000).strftime('%c')
             login = request.COOKIES.get('login_hash')
-            cart_count = 0
-            topbar = loader.render_to_string('components/Topbar.html', context=None)
-            if login is not None:
-                username = Consumer.loggedInUsers.get(login)
-                if username is not None:
-                    # html of a logged in user
-                    topbar = loader.render_to_string('components/TopbarLoggedIn.html',
-                                                     context={'username': username})
-                    cart_count = len(ShoppingLogic.get_cart_items(username))
-
-            navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+            guest = request.COOKIES.get('guest_hash')
+            context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}
             item_rank = item.item_rating
             if item_rank is False:
                 item_rank = "-----"
             else:
                 item_rank = str(item_rank)
-            context = {'item_id': item.id,
+            context.update({'item_id': item.id,
                        'item_name': item.name,
                        'shop_name': item.shop_name,
                        'category': item.category,
@@ -66,9 +58,7 @@ def get_item(request):
                        'url': item.url,
                        'policy': policy,
                        'deadline': deadline,
-                       'real_end_time': real_end_time,
-                       'topbar': topbar,
-                       'navbar': navbar}
+                       'real_end_time': real_end_time})
             return render(request, 'detail.html', context=context)
         else:
             return HttpResponse(shop_not_exist)
@@ -85,26 +75,11 @@ def get_reviews(request):
             for review in reviews:
                 string_reviews += loader.render_to_string(
                     'component/../../../PresentationLayer/templates/components/review.html',
-                    {'writer_name': review.writerId,
-                                                           'rank': review.rank,
-                                                           'description': review.description}, None, None)
+                    {'writer_name': review.writerId, 'rank': review.rank, 'description': review.description}, None, None)
             login = request.COOKIES.get('login_hash')
-            cart_count = 0
-            topbar = loader.render_to_string('components/Topbar.html', context=None)
-            if login is not None:
-                username = Consumer.loggedInUsers.get(login)
-                if username is not None:
-                    # html of a logged in user
-                    topbar = loader.render_to_string('components/TopbarLoggedIn.html',
-                                                     context={'username': username})
-                    cart_count = len(ShoppingLogic.get_cart_items(username))
-
-            navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-            context = {'item_name': item.name,
-                       'shop_name': item.shop_name,
-                       'reviews': string_reviews,
-                       'topbar': topbar,
-                       'navbar': navbar}
+            guest = request.COOKIES.get('guest_hash')
+            context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}
+            context.update({'item_name': item.name,'shop_name': item.shop_name, 'reviews': string_reviews})
             return render(request, 'item_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)

@@ -15,14 +15,16 @@ def get_top_bar(login):
 
 def get_nav_bar(login, guest):
     cart_count = 0
+    user_buttons = ''
     if login is not None:
         username = Consumer.loggedInUsers.get(login)
         if username is not None:
             cart_count = len(UserShoppingCartLogic.get_cart_items(login))
+            user_buttons = loader.render_to_string('components/UserNavButtons.html', context={})
         else:
             if guest is not None:
                 cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
     else:
         if guest is not None:
             cart_count = len(GuestShoppingCartLogic.get_guest_shopping_cart_item(guest))
-    return loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
+    return loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count, 'user_buttons': user_buttons})

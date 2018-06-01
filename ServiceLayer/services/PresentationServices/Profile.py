@@ -4,6 +4,7 @@ from django.template import loader
 
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.PresentationServices import Topbar_Navbar
 from SharedClasses.Item import Item
 
 
@@ -23,15 +24,13 @@ def get_account(request):
                                'sex': "AFG"}
                 else:
                     details = UsersLogic.get_user_details(username)
-
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                return render(request, 'customer-account.html',
-                              context={'topbar': topbar, 'navbar': navbar, 'system_hidden': system_hidden,
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'system_hidden': system_hidden,
                                        'state': details.get('state'),
                                        'age': details.get('age'),
                                        'sex': details.get('sex')})
+                return render(request, 'customer-account.html',
+                              context=context)
 
         return HttpResponse('You are not logged in!')
 
@@ -44,7 +43,6 @@ def get_shops(request):
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
                 # html of a logged in user
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
                 owned_shops_html = ""
                 owned_shops = UsersLogic.get_owned_shops(username)
                 for owned_shop in owned_shops:
@@ -63,7 +61,6 @@ def get_shops(request):
                         'status': shop.status,
                         'status_button_class': status_class,
                     })
-
                 managed_shops_html = ""
                 managed_shops = UsersLogic.get_managed_shops(username)
                 yes_no_array = ['No', 'Yes']
@@ -83,14 +80,9 @@ def get_shops(request):
                         'DP': yes_no_array[managed_shop.discount_permission],
 
                     })
-
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                return render(request, 'customer-shops.html', context={
-                    'topbar': topbar,
-                    'owned_shops': owned_shops_html,
-                    'managed_shops': managed_shops_html,
-                    'navbar': navbar})
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'owned_shops': owned_shops_html, 'managed_shops': managed_shops_html})
+                return render(request, 'customer-shops.html', context=context)
 
         return HttpResponse('You are not logged in!')
 
@@ -130,7 +122,6 @@ def get_orders(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-
                 orders_html = ""
                 orders = ShoppingLogic.get_user_purchases(username)
                 for order in orders:
@@ -139,13 +130,9 @@ def get_orders(request):
                         'order_date': order.purchase_date,
                         'total_price': order.total_price,
                     })
-
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
-                return render(request, 'customer-orders.html',
-                              context={'topbar': topbar, 'navbar': navbar, 'orders': orders_html})
-
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'orders': orders_html})
+                return render(request, 'customer-orders.html', context=context)
         return HttpResponse('You are not logged in!')
 
 
@@ -169,15 +156,11 @@ def get_order(request):
                         'item_price': item.price,
                         'shop_name': full_item.shop_name,
                     })
-
-                topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                cart_count = len(ShoppingLogic.get_cart_items(username))
-                navbar = loader.render_to_string('components/NavbarButtons.html', context={'cart_items': cart_count})
                 date = ShoppingLogic.get_purchase(purchase_id).purchase_date
-                return render(request, 'customer-order.html',
-                              context={'topbar': topbar, 'navbar': navbar, 'items': items_html, 'order_id': purchase_id,
+                context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                context.update({'items': items_html, 'order_id': purchase_id,
                                        'order_date': date})
-
+                return render(request, 'customer-order.html', context=context)
         return HttpResponse('You are not logged in!')
 
 
@@ -196,20 +179,15 @@ def get_system_shops(request):
                         shops_html += loader.render_to_string('components/shop.html',
                                                               context={'shop_name': shop.name, 'status': shop.status})
 
-                    topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                    cart_count = len(ShoppingLogic.get_cart_items(username))
-                    navbar = loader.render_to_string('components/NavbarButtons.html',
-                                                     context={'cart_items': cart_count})
-                    return render(request, 'system-shops.html',
-                                  context={'topbar': topbar, 'navbar': navbar, 'shops': shops_html})
-
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context.update({'shops': shops_html})
+                    return render(request, 'system-shops.html', context=context)
         return HttpResponse("You don't have the privilege to be here")
 
 
 def get_system_users(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
-
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
@@ -225,14 +203,9 @@ def get_system_users(request):
                             'shop_own_count': shops_own,
                             'shop_manage_count': shop_manage,
                         })
-
-                    topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                    cart_count = len(ShoppingLogic.get_cart_items(username))
-                    navbar = loader.render_to_string('components/NavbarButtons.html',
-                                                     context={'cart_items': cart_count})
-                    return render(request, 'system-users.html',
-                                  context={'topbar': topbar, 'navbar': navbar, 'users': users_html})
-
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context.update({'users': users_html})
+                    return render(request, 'system-users.html', context=context)
         return HttpResponse("You don't have the privilege to be here")
 
 
@@ -249,7 +222,7 @@ def get_system_history(request):
                     for purchased_item in purchased_items:
                         item = ItemsLogic.get_item(purchased_item.item_id)
                         if item is False:
-                            item = Item(purchased_item.item_id, None, None, None, None, None, None, None, None)
+                            item = Item(purchased_item.item_id, None, None, None, None, None, None, None, None, 0, 0, 0)
                         purchase = ShoppingLogic.get_purchase(purchased_item.purchase_id)
                         history_html += loader.render_to_string('components/purchase_history.html', context={
                             'username': purchase.username,
@@ -260,13 +233,9 @@ def get_system_history(request):
                             'price': purchased_item.price
                         })
 
-                    topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
-                    cart_count = len(ShoppingLogic.get_cart_items(username))
-                    navbar = loader.render_to_string('components/NavbarButtons.html',
-                                                     context={'cart_items': cart_count})
-                    return render(request, 'system-history.html',
-                                  context={'topbar': topbar, 'navbar': navbar, 'history': history_html})
-
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context.update({'history': history_html})
+                    return render(request, 'system-history.html', context=context)
         return HttpResponse("You don't have the privilege to be here")
 
 

@@ -14,19 +14,6 @@
         </button>
     </div>
 
-    <div class="navbar-collapse collapse right">
-        <button onclick="window.location.href = '../app/home/messages/?content=received'"
-                type="button" class="btn navbar-btn btn-primary">
-            <i class="fa fa-envelope"></i>
-        </button>
-    </div>
-
-    <div class="navbar-collapse collapse right">
-        <button onclick="window.location.href = '../app/home/alerts/'"
-                type="button" class="btn navbar-btn btn-primary">
-            <i class="fa fa-bell"></i>
-            <span id="alerts-count" class="badge badge-secondary"></span>
-        </button>
-    </div>
+    {{user_buttons}}
 
 </div>
