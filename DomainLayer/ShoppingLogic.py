@@ -8,6 +8,8 @@ from DatabaseLayer.Purchases import update_purchase_total_price
 from DomainLayer import ItemsLogic, LotteryLogic
 from ExternalSystems import PaymentSystem, SupplySystem
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
+from DomainLayer import ShoppingPolicyLogic
+from DatabaseLayer.UserDetails import is_meet_conditions
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -133,6 +135,10 @@ def pay_all(username):
             purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(username)
+            # here check if cart items meets the conditions
+            shopping_policy_status = shopping_policy_check(username, cart_items)
+            if shopping_policy_status is not True:
+                return shopping_policy_status
             # cart_items is a array consist of shopping_cart objects
             message = check_stock_for_shopping_cart(cart_items)
             if message is not True:
@@ -367,3 +373,121 @@ def update_item_shopping_cart_guest(guest, item_id, new_quantity):
             return False
         return ShoppingCartDB.update_item_shopping_cart_guest(guest, item_id, new_quantity)
     return False
+
+
+def shopping_policy_check(username, cart_items):
+    if username is not "guest":
+        user = RegisteredUsers.get_user(username)
+        if user is False:
+            return "User does not exist"
+    id_status = check_identity_shopping_policies(username, cart_items)
+    if id_status is not True:
+        return id_status
+    items_status = check_items_shopping_policies(username, cart_items)
+    if items_status is not True:
+        return items_status
+    category_status = check_category_shopping_policies(username, cart_items)
+    if category_status is not True:
+        return category_status
+    shop_status = check_shop_shopping_policies(username, cart_items)
+    if shop_status is not True:
+        return shop_status
+    return True
+
+
+def check_identity_shopping_policies(username, cart_items):
+    identity_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_identity()
+    for identity_policy in identity_policies:
+        if username is not "guest":
+            if is_meet_conditions(username, identity_policy.conditions) is False:
+                continue
+        if identity_policy.restrict is 'N':
+            continue
+        elif identity_policy.restrict is 'AL':
+            if len(cart_items) < identity_policy.quantity:
+                return "Not enough items in cart; You allowed at least " + identity_policy.quantity
+        elif identity_policy.restrict is 'E':
+            if len(cart_items) != identity_policy.quantity:
+                return "Not exact num of items in cart; You allowed exactly " + identity_policy.quantity
+        elif identity_policy.restrict is 'UT':
+            if len(cart_items) > identity_policy.quantity:
+                return "Too much items in cart; You allowed at most " + identity_policy.quantity
+    return True
+
+
+def check_items_shopping_policies(username, cart_items):
+    items_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
+    for items_policy in items_policies:
+        if username is not "guest":
+            if is_meet_conditions(username, items_policy.conditions) is False:
+                continue
+        if items_policy.restrict is 'N':
+            continue
+        num_of_items = 0
+        cart_item_name = None
+        for cart_item in cart_items:
+            cart_item_name = ItemsLogic.get_item(cart_item.item_id).name
+            if items_policy.item_name == cart_item_name:
+                num_of_items = num_of_items + cart_item.item_quantity
+        if items_policy.restrict is 'AL':
+            if num_of_items < items_policy.quantity:
+                return "Not enough " + cart_item_name + " items in cart; You allowed at least " + items_policy.quantity
+        elif items_policy.restrict is 'E':
+            if num_of_items != items_policy.quantity:
+                return "Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + items_policy.quantity
+        elif items_policy.restrict is 'UT':
+            if num_of_items > items_policy.quantity:
+                return "Too much " + cart_item_name + " items in cart; You allowed at most " + items_policy.quantity
+    return True
+
+
+def check_category_shopping_policies(username, cart_items):
+    category_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_category()
+    for category_policy in category_policies:
+        if username is not "guest":
+            if is_meet_conditions(username, category_policy.conditions) is False:
+                continue
+        if category_policy.restrict is 'N':
+            continue
+        num_of_items = 0
+        cart_item_category = None
+        for cart_item in cart_items:
+            cart_item_category = ItemsLogic.get_item(cart_item.item_id).category
+            if category_policy.category == cart_item_category:
+                num_of_items = num_of_items + cart_item.item_quantity
+        if category_policy.restrict is 'AL':
+            if num_of_items < category_policy.quantity:
+                return "Not enough " + cart_item_category + " items in cart; You allowed at least " + category_policy.quantity
+        elif category_policy.restrict is 'E':
+            if num_of_items != category_policy.quantity:
+                return "Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + category_policy.quantity
+        elif category_policy.restrict is 'UT':
+            if num_of_items > category_policy.quantity:
+                return "Too much " + cart_item_category + " items in cart; You allowed at most " + category_policy.quantity
+    return True
+
+
+def check_shop_shopping_policies(username, cart_items):
+    shop_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_shop()
+    for shop_policy in shop_policies:
+        if username is not "guest":
+            if is_meet_conditions(username, shop_policy.conditions) is False:
+                continue
+        if shop_policy.restrict is 'N':
+            continue
+        num_of_items = 0
+        cart_item_shop = None
+        for cart_item in cart_items:
+            cart_item_shop = ItemsLogic.get_item(cart_item.item_id).shop_name
+            if shop_policy.category == cart_item_shop:
+                num_of_items = num_of_items + cart_item.item_quantity
+        if shop_policy.restrict is 'AL':
+            if num_of_items < shop_policy.quantity:
+                return "Not enough " + cart_item_shop + " items in cart; You allowed at least " + shop_policy.quantity
+        elif shop_policy.restrict is 'E':
+            if num_of_items != shop_policy.quantity:
+                return "Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + shop_policy.quantity
+        elif shop_policy.restrict is 'UT':
+            if num_of_items > shop_policy.quantity:
+                return "Too much " + cart_item_shop + " items in cart; You allowed at most " + shop_policy.quantity
+    return True
