@@ -1,0 +1,27 @@
+<tr>
+    <th>{{ id }}</th>
+    <td>
+        <select id="item-select-qualifier{{ id }}" onchange="item_qualifierChanged('{{ id }}')">
+            <option {{ N_S }} value="N">None</option>
+            <option {{ UT_S }} value="UT">Up to</option>
+            <option {{ AL_S }} value="AL">At least</option>
+            <option {{ E_S }} value="E">Exactly</option>
+        </select>
+    </td>
+    <td>
+        <input onblur="item_quantityChange('{{ id }}')" {{ is_none }} id="item-policy-quantity{{ id }}" type="number"
+               name="points"
+               min="0" max="1000" step="1"
+               value="{{ quantity }}">
+    </td>
+    <td>
+        <input onblur="item_nameChanged('{{ id }}')" id="item-name{{ id }}" value="{{ item_name }}">
+    </td>
+    <td>
+        <button href="#" onclick="item_logicOpened('{{ id }}')"
+                data-toggle="modal"
+                data-target="#item-logic-expression-modal"
+                class="btn btn-primary btn-sm">View Logic
+        </button>
+    </td>
+</tr>

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic, ShoppingPolicyLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 
@@ -246,6 +246,103 @@ def get_system_users(request):
         return HttpResponse("You don't have the privilege to be here")
 
 
+def get_system_policies(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    item_policies_html = ""
+                    item_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
+                    for item_policy in item_policies:
+                        is_none = ""
+                        selectors = {}
+                        if item_policy.restrict is 'N':
+                            is_none = "disabled"
+                        selectors['N'] = ""
+                        selectors['UT'] = ""
+                        selectors['AL'] = ""
+                        selectors['E'] = ""
+                        selectors[item_policy.restrict] = 'selected="selected"'
+
+                        item_policies_html += loader.render_to_string('components/shopping_item_policy.html', context={
+                            'id': item_policy.policy_id,
+                            'item_name': item_policy.item_name,
+                            'selector_value': item_policy.restrict,
+                            'quantity': item_policy.quantity,
+                            'is_none': is_none,
+                            'N_S': selectors.get('N'),
+                            'UT_S': selectors.get('UT'),
+                            'AL_S': selectors.get('AL'),
+                            'E_S': selectors.get('E'),
+                        })
+
+                    category_policies_html = ""
+                    category_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_category()
+                    for category_policy in category_policies:
+                        is_none = ""
+                        selectors = {}
+                        if category_policy.restrict is 'N':
+                            is_none = "disabled"
+                        selectors['N'] = ""
+                        selectors['UT'] = ""
+                        selectors['AL'] = ""
+                        selectors['E'] = ""
+                        selectors[category_policy.restrict] = 'selected="selected"'
+
+                        category_policies_html += loader.render_to_string('components/shopping_category_policy.html',
+                                                                          context={
+                                                                              'id': category_policy.policy_id,
+                                                                              'category_name': category_policy.category,
+                                                                              'selector_value': category_policy.restrict,
+                                                                              'quantity': category_policy.quantity,
+                                                                              'is_none': is_none,
+                                                                              'N_S': selectors.get('N'),
+                                                                              'UT_S': selectors.get('UT'),
+                                                                              'AL_S': selectors.get('AL'),
+                                                                              'E_S': selectors.get('E'),
+                                                                          })
+
+                    global_policies_html = ""
+                    global_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_identity()
+                    for global_policy in global_policies:
+                        is_none = ""
+                        selectors = {}
+                        if global_policy.restrict is 'N':
+                            is_none = "disabled"
+                        selectors['N'] = ""
+                        selectors['UT'] = ""
+                        selectors['AL'] = ""
+                        selectors['E'] = ""
+                        selectors[global_policy.restrict] = 'selected="selected"'
+
+                        global_policies_html += loader.render_to_string('components/shopping_global_policy.html',
+                                                                        context={
+                                                                            'id': global_policy.policy_id,
+                                                                            'selector_value': global_policy.restrict,
+                                                                            'quantity': global_policy.quantity,
+                                                                            'is_none': is_none,
+                                                                            'N_S': selectors.get('N'),
+                                                                            'UT_S': selectors.get('UT'),
+                                                                            'AL_S': selectors.get('AL'),
+                                                                            'E_S': selectors.get('E'),
+                                                                        })
+
+                    topbar = loader.render_to_string('components/TopbarLoggedIn.html', context={'username': username})
+                    cart_count = len(ShoppingLogic.get_cart_items(username))
+                    navbar = loader.render_to_string('components/NavbarButtons.html',
+                                                     context={'cart_items': cart_count})
+                    return render(request, 'system-policies.html',
+                                  context={'topbar': topbar, 'navbar': navbar,
+                                           'item_policies': item_policies_html,
+                                           'category_policies': category_policies_html,
+                                           'global_policies': global_policies_html})
+
+        return HttpResponse("You don't have the privilege to be here")
+
+
 def get_system_history(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
@@ -300,4 +397,3 @@ def get_history_appoitings(request):
                     })
                 return HttpResponse(history_html)
     return HttpResponse('fail')
-

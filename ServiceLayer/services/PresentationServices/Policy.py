@@ -20,7 +20,7 @@ def getShopShoppingPolicies(request):
             selectors['E'] = ""
             selectors[policy.restrict] = 'selected="selected"'
 
-            html += loader.render_to_string('components/shopping_policy.html', context={
+            html += loader.render_to_string('components/shopping_shop_policy.html', context={
                 'id': policy.policy_id,
                 'selector_value': policy.restrict,
                 'quantity': policy.quantity,
@@ -35,10 +35,41 @@ def getShopShoppingPolicies(request):
 
 
 def getShopShoppingPolicyConditions(request):
-    shop_name = request.GET.get('shop_name')
-    policy_id = request.GET.get('policy_id')
-    shop_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_shop(shop_name)
-    for SP in shop_policies:
-        if SP.policy_id == int(policy_id):
-            return HttpResponse(SP.conditions.replace("'","''"))
-    return HttpResponse("FAILED: Can't find that policy")
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+        policy_id = request.GET.get('policy_id')
+        shop_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_shop(shop_name)
+        for SP in shop_policies:
+            if SP.policy_id == int(policy_id):
+                return HttpResponse(SP.conditions.replace("'", "''"))
+        return HttpResponse("FAILED: Can't find that policy")
+
+
+def getItemShoppingPolicyConditions(request):
+    if request.method == 'GET':
+        policy_id = request.GET.get('policy_id')
+        item_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
+        for SP in item_policies:
+            if SP.policy_id == int(policy_id):
+                return HttpResponse(SP.conditions.replace("'", "''"))
+        return HttpResponse("FAILED: Can't find that policy")
+
+
+def getCategoryShoppingPolicyConditions(request):
+    if request.method == 'GET':
+        policy_id = request.GET.get('policy_id')
+        category_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_category()
+        for CP in category_policies:
+            if CP.policy_id == int(policy_id):
+                return HttpResponse(CP.conditions.replace("'", "''"))
+        return HttpResponse("FAILED: Can't find that policy")
+
+
+def getGlobalShoppingPolicyConditions(request):
+    if request.method == 'GET':
+        policy_id = request.GET.get('policy_id')
+        global_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_identity()
+        for GP in global_policies:
+            if GP.policy_id == int(policy_id):
+                return HttpResponse(GP.conditions.replace("'", "''"))
+        return HttpResponse("FAILED: Can't find that policy")

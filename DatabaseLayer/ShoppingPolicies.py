@@ -16,8 +16,6 @@ def fetch_shopping_policies_on_identity(results):
 
 
 def fetch_shopping_policies_on_items(results):
-    if len(results) == 0:
-        return False
     array = []
     for item in results:
         array.append(ShoppingPolicyOnItems(item[0], item[1], item[2], item[3], item[4]))

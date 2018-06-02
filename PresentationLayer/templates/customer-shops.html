@@ -455,6 +455,10 @@ _________________________________________________________ -->
                                                 OR
                                             </button>
                                             <button class="btn btn-primary"
+                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'NOT ')">
+                                                NOT
+                                            </button>
+                                            <button class="btn btn-primary"
                                                     onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'(')">
                                                 (
                                             </button>
@@ -497,7 +501,7 @@ _________________________________________________________ -->
 
                                         <div>
                                             <h4>Values</h4>
-                                            <div style="flex-direction: row;">
+                                            <div style="display:flex;flex:0.7;flex-direction: row; ">
                                                 <select id="numbers"
                                                         class="form-control" style="max-width: 20em">
                                                     <option value="1">1</option>
@@ -601,12 +605,13 @@ _________________________________________________________ -->
                                                     <option value="99">99</option>
                                                     <option value="100">100</option>
                                                 </select>
-                                                <button class="btn btn-primary"
-                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),document.getElementById('numbers').value) ">
-                                                    Put
+                                                <button class="btn btn-primary" style="margin-left: 1em"
+                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),document.getElementById('numbers').value+' ')">
+                                                    Insert
                                                 </button>
                                             </div>
-                                            <div>
+                                            <div style="height: 1em"></div>
+                                            <div style="display:flex;flex:0.7;flex-direction: row; ">
                                                 <select id="states"
                                                         class="form-control" style="max-width: 20em">
                                                     <option value="AFG">Afghanistan</option>
@@ -867,20 +872,21 @@ _________________________________________________________ -->
                                                     <option value="ZMB">Zambia</option>
                                                     <option value="ZWE">Zimbabwe</option>
                                                 </select>
-                                                <button class="btn btn-primary"
-                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'\'\''+document.getElementById('states').value+'\'\'') ">
-                                                    Put
+                                                <button class="btn btn-primary" style="margin-left: 1em"
+                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'\'\''+document.getElementById('states').value+'\'\' ') ">
+                                                    Insert
                                                 </button>
                                             </div>
-                                            <div>
+                                            <div style="height: 1em"></div>
+                                            <div style="display:flex;flex:0.7;flex-direction: row; ">
                                                 <select id="sexes"
                                                         class="form-control" style="max-width: 20em">
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                 </select>
-                                                <button class="btn btn-primary"
-                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'\'\''+document.getElementById('sexes').value+'\'\'') ">
-                                                    Put
+                                                <button class="btn btn-primary" style="margin-left: 1em"
+                                                        onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'\'\''+document.getElementById('sexes').value+'\'\' ') ">
+                                                    Insert
                                                 </button>
                                             </div>
                                         </div>

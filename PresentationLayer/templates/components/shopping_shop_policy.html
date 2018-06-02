@@ -5,11 +5,11 @@
             <option {{ N_S }} value="N">None</option>
             <option {{ UT_S }} value="UT">Up to</option>
             <option {{ AL_S }} value="AL">At least</option>
-            <option {{ E_S }} value="E">Exactly</option>
+                <option {{ E_S }} value="E">Exactly</option>
         </select>
     </td>
     <td>
-        <input onchange="quantityChange('{{ id }}')" {{ is_none }} id="policy-quantity{{ id }}" type="number" name="points"
+        <input onblur="quantityChange('{{ id }}')" {{ is_none }} id="policy-quantity{{ id }}" type="number" name="points"
                min="0" max="1000" step="1"
                value="{{ quantity }}">
     </td>

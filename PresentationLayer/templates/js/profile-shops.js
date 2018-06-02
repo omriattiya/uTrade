@@ -357,30 +357,6 @@ function logicOpened(id) {
     loadHTML.send();
 }
 
-function SavePolicyChanges() {
-    let data = new FormData();
-    let conditions = document.getElementById("expressions-modal-body").value;
-    data.append('policy_id', currentlyOpenedPolicy);
-    data.append('field_name', 'conditions');
-    data.append('new_value', conditions);
-    data.append('shop_name', currentlyWorkingOnShop);
-
-    let loadHTML = new XMLHttpRequest();
-    loadHTML.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
-                alert(loadHTML.responseText);
-            }
-            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
-                alert("Rules saved!");
-                //window.location.reload();
-            }
-        }
-    };
-    loadHTML.open("POST", "http://localhost:8000/app/policies/shopping/shop/update/", true);
-    loadHTML.send(data);
-}
-
 
 function insertAtCursor(myField, myValue) {
     //IE support
