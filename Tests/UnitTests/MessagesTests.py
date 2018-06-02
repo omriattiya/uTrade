@@ -1,8 +1,6 @@
 import os
 import unittest
 
-from DatabaseLayer import Messages
-from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import MessagingLogic, ShopLogic, UsersLogic
 from DomainLayer.UsersLogic import register
@@ -57,10 +55,12 @@ class MessageTests(unittest.TestCase):
         ShopLogic.create_shop(shop2, 'TomerTomer2')
         UsersLogic.add_manager('TomerTomer1', StoreManager('TomerTomer2', 'My Shop1', 1, 1, 1, 0, 1, 1, 1))
         UsersLogic.add_manager('TomerTomer2', StoreManager('TomerTomer1', 'My Shop2', 1, 1, 1, 0, 1, 1, 1))
-        self.assertFalse(MessagingLogic.send_message_from_shop('TomerTomer2',
-                                                               Message(1, 'My Shop1', 'My Shop2', 'Hello 1')))
-        self.assertFalse(MessagingLogic.send_message_from_shop('TomerTomer1',
-                                                               Message(2, 'My Shop2', 'My Shop1', 'Hello 2')))
+        self.assertEqual(MessagingLogic.send_message_from_shop('TomerTomer2',
+                                                               Message(1, 'My Shop1', 'My Shop2', 'Hello 1'))
+                         ,"FAILED: You don't have the permissions")
+        self.assertEqual(MessagingLogic.send_message_from_shop('TomerTomer1',
+                                                               Message(2, 'My Shop2', 'My Shop1', 'Hello 2'))
+        , "FAILED: You don't have the permissions")
 
     def test_bad_no_get_all_premss_send_message_and_get_messages_of_shops(self):
         register(RegisteredUser('TomerTomer1', '1234567878'))

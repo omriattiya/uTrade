@@ -1,21 +1,20 @@
-from _datetime import datetime
 import os
-import time
 import unittest
 
-from DatabaseLayer import Shops, ReviewsOnShops, ReviewsOnItems, PurchasedItems
+from datetime import datetime
+
+from DatabaseLayer import Shops, PurchasedItems
 from DatabaseLayer.Purchases import add_purchase_and_return_id
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ReviewsOnShops import get_all_reviews_on_shop
+from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
 from DomainLayer import ShopLogic, ItemsLogic
-from DomainLayer.ShopLogic import close_shop_permanently, create_shop
+from DomainLayer.ShopLogic import close_shop_permanently
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
-from SharedClasses.ItemReview import ItemReview
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
-from DatabaseLayer.SystemManagers import add_system_manager
 from SharedClasses.ShopReview import ShopReview
 from SharedClasses.SystemManager import SystemManager
 
@@ -70,14 +69,15 @@ class ShopTests(unittest.TestCase):
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
         status = ShopLogic.create_shop(shop, 'TomerTomer')
-        self.assertFalse(status)
+        self.assertEqual(status,'FAILED: Shop name is taken')
 
     def test_review_on_shop(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
         user = get_user('TomerTomer')
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'TomerTomer')
-        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None), 'TomerTomer')
+        ItemsLogic.add_item_to_shop(Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0),
+                                    'TomerTomer')
         purchase_id = add_purchase_and_return_id(datetime.now(), 'TomerTomer', 0)
         status = PurchasedItems.add_purchased_item(purchase_id, 1, 10, 10)
         shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
