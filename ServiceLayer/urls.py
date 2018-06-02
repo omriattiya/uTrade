@@ -128,7 +128,18 @@ policies_urlpatterns = [
     path('policies/shopping/shop/', Policy.getShopShoppingPolicies),
     path('policies/shopping/shop/add/', ShoppingPolicyService.add_shopping_policy_on_shop),
     path('policies/shopping/shop/conditions/', Policy.getShopShoppingPolicyConditions),
-    path('policies/shopping/shop/update/', ShoppingPolicyService.update_shopping_policy_on_shop)
+    path('policies/shopping/shop/update/', ShoppingPolicyService.update_shopping_policy_on_shop),
+    path('system/policies/', Profile.get_system_policies),
+    path('system/policies/item/add/', ShoppingPolicyService.add_shopping_policy_on_items),
+    path('system/policies/item/update/', ShoppingPolicyService.update_shopping_policy_on_items),
+    path('system/policies/item/get/conditions/', Policy.getItemShoppingPolicyConditions),
+    path('system/policies/category/add/', ShoppingPolicyService.add_shopping_policy_on_category),
+    path('system/policies/category/update/', ShoppingPolicyService.update_shopping_policy_on_category),
+    path('system/policies/category/get/conditions/', Policy.getCategoryShoppingPolicyConditions),
+    path('system/policies/global/add/', ShoppingPolicyService.add_shopping_policy_on_identity),
+    path('system/policies/global/update/', ShoppingPolicyService.update_shopping_policy_on_identity),
+    path('system/policies/global/get/conditions/', Policy.getGlobalShoppingPolicyConditions)
+
 ]
 
 urlpatterns = users_urlpatterns + \

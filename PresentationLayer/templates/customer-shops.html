@@ -455,6 +455,10 @@ _________________________________________________________ -->
                                                 OR
                                             </button>
                                             <button class="btn btn-primary"
+                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'NOT ')">
+                                                NOT
+                                            </button>
+                                            <button class="btn btn-primary"
                                                     onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'(')">
                                                 (
                                             </button>
@@ -482,15 +486,15 @@ _________________________________________________________ -->
                                         <div>
                                             <h4>Numerical Operators</h4>
                                             <button class="btn btn-primary"
-                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'=')">
+                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'= ')">
                                                 equal
                                             </button>
                                             <button class="btn btn-primary"
-                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'>')">
+                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'> ')">
                                                 bigger than
                                             </button>
                                             <button class="btn btn-primary"
-                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'<')">
+                                                    onclick="insertAtCursor(document.getElementById('expressions-modal-body'),'< ')">
                                                 less than
                                             </button>
                                         </div>
