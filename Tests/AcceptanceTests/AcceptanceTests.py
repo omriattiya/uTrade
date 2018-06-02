@@ -15,7 +15,7 @@ class CusTomerTomer(unittest.TestCase):
         self.assertTrue(is_added)
         # sad scenario
         is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
-        self.assertFalse(is_added)
+        self.assertEqual(is_added,'FAILED: Username is already taken')
 
     def test_login(self):  # 1.8
         Bridge.register_user('SHALOMSHALOM', '12345678')
@@ -24,7 +24,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # sad scenario
         is_logged = Bridge.login('SHALOMSHALOM', '123456789')
-        self.assertFalse(is_logged)
+        self.assertEqual(is_logged,'FAILED:Password in incorrect')
 
     def test_open_shop(self):  # 1.9
         # register user
@@ -38,7 +38,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # sad scenario - existing shop name
         is_opened = Bridge.open_shop('username', 'shop_name')
-        self.assertFalse(is_opened)
+        self.assertEqual(is_opened,'FAILED: Shop name is taken')
 
     def test_cart_items(self):  # 1.5
         # open shop
@@ -48,15 +48,18 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular', url=None)
+                                quantity=100, username='username', kind='regular', url=None ,
+                                item_rating = 0, sum_of_ranking = 0, num_of_reviews = 0)
         # item is = 2
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular', url=None)
+                                quantity=100, username='username', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         # item is = 3
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular', url=None)
+                                quantity=100, username='username', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
 
         Bridge.buy_item(username='username', shop_name='shop_name', item_id=1, quantity=10)
         self.assertTrue(Bridge.is_item_bought(username='username', item_id=1))
@@ -96,17 +99,20 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular', url=None)
+                                           quantity=100, username='username', kind='regular', url=None,
+                                           item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         self.assertTrue(is_added)
         # item is = 2
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular', url=None)
+                                           quantity=100, username='username', kind='regular', url=None,
+                                           item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         self.assertTrue(is_added)
         # item is = 3
         is_added = Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name3',
                                            item_category='item_category', keywords='keywords', price=10,
-                                           quantity=100, username='username', kind='regular', url=None)
+                                           quantity=100, username='username', kind='regular', url=None,
+                                           item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         self.assertTrue(is_added)
 
         is_edited = Bridge.edit_item_name(item_id=1, username='username', item_name='NEW NAME')
@@ -123,19 +129,24 @@ class CusTomerTomer(unittest.TestCase):
         # add items to shop
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=10, username='ownerUser', kind='regular', url=None)
+                                quantity=10, username='ownerUser', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=20, username='ownerUser', kind='regular', url=None)
+                                quantity=20, username='ownerUser', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name3',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=30, username='ownerUser', kind='regular', url=None)
+                                quantity=30, username='ownerUser', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name4',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=40, username='ownerUser', kind='regular', url=None)
+                                quantity=40, username='ownerUser', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         Bridge.add_item_to_shop(shop_name='my_shop', item_name='item_name5',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=50, username='ownerUser', kind='regular', url=None)
+                                quantity=50, username='ownerUser', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
 
         # add items to cart
         Bridge.buy_item('clientUser', 'my_shop', 1, 10)
@@ -177,7 +188,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # delete the normal user
         self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='normalUser'))
-        self.assertFalse(Bridge.login('normalUser', 'password'))
+        self.assertEqual(Bridge.login('normalUser', 'password'),'FAILED: Username is incorrect')
 
         # add owner of store
         Bridge.register_user('ownerUser', 'password')
@@ -185,7 +196,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # delete owner and its shop
         self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='ownerUser'))
-        self.assertFalse(Bridge.login('normalUser', 'password'))
+        self.assertEqual(Bridge.login('normalUser', 'password'),'FAILED: Username is incorrect')
 
         self.assertFalse(Bridge.search_shop('myShop'))
 
