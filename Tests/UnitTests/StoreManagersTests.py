@@ -11,6 +11,18 @@ from SharedClasses.Message import Message
 from DatabaseLayer import Shops, StoreManagers, Items
 
 
+def returnStringToBoolean(status):
+    if isinstance(status, bool):
+        return status
+
+    if len(status) > 5:
+        if status[0:7] is 'SUCCESS':
+            return True
+        if status[0:6] is 'FAILED':
+            return True
+    return False
+
+
 class StoreManagersTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
@@ -68,7 +80,7 @@ class StoreManagersTests(unittest.TestCase):
 
         message = Message(None, 'myShop', 'ShaharShahar', 'Hi There')
         status = MessagingLogic.send_message_from_shop('TomerTomerLev', message)
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def tearDown(self):
         os.remove('db.sqlite3')

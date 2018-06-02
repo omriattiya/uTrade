@@ -9,6 +9,18 @@ from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.SystemManager import SystemManager
 
 
+def returnStringToBoolean(status):
+    if isinstance(status,bool):
+        return status
+
+    if len(status) > 5:
+        if status[0:7] is 'SUCCESS':
+            return True
+        if status[0:6] is 'FAILED':
+            return True
+    return False
+
+
 class UsersTest(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
@@ -16,15 +28,15 @@ class UsersTest(unittest.TestCase):
     def test_login_good(self):
         register(RegisteredUser('ShaharShahar', '12341256'))
         status = login(RegisteredUser('ShaharShahar', '12341256'))
-        self.assertTrue(status)
+        self.assertTrue(returnStringToBoolean(status))
 
     def test_login_bad(self):
         register(RegisteredUser('Tomer123', '12345ABCDE'))
         status = login(RegisteredUser('Tomer123', '12345ABCDE1'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
         register(RegisteredUser('KingT678', '12345678ABCabc'))
         status = login(RegisteredUser('KingT678', '12345678ABCabcd'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_add_user(self):
         register(RegisteredUser('ShaharShahar', '12341256'))
@@ -33,38 +45,38 @@ class UsersTest(unittest.TestCase):
 
     def test_add_bad_user(self):
         status = register(RegisteredUser('ShaharShahar', '1212'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
         status = register(RegisteredUser('Tomer!', '12121212'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
         status = register(RegisteredUser('Tomer@%', '12121212'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
         status = register(RegisteredUser('sa', '12361123'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
         status = register(RegisteredUser('', 'asdsada'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_add_existing_user(self):
         register(RegisteredUser('ShaharShahar', '12345126'))
         status = register(RegisteredUser('ShaharShahar', '11241324'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_edit_profile(self):
         register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
         old_user = get_user('TomerTomerLev')
         user = RegisteredUser(old_user.username, 'newpass1234')
         status = edit_password(user)
-        self.assertTrue(status)
+        self.assertTrue(returnStringToBoolean(status))
         new_user = get_user('TomerTomerLev')
         self.assertEqual(new_user.username, 'TomerTomerLev')
 
     def test_bad_edit_profile(self):
         register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
         status = edit_password(RegisteredUser('ShaharShahar', '1234567878'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_remove_user(self):
         register(RegisteredUser('YoniYoni', '12121122'))
@@ -72,7 +84,7 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(user.username, 'YoniYoni')
         add_system_manager(SystemManager('YoniYonion', '123123123'))
         status = remove_user('YoniYonion', user)
-        self.assertTrue(status)
+        self.assertTrue(returnStringToBoolean(status))
 
     def test_bad_remover_remove_user(self):
         register(RegisteredUser('YoniYoni', '12112212'))
@@ -81,7 +93,7 @@ class UsersTest(unittest.TestCase):
         register(RegisteredUser('YoniYonion', '123123123'))
         remover = get_user('YoniYonion')
         status = remove_user(remover.username, user)
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_bad_user_remove_user(self):
         register(RegisteredUser('YoniYoni', '12112212'))
@@ -89,12 +101,12 @@ class UsersTest(unittest.TestCase):
         self.assertEqual(user.username, 'YoniYoni')
         add_system_manager(SystemManager('YoniYonion', '123123123'))
         status = remove_user('YoniYonion', None)
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_not_exist_remove_user(self):
         add_system_manager(SystemManager('YoniYonion', '123123123'))
         status = remove_user('YoniYonion', RegisteredUser('sadasdf11', '123123123'))
-        self.assertFalse(status)
+        self.assertFalse(returnStringToBoolean(status))
 
     def test_get_purchased_history(self):
         register(RegisteredUser('TomerTomer', '12121212'))
