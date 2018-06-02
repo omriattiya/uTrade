@@ -24,7 +24,10 @@ def search_item(request):
                 words = SearchLogic.get_similar_words(request.GET.get('name'))
                 words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                return render(request, 'ItemsNotFound.html', context)
+                if len(words) != 0:
+                    return render(request, 'ItemsNotFound.html', context)
+                else:
+                    return render(request, 'ItemNotFoundNoSuggestions.html', context)
         if search_by == 'category':
             items = SearchLogic.search_by_category(request.GET.get('category'))
             if len(items) != 0:
@@ -34,7 +37,10 @@ def search_item(request):
                 words = SearchLogic.get_similar_words(request.GET.get('category'))
                 words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                return render(request, 'ItemsNotFound.html', context)
+                if len(words) != 0:
+                    return render(request, 'ItemsNotFound.html', context)
+                else:
+                    return render(request, 'ItemNotFoundNoSuggestions.html', context)
         if search_by == 'keywords':
             items = SearchLogic.search_by_keywords(request.GET.get('keywords'))
             if len(items) != 0:
@@ -44,7 +50,10 @@ def search_item(request):
                 words = SearchLogic.get_similar_words(request.GET.get('keywords'))
                 words = words[:5]
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                return render(request, 'ItemsNotFound.html', context)
+                if len(words) != 0:
+                    return render(request, 'ItemsNotFound.html', context)
+                else:
+                    return render(request, 'ItemNotFoundNoSuggestions.html', context)
 
 
 def search_shop(request):

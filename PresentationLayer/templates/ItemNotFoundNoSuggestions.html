@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <BASE href="http://localhost:8000/static/">
+
+
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Obaju e-commerce template">
+    <meta name="author" content="Ondrej Svestka | ondrejsvestka.cz">
+    <meta name="keywords" content="">
+
+    <title>
+        uTrade
+    </title>
+
+    <meta name="keywords" content="">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/owl.carousel.css" rel="stylesheet">
+    <link href="css/owl.theme.css" rel="stylesheet">
+
+    <!-- theme stylesheet -->
+    <link href="css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- your stylesheet with modifications -->
+    <link href="css/custom.css" rel="stylesheet">
+
+    <script src="js/respond.min.js"></script>
+
+    <link rel="shortcut icon" href="favicon.png">
+
+
+    <!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/web_sockets.js"></script>
+
+
+</head>
+
+<body>
+
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+{% autoescape off %}
+    {{ topbar }}
+{% endautoescape %}
+
+<!-- *** TOP BAR END *** -->
+
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+
+                <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
+                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                        <span class="sr-only">Toggle search</span>
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
+                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs"> {{number_of_items}} items in cart</span>
+                    </a>
+                </div>
+            </div>
+        <!--/.navbar-header -->
+
+        <!--/.nav-collapse -->
+
+        {% autoescape off %}
+            {{ navbar }}
+        {% endautoescape %}
+
+        <div class="collapse clearfix" id="search">
+            <div class="row">
+
+                <div class="row">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch1()">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm1" class="form-control" placeholder="Search By Name">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch2()">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm2" class="form-control" placeholder="Search By Category">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch3()">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm3" class="form-control" placeholder="Search By Keywords">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <form class="navbar-form" role="search" action="javascript:onClickOnSearch4()">
+                        <div class="input-group">
+                            <input type="text" id="SearchForm4" class="form-control" placeholder="Search Shop">
+                            <span class="input-group-btn">
+
+			<button type="submit" class="btn btn-primary"><i
+                    class="fa fa-search"></i></button>
+
+		    </span>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+        <!--/.nav-collapse -->
+
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
+
+    <div id="all">
+
+        <div id="content">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row" id="error-page">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="box">
+                                <h3>We are sorry - Items Doesnt Found</h3>
+                                <h3>There Are No Suggestions That We Can Provide</h3>
+                                <p class="text-center">To continue please use the <strong>Search form</strong> or <strong>Menu</strong> above.</p>
+                                <p class="buttons"><a href="../app/home/" class="btn btn-primary"><i
+                                        class="fa fa-home"></i> Go to Homepage</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.col-md-9 -->
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+    </div>
+    <!-- /#all -->
+
+
+
+
+</body>
+
+</html>

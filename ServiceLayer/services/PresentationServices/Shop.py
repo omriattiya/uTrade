@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
-from DomainLayer import ShopLogic, UsersLogic
+from DomainLayer import ShopLogic, UsersLogic, SearchLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
@@ -66,7 +66,17 @@ def get_shop(request):
                        'owner_manager_options': owner_manager_options})
             return render(request, 'shop.html', context=context)
         else:
-            return HttpResponse(shop_not_exist)
+            login = request.COOKIES.get('login_hash')
+            guest = request.COOKIES.get('guest')
+            topbar = Topbar_Navbar.get_top_bar(login)
+            navbar = Topbar_Navbar.get_nav_bar(login, guest)
+            words = SearchLogic.get_similar_words(request.GET.get('shop_name'))
+            words = words[:5]
+            context = {'topbar': topbar, 'navbar': navbar,'words': words}
+            if len(words) != 0:
+                return render(request, 'ShopNotFound.html', context)
+            else:
+                return render(request, 'ShopNotFoundNoSuggestions.html', context)
     return HttpResponse(not_get_request)
 
 
