@@ -1,3 +1,4 @@
+import hashlib
 import os
 import unittest
 from datetime import date
@@ -8,10 +9,11 @@ from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ShoppingCartDB import add_item_shopping_cart
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer import ShopLogic, UsersLogic
+from DomainLayer import ShopLogic, UsersLogic, UserShoppingCartLogic
 from DomainLayer.LotteryLogic import add_lottery_and_items
-from DomainLayer.ShoppingLogic import pay_all
+from DomainLayer.UserShoppingCartLogic import pay_all
 from DomainLayer.UsersLogic import register
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
@@ -52,8 +54,12 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all('NoniNoni')
+        username = 'NoniNoni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all(access_token)
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertTrue(customer_lottery is not False)
 
@@ -68,8 +74,12 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 500, date(2016, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all('NoniNoni')
+        username = 'NoniNoni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all(access_token)
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertFalse(customer_lottery is not False)
 
@@ -84,8 +94,12 @@ class LotteryTest(unittest.TestCase):
         add_lottery_and_items(item1, item2, 1, date(2016, 12, 26), 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
-        add_item_shopping_cart(ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all('NoniNoni')
+        username = 'NoniNoni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
+        pay_all(access_token)
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertFalse(customer_lottery is not False)
 

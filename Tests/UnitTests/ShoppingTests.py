@@ -1,12 +1,14 @@
+import hashlib
 import unittest, os
 from DatabaseLayer.initializeDatabase import init_database
-from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
+from DomainLayer import ShopLogic, ItemsLogic, UsersLogic, UserShoppingCartLogic
 from DomainLayer.UsersLogic import register
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.Shop import Shop
 from DomainLayer.ShoppingLogic import add_item_shopping_cart, remove_item_shopping_cart
-from DomainLayer.ShoppingLogic import pay_all
+from DomainLayer.UserShoppingCartLogic import pay_all
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.StoreManager import StoreManager
 
@@ -26,11 +28,17 @@ class ShoppingTests(unittest.TestCase):
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager1')
         register(RegisteredUser('ToniToni', '1234567878'))
-        add_item_shopping_cart(ShoppingCartItem('ToniToni', item1.id, 3, None))
-        add_item_shopping_cart(ShoppingCartItem('ToniToni', item2.id, 2, None))
+        username = 'ToniToni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem(username, item1.id, 3, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem(username, item2.id, 2, None))
 
     def test_pay_all(self):
-        self.assertTrue(pay_all('ToniToni'))
+        username = 'ToniToni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        self.assertTrue(isinstance(pay_all(access_token), list))
         item1 = ItemsLogic.Items.search_item_in_shop('My Shop', 'milk')
         item2 = ItemsLogic.Items.search_item_in_shop('My Shop', 'steak')
         self.assertTrue(item1.quantity == 97)
@@ -48,27 +56,37 @@ class ShoppingTests(unittest.TestCase):
                      "https://cdn3.iconfinder.com/data/icons/user-interface-icons-bundle-18/32/910-512.png", 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager11')
         ItemsLogic.add_item_to_shop(item2, 'StoreManager11')
-        add_item_shopping_cart(ShoppingCartItem('ToniToni', item1.id, 3, None))
-        add_item_shopping_cart(ShoppingCartItem('ToniToni', item2.id, 2, None))
-        self.assertTrue(pay_all('ToniToni'))
+        username = 'ToniToni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem(username, item1.id, 3, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem(username, item2.id, 2, None))
+        self.assertTrue(isinstance(pay_all(access_token), list))
 
     def test_bad_no_items_cart_pay_all(self):
         item1 = ItemsLogic.Items.search_item_in_shop('My Shop', 'milk')
         item2 = ItemsLogic.Items.search_item_in_shop('My Shop', 'steak')
-        remove_item_shopping_cart('ToniToni', item1.id)
-        remove_item_shopping_cart('ToniToni', item2.id)
-        self.assertEqual(pay_all('ToniToni'), "Shopping cart is empty")
+        username = 'ToniToni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        UserShoppingCartLogic.remove_item_shopping_cart(access_token, item1.id)
+        UserShoppingCartLogic.remove_item_shopping_cart(access_token, item2.id)
+        self.assertEqual(pay_all(access_token), "Shopping cart is empty")
 
     def test_bad_out_of_stock_cart_pay_all(self):
         item3 = Item(3, 'My Shop', 'asado', 'meat', 'bad', 12, 100, 'regular',
                      "https://cdn3.iconfinder.com/data/icons/user-interface-icons-bundle-18/32/910-512.png", 0, 0, 0)
         ItemsLogic.add_item_to_shop(item3, 'StoreManager1')
         register(RegisteredUser('ToniToni1', '1234567878'))
-        add_item_shopping_cart(ShoppingCartItem('ToniToni', item3.id, 100, None))
-        add_item_shopping_cart(ShoppingCartItem('ToniToni1', item3.id, 100, None))
-        self.assertTrue(pay_all('ToniToni'))
+        username = 'ToniToni'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ToniToni', item3.id, 100, None))
+        username1 = 'ToniToni1'
+        access_token1 = hashlib.md5(username1.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token1] = username1
+        Consumer.loggedInUsersShoppingCart[access_token1] = []
+        UserShoppingCartLogic.add_item_shopping_cart(access_token1, ShoppingCartItem('ToniToni1', item3.id, 100, None))
+        self.assertTrue(isinstance(pay_all(access_token), list))
         # TODO fix this test.
-        self.assertEqual(pay_all('ToniToni1'), "Only 0 asado exist in the system")
+        self.assertEqual(pay_all(access_token1), "Only 0 asado exist in the system")
 
     def tearDown(self):
         os.remove('db.sqlite3')
