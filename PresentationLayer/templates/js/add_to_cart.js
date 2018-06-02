@@ -12,6 +12,11 @@ function addToCart(item_id)
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200)
         {
+            if (loadHTML.responseText === 'Stock_Error')
+            {
+                alert("The Quantity You Chose Doesn't Exist In Stock");
+                return;
+            }
             if (loadHTML.responseText === 'fail')
             {
                 alert("add to cart fail");

@@ -39,6 +39,9 @@ def add_item_to_cart(request):
     if request.method == 'POST':
         item_id = int(request.POST.get('item_id'))
         quantity = int(request.POST.get('quantity'))
+        item = ItemsLogic.get_item(item_id)
+        if item.quantity < quantity:
+            return HttpResponse('Stock_Error')
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
