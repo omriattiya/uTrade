@@ -1,5 +1,5 @@
 from DatabaseLayer import Owners, SystemManagers
-from DomainLayer import ItemsLogic
+from DomainLayer import ItemsLogic, UserShoppingCartLogic
 from DomainLayer import ShopLogic
 from DomainLayer import ShoppingLogic
 from DomainLayer import UsersLogic
@@ -33,12 +33,12 @@ def add_item_to_shop(shop_name, item_name, item_category, keywords, price, quant
                                        username)
 
 
-def buy_item(username, shop_name, item_id, quantity):
-    return ShoppingLogic.add_item_shopping_cart(ShoppingCartItem(username, item_id, quantity, ""))
+def buy_item(login_token, username, shop_name, item_id, quantity):
+    return UserShoppingCartLogic.add_item_shopping_cart(login_token, ShoppingCartItem(username, item_id, quantity, ""))
 
 
-def is_item_bought(username, item_id):
-    for item in ShoppingLogic.get_cart_items(username):
+def is_item_bought(login_token, item_id):
+    for item in UserShoppingCartLogic.get_cart_items(login_token):
         if item.item_id == item_id:
             return True
     return False
@@ -60,8 +60,8 @@ def search_shop(shop_name):
     return ShopLogic.search_shop(shop_name)
 
 
-def pay_cart(username):
-    return ShoppingLogic.pay_all(username)
+def pay_cart(login_token):
+    return UserShoppingCartLogic.pay_all(login_token)
 
 
 def quantity_in_store(item_id):
@@ -72,7 +72,7 @@ def quantity_in_store(item_id):
 
 
 def get_cart_cost(username):
-    return ShoppingLogic.get_cart_cost(username)
+    return UserShoppingCartLogic.get_cart_cost(username)
 
 
 def delete_user(by, who):

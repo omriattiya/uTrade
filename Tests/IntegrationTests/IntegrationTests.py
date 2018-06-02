@@ -1,8 +1,10 @@
+import hashlib
 import os
 import unittest
 
 from DatabaseLayer.initializeDatabase import init_database
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers
+from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.SystemManager import SystemManager
 from SharedClasses.Shop import Shop
@@ -12,7 +14,8 @@ from SharedClasses.Item import Item
 from SharedClasses.Message import Message
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.ItemReview import ItemReview
-from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic, \
+    UserShoppingCartLogic
 
 
 class IntegrationTests(unittest.TestCase):
@@ -190,26 +193,51 @@ class IntegrationTests(unittest.TestCase):
 
         ItemsLogic.add_item_to_shop(
             Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None,0,0,0), 'u3ser3u3ser3')
+        username1 = 'u4ser4u4ser4'
+        username2 = 'u2ser2u2ser2'
+        username3 = 'u1ser1u1ser1'
+        username4 = 'u3ser3u3ser3'
+        username5 = 'u5seru5ser'
 
-        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 1, 10, None))
-        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 2, 5, None))
-        ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 3, 15, None))
+        access_token1 = hashlib.md5(username1.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token1] = username1
+        Consumer.loggedInUsersShoppingCart[access_token1] = []
 
-        items = ShoppingLogic.get_cart_items('u5seru5ser')
+        access_token2 = hashlib.md5(username2.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token2] = username2
+        Consumer.loggedInUsersShoppingCart[access_token2] = []
+
+        access_token3 = hashlib.md5(username3.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token3] = username3
+        Consumer.loggedInUsersShoppingCart[access_token3] = []
+
+        access_token4 = hashlib.md5(username4.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token4] = username4
+        Consumer.loggedInUsersShoppingCart[access_token4] = []
+
+        access_token5 = hashlib.md5(username5.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token5] = username5
+        Consumer.loggedInUsersShoppingCart[access_token5] = []
+
+        UserShoppingCartLogic.add_item_shopping_cart(access_token5, ShoppingCartItem('u5seru5ser', 1, 10, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token5, ShoppingCartItem('u5seru5ser', 2, 5, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token5, ShoppingCartItem('u5seru5ser', 3, 15, None))
+
+        items = UserShoppingCartLogic.get_cart_items(access_token5)
         self.assertEqual(len(items), 3)
         self.assertEqual(items[0].code, None)
 
-        ShoppingLogic.remove_item_shopping_cart('u5seru5ser', 1)
-        items = ShoppingLogic.get_cart_items('u5seru5ser')
+        UserShoppingCartLogic.remove_item_shopping_cart(access_token5, 1)
+        items = UserShoppingCartLogic.get_cart_items(access_token5)
         self.assertEqual(len(items), 2)
 
-        ShoppingLogic.remove_item_shopping_cart('u5seru5ser', 2)
-        items = ShoppingLogic.get_cart_items('u5seru5ser')
+        UserShoppingCartLogic.remove_item_shopping_cart(access_token5, 2)
+        items = UserShoppingCartLogic.get_cart_items(access_token5)
         self.assertEqual(len(items), 1)
 
         # Only item id 3 left
 
-        ShoppingLogic.pay_all('u5seru5ser')
+        UserShoppingCartLogic.pay_all(access_token5)
         items1 = UsersLogic.get_purchase_history('u5seru5ser')
         items2 = ItemsLogic.get_all_purchased_items('sys1sys1')
         items3 = ShopLogic.get_shop_purchase_history('u4ser4u4ser4','myShop1')

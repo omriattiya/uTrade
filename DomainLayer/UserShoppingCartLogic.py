@@ -193,11 +193,11 @@ def supply_items(items):
     return SupplySystem.supply_my_items(items)
 
 
-def get_cart_cost(username):
-    empty = ShoppingCartDB.check_empty(username)
+def get_cart_cost(login_token):
+    empty = check_empty_cart_user(login_token)
     if empty is not True:
         #  if so, check foreach item if the requested amount exist
-        cart_items = get_cart_items(username)
+        cart_items = get_cart_items(login_token)
         # cart_items is a array consist of shopping_cart objects
         for shopping_cart_item in cart_items:
             if ItemsLogic.check_in_stock(shopping_cart_item.item_id, shopping_cart_item.item_quantity) is False:
@@ -224,12 +224,8 @@ def get_cart_cost(username):
                 final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
                 if final_date > datetime.now():
                     lottery_sum = get_lottery_sum(lottery.lotto_id)
-                    if lottery_sum + shopping_cart_item.item_quantity * item.price < lottery.max_price:
-                        lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart_item.item_id,
-                                                                                   username,
-                                                                                   shopping_cart_item.item_quantity * item.price)
-                        if lotto_status is False:
-                            return False
+                    if lottery_sum + shopping_cart_item.item_quantity * item.price > lottery.max_price:
+                        return False
                     else:
                         return False
                 else:
@@ -241,7 +237,7 @@ def get_cart_cost(username):
 
 def remove_shopping_cart(login_token):
     if login_token is not None:
-        Consumer.loggedInUsersShoppingCart[login_token] = {}
+        Consumer.loggedInUsersShoppingCart[login_token] = []
 
 
 def remove_shopping_cart_db(username):

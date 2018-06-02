@@ -1,7 +1,9 @@
+import hashlib
 import os
 import unittest
 
 from DatabaseLayer.initializeDatabase import init_database
+from ServiceLayer.services.LiveAlerts import Consumer
 from Tests.AcceptanceTests import Bridge
 
 
@@ -60,20 +62,23 @@ class CusTomerTomer(unittest.TestCase):
                                 item_category='item_category', keywords='keywords', price=10,
                                 quantity=100, username='username', kind='regular', url=None,
                                 item_rating=0, sum_of_ranking=0, num_of_reviews=0)
+        username = 'username'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=1, quantity=10)
+        self.assertTrue(Bridge.is_item_bought(login_token=access_token, item_id=1))
 
-        Bridge.buy_item(username='username', shop_name='shop_name', item_id=1, quantity=10)
-        self.assertTrue(Bridge.is_item_bought(username='username', item_id=1))
+        Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=2, quantity=10)
+        self.assertTrue(Bridge.is_item_bought(login_token=access_token, item_id=2))
 
-        Bridge.buy_item(username='username', shop_name='shop_name', item_id=2, quantity=10)
-        self.assertTrue(Bridge.is_item_bought(username='username', item_id=2))
+        Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=3, quantity=10)
+        self.assertTrue(Bridge.is_item_bought(login_token=access_token,  item_id=3))
 
-        Bridge.buy_item(username='username', shop_name='shop_name', item_id=3, quantity=10)
-        self.assertTrue(Bridge.is_item_bought(username='username', item_id=3))
-
-        is_bought = Bridge.buy_item(username='username', shop_name='shop_name', item_id=4, quantity=10)
+        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=4, quantity=10)
         self.assertFalse(is_bought)
 
-        is_bought = Bridge.buy_item(username='username', shop_name='shop_name', item_id=3, quantity=150)
+        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=3, quantity=150)
         self.assertFalse(is_bought)
 
         # remove item from cart
@@ -149,17 +154,21 @@ class CusTomerTomer(unittest.TestCase):
                                 item_rating=0, sum_of_ranking=0, num_of_reviews=0)
 
         # add items to cart
-        Bridge.buy_item('clientUser', 'my_shop', 1, 10)
-        Bridge.buy_item('clientUser', 'my_shop', 2, 10)
-        Bridge.buy_item('clientUser', 'my_shop', 3, 10)
-        Bridge.buy_item('clientUser', 'my_shop', 4, 10)
-        Bridge.buy_item('clientUser', 'my_shop', 5, 10)
+        username = 'clientUser'
+        access_token = hashlib.md5(username.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = username
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 1, 10)
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 2, 10)
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 3, 10)
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 4, 10)
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 5, 10)
 
         # check total cost is calculated right
-        self.assertEqual(Bridge.get_cart_cost('clientUser'), 500)
+        self.assertEqual(Bridge.get_cart_cost(access_token), 500)
 
         # buy!
-        self.assertTrue(Bridge.pay_cart('clientUser'))
+        self.assertTrue(Bridge.pay_cart(access_token))
 
         # check quantity in store changed
         self.assertEqual(Bridge.quantity_in_store(1), 0)
@@ -167,17 +176,20 @@ class CusTomerTomer(unittest.TestCase):
         self.assertEqual(Bridge.quantity_in_store(3), 20)
         self.assertEqual(Bridge.quantity_in_store(4), 30)
         self.assertEqual(Bridge.quantity_in_store(5), 40)
-
         # alternative scenario - item quantity is not enough
-        self.assertFalse(Bridge.buy_item('clientUser', 'my_shop', 1, 10))
+        self.assertFalse(Bridge.buy_item(access_token, 'clientUser', 'my_shop', 1, 10))
 
         # alternative scenario - added items, but another user already bought them
+        username2 = 'clientUser2'
+        access_token2 = hashlib.md5(username2.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token2] = username2
+        Consumer.loggedInUsersShoppingCart[access_token2] = []
         Bridge.register_user('clientUser2', 'password')
-        Bridge.buy_item('clientUser', 'my_shop', 2, 10)
-        Bridge.buy_item('clientUser2', 'my_shop', 2, 10)
+        Bridge.buy_item(access_token, 'clientUser', 'my_shop', 2, 10)
+        Bridge.buy_item(access_token2, 'clientUser2', 'my_shop', 2, 10)
 
-        self.assertTrue(Bridge.pay_cart('clientUser2'))
-        self.assertFalse(Bridge.pay_cart('clientUser'))
+        self.assertTrue(isinstance(Bridge.pay_cart(access_token2), list))
+        self.assertTrue(isinstance(Bridge.pay_cart(access_token), str))
 
     def test_system_remove(self):  # 5.2
         # check sys manager really exist
