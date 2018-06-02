@@ -84,19 +84,19 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(manager.permission_reply_messages, 1)
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None), 'u4ser4u4ser4')
+            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None), 'u2ser2u2ser2')
+            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None,0,0,0), 'u2ser2u2ser2')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None), 'u1ser1u1ser1')
+            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None,0,0,0), 'u1ser1u1ser1')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None), 'u4ser4u4ser4')
+            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None), 'u3ser3u3ser3')
+            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None,0,0,0), 'u3ser3u3ser3')
 
         items = SearchLogic.search_by_name('banana')
         self.assertEqual(items[0].quantity, 300)
@@ -177,19 +177,19 @@ class IntegrationTests(unittest.TestCase):
         )
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None), 'u4ser4u4ser4')
+            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None), 'u2ser2u2ser2')
+            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None,0,0,0), 'u2ser2u2ser2')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None), 'u1ser1u1ser1')
+            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None,0,0,0), 'u1ser1u1ser1')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None), 'u4ser4u4ser4')
+            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None), 'u3ser3u3ser3')
+            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None,0,0,0), 'u3ser3u3ser3')
 
         ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 1, 10, None))
         ShoppingLogic.add_item_shopping_cart(ShoppingCartItem('u5seru5ser', 2, 5, None))
