@@ -54,3 +54,7 @@ def search_by_keywords(item_keywords):
 def get_similar_words(word):
     d = enchant.Dict("en_US")
     return d.suggest(word)
+
+
+def get_top_five_ranked_items():
+    return Items.get_top_five_ranked_items()

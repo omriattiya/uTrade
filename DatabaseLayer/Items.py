@@ -143,3 +143,10 @@ def get_item_by_code(code):
                 WHERE Items.id = InvisibleDiscounts.item_id AND InvisibleDiscounts.code = '{}'
                 """.format(code)
     return fetch_item(select_command(sql_query))
+
+
+def get_top_five_ranked_items():
+    sql = """
+            SELECT * FROM Items ORDER BY item_rating DESC limit 5
+            """
+    return fetch_items(select_command(sql))
