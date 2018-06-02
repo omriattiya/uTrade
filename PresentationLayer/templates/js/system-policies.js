@@ -439,3 +439,15 @@ function global_savePolicyChanges() {
     loadHTML.open("POST", "http://localhost:8000/app/system/policies/global/update/", true);
     loadHTML.send(data);
 }
+
+
+function printAllStates() {
+    let state_strings = "";
+    let states = document.getElementById("global-states").children;
+    for (let i = 0; i < states.length; i++) {
+        if (states[i] !== undefined) {
+            state_strings = state_strings + '"\''+states[i].value+ '\'",'
+        }
+    }
+    console.log(state_strings)
+}

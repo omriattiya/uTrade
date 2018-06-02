@@ -134,6 +134,11 @@ def update_shopping_policy_on_identity(username, policy_id, field_name, new_valu
         if field_name not in ['conditions', 'restrict', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
+            if field_name in ['conditions']:
+                status = checkConditionsSyntax(new_value)
+                if status is not True:
+                    return status
+
             if not ShoppingPolicies.update_shopping_policy_on_identity(policy_id, field_name, new_value):
                 return "FAILED: DB error."
             return True
@@ -149,23 +154,10 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
             return "FAILED: Invalid field name"
         if Owners.get_owner(username, shop_name) is not False:
             if field_name in ['conditions']:
-                # WHAT I'M DOING HERE IS DUMB IN SO MANY WAYS. DON'T EVER DO THAT
-                try:
-                    conn = sqlite3.connect('./checking_syntax')
-                    c = conn.cursor()
-                    c.execute("""CREATE TABLE IF NOT EXISTS UserDetails(
-                                  username CHAR(30), 
-                                  state CHAR(30) DEFAULT NULL,
-                                  age INTEGER DEFAULT NULL,
-                                  sex INTEGER DEFAULT NULL,
-                                  PRIMARY KEY(username)
-                                )""")
-                    c.execute("""SELECT *
-                                FROM UserDetails
-                                WHERE {}""".format(new_value.replace("''","'")))
-                    conn.close()
-                except sqlite3.Error as e:
-                    return "FAILED: {}".format(e)
+                status = checkConditionsSyntax(new_value)
+                if status is not True:
+                    return status
+
             if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
                 return "FAILED: DB error."
             return True
@@ -180,6 +172,11 @@ def update_shopping_policy_on_items(username, policy_id, field_name, new_value):
         if field_name not in ['item_name', 'conditions', 'restrict', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
+            if field_name in ['conditions']:
+                status = checkConditionsSyntax(new_value)
+                if status is not True:
+                    return status
+
             if not ShoppingPolicies.update_shopping_policy_on_items(policy_id, field_name, new_value):
                 return "FAILED: DB error."
             return True
@@ -194,8 +191,84 @@ def update_shopping_policy_on_category(username, policy_id, field_name, new_valu
         if field_name not in ['category', 'conditions', 'restrict', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
+            if field_name in ['conditions']:
+                status = checkConditionsSyntax(new_value)
+                if status is not True:
+                    return status
+
             if not ShoppingPolicies.update_shopping_policy_on_category(policy_id, field_name, new_value):
                 return "FAILED: DB error."
-                return True
+            return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: One (or more) of the parameters is None"
+
+
+logic_operators = ['AND', 'OR', 'NOT']
+fields = ['age', 'sex', 'state']
+numerical_operators = ['>', '<', '=', '>=', '<=', '!=']
+genders = ["'Male'", "'Female'"]
+# Don't worry I didn't really typed all of these 256 states.
+states = ["'AFG'", "'ALA'", "'ALB'", "'DZA'", "'ASM'", "'AND'", "'AGO'", "'AIA'", "'ATA'", "'ATG'", "'ARG'", "'ARM'",
+          "'ABW'", "'AUS'", "'AUT'", "'AZE'", "'BHS'", "'BHR'", "'BGD'", "'BRB'", "'BLR'", "'BEL'", "'BLZ'", "'BEN'",
+          "'BMU'", "'BTN'", "'BOL'", "'BES'", "'BIH'", "'BWA'", "'BVT'", "'BRA'", "'IOT'", "'BRN'", "'BGR'", "'BFA'",
+          "'BDI'", "'KHM'", "'CMR'", "'CAN'", "'CPV'", "'CYM'", "'CAF'", "'TCD'", "'CHL'", "'CHN'", "'CXR'", "'CCK'",
+          "'COL'", "'COM'", "'COG'", "'COD'", "'COK'", "'CRI'", "'CIV'", "'HRV'", "'CUB'", "'CUW'", "'CYP'", "'CZE'",
+          "'DNK'", "'DJI'", "'DMA'", "'DOM'", "'ECU'", "'EGY'", "'SLV'", "'GNQ'", "'ERI'", "'EST'", "'ETH'", "'FLK'",
+          "'FRO'", "'FJI'", "'FIN'", "'FRA'", "'GUF'", "'PYF'", "'ATF'", "'GAB'", "'GMB'", "'GEO'", "'DEU'", "'GHA'",
+          "'GIB'", "'GRC'", "'GRL'", "'GRD'", "'GLP'", "'GUM'", "'GTM'", "'GGY'", "'GIN'", "'GNB'", "'GUY'", "'HTI'",
+          "'HMD'", "'VAT'", "'HND'", "'HKG'", "'HUN'", "'ISL'", "'IND'", "'IDN'", "'IRN'", "'IRQ'", "'IRL'", "'IMN'",
+          "'ISR'", "'ITA'", "'JAM'", "'JPN'", "'JEY'", "'JOR'", "'KAZ'", "'KEN'", "'KIR'", "'PRK'", "'KOR'", "'KWT'",
+          "'KGZ'", "'LAO'", "'LVA'", "'LBN'", "'LSO'", "'LBR'", "'LBY'", "'LIE'", "'LTU'", "'LUX'", "'MAC'", "'MKD'",
+          "'MDG'", "'MWI'", "'MYS'", "'MDV'", "'MLI'", "'MLT'", "'MHL'", "'MTQ'", "'MRT'", "'MUS'", "'MYT'", "'MEX'",
+          "'FSM'", "'MDA'", "'MCO'", "'MNG'", "'MNE'", "'MSR'", "'MAR'", "'MOZ'", "'MMR'", "'NAM'", "'NRU'", "'NPL'",
+          "'NLD'", "'NCL'", "'NZL'", "'NIC'", "'NER'", "'NGA'", "'NIU'", "'NFK'", "'MNP'", "'NOR'", "'OMN'", "'PAK'",
+          "'PLW'", "'PSE'", "'PAN'", "'PNG'", "'PRY'", "'PER'", "'PHL'", "'PCN'", "'POL'", "'PRT'", "'PRI'", "'QAT'",
+          "'REU'", "'ROU'", "'RUS'", "'RWA'", "'BLM'", "'SHN'", "'KNA'", "'LCA'", "'MAF'", "'SPM'", "'VCT'", "'WSM'",
+          "'SMR'", "'STP'", "'SAU'", "'SEN'", "'SRB'", "'SYC'", "'SLE'", "'SGP'", "'SXM'", "'SVK'", "'SVN'", "'SLB'",
+          "'SOM'", "'ZAF'", "'SGS'", "'SSD'", "'ESP'", "'LKA'", "'SDN'", "'SUR'", "'SJM'", "'SWZ'", "'SWE'", "'CHE'",
+          "'SYR'", "'TWN'", "'TJK'", "'TZA'", "'THA'", "'TLS'", "'TGO'", "'TKL'", "'TON'", "'TTO'", "'TUN'", "'TUR'",
+          "'TKM'", "'TCA'", "'TUV'", "'UGA'", "'UKR'", "'ARE'", "'GBR'", "'USA'", "'UMI'", "'URY'", "'UZB'", "'VUT'",
+          "'VEN'", "'VNM'", "'VGB'", "'VIR'", "'WLF'", "'ESH'", "'YEM'", "'ZMB'", "'ZWE'"]
+
+
+def checkConditionsSyntax(conditions):
+    # WHAT I'M DOING HERE IS DUMB IN SO MANY WAYS. DON'T EVER DO THAT
+    replaced_conditions = conditions.replace("''", "'")
+    without_parentheses_conditions = replaced_conditions.replace("(", "")
+    without_parentheses_conditions = without_parentheses_conditions.replace(")", "")
+
+    # First checking that there are only valid values
+    tokens = without_parentheses_conditions.split()
+    for token in tokens:
+        if token not in logic_operators and \
+                        token not in fields and \
+                        token not in numerical_operators \
+                and token not in genders and \
+                        token not in states:
+            try:
+                token = int(token)
+                if (token > 100 or token < 0):
+                    return "FAILED: " + str(token) + " is out of range"
+                else:
+                    continue
+            except:
+                return "FAILED unrecognized token " + token
+
+    # Checking sql syntax is correct.
+    try:
+        conn = sqlite3.connect('./checking_syntax')
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS UserDetails(
+                                      username CHAR(30), 
+                                      state CHAR(30) DEFAULT NULL,
+                                      age INTEGER DEFAULT NULL,
+                                      sex INTEGER DEFAULT NULL,
+                                      PRIMARY KEY(username)
+                                    )""")
+        c.execute("""SELECT *
+                    FROM UserDetails
+                    WHERE {}""".format(replaced_conditions))
+        conn.close()
+    except sqlite3.Error as e:
+        return "FAILED: {}".format(e)
+    return True
