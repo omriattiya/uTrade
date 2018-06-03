@@ -43,4 +43,11 @@ def is_meet_conditions(username, conditions):
                     FROM UserDetails
                     WHERE username = '{}' AND ({})
                       """.format(username, conditions)
+    if conditions == "":
+        sql_query = """
+                            SELECT *
+                            FROM UserDetails
+                            WHERE username = '{}'
+                              """.format(username)
+
     return parse_user_details(select_command(sql_query))

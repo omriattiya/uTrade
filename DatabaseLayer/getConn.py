@@ -37,5 +37,6 @@ def select_command(sql_query):
         conn.close()
         return results
     except Error as e:
+        print(e)
         conn.close()
         return []
