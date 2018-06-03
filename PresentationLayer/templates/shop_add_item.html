@@ -35,7 +35,7 @@
 
     <script src="js/respond.min.js"></script>
     <script src="js/search.js"></script>
-    <script src="js/shop_owner_actions.js"></script>
+
 
     <link rel="shortcut icon" href="favicon.png">
 
@@ -52,7 +52,7 @@ _________________________________________________________ -->
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
     <script src="js/web_sockets.js"></script>
-
+    <script src="js/shop_owner_actions.js"></script>
     <script>
         function change_labels(kind) {
             let quantity = document.getElementById("label_quantity");
@@ -88,10 +88,11 @@ _________________________________________________________ -->
             }
             else if (selected_kind === "prize") {
                 kind_box.innerHTML = '\
-                            <div class="form-group">\
-                                <label for="sale_duration">* Sale Duration (in days)</label>\
-                                <input required name="sale_duration" id="sale_duration" min="1" class="form-control">\
-                            </div>\
+                            <div class="row">\
+        <div class="col-md-5"><input required name="sale_date" id="sale_date" type="date" /></div>\
+        <div class="col-md-3"><input required name="sale_hour" id="sale_hour" type="number" style="width: 50px;" min="0" max="23" class="form-control"></div>\
+        <div class="col-md-4"><input required name="sale_minutes" id="sale_minutes" type="number" style="width: 50px;" min="0" max="23" class="form-control"></div>\
+        </div>\
                 ';
             }
         }
@@ -193,7 +194,7 @@ _________________________________________________________ -->
                             </div>
                             <div class="form-group">
                                 <label id="label_price" for="price">* Price</label>
-                                <input required name="price" id="price" type="number" min="1" class="form-control">
+                                <input required name="price" id="price" min="1" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="url">URL</label>

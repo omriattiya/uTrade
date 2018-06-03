@@ -17,7 +17,7 @@ def add_item_to_shop(request):
         item_quantity = int(request.POST.get('item_quantity'))
         item_category = request.POST.get('item_category')
         item_keywords = request.POST.get('item_keywords')
-        item_price = int(request.POST.get('item_price'))
+        item_price = float(request.POST.get('item_price'))
         item_url = request.POST.get('item_url')
         item_kind = request.POST.get('item_kind')
         if shop_name is None or ShopLogic.search_shop(shop_name) is False:
@@ -41,9 +41,13 @@ def add_item_to_shop(request):
         if item_url == '':
             item_url = None
 
-        item_prize_sale_duration = None
+        sale_date = None
+        sale_hour = None
+        sale_minutes = None
         if item_kind == 'prize':
-            item_prize_sale_duration = int(request.POST.get('item_prize_sale_duration'))
+            sale_date = request.POST.get('sale_date')
+            sale_hour = request.POST.get('sale_hour')
+            sale_minutes = request.POST.get('sale_minutes')
 
         login = request.COOKIES.get('login_hash')
         username = None
@@ -70,8 +74,7 @@ def add_item_to_shop(request):
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
                           item_price, item_quantity, 'ticket', item_url, 0, 0, 0)
             status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
-                                                        datetime.datetime.now() + datetime.timedelta(
-                                                            days=item_prize_sale_duration), username)
+                                                        sale_date + ' ' + sale_hour + ':' + sale_minutes, username)
         if status is False:
             return HttpResponse('could not add item')
         return HttpResponse('success')
