@@ -83,10 +83,19 @@ function addItem(shop_name) {
         alert("Field Price Must Not Be Empty");
         return;
     }
+    else
+    {
+        var reg = new RegExp('([0-9]*[.])?[0-9]+');
+        if(!reg.test(document.getElementById("price").value))
+        {
+            alert("Field Price Must A Number");
+            return;
+        }
+    }
     let item_kind = document.getElementById("kind").value;
     if (item_kind === 'prize')
     {
-        if(document.getElementById("sale_duration").value  == '')
+        if(document.getElementById("sale_date").value  == '')
         {
             alert("Field Sale Duration Must Not Be Empty");
             return;
@@ -101,10 +110,11 @@ function addItem(shop_name) {
     data.append('item_price', document.getElementById("price").value);
     data.append('item_url', document.getElementById("url").value);
     data.append('item_kind', item_kind);
-
     if (item_kind === 'prize')
     {
-        data.append('item_prize_sale_duration', document.getElementById("sale_duration").value);
+        data.append('sale_date', document.getElementById("sale_date").value);
+        data.append('sale_hour', document.getElementById("sale_hour").value);
+        data.append('sale_minutes', document.getElementById("sale_minutes").value);
     }
     let loadHTML = new XMLHttpRequest();
     loadHTML.shop_name = shop_name;
