@@ -12,7 +12,7 @@ def get_all_shopping_policy_on_shop(shop_name):
     return ShoppingPolicies.get_all_shopping_policy_on_shop(shop_name)
 
 
-def get_all_shops_shopping_policies(shop_name):
+def get_all_shops_shopping_policies():
     return ShoppingPolicies.get_all_shops_shopping_policies()
 
 

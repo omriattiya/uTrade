@@ -17,6 +17,16 @@ from SharedClasses.ItemReview import ItemReview
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic, \
     UserShoppingCartLogic, ShoppingPolicyLogic
 
+def StoB(status):
+    if isinstance(status,bool):
+        return status
+
+    if len(status) > 5:
+        if status[0:7] is 'SUCCESS':
+            return True
+        if status[0:6] is 'FAILED':
+            return True
+    return False
 
 class IntegrationTests(unittest.TestCase):
     def setUp(self):
@@ -260,7 +270,7 @@ class IntegrationTests(unittest.TestCase):
         item1 = Item(1, 'eBay', 'banana', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'ShaharBenS2')
 
-        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "sex = 'Male'", "AL", 3)
+        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "sex = ''Male''", "AL", 3)
         ShoppingPolicyLogic.add_shopping_policy_on_identity('Ultimate_ShaharShahar', "", "N", 0)
         ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "", "", "N", 0)
         ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "", "", "N", 0)
@@ -269,9 +279,9 @@ class IntegrationTests(unittest.TestCase):
         Consumer.loggedInUsers[access_token] = 'ShaharBenS'
         Consumer.loggedInUsersShoppingCart[access_token] = []
 
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 3, None))
-        status = ShoppingLogic.pay_all('ShaharBenS')
-        self.assertTrue(status)
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 2, None))
+        status = UserShoppingCartLogic.pay_all(access_token)
+        self.assertFalse(StoB(status))
 
     def tearDown(self):
         os.remove('db.sqlite3')

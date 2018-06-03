@@ -301,7 +301,7 @@ def add_all_shopping_cart_to_user(shopping_cart):
 
 
 def shopping_policy_check(username, cart_items):
-    if username is not "guest":
+    if not (username == "guest"):
         user = RegisteredUsers.get_user(username)
         if user is False:
             return "FAILED: User does not exist"
@@ -324,30 +324,30 @@ def shopping_policy_check(username, cart_items):
 def check_identity_shopping_policies(username, cart_items):
     identity_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_identity()
     for identity_policy in identity_policies:
-        if username is not "guest":
+        if not (username == "guest"):
             if is_meet_conditions(username, identity_policy.conditions) is False:
                 continue
-        if identity_policy.restriction is 'N':
+        if identity_policy.restriction == 'N':
             continue
-        elif identity_policy.restriction is 'AL':
+        elif identity_policy.restriction == 'AL':
             if len(cart_items) < identity_policy.quantity:
-                return "FAILED: Not enough items in cart; You allowed at least " + identity_policy.quantity
-        elif identity_policy.restriction is 'E':
+                return "FAILED: Not enough items in cart; You allowed at least " + str(identity_policy.quantity)
+        elif identity_policy.restriction == 'E':
             if len(cart_items) != identity_policy.quantity:
-                return "FAILED: Not exact num of items in cart; You allowed exactly " + identity_policy.quantity
-        elif identity_policy.restriction is 'UT':
+                return "FAILED: Not exact num of items in cart; You allowed exactly " + str(identity_policy.quantity)
+        elif identity_policy.restriction == 'UT':
             if len(cart_items) > identity_policy.quantity:
-                return "FAILED: Too much items in cart; You allowed at most " + identity_policy.quantity
+                return "FAILED: Too much items in cart; You allowed at most " + str(identity_policy.quantity)
     return True
 
 
 def check_items_shopping_policies(username, cart_items):
     items_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
     for items_policy in items_policies:
-        if username is not "guest":
+        if not (username == "guest"):
             if is_meet_conditions(username, items_policy.conditions) is False:
                 continue
-        if items_policy.restriction is 'N':
+        if items_policy.restriction == 'N':
             continue
         num_of_items = 0
         cart_item_name = None
@@ -355,25 +355,25 @@ def check_items_shopping_policies(username, cart_items):
             cart_item_name = ItemsLogic.get_item(cart_item.item_id).name
             if items_policy.item_name == cart_item_name:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if items_policy.restriction is 'AL':
+        if items_policy.restriction == 'AL':
             if num_of_items < items_policy.quantity:
-                return "FAILED: Not enough " + cart_item_name + " items in cart; You allowed at least " + items_policy.quantity
-        elif items_policy.restriction is 'E':
+                return "FAILED: Not enough " + cart_item_name + " items in cart; You allowed at least " + str(items_policy.quantity)
+        elif items_policy.restriction == 'E':
             if num_of_items != items_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + items_policy.quantity
-        elif items_policy.restriction is 'UT':
+                return "FAILED: Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + str(items_policy.quantity)
+        elif items_policy.restriction == 'UT':
             if num_of_items > items_policy.quantity:
-                return "FAILED: Too much " + cart_item_name + " items in cart; You allowed at most " + items_policy.quantity
+                return "FAILED: Too much " + cart_item_name + " items in cart; You allowed at most " + str(items_policy.quantity)
     return True
 
 
 def check_category_shopping_policies(username, cart_items):
     category_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_category()
     for category_policy in category_policies:
-        if username is not "guest":
+        if not (username == "guest"):
             if is_meet_conditions(username, category_policy.conditions) is False:
                 continue
-        if category_policy.restriction is 'N':
+        if category_policy.restriction == 'N':
             continue
         num_of_items = 0
         cart_item_category = None
@@ -381,40 +381,40 @@ def check_category_shopping_policies(username, cart_items):
             cart_item_category = ItemsLogic.get_item(cart_item.item_id).category
             if category_policy.category == cart_item_category:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if category_policy.restriction is 'AL':
+        if category_policy.restriction == 'AL':
             if num_of_items < category_policy.quantity:
-                return "FAILED: Not enough " + cart_item_category + " items in cart; You allowed at least " + category_policy.quantity
-        elif category_policy.restriction is 'E':
+                return "FAILED: Not enough " + cart_item_category + " items in cart; You allowed at least " + str(category_policy.quantity)
+        elif category_policy.restriction == 'E':
             if num_of_items != category_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + category_policy.quantity
-        elif category_policy.restriction is 'UT':
+                return "FAILED: Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + str(category_policy.quantity)
+        elif category_policy.restriction == 'UT':
             if num_of_items > category_policy.quantity:
-                return "FAILED: Too much " + cart_item_category + " items in cart; You allowed at most " + category_policy.quantity
+                return "FAILED: Too much " + cart_item_category + " items in cart; You allowed at most " + str(category_policy.quantity)
     return True
 
 
 def check_shop_shopping_policies(username, cart_items):
 
-    shop_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_shop()
+    shop_policies = ShoppingPolicyLogic.get_all_shops_shopping_policies()
     for shop_policy in shop_policies:
-        if username is not "guest":
+        if not (username == "guest"):
             if is_meet_conditions(username, shop_policy.conditions) is False:
                 continue
-        if shop_policy.restriction is 'N':
+        if shop_policy.restriction == 'N':
             continue
         num_of_items = 0
         cart_item_shop = None
         for cart_item in cart_items:
             cart_item_shop = ItemsLogic.get_item(cart_item.item_id).shop_name
-            if shop_policy.category == cart_item_shop:
+            if shop_policy.shop_name == cart_item_shop:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if shop_policy.restriction is 'AL':
+        if shop_policy.restriction == 'AL':
             if num_of_items < shop_policy.quantity:
-                return "FAILED: Not enough " + cart_item_shop + " items in cart; You allowed at least " + shop_policy.quantity
-        elif shop_policy.restriction is 'E':
+                return "FAILED: Not enough " + cart_item_shop + " items in cart; You allowed at least " + str(shop_policy.quantity)
+        elif shop_policy.restriction == 'E':
             if num_of_items != shop_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + shop_policy.quantity
-        elif shop_policy.restriction is 'UT':
+                return "FAILED: Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + str(shop_policy.quantity)
+        elif shop_policy.restriction == 'UT':
             if num_of_items > shop_policy.quantity:
-                return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + shop_policy.quantity
+                return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + str(shop_policy.quantity)
     return True
