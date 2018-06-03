@@ -153,7 +153,11 @@ def remove_item_shopping_cart_guest(guest, item_id):
 
 def update_item_shopping_cart_guest(guest, item_id, new_quantity):
     if guest is not None and item_id is not None and new_quantity >= 0:
-        shopping_cart = Consumer.loggedInUsersShoppingCart[guest]
+        if guest in Consumer.guestShoppingCart:
+            shopping_cart = Consumer.guestShoppingCart[guest]
+        else:
+            Consumer.guestShoppingCart[guest] = []
+            shopping_cart = Consumer.guestShoppingCart[guest]
         if new_quantity is 0:
             return remove_item_shopping_cart_guest(guest, item_id)
         if ItemsLogic.check_in_stock(item_id, new_quantity) is False:

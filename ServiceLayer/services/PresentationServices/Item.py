@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DatabaseLayer import Lotteries, Auctions, ReviewsOnItems
+from DatabaseLayer import Lotteries, ReviewsOnItems
 from DomainLayer import ItemsLogic
 from DomainLayer import ShoppingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
@@ -34,13 +34,9 @@ def get_item(request):
                 print(lottery.final_date)
                 deadline = lottery.final_date
                 if lottery.real_end_date is not None:
+                    real_end_time = datetime.datetime.fromtimestamp(lottery.real_end_date/1000).strftime('%c')
                     real_end_time = lottery.real_end_date
                 quantity_icon = 'tickets-icon.png'
-            else:
-                auction = Auctions.get_auction(item_id)
-                if auction is not False:
-                    policy = "Auction"
-                    deadline = datetime.datetime.fromtimestamp(auction.end_date/1000).strftime('%c')
             login = request.COOKIES.get('login_hash')
             guest = request.COOKIES.get('guest_hash')
             context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}

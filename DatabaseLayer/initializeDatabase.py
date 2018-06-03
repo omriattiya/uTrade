@@ -218,23 +218,6 @@ tables_sql = [
           PRIMARY KEY(lotto_id,username)
         )
     """,
-
-    """
-        CREATE TABLE IF NOT EXISTS Auctions(
-          auction_id INTEGER REFERENCES Items(id),
-          end_date DATE,
-          PRIMARY KEY(auction_id)
-        )
-    """,
-
-    """
-        CREATE TABLE IF NOT EXISTS AuctionCustomers(
-          auction_id INTEGER REFERENCES Auctions(auction_id),
-          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
-          price INTEGER,
-          PRIMARY KEY(auction_id, username, price)
-        )
-    """,
     """
         CREATE TABLE IF NOT EXISTS HistoryOfAppointing(
           historyId INTEGER PRIMARY KEY AUTOINCREMENT,
