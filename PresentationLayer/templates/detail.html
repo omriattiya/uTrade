@@ -131,33 +131,40 @@ _________________________________________________________ -->
                             <div id="mainImage">
                                 <img src={{ url }}
                                              alt="" class="img-responsive"
-                                     style="align-self:center; max-height: 300px"/>
+                                     style="margin-left: 80px; max-height: 300px"/>
                             </div>
                         </div>
-                        <div class="box" id="Purchase-Policy">
+                        <div class="box" id="Product-Details">
                             <div class="box-header">
-                                <h3 class="text-center">Purchase Policy</h3>
+                                <h3 class="text-center">Product Details</h3>
                             </div>
 
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>Policy</td>
-                                        <th class="text-right">{{ policy }}</th>
+                                        <td>Shop</td>
+                                        <th class="text-right">{{ shop_name }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Deadline</td>
-                                        <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
+                                        <td>Category</td>
+                                        <th class="text-right">{{ category }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Actuel End Time</td>
-                                        <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
+                                        <td>Kind</td>
+                                        <th class="text-right">{{ kind }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Ranking</td>
+                                        <th class="text-right">{{ item_rank }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <p class="text-center buttons">
+                                    <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i
+                                            class="fa fa-files-o"></i> Show Reviews</a>
+                                </p>
                             </div>
-
                         </div>
 
                     </div>
@@ -204,37 +211,30 @@ _________________________________________________________ -->
                             </p>
 
                         </div>
-                        <div class="box" id="Product-Details">
+                        <div class="box" id="Purchase-Policy">
                             <div class="box-header">
-                                <h3 class="text-center">Product Details</h3>
+                                <h3 class="text-center">Purchase Policy</h3>
                             </div>
 
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>Shop</td>
-                                        <th class="text-right">{{ shop_name }}</th>
+                                        <td>Policy</td>
+                                        <th class="text-right">{{ policy }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Category</td>
-                                        <th class="text-right">{{ category }}</th>
+                                        <td>Deadline</td>
+                                        <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Kind</td>
-                                        <th class="text-right">{{ kind }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Ranking</td>
-                                        <th class="text-right">{{ item_rank }}</th>
+                                        <td>Actuel End Time</td>
+                                        <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
-                                <p class="text-center buttons">
-                                    <a href="../app/item/reviews/?item_id={{ item_id }}" class="btn btn-primary"><i
-                                            class="fa fa-files-o"></i> Show Reviews</a>
-                                </p>
                             </div>
+
                         </div>
                         <!-- /.col-md-3 -->
                     </div>
