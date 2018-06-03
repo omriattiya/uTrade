@@ -86,7 +86,7 @@ def get_purchase_history(username):
 
 def update_details(username, state, age, sex):
     if 0 < int(age) < 120:
-        if sex is not 'Male' and sex is not 'Female':
+        if sex == 'Male' or sex == 'Female':
             if UserDetails.update(username, state, age, sex):
                 return "SUCCESS"
             else:

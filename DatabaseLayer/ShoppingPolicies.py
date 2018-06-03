@@ -103,6 +103,14 @@ def get_all_shopping_policy_on_identity():
     return fetch_shopping_policies_on_identity(select_command(sql_query))
 
 
+def get_all_shops_shopping_policies():
+    sql_query = """
+                    SELECT *
+                   FROM ShoppingPolicyOnShop
+                  """
+    return fetch_shopping_policies_on_shop(select_command(sql_query))
+
+
 #    ____________________________________   INSERT     ___________________________________________________
 
 

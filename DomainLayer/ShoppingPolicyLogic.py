@@ -4,11 +4,16 @@ from DatabaseLayer import ShoppingPolicies
 from DatabaseLayer import SystemManagers
 from DatabaseLayer import Owners
 
+
 #    ____________________________________   GET ALL     ___________________________________________________
 
 
 def get_all_shopping_policy_on_shop(shop_name):
     return ShoppingPolicies.get_all_shopping_policy_on_shop(shop_name)
+
+
+def get_all_shops_shopping_policies():
+    return ShoppingPolicies.get_all_shops_shopping_policies()
 
 
 def get_all_shopping_policy_on_items():
