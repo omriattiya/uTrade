@@ -15,7 +15,7 @@ from SharedClasses.Message import Message
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.ItemReview import ItemReview
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic, \
-    UserShoppingCartLogic
+    UserShoppingCartLogic, ShoppingPolicyLogic
 
 
 class IntegrationTests(unittest.TestCase):
@@ -87,19 +87,21 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(manager.permission_reply_messages, 1)
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
+            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None, 0, 0, 0),
+            'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None,0,0,0), 'u2ser2u2ser2')
+            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None, 0, 0, 0), 'u2ser2u2ser2')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None,0,0,0), 'u1ser1u1ser1')
+            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None, 0, 0, 0), 'u1ser1u1ser1')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
+            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None, 0, 0, 0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None,0,0,0), 'u3ser3u3ser3')
+            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None, 0, 0, 0),
+            'u3ser3u3ser3')
 
         items = SearchLogic.search_by_name('banana')
         self.assertEqual(items[0].quantity, 300)
@@ -180,19 +182,21 @@ class IntegrationTests(unittest.TestCase):
         )
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
+            Item(None, 'myShop1', 'banana', 'fruits', 'fruit;healthy;yellow', 4.90, 300, 'regular', None, 0, 0, 0),
+            'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None,0,0,0), 'u2ser2u2ser2')
+            Item(None, 'myShop2', 'doll', 'toys', 'fun', 30, 10, 'regular', None, 0, 0, 0), 'u2ser2u2ser2')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None,0,0,0), 'u1ser1u1ser1')
+            Item(None, 'myShop1', 'soda', 'drinks', 'good', 4.90, 20, 'regular', None, 0, 0, 0), 'u1ser1u1ser1')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None,0,0,0), 'u4ser4u4ser4')
+            Item(None, 'myShop2', 'cucumber', 'vegetables', 'fun', 4.90, 300, 'regular', None, 0, 0, 0), 'u4ser4u4ser4')
 
         ItemsLogic.add_item_to_shop(
-            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None,0,0,0), 'u3ser3u3ser3')
+            Item(None, 'myShop1', 'vodka', 'drinks', 'bad;for;your;health', 70, 2, 'regular', None, 0, 0, 0),
+            'u3ser3u3ser3')
         username1 = 'u4ser4u4ser4'
         username2 = 'u2ser2u2ser2'
         username3 = 'u1ser1u1ser1'
@@ -240,12 +244,34 @@ class IntegrationTests(unittest.TestCase):
         UserShoppingCartLogic.pay_all(access_token5)
         items1 = UsersLogic.get_purchase_history('u5seru5ser')
         items2 = ItemsLogic.get_all_purchased_items('sys1sys1')
-        items3 = ShopLogic.get_shop_purchase_history('u4ser4u4ser4','myShop1')
-        self.assertEqual(items1[0].item_id,items2[0].item_id)
-        self.assertEqual(items2[0].quantity,items3[0].quantity)
-        self.assertEqual(items1[0].price,items3[0].price)
+        items3 = ShopLogic.get_shop_purchase_history('u4ser4u4ser4', 'myShop1')
+        self.assertEqual(items1[0].item_id, items2[0].item_id)
+        self.assertEqual(items2[0].quantity, items3[0].quantity)
+        self.assertEqual(items1[0].price, items3[0].price)
 
         self.assertTrue('Nadav Ha Gever')
+
+    def test_policies(self):
+        UsersLogic.register(RegisteredUser('ShaharBenS', "SsS0897SsS"))
+        UsersLogic.update_details('ShaharBenS', 'AFG', 20, 'Male')
+
+        UsersLogic.register(RegisteredUser('ShaharBenS2', "SsS0897SsS"))
+        ShopLogic.create_shop(Shop('eBay', "Active"), 'ShaharBenS2')
+        item1 = Item(1, 'eBay', 'banana', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
+        ItemsLogic.add_item_to_shop(item1, 'ShaharBenS2')
+
+        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "sex = 'Male'", "AL", 3)
+        ShoppingPolicyLogic.add_shopping_policy_on_identity('Ultimate_ShaharShahar', "", "N", 0)
+        ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "", "", "N", 0)
+        ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "", "", "N", 0)
+
+        access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = 'ShaharBenS'
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 3, None))
+        status = ShoppingLogic.pay_all('ShaharBenS')
+        self.assertTrue(status)
 
     def tearDown(self):
         os.remove('db.sqlite3')
