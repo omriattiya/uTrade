@@ -115,7 +115,7 @@ def search_items_by_keywords(item_keyword):
     sql_query = """
                 SELECT *
                 FROM Items,Shops
-                WHERE keyWords LIKE '%{}%' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
+                WHERE keyWords = '{}' AND Shops.status = 'Active' AND Shops.name = Items.shop_name AND Items.kind <> 'prize'
               """.format(item_keyword)
     return fetch_items(select_command(sql_query))
 

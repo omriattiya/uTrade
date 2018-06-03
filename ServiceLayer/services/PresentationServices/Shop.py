@@ -70,13 +70,8 @@ def get_shop(request):
             guest = request.COOKIES.get('guest')
             topbar = Topbar_Navbar.get_top_bar(login)
             navbar = Topbar_Navbar.get_nav_bar(login, guest)
-            words = SearchLogic.get_similar_words(request.GET.get('shop_name'))
-            words = words[:5]
-            context = {'topbar': topbar, 'navbar': navbar,'words': words}
-            if len(words) != 0:
-                return render(request, 'ShopNotFound.html', context)
-            else:
-                return render(request, 'ShopNotFoundNoSuggestions.html', context)
+            context = {'topbar': topbar, 'navbar': navbar}
+            return render(request, 'ShopNotFound.html', context)
     return HttpResponse(not_get_request)
 
 

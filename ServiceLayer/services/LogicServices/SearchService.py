@@ -23,8 +23,13 @@ def search_item(request):
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('name'))
                 words = words[:5]
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                if len(words) != 0:
+                items_names_that_exists = []
+                for each_item in words:
+                    item = SearchLogic.search_by_name(each_item)
+                    if len(item) != 0:
+                        items_names_that_exists.append(each_item)
+                context = {'topbar': topbar, 'items': items_names_that_exists, 'navbar': navbar,'type': 'name'}
+                if len(items_names_that_exists) != 0:
                     return render(request, 'ItemsNotFound.html', context)
                 else:
                     return render(request, 'ItemNotFoundNoSuggestions.html', context)
@@ -36,8 +41,13 @@ def search_item(request):
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('category'))
                 words = words[:5]
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                if len(words) != 0:
+                items_names_that_exists = []
+                for each_item in words:
+                    item = SearchLogic.search_by_category(each_item)
+                    if len(item) != 0:
+                        items_names_that_exists.append(each_item)
+                context = {'topbar': topbar, 'items': items_names_that_exists, 'navbar': navbar,'type': 'category'}
+                if len(items_names_that_exists) != 0:
                     return render(request, 'ItemsNotFound.html', context)
                 else:
                     return render(request, 'ItemNotFoundNoSuggestions.html', context)
@@ -49,8 +59,13 @@ def search_item(request):
             else:
                 words = SearchLogic.get_similar_words(request.GET.get('keywords'))
                 words = words[:5]
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'words': words}
-                if len(words) != 0:
+                items_names_that_exists = []
+                for each_item in words:
+                    item = SearchLogic.search_by_keywords(each_item)
+                    if len(item) != 0:
+                        items_names_that_exists.append(each_item)
+                context = {'topbar': topbar, 'items': items_names_that_exists, 'navbar': navbar,'type': 'keywords'}
+                if len(items_names_that_exists) != 0:
                     return render(request, 'ItemsNotFound.html', context)
                 else:
                     return render(request, 'ItemNotFoundNoSuggestions.html', context)
