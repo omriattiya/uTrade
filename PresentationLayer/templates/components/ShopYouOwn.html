@@ -1,6 +1,8 @@
 <tr>
     <th><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></th>
-    <td>{{ review }}</td>
+    <td>
+        <input id="{{ shop_name }}_notify" type="checkbox" {{ checked }} onchange="changeNotification('{{ shop_name }}')">
+    </td>
     <td>
         <button id="{{ shop_name }}_status" onclick="setStatus('{{ shop_name }}')"
                 class="{{ status_button_class }}">{{ status }}</button>

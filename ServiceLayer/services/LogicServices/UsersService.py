@@ -226,10 +226,12 @@ def re_open_shop(request):
 def modify_notifications(request):
     if request.method == 'POST':
         should_notify = request.POST.get('modify_notifications')
+        shop_name = request.POST.get('shop_name')
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
-            if UsersLogic.modify_notifications(username, should_notify):
+            if UsersLogic.modify_notifications(username, should_notify, shop_name):
                 return HttpResponse('success')
         return HttpResponse('fail')
 

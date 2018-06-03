@@ -124,7 +124,9 @@ def add_owner(username, owner):
                     return to_return
                 result = Owners.add_owner(owner)
                 if result:
-                    result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner', owner.shop_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
+                    result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner',
+                                                                       owner.shop_name,
+                                                                       strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
                 else:
                     return "FAILED"
                 if result and is_manager_of_shop(owner.username, owner.shop_name):
@@ -159,7 +161,8 @@ def add_manager(username, store_manager):
                         return "FAILED! An owner can't be store manager"
                     if StoreManagers.add_manager(store_manager):
                         if HistoryAppointings.add_history_appointing(username, store_manager.username, 'Store Manager',
-                                                                     store_manager.store_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):
+                                                                     store_manager.store_name,
+                                                                     strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):
                             return 'SUCCESS'
                         return "FAILED"
                     return "FAILED"
@@ -189,8 +192,8 @@ def re_open_shop(username, shop_name):
         return False
 
 
-def modify_notifications(owner_username, should_notify):
-    return Owners.modify_notifications(owner_username, should_notify)
+def modify_notifications(owner_username, should_notify, shop_name):
+    return Owners.modify_notifications(owner_username, should_notify, shop_name)
 
 
 def add_system_manager(system_manager):
@@ -263,7 +266,9 @@ def update_permissions(username, store_manager):
         status = StoreManagers.update_permissions(store_manager)
         if status:
             if isEmptyPermissions(previous_store_manager):
-                status = HistoryAppointings.update_history_appointing(username, store_manager.username, store_manager.store_name, getPermissionsString(store_manager))
+                status = HistoryAppointings.update_history_appointing(username, store_manager.username,
+                                                                      store_manager.store_name,
+                                                                      getPermissionsString(store_manager))
         return status
     return False
 
