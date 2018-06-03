@@ -211,25 +211,25 @@ _________________________________________________________ -->
                             </p>
 
                         </div>
-                        <div class="box" id="Purchase-Policy">
+                        <div class="box" id="additional_table">
                             <div class="box-header">
-                                <h3 class="text-center">Purchase Policy</h3>
+                                <h3 class="text-center">{{ headline }}</h3>
                             </div>
 
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>Policy</td>
-                                        <th class="text-right">{{ policy }}</th>
+                                        <td>{{ right1 }}</td>
+                                        <th class="text-right">{{ policy_or_percentage }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Deadline</td>
-                                        <th class="text-right" style="color: #2c6606">{{ deadline }}</th>
+                                        <td>{{ right2 }}</td>
+                                        <th class="text-right" style="color: #2c6606">{{ deadline_or_start_date }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Actuel End Time</td>
-                                        <th class="text-right" style="color: #ab1124">{{ real_end_time }}</th>
+                                        <td>{{ right3 }}</td>
+                                        <th class="text-right" style="color: #ab1124">{{ real_end_time_or_end_date }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
