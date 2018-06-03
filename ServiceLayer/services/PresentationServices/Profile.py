@@ -26,9 +26,9 @@ def get_account(request):
                     details = UsersLogic.get_user_details(username)
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'system_hidden': system_hidden,
-                                       'state': details.get('state'),
-                                       'age': details.get('age'),
-                                       'sex': details.get('sex')})
+                                'state': details.get('state'),
+                                'age': details.get('age'),
+                                'sex': details.get('sex')})
                 return render(request, 'customer-account.html',
                               context=context)
 
@@ -78,7 +78,7 @@ def get_shops(request):
                         'GAP': yes_no_array[managed_shop.permission_get_all_messages],
                         'GPHP': yes_no_array[managed_shop.permission_get_purchased_history],
                         'DP': yes_no_array[managed_shop.discount_permission],
-
+                        'SP': yes_no_array[managed_shop.permission_set_policy]
                     })
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'owned_shops': owned_shops_html, 'managed_shops': managed_shops_html})
@@ -109,6 +109,7 @@ def get_managers(request):
                             'checked_GAP': check_array[manager.permission_get_all_messages],
                             'checked_GPHP': check_array[manager.permission_get_purchased_history],
                             'checked_DP': check_array[manager.discount_permission],
+                            'checked_SP': check_array[manager.permission_set_policy],
                         })
                     return HttpResponse(managers_html)
 
@@ -159,7 +160,7 @@ def get_order(request):
                 date = ShoppingLogic.get_purchase(purchase_id).purchase_date
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'items': items_html, 'order_id': purchase_id,
-                                       'order_date': date})
+                                'order_date': date})
                 return render(request, 'customer-order.html', context=context)
         return HttpResponse('You are not logged in!')
 
@@ -179,7 +180,8 @@ def get_system_shops(request):
                         shops_html += loader.render_to_string('components/shop.html',
                                                               context={'shop_name': shop.name, 'status': shop.status})
 
-                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login),
+                               'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                     context.update({'shops': shops_html})
                     return render(request, 'system-shops.html', context=context)
         return HttpResponse("You don't have the privilege to be here")
@@ -203,7 +205,8 @@ def get_system_users(request):
                             'shop_own_count': shops_own,
                             'shop_manage_count': shop_manage,
                         })
-                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login),
+                               'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                     context.update({'users': users_html})
                     return render(request, 'system-users.html', context=context)
         return HttpResponse("You don't have the privilege to be here")
@@ -330,7 +333,8 @@ def get_system_history(request):
                             'price': purchased_item.price
                         })
 
-                    context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login),
+                               'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                     context.update({'history': history_html})
                     return render(request, 'system-history.html', context=context)
         return HttpResponse("You don't have the privilege to be here")

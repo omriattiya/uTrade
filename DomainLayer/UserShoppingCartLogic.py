@@ -146,7 +146,8 @@ def pay_all(login_token):
                 owners = Owners.get_owners_by_shop(item.shop_name)
                 owners_name = []
                 for owner in owners:
-                    owners_name.append(owner.username)
+                    if owner.should_notify > 0:
+                        owners_name.append(owner.username)
                 PurchasesAlerts.notify_purchasing_alerts(owners_name,
                                                          '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
                                                              item.id) + '"># <strong>' + str(

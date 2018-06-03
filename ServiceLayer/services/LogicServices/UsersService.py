@@ -26,7 +26,11 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        return HttpResponse(UsersLogic.register(RegisteredUser(username, password)))
+        state = request.POST.get('state')
+        age = request.POST.get('age')
+        sex = request.POST.get('sex')
+
+        return HttpResponse(UsersLogic.register_with_user_detail(RegisteredUser(username, password), state, age, sex))
 
 
 @csrf_exempt
@@ -146,7 +150,8 @@ def add_manager(request):
                                          request.POST.get('reply_message_permission'),
                                          request.POST.get('get_all_message_permission'),
                                          request.POST.get('get_purchase_history_permission'),
-                                         request.POST.get('get_discount_permission'))
+                                         request.POST.get('get_discount_permission'),
+                                         request.POST.get('set_policy_permission'))
 
             if username is not None:
                 return HttpResponse(UsersLogic.add_manager(username, store_manager))
@@ -185,7 +190,8 @@ def update_permissions(request):
                                          request.POST.get('reply_message_permission'),
                                          request.POST.get('get_all_message_permission'),
                                          request.POST.get('get_purchase_history_permission'),
-                                         request.POST.get('get_discount_permission'))
+                                         request.POST.get('get_discount_permission'),
+                                         request.POST.get('set_policy_permission'))
 
             if UsersLogic.update_permissions(username, store_manager):
                 return HttpResponse('success')

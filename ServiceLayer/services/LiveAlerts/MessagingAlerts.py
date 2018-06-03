@@ -1,5 +1,6 @@
 import threading
 from ServiceLayer.services.LiveAlerts import Consumer
+from ServiceLayer.services.LiveAlerts.Messages.Messaging import MessagingMessage
 
 event = threading.Event()
 
@@ -7,7 +8,7 @@ messaging_alerts_queue = []
 
 
 def notify_messaging_alerts(users, msg):
-    messaging_alerts_queue.append({'users': users, 'msg': msg})
+    messaging_alerts_queue.append({'users': users, 'msg': MessagingMessage(msg)})
     event.set()
 
 
@@ -18,13 +19,16 @@ def messaging_live_alerts():
         for alert in messaging_alerts_queue:
             users = alert.get('users')
             for user in users:
+                #connected_user = Consumer.connectedUsers.get(user)
+                #if connected_user is not None:
+                user_box = Consumer.user_alerts_box.get(user)
+                if user_box is None:
+                    Consumer.user_alerts_box[user] = []
+                user_box = Consumer.user_alerts_box.get(user)
+                user_box.append(alert.get('msg'))
+
                 connected_user = Consumer.connectedUsers.get(user)
                 if connected_user is not None:
-                    user_box = Consumer.user_alerts_box.get(user)
-                    if user_box is None:
-                        Consumer.user_alerts_box[user] = []
-                    user_box = Consumer.user_alerts_box.get(user)
-                    user_box.append(alert.get('msg'))
                     connected_user.send_alert_count(len(user_box))
             messaging_alerts_queue.remove(alert)
 

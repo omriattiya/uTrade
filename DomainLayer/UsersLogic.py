@@ -1,7 +1,8 @@
 import hashlib
 import re
 from time import gmtime, strftime
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails,HistoryAppointings
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails, \
+    HistoryAppointings
 
 min_password_len = 6
 
@@ -25,6 +26,15 @@ def register(user):
             return 'FAILED: Username must be 8 to 20 alphabetic letters and numbers'
     else:
         return 'FAILED: Username is already taken'
+
+
+def register_with_user_detail(user, state, age, sex):
+    status = register(user)
+    if status[0:6] == 'FAILED':
+        return status
+    elif status[0:7] == 'SUCCESS':
+        UserDetails.update(user.username, state, age, sex)
+        return status
 
 
 def get_registered_user(username):
@@ -111,7 +121,9 @@ def add_owner(username, owner):
             if RegisteredUsers.get_user(owner.username) is not False:
                 result = Owners.add_owner(owner)
                 if result:
-                    result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner', owner.shop_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
+                    result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner',
+                                                                       owner.shop_name,
+                                                                       strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
                 if result and is_manager_of_shop(username, owner.shop_name):
                     remove_store_manager(username, owner.shop_name, owner.username)
                     return "SUCCESS"
@@ -140,7 +152,8 @@ def add_manager(username, store_manager):
                 if store_manager.store_name is not None:
                     if StoreManagers.add_manager(store_manager):
                         if HistoryAppointings.add_history_appointing(username, store_manager.username, 'Store Manager',
-                                                                     store_manager.store_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):
+                                                                     store_manager.store_name,
+                                                                     strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):
                             return 'SUCCESS'
                         return "FAILED"
                     return "FAILED"
@@ -244,7 +257,9 @@ def update_permissions(username, store_manager):
         status = StoreManagers.update_permissions(store_manager)
         if status:
             if isEmptyPermissions(previous_store_manager):
-                status = HistoryAppointings.update_history_appointing(username, store_manager.username, store_manager.store_name, getPermissionsString(store_manager))
+                status = HistoryAppointings.update_history_appointing(username, store_manager.username,
+                                                                      store_manager.store_name,
+                                                                      getPermissionsString(store_manager))
         return status
     return False
 

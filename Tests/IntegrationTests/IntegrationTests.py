@@ -19,7 +19,7 @@ from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, Search
 
 
 def StoB(status):
-    if isinstance(status,bool):
+    if isinstance(status, bool):
         return status
 
     if len(status) > 5:
@@ -91,9 +91,9 @@ class IntegrationTests(unittest.TestCase):
 
         owner = Owners.get_owner('u1ser1u1ser1', 'myShop1')
         status = UsersLogic.add_manager(
-            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1))
+            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1, 1))
         status = UsersLogic.add_manager(
-            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1)
+            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1, 1)
         )
 
         manager = StoreManagers.get_store_manager('u4ser4u4ser4', 'myShop1')
@@ -190,9 +190,9 @@ class IntegrationTests(unittest.TestCase):
 
         owner = Owners.get_owner('u1ser1u1ser1', 'myShop1')
         status = UsersLogic.add_manager(
-            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1))
+            owner.username, StoreManager('u4ser4u4ser4', 'myShop1', 1, 1, 1, 1, 1, 1, 1, 1))
         status = UsersLogic.add_manager(
-            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1)
+            'u2ser2u2ser2', StoreManager('u4ser4u4ser4', 'myShop2', 1, 1, 1, 1, 1, 1, 1, 1)
         )
 
         ItemsLogic.add_item_to_shop(
@@ -280,7 +280,8 @@ class IntegrationTests(unittest.TestCase):
         ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "age = ''20''", "AL", 3)
         ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'Amazon', "age > ''15''", "UT", 5)
         ShoppingPolicyLogic.add_shopping_policy_on_identity('Ultimate_ShaharShahar', "sex = ''Male''", "AL", 9)
-        ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "vegas", "state = ''AFG''", "UT", 5)
+        ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "vegas", "state = ''AFG''", "UT",
+                                                            5)
         ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "apple", "state != ''AFG''", "E", 2)
 
         access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()

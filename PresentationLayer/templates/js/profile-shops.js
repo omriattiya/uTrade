@@ -26,6 +26,7 @@ function addManager() {
     data.append('get_all_message_permission', 0);
     data.append('get_purchase_history_permission', 0);
     data.append('get_discount_permission', 0);
+    data.append('set_policy_permission', 0);
 
 
     let loadHTML = new XMLHttpRequest();
@@ -76,6 +77,8 @@ function applyPermissions(manager_name) {
     data.append('get_all_message_permission', +document.getElementById("GAP_" + manager_name).checked);
     data.append('get_purchase_history_permission', +document.getElementById("GPHP_" + manager_name).checked);
     data.append('get_discount_permission', +document.getElementById("DP_" + manager_name).checked);
+    data.append('set_policy_permission', +document.getElementById("SP_" + manager_name).checked);
+
 
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
@@ -353,7 +356,7 @@ function logicOpened(id) {
             }
         }
     };
-    loadHTML.open("GET", "http://localhost:8000/app/policies/shopping/shop/conditions/?shop_name=" + currentlyWorkingOnShop + "&policy_id="+id, true);
+    loadHTML.open("GET", "http://localhost:8000/app/policies/shopping/shop/conditions/?shop_name=" + currentlyWorkingOnShop + "&policy_id=" + id, true);
     loadHTML.send();
 }
 
