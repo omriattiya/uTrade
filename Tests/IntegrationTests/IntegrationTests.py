@@ -17,6 +17,7 @@ from SharedClasses.ItemReview import ItemReview
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic, \
     UserShoppingCartLogic, ShoppingPolicyLogic
 
+
 def StoB(status):
     if isinstance(status,bool):
         return status
@@ -26,7 +27,10 @@ def StoB(status):
             return True
         if status[0:6] == 'FAILED':
             return False
+    elif len(status) == 2 and isinstance(status[0], int) and isinstance(status[1], float):
+        return True
     return False
+
 
 class IntegrationTests(unittest.TestCase):
     def setUp(self):
@@ -267,22 +271,27 @@ class IntegrationTests(unittest.TestCase):
 
         UsersLogic.register(RegisteredUser('ShaharBenS2', "SsS0897SsS"))
         ShopLogic.create_shop(Shop('eBay', "Active"), 'ShaharBenS2')
-        item1 = Item(1, 'eBay', 'banana', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
+        ShopLogic.create_shop(Shop('Amazon', "Active"), 'ShaharBenS2')
+        item1 = Item(1, 'eBay', 'apple', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
+        item2 = Item(2, 'Amazon', 'apple', 'fruits', 'good', 10, 500, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'ShaharBenS2')
+        ItemsLogic.add_item_to_shop(item2, 'ShaharBenS2')
 
-        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "sex = ''Male''", "AL", 3)
-        ShoppingPolicyLogic.add_shopping_policy_on_identity('Ultimate_ShaharShahar', "", "N", 0)
-        ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "", "", "N", 0)
-        ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "", "", "N", 0)
+        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'eBay', "age = ''20''", "AL", 3)
+        ShoppingPolicyLogic.add_shopping_policy_on_shop('ShaharBenS2', 'Amazon', "age > ''15''", "UT", 5)
+        ShoppingPolicyLogic.add_shopping_policy_on_identity('Ultimate_ShaharShahar', "sex = ''Male''", "AL", 9)
+        ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "vegas", "state = ''AFG''", "UT", 5)
+        ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "apple", "state != ''AFG''", "E", 2)
 
         access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()
         Consumer.loggedInUsers[access_token] = 'ShaharBenS'
         Consumer.loggedInUsersShoppingCart[access_token] = []
 
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 2, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 2, 3, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 7, None))
         status = UserShoppingCartLogic.pay_all(access_token)
+        print(status)
         self.assertFalse(StoB(status))
-
 
     def tearDown(self):
         os.remove('db.sqlite3')
