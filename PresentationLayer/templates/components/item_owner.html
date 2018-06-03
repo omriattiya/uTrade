@@ -4,27 +4,27 @@
         <h4>ITEM ID: {{ item_id }}</h4>
         <form action="javascript:updateItem({{ item_id }}, '{{ shop_name }}')">
             <div class="form-group">
-                <label for="quantity">* Update Quantity</label>
-                <input required name="quantity" id="quantity" type="number" min="0" class="form-control"
+                <label for="quantity{{item_id}}">* Update Quantity</label>
+                <input required name="quantity{{item_id}}" id="quantity{{item_id}}" type="number" min="0" class="form-control"
                        value={{ item_quantity }}>
             </div>
             <div class="form-group">
-                <label for="category">* Update Category</label>
-                <input required name="category" id="category" type="text" class="form-control"
+                <label for="category{{item_id}}">* Update Category</label>
+                <input required name="category{{item_id}}" id="category{{item_id}}" type="text" class="form-control"
                        value={{ item_category }}>
             </div>
             <div class="form-group">
-                <label for="keywords">Update Key Words</label>
-                <input name="keywords" id="keywords" type="text" class="form-control" value={{ item_keywords }}>
+                <label for="keywords{{item_id}}">Update Key Words</label>
+                <input name="keywords{{item_id}}" id="keywords{{item_id}}" type="text" class="form-control" value={{ item_keywords }}>
             </div>
             <div class="form-group">
-                <label for="price">* Update Price</label>
-                <input required name="price" id="price" type="number" min="1" class="form-control"
+                <label for="price{{item_id}}">* Update Price</label>
+                <input required name="price{{item_id}}" id="price{{item_id}}" type="number" min="1" class="form-control"
                        value={{ item_price }}>
             </div>
             <div class="form-group">
-                <label for="url">Update URL</label>
-                <input name="url" id="url" type="url" class="form-control" value={{ item_url }}>
+                <label for="url{{item_id}}">Update URL</label>
+                <input name="url{{item_id}}" id="url{{item_id}}" type="url" class="form-control" value={{ item_url }}>
             </div>
             <div style="margin: 10px" class="text-center">
                 <input value="Update Item Properties" type="submit" class="btn btn-primary">

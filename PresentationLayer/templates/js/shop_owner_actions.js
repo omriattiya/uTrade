@@ -2,11 +2,11 @@ function updateItem(item_id, shop_name)
 {
     let data = new FormData();
     data.append('item_id', item_id);
-    data.append('item_quantity', document.getElementById("quantity").value);
-    data.append('item_category', document.getElementById("category").value);
-    data.append('item_keywords', document.getElementById("keywords").value);
-    data.append('item_price', document.getElementById("price").value);
-    data.append('item_url', document.getElementById("url").value);
+    data.append('item_quantity', document.getElementById("quantity" + item_id.toString()).value);
+    data.append('item_category', document.getElementById("category" + item_id.toString()).value);
+    data.append('item_keywords', document.getElementById("keywords" + item_id.toString()).value);
+    data.append('item_price', document.getElementById("price" + item_id.toString()).value);
+    data.append('item_url', document.getElementById("url" + item_id.toString()).value);
 
     let loadHTML = new XMLHttpRequest();
     loadHTML.shop_name = shop_name;
@@ -86,7 +86,7 @@ function addItem(shop_name) {
     let item_kind = document.getElementById("kind").value;
     if (item_kind === 'auction')
     {
-        if(document.getElementById("auction_sale_duration").value  == '')
+        if(document.getElementById("sale_duration").value  == '')
         {
             alert("Field Sale Duration Must Not Be Empty");
             return;
