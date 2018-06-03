@@ -402,3 +402,25 @@ function insertAtCursor(myField, myValue) {
         myField.value += myValue;
     }
 }
+
+
+function changeNotification(shop_name){
+    let data = new FormData();
+    data.append('modify_notifications', shop_name +"_notify");
+    data.append('shop_name', shop_name);
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
+                alert("Rules saved!");
+                window.location.reload();
+            }
+        }
+    };
+    loadHTML.open("POST", "http://localhost:8000/app/users/owner/modify_notifications/", true);
+    loadHTML.send(data);
+}

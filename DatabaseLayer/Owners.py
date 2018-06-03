@@ -24,11 +24,11 @@ def add_owner(owner):
     return commit_command(sql)
 
 
-def modify_notifications(owner_username, should_notify):
+def modify_notifications(owner_username, should_notify, shop_name):
     sql = """
             UPDATE Owners SET shouldNotify = {}
-            WHERE username = '{}'
-            """.format(should_notify, owner_username)
+            WHERE username = '{}' AND shop_name = '{}'
+            """.format(should_notify, owner_username,shop_name)
     return commit_command(sql)
 
 

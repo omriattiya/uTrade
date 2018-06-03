@@ -48,6 +48,9 @@ def get_shops(request):
                 for owned_shop in owned_shops:
                     shop = ShopLogic.search_shop(owned_shop.shop_name)
                     rank = ShopLogic.get_shop_rank(shop.name)
+                    checked = ""
+                    if owned_shop.should_notify > 0:
+                        checked = 'checked="checked"'
 
                     if shop.status == 'Active':
                         status_class = 'btn btn-success btn-sm'
@@ -78,7 +81,8 @@ def get_shops(request):
                         'GAP': yes_no_array[managed_shop.permission_get_all_messages],
                         'GPHP': yes_no_array[managed_shop.permission_get_purchased_history],
                         'DP': yes_no_array[managed_shop.discount_permission],
-                        'SP': yes_no_array[managed_shop.permission_set_policy]
+                        'SP': yes_no_array[managed_shop.permission_set_policy],
+                        'checked': checked
                     })
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'owned_shops': owned_shops_html, 'managed_shops': managed_shops_html})
