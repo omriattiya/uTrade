@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+is_test = False
 
 
 def connect_to_database(database_path):
@@ -308,6 +309,8 @@ values_sql = [
 
 
 def init_database(path):
+    global is_test
+    is_test = True
     init(path, tables_sql, values_sql)
     print('database initialized')
 

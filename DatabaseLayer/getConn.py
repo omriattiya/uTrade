@@ -2,14 +2,18 @@ import sqlite3
 from sqlite3 import Error
 from django.db import connection
 
+from DatabaseLayer import initializeDatabase
+
 
 def get_conn():
-    conn = sqlite3.connect('db.sqlite3')
-    conn.execute("""
-                      PRAGMA foreign_keys = ON
-              """)
-    return conn
-    # return connection
+    if initializeDatabase.is_test:
+        conn = sqlite3.connect('db.sqlite3')
+        conn.execute("""
+                              PRAGMA foreign_keys = ON
+                      """)
+        return conn
+    else:
+        return connection
 
 
 def commit_command(sql_query):
