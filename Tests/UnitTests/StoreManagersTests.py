@@ -16,10 +16,10 @@ def returnStringToBoolean(status):
         return status
 
     if len(status) > 5:
-        if status[0:7] is 'SUCCESS':
+        if status[0:7] == 'SUCCESS':
             return True
-        if status[0:6] is 'FAILED':
-            return True
+        if status[0:6] == 'FAILED':
+            return False
     return False
 
 

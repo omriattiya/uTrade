@@ -22,10 +22,10 @@ def StoB(status):
         return status
 
     if len(status) > 5:
-        if status[0:7] is 'SUCCESS':
+        if status[0:7] == 'SUCCESS':
             return True
-        if status[0:6] is 'FAILED':
-            return True
+        if status[0:6] == 'FAILED':
+            return False
     return False
 
 class IntegrationTests(unittest.TestCase):
@@ -282,6 +282,7 @@ class IntegrationTests(unittest.TestCase):
         UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 2, None))
         status = UserShoppingCartLogic.pay_all(access_token)
         self.assertFalse(StoB(status))
+
 
     def tearDown(self):
         os.remove('db.sqlite3')
