@@ -4,7 +4,7 @@ import SharedClasses
 from DatabaseLayer import RegisteredUsers, PurchasedItems, Purchases, Owners, ShoppingCartDB
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
-from DomainLayer import ItemsLogic
+from DomainLayer import ItemsLogic, UserShoppingCartLogic
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
 from ExternalSystems import PaymentSystem, SupplySystem
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
@@ -34,6 +34,9 @@ def pay_all_guest(guest):
             #  if so, check foreach item if the requested amount exist
             cart_items = Consumer.guestShoppingCart[guest]
             # cart_items is a array consist of shopping_cart objects
+            shopping_policy_status = UserShoppingCartLogic.shopping_policy_check("guest", cart_items)
+            if shopping_policy_status is not True:
+                return shopping_policy_status
             message = check_stock_for_shopping_cart(cart_items)
             if message is not True:
                 return message
