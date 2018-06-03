@@ -28,11 +28,14 @@ def get_item(request):
             deadline = "------"
             real_end_time = "------"
             lottery = Lotteries.get_lottery(item_id)
+            quantity_icon = 'icon-inventory.png'
             if lottery is not False:
                 policy = "Lottery"
-                deadline = datetime.datetime.fromtimestamp(lottery.final_date/1000).strftime('%c')
+                print(lottery.final_date)
+                deadline = lottery.final_date
                 if lottery.real_end_date is not None:
-                    real_end_time = datetime.datetime.fromtimestamp(lottery.real_end_date/1000).strftime('%c')
+                    real_end_time = lottery.real_end_date
+                quantity_icon = 'tickets-icon.png'
             else:
                 auction = Auctions.get_auction(item_id)
                 if auction is not False:
@@ -58,7 +61,8 @@ def get_item(request):
                        'url': item.url,
                        'policy': policy,
                        'deadline': deadline,
-                       'real_end_time': real_end_time})
+                       'real_end_time': real_end_time,
+                        'quantity_icon': quantity_icon})
             return render(request, 'detail.html', context=context)
         else:
             return HttpResponse(shop_not_exist)
