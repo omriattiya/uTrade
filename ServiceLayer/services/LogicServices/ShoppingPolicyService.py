@@ -213,7 +213,7 @@ def update_shopping_policy_on_shop(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is None:
-                return HttpResponse('FAILED: username is None')
+                return HttpResponse('FAILED: you are not logged in')
             policy_id = request.POST.get('policy_id')
             field_name = request.POST.get('field_name')
             new_value = request.POST.get('new_value')
