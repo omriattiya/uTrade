@@ -7,7 +7,7 @@ from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DatabaseLayer.UserDetails import is_meet_conditions
 from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic
-from ExternalSystems import PaymentSystem, SupplySystem
+from ExternalSystems import ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 
 
@@ -152,10 +152,10 @@ def pay_all(login_token):
                                                          '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
                                                              item.id) + '"># <strong>' + str(
                                                              item.id) + '</strong></a> from your shop')
-            pay_confirmation = PaymentSystem.pay(total_cost, username)
+            pay_confirmation = ExternalSystems.payment.pay(total_cost, username)
             if pay_confirmation is False:
                 return 'Payment System Denied.'
-            sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
+            sup_confirmation = ExternalSystems.supply.supply_a_purchase(username, purchase_id)
             if sup_confirmation is False:
                 return 'Supply System Denied.'
             remove_shopping_cart(login_token)
@@ -193,11 +193,11 @@ def check_lottery_ticket(item, cart_item, username):
 
 
 def actual_pay(total_cost, username):
-    return PaymentSystem.pay(total_cost, username)
+    return ExternalSystems.payment.pay(total_cost, username)
 
 
 def supply_items(items):
-    return SupplySystem.supply_my_items(items)
+    return ExternalSystems.supply.supply_my_items(items)
 
 
 def get_cart_cost(login_token):
