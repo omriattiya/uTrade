@@ -5,7 +5,7 @@ from ServiceLayer.services.LiveAlerts import Consumer, MessagingAlerts
 
 def send_message(message):
     if message.from_username is not None and message.to_username is not None and message.content is not None:
-        if get_user(message.to_username) is not False or Shops.search_shop(message.to_username) is not False:
+        if message.to_username == 'System' or get_user(message.to_username) is not False or Shops.search_shop(message.to_username) is not False:
             # output = Messages.send_message(message)
 
             if SystemManagers.is_system_manager(message.from_username):

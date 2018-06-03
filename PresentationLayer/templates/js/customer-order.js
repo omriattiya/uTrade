@@ -87,10 +87,10 @@ function reportItem() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
+            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+                alert(loadHTML.responseText)
             }
-            else if (loadHTML.responseText === 'success') {
+            else if (loadHTML.responseText.substring(0,7) === 'SUCCESS') {
                 alert("Reported successfully!");
                 location.reload()
             }
