@@ -109,12 +109,20 @@ def add_owner(username, owner):
     if username is not None:
         if Owners.get_owner(username, owner.shop_name) is not False:
             if RegisteredUsers.get_user(owner.username) is not False:
+                if Owners.get_owner(owner.username, owner.shop_name) is not False:
+                    to_return = 'FAILED! ' + owner.username + ' is already an owner'
+                    return to_return
                 result = Owners.add_owner(owner)
                 if result:
                     result = HistoryAppointings.add_history_appointing(username, owner.username, 'Owner', owner.shop_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), 'Owner')
-                if result and is_manager_of_shop(username, owner.shop_name):
-                    remove_store_manager(username, owner.shop_name, owner.username)
-                    return "SUCCESS"
+                else:
+                    return "FAILED"
+                if result and is_manager_of_shop(owner.username, owner.shop_name):
+                    result = remove_store_manager(username, owner.shop_name, owner.username)
+                    if result:
+                        return "SUCCESS"
+                    else:
+                        return "FAILED"
                 elif result:
                     return "SUCCESS"
                 else:
@@ -135,9 +143,10 @@ def add_owner(username, owner):
 def add_manager(username, store_manager):
     if username is not None:
         if Owners.get_owner(username, store_manager.store_name) is not False:
-            if RegisteredUsers.get_user(
-                    store_manager.username) is not False:
+            if RegisteredUsers.get_user(store_manager.username) is not False:
                 if store_manager.store_name is not None:
+                    if Owners.get_owner(store_manager.username, store_manager.store_name):
+                        return "FAILED! An owner can't be store manager"
                     if StoreManagers.add_manager(store_manager):
                         if HistoryAppointings.add_history_appointing(username, store_manager.username, 'Store Manager',
                                                                      store_manager.store_name, strftime("%d-%m-%Y %H:%M:%S", gmtime()), ''):

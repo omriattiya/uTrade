@@ -230,7 +230,7 @@ _________________________________________________________ -->
                                             <td><a href="http://localhost:8000/app/item?item_id={{item.id}}">{{item.name}}</a>
                                             </td>
                                             <td>
-                                                <input id="quantity{{item.id}}" type="number" value="{{ cart_item.item_quantity }}"
+                                                <input id="quantity{{item.id}}" type="number" value="{{ cart_item.item_quantity }}" min="0" max="{{ item.quantity }}"
                                                         class="form-control" style="width: 80px" onchange="changeAmount({{item.id}});">
                                             </td>
                                             <td>${{item.price}}</td>

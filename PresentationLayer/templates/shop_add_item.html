@@ -70,10 +70,6 @@ _________________________________________________________ -->
             else {
                 price.innerHTML = "* Price";
                 price.style.color = "";
-                if (kind === "auction") {
-                    price.innerHTML = "* Initial Price";
-                    price.style.color = "#ff9933";
-                }
                 quantity.innerHTML = "* Quantity";
                 quantity.style.color = "";
                 name.innerHTML = "* Name";
@@ -89,13 +85,6 @@ _________________________________________________________ -->
             change_labels(selected_kind);
             if (selected_kind === "regular") {
                 kind_box.innerHTML = "";
-            } else if (selected_kind === "auction") {
-                kind_box.innerHTML = '\
-                            <div class="form-group">\
-                                <label for="auction_sale_duration">* Sale Duration (in days)</label>\
-                                <input required name="sale_duration" id="sale_duration" min="1" type="number" class="form-control">\
-                            </div>\
-                ';
             }
             else if (selected_kind === "prize") {
                 kind_box.innerHTML = '\
@@ -215,7 +204,6 @@ _________________________________________________________ -->
                                 <select name="kind" id="kind" class="form-control" onchange="change_kind()">
                                     <option value="regular">Regular</option>
                                     <option value="prize">Prize</option>
-                                    <option value="auction">Auction</option>
                                 </select>
                             </div>
                             <div style="margin: 10px" id="kind_box"></div>

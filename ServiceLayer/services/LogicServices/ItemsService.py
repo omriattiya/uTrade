@@ -3,7 +3,7 @@ import datetime
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import ItemsLogic, UsersLogic, ShopLogic, LotteryLogic, AuctionLogic
+from DomainLayer import ItemsLogic, UsersLogic, ShopLogic, LotteryLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
@@ -41,10 +41,7 @@ def add_item_to_shop(request):
         if item_url == '':
             item_url = None
 
-        item_auction_sale_duration = None
         item_prize_sale_duration = None
-        if item_kind == 'auction':
-            item_auction_sale_duration = int(request.POST.get('item_auction_sale_duration'))
         if item_kind == 'prize':
             item_prize_sale_duration = int(request.POST.get('item_prize_sale_duration'))
 
@@ -75,12 +72,6 @@ def add_item_to_shop(request):
             status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
                                                         datetime.datetime.now() + datetime.timedelta(
                                                             days=item_prize_sale_duration), username)
-        elif item_kind == 'auction':
-            auction_item = Item(None, shop_name, item_name, item_category, item_keywords,
-                                item_price, item_quantity, item_kind, item_url, 0, 0, 0)
-            status = AuctionLogic.add_auction(auction_item, username,
-                                              datetime.datetime.now() + datetime.timedelta(
-                                                  days=item_auction_sale_duration))
         if status is False:
             return HttpResponse('could not add item')
         return HttpResponse('success')
