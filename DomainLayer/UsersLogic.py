@@ -1,7 +1,8 @@
 import hashlib
 import re
 from time import gmtime, strftime
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails,HistoryAppointings
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails, \
+    HistoryAppointings
 
 min_password_len = 6
 
@@ -25,6 +26,15 @@ def register(user):
             return 'FAILED: Username must be 8 to 20 alphabetic letters and numbers'
     else:
         return 'FAILED: Username is already taken'
+
+
+def register_with_user_detail(user, state, age, sex):
+    status = register(user)
+    if status[0:6] == 'FAILED':
+        return status
+    elif status[0:7] == 'SUCCESS':
+        UserDetails.update(user.username, state, age, sex)
+        return status
 
 
 def get_registered_user(username):

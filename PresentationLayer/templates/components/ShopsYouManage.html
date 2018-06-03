@@ -4,15 +4,23 @@
     <td>{{ status }}</td>
     <td><span onclick="alert(
             'add item? : {{ AIP }}\n'+
-           'remove item? : {{ RIP }}\n'+
+            'remove item? : {{ RIP }}\n'+
             'edit item? : {{ EIP }}\n'+
             'reply to messages? : {{ RMP }}\n'+
             'see all messages? : {{ GAP }}\n'+
             'see purchase history? : {{ GPHP }}\n'+
-            'add discount? : {{ DP }}')" class="label label-success ">Show</span>
+            'add discount? : {{ DP }}\n'+
+            'set policy? : {{ SP }}')" class="label label-success ">Show</span>
 
     <td>
-        <a onclick = "gotoMessages('{{ shop_name }}')" href="javascript:void(0)" class="btn btn-primary btn-sm"><i
+        <button href="#" onclick="shoppingPoliciesOpened('{{ shop_name }}')" data-toggle="modal"
+                data-target="#shopping-policies-modal"
+                class="btn btn-primary btn-sm">Shopping Policies
+        </button>
+    </td>
+
+    <td>
+        <a onclick="gotoMessages('{{ shop_name }}')" href="javascript:void(0)" class="btn btn-primary btn-sm"><i
                 class="fa fa-envelope"></i></a>
     </td>
 

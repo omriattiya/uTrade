@@ -1,6 +1,6 @@
 import sqlite3
 
-from DatabaseLayer import ShoppingPolicies
+from DatabaseLayer import ShoppingPolicies, StoreManagers
 from DatabaseLayer import SystemManagers
 from DatabaseLayer import Owners
 
@@ -74,6 +74,13 @@ def add_shopping_policy_on_shop(username, shop_name, conditions, restriction, qu
                 if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
                     return "FAILED: DB error."
                 return True
+            manager = StoreManagers.get_store_manager(username,shop_name)
+            if manager is not False:
+                if manager.permission_set_policy > 0:
+                    if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
+                        return "FAILED: DB error."
+                    return True
+                return 'FAILED: no permissions!'
             return 'FAILED: you are not a the Owner of the shop'
         return "FAILED: One (or more) of the parameters is None"
     return "FAILED: One (or more) of the parameters is None"
@@ -173,6 +180,18 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
             if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
                 return "FAILED: DB error."
             return True
+        manager = StoreManagers.get_store_manager(username, shop_name)
+        if manager is not False:
+            if manager.permission_set_policy > 0:
+                if field_name in ['conditions']:
+                    status = checkConditionsSyntax(new_value)
+                    if status is not True:
+                        return status
+
+                if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
+                    return "FAILED: DB error."
+                return True
+            return 'FAILED: no permissions!'
         return 'FAILED: you are not a the Owner of the shop'
     return "FAILED: One (or more) of the parameters is None"
 

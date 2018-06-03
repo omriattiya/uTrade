@@ -107,7 +107,7 @@ def get_alerts(request):
                 alerts_html=""
                 if alert_box is not None:
                     for alert in alert_box:
-                        alerts_html += "<tr> <td>"+alert+"</td></tr>"
+                        alerts_html += "<tr> <td>"+alert.getContent()+"</td></tr>"
 
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'alerts': alerts_html})

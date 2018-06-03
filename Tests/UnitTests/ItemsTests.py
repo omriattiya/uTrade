@@ -30,8 +30,8 @@ class ItemsTest(unittest.TestCase):
         register(RegisteredUser('StoreManager0', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager0', 'My Shop', 0, 0, 0, 0, 0, 0, 0))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager0', 'My Shop', 0, 0, 0, 0, 0, 0, 0, 0))
 
     def test_get_all_purchased_items(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
