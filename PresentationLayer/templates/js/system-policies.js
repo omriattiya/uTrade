@@ -32,7 +32,7 @@ function item_qualifierChanged(id) {
     let data = new FormData();
 
     data.append('policy_id', id);
-    data.append('field_name', 'restrict');
+    data.append('field_name', 'restriction');
     data.append('new_value', currentQualifier);
 
     let loadHTML = new XMLHttpRequest();
@@ -101,7 +101,7 @@ function item_addNewPolicy() {
 
     data.append('item_name', "");
     data.append('conditions', "");
-    data.append('restrict', "N");
+    data.append('restriction', "N");
     data.append('quantity', "0");
 
     let loadHTML = new XMLHttpRequest();
@@ -171,7 +171,7 @@ function category_addNewPolicy() {
 
     data.append('category', "");
     data.append('conditions', "");
-    data.append('restrict', "N");
+    data.append('restriction', "N");
     data.append('quantity', "0");
 
     let loadHTML = new XMLHttpRequest();
@@ -198,7 +198,7 @@ function category_qualifierChanged(id) {
     let data = new FormData();
 
     data.append('policy_id', id);
-    data.append('field_name', 'restrict');
+    data.append('field_name', 'restriction');
     data.append('new_value', currentQualifier);
 
     let loadHTML = new XMLHttpRequest();
@@ -309,7 +309,7 @@ function global_addNewPolicy() {
     let data = new FormData();
 
     data.append('conditions', "");
-    data.append('restrict', "N");
+    data.append('restriction', "N");
     data.append('quantity', "0");
 
     let loadHTML = new XMLHttpRequest();
@@ -336,7 +336,7 @@ function global_qualifierChanged(id) {
     let data = new FormData();
 
     data.append('policy_id', id);
-    data.append('field_name', 'restrict');
+    data.append('field_name', 'restriction');
     data.append('new_value', currentQualifier);
 
     let loadHTML = new XMLHttpRequest();

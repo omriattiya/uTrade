@@ -222,18 +222,18 @@ def get_system_policies(request):
                     for item_policy in item_policies:
                         is_none = ""
                         selectors = {}
-                        if item_policy.restrict is 'N':
+                        if item_policy.restriction is 'N':
                             is_none = "disabled"
                         selectors['N'] = ""
                         selectors['UT'] = ""
                         selectors['AL'] = ""
                         selectors['E'] = ""
-                        selectors[item_policy.restrict] = 'selected="selected"'
+                        selectors[item_policy.restriction] = 'selected="selected"'
 
                         item_policies_html += loader.render_to_string('components/shopping_item_policy.html', context={
                             'id': item_policy.policy_id,
                             'item_name': item_policy.item_name,
-                            'selector_value': item_policy.restrict,
+                            'selector_value': item_policy.restriction,
                             'quantity': item_policy.quantity,
                             'is_none': is_none,
                             'N_S': selectors.get('N'),
@@ -247,19 +247,19 @@ def get_system_policies(request):
                     for category_policy in category_policies:
                         is_none = ""
                         selectors = {}
-                        if category_policy.restrict is 'N':
+                        if category_policy.restriction is 'N':
                             is_none = "disabled"
                         selectors['N'] = ""
                         selectors['UT'] = ""
                         selectors['AL'] = ""
                         selectors['E'] = ""
-                        selectors[category_policy.restrict] = 'selected="selected"'
+                        selectors[category_policy.restriction] = 'selected="selected"'
 
                         category_policies_html += loader.render_to_string('components/shopping_category_policy.html',
                                                                           context={
                                                                               'id': category_policy.policy_id,
                                                                               'category_name': category_policy.category,
-                                                                              'selector_value': category_policy.restrict,
+                                                                              'selector_value': category_policy.restriction,
                                                                               'quantity': category_policy.quantity,
                                                                               'is_none': is_none,
                                                                               'N_S': selectors.get('N'),
@@ -273,18 +273,18 @@ def get_system_policies(request):
                     for global_policy in global_policies:
                         is_none = ""
                         selectors = {}
-                        if global_policy.restrict is 'N':
+                        if global_policy.restriction is 'N':
                             is_none = "disabled"
                         selectors['N'] = ""
                         selectors['UT'] = ""
                         selectors['AL'] = ""
                         selectors['E'] = ""
-                        selectors[global_policy.restrict] = 'selected="selected"'
+                        selectors[global_policy.restriction] = 'selected="selected"'
 
                         global_policies_html += loader.render_to_string('components/shopping_global_policy.html',
                                                                         context={
                                                                             'id': global_policy.policy_id,
-                                                                            'selector_value': global_policy.restrict,
+                                                                            'selector_value': global_policy.restriction,
                                                                             'quantity': global_policy.quantity,
                                                                             'is_none': is_none,
                                                                             'N_S': selectors.get('N'),

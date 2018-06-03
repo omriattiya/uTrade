@@ -11883,7 +11883,7 @@ button.swiper-pagination-bullet {
     font-weight: 700
 }
 
-.account-container .coupon-information-container .coupon-restrictions {
+.account-container .coupon-information-container .coupon-restrictionions {
     border-left: 1px solid #eee;
     display: table-cell;
     float: none;
@@ -11891,7 +11891,7 @@ button.swiper-pagination-bullet {
     min-width: 210px
 }
 
-.account-container .coupon-information-container .coupon-restrictions ul {
+.account-container .coupon-information-container .coupon-restrictionions ul {
     margin-bottom: 0;
     margin-top: 0
 }
@@ -11937,7 +11937,7 @@ button.swiper-pagination-bullet {
 }
 
 @media (max-width: 991px) {
-    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictions {
+    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictionions {
         border-left: none;
         display: table-cell;
         float: left;
@@ -11945,35 +11945,35 @@ button.swiper-pagination-bullet {
         padding-left: 0
     }
 
-    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictions:not(:last-child) {
+    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictionions:not(:last-child) {
         border-bottom: 1px solid #eee;
         margin-bottom: 32px
     }
 }
 
 @media (max-width: 991px) and (max-width: 767px) {
-    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictions:not(:last-child) {
+    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictionions:not(:last-child) {
         border-bottom: 0
     }
 }
 
 @media (max-width: 991px) {
-    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictions {
+    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictionions {
         padding-bottom: 16px
     }
 
-    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictions:not(:last-child) {
+    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictionions:not(:last-child) {
         padding-bottom: 24px;
         margin-bottom: 24px
     }
 }
 
 @media (max-width: 767px) {
-    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictions {
+    .account-container .coupon-information-container .coupon-code, .account-container .coupon-information-container .coupon-information, .account-container .coupon-information-container .coupon-restrictionions {
         padding-bottom: 0
     }
 
-    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictions:not(:last-child) {
+    .account-container .coupon-information-container .coupon-code:not(:last-child), .account-container .coupon-information-container .coupon-information:not(:last-child), .account-container .coupon-information-container .coupon-restrictionions:not(:last-child) {
         margin-bottom: 8px;
         padding-bottom: 8px
     }

@@ -259,7 +259,7 @@ tables_sql = [
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
           shop_name CHAR(30) REFERENCES Shops(name),
           conditions TEXT,
-          restrict TEXT,
+          restriction TEXT,
           quantity INTEGER
         )
     """,
@@ -268,7 +268,7 @@ tables_sql = [
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
           item_name TEXT,
           conditions TEXT,
-          restrict TEXT,
+          restriction TEXT,
           quantity INTEGER
         )
     """,
@@ -277,7 +277,7 @@ tables_sql = [
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
           category TEXT,
           conditions TEXT,
-          restrict TEXT,
+          restriction TEXT,
           quantity INTEGER
         )
     """,
@@ -285,7 +285,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS ShoppingPolicyOnIdentity(
           policy_id INTEGER PRIMARY KEY AUTOINCREMENT,
           conditions TEXT,
-          restrict TEXT,
+          restriction TEXT,
           quantity INTEGER
         )
     """,

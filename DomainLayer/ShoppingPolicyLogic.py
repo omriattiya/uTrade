@@ -26,15 +26,15 @@ def get_all_shopping_policy_on_identity():
 #    ____________________________________   INSERT     ___________________________________________________
 
 
-def add_shopping_policy_on_items(username, item_name, conditions, restrict, quantity):
+def add_shopping_policy_on_items(username, item_name, conditions, restriction, quantity):
     if item_name is not None and conditions is not None:
-        if restrict is not None and quantity is not None:
-            if restrict not in ['N', 'AL', 'E', 'UT']:
-                return "FAILED: Invalid value of restrict."
+        if restriction is not None and quantity is not None:
+            if restriction not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restriction."
             if int(quantity) < 0:
                 return "FAILED: Negative quantity is invalid."
             if SystemManagers.is_system_manager(username) is not False:
-                if not ShoppingPolicies.add_shopping_policy_on_items(item_name, conditions, restrict, quantity):
+                if not ShoppingPolicies.add_shopping_policy_on_items(item_name, conditions, restriction, quantity):
                     return "FAILED: DB error."
                 return True
             return 'FAILED: you are not a System Manager'
@@ -42,15 +42,15 @@ def add_shopping_policy_on_items(username, item_name, conditions, restrict, quan
     return "FAILED: One (or more) of the parameters is None"
 
 
-def add_shopping_policy_on_category(username, category, conditions, restrict, quantity):
+def add_shopping_policy_on_category(username, category, conditions, restriction, quantity):
     if category is not None and conditions is not None:
-        if restrict is not None and quantity is not None:
-            if restrict not in ['N', 'AL', 'E', 'UT']:
-                return "FAILED: Invalid value of restrict."
+        if restriction is not None and quantity is not None:
+            if restriction not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restriction."
             if int(quantity) < 0:
                 return "FAILED: Negative quantity is invalid."
             if SystemManagers.is_system_manager(username) is not False:
-                if not ShoppingPolicies.add_shopping_policy_on_category(category, conditions, restrict, quantity):
+                if not ShoppingPolicies.add_shopping_policy_on_category(category, conditions, restriction, quantity):
                     return "FAILED: DB error."
                 return True
             return 'FAILED: you are not a System Manager'
@@ -58,15 +58,15 @@ def add_shopping_policy_on_category(username, category, conditions, restrict, qu
     return "FAILED: One (or more) of the parameters is None"
 
 
-def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quantity):
+def add_shopping_policy_on_shop(username, shop_name, conditions, restriction, quantity):
     if shop_name is not None and conditions is not None:
-        if restrict is not None and quantity is not None:
-            if restrict not in ['N', 'AL', 'E', 'UT']:
-                return "FAILED: Invalid value of restrict."
+        if restriction is not None and quantity is not None:
+            if restriction not in ['N', 'AL', 'E', 'UT']:
+                return "FAILED: Invalid value of restriction."
             if int(quantity) < 0:
                 return "FAILED: Negative quantity is invalid."
             if Owners.get_owner(username, shop_name) is not False:
-                if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restrict, quantity):
+                if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
                     return "FAILED: DB error."
                 return True
             return 'FAILED: you are not a the Owner of the shop'
@@ -74,14 +74,14 @@ def add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quant
     return "FAILED: One (or more) of the parameters is None"
 
 
-def add_shopping_policy_on_identity(username, conditions, restrict, quantity):
-    if conditions is not None and restrict is not None and quantity is not None:
-        if restrict not in ['N', 'AL', 'E', 'UT']:
-            return "FAILED: Invalid value of restrict."
+def add_shopping_policy_on_identity(username, conditions, restriction, quantity):
+    if conditions is not None and restriction is not None and quantity is not None:
+        if restriction not in ['N', 'AL', 'E', 'UT']:
+            return "FAILED: Invalid value of restriction."
         if int(quantity) < 0:
             return "FAILED: Negative quantity is invalid."
         if SystemManagers.is_system_manager(username) is not False:
-            if not ShoppingPolicies.add_shopping_policy_on_identity(conditions, restrict, quantity):
+            if not ShoppingPolicies.add_shopping_policy_on_identity(conditions, restriction, quantity):
                 return "FAILED: DB error."
             return True
         return 'FAILED: you are not a System Manager'
@@ -138,7 +138,7 @@ def update_shopping_policy_on_identity(username, policy_id, field_name, new_valu
     if policy_id is not None and field_name is not None and new_value is not None:
         if int(policy_id) < 0:
             return "FAILED: Invalid id of Policy"
-        if field_name not in ['conditions', 'restrict', 'quantity']:
+        if field_name not in ['conditions', 'restriction', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:
@@ -157,7 +157,7 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
     if policy_id is not None and field_name is not None and new_value is not None:
         if int(policy_id) < 0:
             return "FAILED: Invalid id of Policy"
-        if field_name not in ['shop_name', 'conditions', 'restrict', 'quantity']:
+        if field_name not in ['shop_name', 'conditions', 'restriction', 'quantity']:
             return "FAILED: Invalid field name"
         if Owners.get_owner(username, shop_name) is not False:
             if field_name in ['conditions']:
@@ -176,7 +176,7 @@ def update_shopping_policy_on_items(username, policy_id, field_name, new_value):
     if policy_id is not None and field_name is not None and new_value is not None:
         if int(policy_id) < 0:
             return "FAILED: Invalid id of Policy"
-        if field_name not in ['item_name', 'conditions', 'restrict', 'quantity']:
+        if field_name not in ['item_name', 'conditions', 'restriction', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:
@@ -195,7 +195,7 @@ def update_shopping_policy_on_category(username, policy_id, field_name, new_valu
     if policy_id is not None and field_name is not None and new_value is not None:
         if int(policy_id) < 0:
             return "FAILED: Invalid id of Policy"
-        if field_name not in ['category', 'conditions', 'restrict', 'quantity']:
+        if field_name not in ['category', 'conditions', 'restriction', 'quantity']:
             return "FAILED: Invalid field name"
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:

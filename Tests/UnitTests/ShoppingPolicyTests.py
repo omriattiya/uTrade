@@ -78,23 +78,23 @@ class UsersTest(unittest.TestCase):
         status &= StoB(ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "", "", "N", 0))
         status &= StoB(ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "", "", "N", 0))
 
-        status &= StoB(ShoppingPolicyLogic.update_shopping_policy_on_shop('ShaharBenS2', 1, "restrict", "N", 'eBay'))
+        status &= StoB(ShoppingPolicyLogic.update_shopping_policy_on_shop('ShaharBenS2', 1, "restriction", "N", 'eBay'))
         status &= StoB(ShoppingPolicyLogic.update_shopping_policy_on_shop('ShaharBenS2', 1, "quantity", 10, 'eBay'))
 
         status &= StoB(
-            ShoppingPolicyLogic.update_shopping_policy_on_identity('Ultimate_ShaharShahar', 1, "restrict", "AL"))
+            ShoppingPolicyLogic.update_shopping_policy_on_identity('Ultimate_ShaharShahar', 1, "restriction", "AL"))
         status &= StoB(
             ShoppingPolicyLogic.update_shopping_policy_on_identity('Ultimate_ShaharShahar', 1, "quantity", 4))
 
         status &= StoB(
-            ShoppingPolicyLogic.update_shopping_policy_on_category('Ultimate_ShaharShahar', 1, "restrict", "E"))
+            ShoppingPolicyLogic.update_shopping_policy_on_category('Ultimate_ShaharShahar', 1, "restriction", "E"))
         status &= StoB(
             ShoppingPolicyLogic.update_shopping_policy_on_category('Ultimate_ShaharShahar', 1, "quantity", 3))
         status &= StoB(
             ShoppingPolicyLogic.update_shopping_policy_on_category('Ultimate_ShaharShahar', 1, "category", "books"))
 
         status &= StoB(
-            ShoppingPolicyLogic.update_shopping_policy_on_items('Ultimate_ShaharShahar', 1, "restrict", "UT"))
+            ShoppingPolicyLogic.update_shopping_policy_on_items('Ultimate_ShaharShahar', 1, "restriction", "UT"))
         status &= StoB(ShoppingPolicyLogic.update_shopping_policy_on_items('Ultimate_ShaharShahar', 1, "quantity", 10))
         status &= StoB(
             ShoppingPolicyLogic.update_shopping_policy_on_items('Ultimate_ShaharShahar', 1, "item_name", "DP by GoF"))
@@ -105,18 +105,18 @@ class UsersTest(unittest.TestCase):
         ITP = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
         SP = ShoppingPolicyLogic.get_all_shopping_policy_on_shop('eBay')
 
-        self.assertEqual(IP[0].restrict, "AL")
+        self.assertEqual(IP[0].restriction, "AL")
         self.assertEqual(IP[0].quantity, 4)
 
-        self.assertEqual(CP[0].restrict, "E")
+        self.assertEqual(CP[0].restriction, "E")
         self.assertEqual(CP[0].quantity, 3)
         self.assertEqual(CP[0].category, "books")
 
-        self.assertEqual(ITP[0].restrict, "UT")
+        self.assertEqual(ITP[0].restriction, "UT")
         self.assertEqual(ITP[0].quantity, 10)
         self.assertEqual(ITP[0].item_name, "DP by GoF")
 
-        self.assertEqual(SP[0].restrict, "N")
+        self.assertEqual(SP[0].restriction, "N")
         self.assertEqual(SP[0].quantity, 10)
 
     # def test_remove_policy(self):

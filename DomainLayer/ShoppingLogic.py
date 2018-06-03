@@ -66,145 +66,6 @@ def check_empty_cart_guest(username):
     return ShoppingCartDB.check_empty_guest(username)
 
 
-def remove_shopping_cart_guest(guest):
-    if guest is not None:
-        return ShoppingCartDB.remove_shopping_cart_guest(guest)
-
-
-def pay_all_guest(guest):
-    if guest is not None:
-        #  check if cart has items
-        empty = ShoppingCartDB.check_empty_guest(guest)
-        if empty is not True:
-            toCreatePurchase = True
-            purchase_id = 0
-            #  if so, check foreach item if the requested amount exist
-            cart_items = get_guest_shopping_cart_item(guest)
-            # cart_items is a array consist of shopping_cart objects
-            message = check_stock_for_shopping_cart(cart_items)
-            if message is not True:
-                return message
-            # if so, sum all items costs, get from costumer his credentials
-            total_cost = 0
-            # for each item, calculate visible_discount
-            for shopping_cart_item in cart_items:
-                item = get_item(shopping_cart_item.item_id)
-                discount = get_visible_discount(item.id, item.shop_name)
-                percentage = 0
-                if discount is not False:
-                    percentage = discount.percentage
-                new_price = item.price * (1 - percentage)
-                if shopping_cart_item.code is not None:
-                    discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
-                    if discount is not False:
-                        percentage = discount.percentage
-                    new_price = new_price * (1 - percentage)
-                lottery_message = check_lottery_ticket(item, shopping_cart_item, guest)
-                if lottery_message is not True:
-                    return lottery_message
-                total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                if actual_pay(total_cost) is False:
-                    return 'Something went wrong with the payment service'
-                new_quantity = item.quantity - shopping_cart_item.item_quantity
-                status = ItemsLogic.update_stock(item.id, new_quantity)
-                if status is False:
-                    return 'Something went wrong with the purchase'
-                if supply_items(cart_items) is False:
-                    return 'Something went wrong with the supply service'
-                # live alerts
-                owners = Owners.get_owners_by_shop(item.shop_name)
-                owners_name = []
-                for owner in owners:
-                    owners_name.append(owner.username)
-                Consumer.notify_live_alerts(owners_name,
-                                            '<strong>guest' + guest + '</strong> has bought item <a href="../app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
-            status = remove_shopping_cart_guest(guest)
-            if status is False:
-                return 'Something went wrong with the purchase'
-            else:
-                return True
-    return 'Shopping cart is empty'
-
-
-def pay_all(username):
-    if username is not None:
-        #  check if cart has items
-        empty = ShoppingCartDB.check_empty(username)
-        if empty is not True:
-            to_create_purchase = True
-            purchase_id = 0
-            #  if so, check foreach item if the requested amount exist
-            cart_items = get_cart_items(username)
-            # here check if cart items meets the conditions
-            shopping_policy_status = shopping_policy_check(username, cart_items)
-            if shopping_policy_status is not True:
-                return shopping_policy_status
-            # cart_items is a array consist of shopping_cart objects
-            message = check_stock_for_shopping_cart(cart_items)
-            if message is not True:
-                return message
-            # if so, sum all items costs, get from costumer his credentials
-            total_cost = 0
-            # for each item, calculate visible_discount
-            for shopping_cart_item in cart_items:
-                item = get_item(shopping_cart_item.item_id)
-                discount = get_visible_discount(item.id, item.shop_name)
-                percentage = 0
-                if discount is not False:
-                    percentage = discount.percentage
-                new_price = item.price * (1 - percentage)
-                if shopping_cart_item.code is not None:
-                    discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
-                    if discount is not False:
-                        percentage = discount.percentage
-                    new_price = new_price * (1 - percentage)
-                lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
-                if lottery_message is not True:
-                    return lottery_message
-                total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                pay_confirmation = PaymentSystem.pay(total_cost, username)
-                if pay_confirmation is False:
-                    return 'Payment System Denied.'
-                # TODO print to GUI payment confirmation or something
-                print(pay_confirmation)
-                if to_create_purchase is True:
-                    to_create_purchase = False
-                    purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
-                    if purchase_id is False:
-                        return 'Something went wrong with the purchase'
-                status = PurchasedItems.add_purchased_item(purchase_id, shopping_cart_item.item_id,
-                                                           shopping_cart_item.item_quantity,
-                                                           shopping_cart_item.item_quantity * new_price)
-                if status is False:
-                    return 'Something went wrong with the purchase'
-                sup_confirmation = SupplySystem.supply_a_purchase(username, purchase_id)
-                if sup_confirmation is False:
-                    return 'Supply System Denied.'
-                # TODO print to GUI supply confirmation or something
-                print(sup_confirmation)
-                status = update_purchase_total_price(purchase_id, total_cost)
-                if status is False:
-                    return 'Something went wrong with the purchase'
-                new_quantity = item.quantity - shopping_cart_item.item_quantity
-                status = ItemsLogic.update_stock(item.id, new_quantity)
-                if status is False:
-                    return 'Something went wrong with the purchase'
-
-                # live alerts
-                owners = Owners.get_owners_by_shop(item.shop_name)
-                owners_name = []
-                for owner in owners:
-                    owners_name.append(owner.username)
-                PurchasesAlerts.notify_purchasing_alerts(owners_name,
-                                            '<strong>' + username + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(item.id) + '"># <strong>' + str(item.id) + '</strong></a> from your shop')
-            status = remove_shopping_cart(username)
-            if status is False:
-                return 'Something went wrong with the purchase'
-            else:
-                return True
-    return 'Shopping cart is empty'
-
-
 def check_stock_for_shopping_cart(cart_items):
     for cart_item in cart_items:
         if ItemsLogic.check_in_stock(cart_item.item_id, cart_item.item_quantity) is False:
@@ -345,36 +206,6 @@ def get_new_guest_name():
             return name.username + 1
 
 
-def add_guest_item_shopping_cart(guest, item_id, quantity):
-    return ShoppingCartDB.add_guest_shopping_cart(guest, item_id, quantity)
-
-
-def get_guest_shopping_cart_item(username):
-    return ShoppingCartDB.get_guest_shopping_cart_item(username)
-
-
-def update_code_shopping_cart_guest(guest, item_id, code):
-    if guest is not None and id is not None and code is not None:
-        if len(code) == 15 and isinstance(code, str):
-            return ShoppingCartDB.update_code_shopping_cart_guest(guest, item_id, code)
-    return False
-
-
-def remove_item_shopping_cart_guest(guest, item_id):
-    if guest is not None and item_id is not None:
-        return ShoppingCartDB.remove_item_shopping_cart_guest(guest, item_id)
-
-
-def update_item_shopping_cart_guest(guest, item_id, new_quantity):
-    if guest is not None and item_id is not None and new_quantity >= 0:
-        if new_quantity is 0:
-            return remove_item_shopping_cart_guest(guest, item_id)
-        if ItemsLogic.check_in_stock(item_id, new_quantity) is False:
-            return False
-        return ShoppingCartDB.update_item_shopping_cart_guest(guest, item_id, new_quantity)
-    return False
-
-
 def shopping_policy_check(username, cart_items):
     if username is not "guest":
         user = RegisteredUsers.get_user(username)
@@ -401,15 +232,15 @@ def check_identity_shopping_policies(username, cart_items):
         if username is not "guest":
             if is_meet_conditions(username, identity_policy.conditions) is False:
                 continue
-        if identity_policy.restrict is 'N':
+        if identity_policy.restriction is 'N':
             continue
-        elif identity_policy.restrict is 'AL':
+        elif identity_policy.restriction is 'AL':
             if len(cart_items) < identity_policy.quantity:
                 return "FAILED: Not enough items in cart; You allowed at least " + identity_policy.quantity
-        elif identity_policy.restrict is 'E':
+        elif identity_policy.restriction is 'E':
             if len(cart_items) != identity_policy.quantity:
                 return "FAILED: Not exact num of items in cart; You allowed exactly " + identity_policy.quantity
-        elif identity_policy.restrict is 'UT':
+        elif identity_policy.restriction is 'UT':
             if len(cart_items) > identity_policy.quantity:
                 return "FAILED: Too much items in cart; You allowed at most " + identity_policy.quantity
     return True
@@ -421,7 +252,7 @@ def check_items_shopping_policies(username, cart_items):
         if username is not "guest":
             if is_meet_conditions(username, items_policy.conditions) is False:
                 continue
-        if items_policy.restrict is 'N':
+        if items_policy.restriction is 'N':
             continue
         num_of_items = 0
         cart_item_name = None
@@ -429,13 +260,13 @@ def check_items_shopping_policies(username, cart_items):
             cart_item_name = ItemsLogic.get_item(cart_item.item_id).name
             if items_policy.item_name == cart_item_name:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if items_policy.restrict is 'AL':
+        if items_policy.restriction is 'AL':
             if num_of_items < items_policy.quantity:
                 return "FAILED: Not enough " + cart_item_name + " items in cart; You allowed at least " + items_policy.quantity
-        elif items_policy.restrict is 'E':
+        elif items_policy.restriction is 'E':
             if num_of_items != items_policy.quantity:
                 return "FAILED: Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + items_policy.quantity
-        elif items_policy.restrict is 'UT':
+        elif items_policy.restriction is 'UT':
             if num_of_items > items_policy.quantity:
                 return "FAILED: Too much " + cart_item_name + " items in cart; You allowed at most " + items_policy.quantity
     return True
@@ -447,7 +278,7 @@ def check_category_shopping_policies(username, cart_items):
         if username is not "guest":
             if is_meet_conditions(username, category_policy.conditions) is False:
                 continue
-        if category_policy.restrict is 'N':
+        if category_policy.restriction is 'N':
             continue
         num_of_items = 0
         cart_item_category = None
@@ -455,13 +286,13 @@ def check_category_shopping_policies(username, cart_items):
             cart_item_category = ItemsLogic.get_item(cart_item.item_id).category
             if category_policy.category == cart_item_category:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if category_policy.restrict is 'AL':
+        if category_policy.restriction is 'AL':
             if num_of_items < category_policy.quantity:
                 return "FAILED: Not enough " + cart_item_category + " items in cart; You allowed at least " + category_policy.quantity
-        elif category_policy.restrict is 'E':
+        elif category_policy.restriction is 'E':
             if num_of_items != category_policy.quantity:
                 return "FAILED: Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + category_policy.quantity
-        elif category_policy.restrict is 'UT':
+        elif category_policy.restriction is 'UT':
             if num_of_items > category_policy.quantity:
                 return "FAILED: Too much " + cart_item_category + " items in cart; You allowed at most " + category_policy.quantity
     return True
@@ -473,7 +304,7 @@ def check_shop_shopping_policies(username, cart_items):
         if username is not "guest":
             if is_meet_conditions(username, shop_policy.conditions) is False:
                 continue
-        if shop_policy.restrict is 'N':
+        if shop_policy.restriction is 'N':
             continue
         num_of_items = 0
         cart_item_shop = None
@@ -481,13 +312,13 @@ def check_shop_shopping_policies(username, cart_items):
             cart_item_shop = ItemsLogic.get_item(cart_item.item_id).shop_name
             if shop_policy.category == cart_item_shop:
                 num_of_items = num_of_items + cart_item.item_quantity
-        if shop_policy.restrict is 'AL':
+        if shop_policy.restriction is 'AL':
             if num_of_items < shop_policy.quantity:
                 return "FAILED: Not enough " + cart_item_shop + " items in cart; You allowed at least " + shop_policy.quantity
-        elif shop_policy.restrict is 'E':
+        elif shop_policy.restriction is 'E':
             if num_of_items != shop_policy.quantity:
                 return "FAILED: Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + shop_policy.quantity
-        elif shop_policy.restrict is 'UT':
+        elif shop_policy.restriction is 'UT':
             if num_of_items > shop_policy.quantity:
                 return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + shop_policy.quantity
     return True

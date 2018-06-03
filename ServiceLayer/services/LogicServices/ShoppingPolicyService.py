@@ -44,9 +44,9 @@ def add_shopping_policy_on_items(request):
                 return HttpResponse('FAILED: username is None')
             item_name = request.POST.get('item_name')
             conditions = request.POST.get('conditions')
-            restrict = request.POST.get('restrict')
+            restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_items(username, item_name, conditions, restrict, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_items(username, item_name, conditions, restriction, quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -64,9 +64,9 @@ def add_shopping_policy_on_category(request):
                 return HttpResponse('FAILED: username is None')
             category = request.POST.get('category')
             conditions = request.POST.get('conditions')
-            restrict = request.POST.get('restrict')
+            restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_category(username, category, conditions, restrict, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_category(username, category, conditions, restriction, quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -84,9 +84,9 @@ def add_shopping_policy_on_shop(request):
                 return HttpResponse('FAILED: username is None')
             shop_name = request.POST.get('shop_name')
             conditions = request.POST.get('conditions')
-            restrict = request.POST.get('restrict')
+            restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_shop(username, shop_name, conditions, restrict, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_shop(username, shop_name, conditions, restriction, quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -103,9 +103,9 @@ def add_shopping_policy_on_identity(request):
             if username is None:
                 return HttpResponse('FAILED: username is None')
             conditions = request.POST.get('conditions')
-            restrict = request.POST.get('restrict')
+            restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_identity(username, conditions, restrict, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_identity(username, conditions, restriction, quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')

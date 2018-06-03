@@ -12,17 +12,17 @@ def getShopShoppingPolicies(request):
         for policy in shop_policies:
             is_none = ""
             selectors = {}
-            if policy.restrict is 'N':
+            if policy.restriction is 'N':
                 is_none = "disabled"
             selectors['N'] = ""
             selectors['UT'] = ""
             selectors['AL'] = ""
             selectors['E'] = ""
-            selectors[policy.restrict] = 'selected="selected"'
+            selectors[policy.restriction] = 'selected="selected"'
 
             html += loader.render_to_string('components/shopping_shop_policy.html', context={
                 'id': policy.policy_id,
-                'selector_value': policy.restrict,
+                'selector_value': policy.restriction,
                 'quantity': policy.quantity,
                 'is_none': is_none,
                 'N_S': selectors.get('N'),

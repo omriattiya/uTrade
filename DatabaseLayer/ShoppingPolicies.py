@@ -106,35 +106,35 @@ def get_all_shopping_policy_on_identity():
 #    ____________________________________   INSERT     ___________________________________________________
 
 
-def add_shopping_policy_on_items(item_name, conditions, restrict, quantity):
+def add_shopping_policy_on_items(item_name, conditions, restriction, quantity):
     sql_query = """
-                INSERT INTO ShoppingPolicyOnItems(item_name, conditions, restrict, quantity)
+                INSERT INTO ShoppingPolicyOnItems(item_name, conditions, restriction, quantity)
                 VALUES ('{}','{}','{}','{}')
-                """.format(item_name, conditions, restrict, quantity)
+                """.format(item_name, conditions, restriction, quantity)
     return commit_command(sql_query)
 
 
-def add_shopping_policy_on_category(category, conditions, restrict, quantity):
+def add_shopping_policy_on_category(category, conditions, restriction, quantity):
     sql_query = """
-                INSERT INTO ShoppingPolicyOnCategory(category, conditions, restrict, quantity)
+                INSERT INTO ShoppingPolicyOnCategory(category, conditions, restriction, quantity)
                 VALUES ('{}','{}','{}','{}')
-                """.format(category, conditions, restrict, quantity)
+                """.format(category, conditions, restriction, quantity)
     return commit_command(sql_query)
 
 
-def add_shopping_policy_on_shop(shop_name, conditions, restrict, quantity):
+def add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
     sql_query = """
-                INSERT INTO ShoppingPolicyOnShop(shop_name, conditions, restrict, quantity)
+                INSERT INTO ShoppingPolicyOnShop(shop_name, conditions, restriction, quantity)
                 VALUES ('{}','{}','{}','{}')
-                """.format(shop_name, conditions, restrict, quantity)
+                """.format(shop_name, conditions, restriction, quantity)
     return commit_command(sql_query)
 
 
-def add_shopping_policy_on_identity(conditions, restrict, quantity):
+def add_shopping_policy_on_identity(conditions, restriction, quantity):
     sql_query = """
-                INSERT INTO ShoppingPolicyOnIdentity(conditions, restrict, quantity)
+                INSERT INTO ShoppingPolicyOnIdentity(conditions, restriction, quantity)
                 VALUES ('{}','{}','{}')
-                """.format(conditions, restrict, quantity)
+                """.format(conditions, restriction, quantity)
     return commit_command(sql_query)
 
 
