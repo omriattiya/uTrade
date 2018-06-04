@@ -84,7 +84,7 @@ def add_item_to_shop(request):
             today = datetime.now()
             subtraction = lottery_date - today
             threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
-            return HttpResponse('success')
+        return HttpResponse('success')
 
 
 def lottery_timer(lottery_id):
