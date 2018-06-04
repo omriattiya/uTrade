@@ -136,3 +136,75 @@ function addItem(shop_name) {
     loadHTML.open("POST", "../app/shop/owner/items/add_item/post", true);
     loadHTML.send(data);
 }
+
+function addDiscount(shop_name) {
+    let data = new FormData();
+    let kind = document.getElementById("kind").value;
+    data.append('shop_name', shop_name);
+    data.append('percent', document.getElementById("percent").value);
+    data.append('duration', document.getElementById("duration").value);
+    data.append('kind', kind);
+
+    switch (kind) {
+        case "visible_item":
+            data.append('item_id', document.getElementById("item_id").value);
+            break;
+        case "invisible_item":
+            data.append('item_id', document.getElementById("item_id").value);
+            data.append('code', document.getElementById("code").value);
+            break;
+        case "visible_category":
+            data.append('category', document.getElementById("category").value);
+            break;
+        case "invisible_category":
+            data.append('category', document.getElementById("category").value);
+            data.append('code', document.getElementById("code").value);
+            break;
+    }
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.shop_name = shop_name;
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'success') {
+                alert("Discount Added Successfully");
+                window.location.href = "../app/shop/?shop_name=" + loadHTML.shop_name;
+            }
+            else if (loadHTML.responseText === 'user not logged in' ||
+                loadHTML.responseText === 'not owner or manager in this shop') {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home"
+            }
+            else alert(loadHTML.responseText);
+
+        }
+    };
+    loadHTML.open("POST", "../app/shop/owner/add_discount/post", true);
+    loadHTML.send(data);
+}
+
+function deleteDiscount(item_id, shop_name, from_date) {
+    let data = new FormData();
+    data.append('item_id', item_id);
+    data.append('from_date', from_date);
+
+    let loadHTML = new XMLHttpRequest();
+    loadHTML.shop_name = shop_name;
+    loadHTML.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'fail') {
+                alert("Failed");
+                window.location.reload(true)
+            }
+            else if (loadHTML.responseText === 'no permission to remove item') {
+                alert(loadHTML.responseText);
+            }
+            else if (loadHTML.responseText === 'success') {
+                alert("Item Removed Successfully");
+                window.location.href = "../app/shop/?shop_name=" + loadHTML.shop_name;
+            }
+        }
+    };
+    loadHTML.open("POST", "../app/shop/owner/delete_discount/", true);
+    loadHTML.send(data);
+}

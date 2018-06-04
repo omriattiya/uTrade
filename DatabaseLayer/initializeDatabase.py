@@ -171,7 +171,7 @@ tables_sql = [
           percentage REAL,
           from_date DATE,
           end_date DATE,
-          PRIMARY KEY(item_id, shop_name, from_date)
+          PRIMARY KEY(item_id, from_date)
         )
     """,
     """

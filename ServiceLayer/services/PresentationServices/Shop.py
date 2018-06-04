@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
-from DomainLayer import ShopLogic, UsersLogic, SearchLogic
+
+from DomainLayer import ShopLogic, UsersLogic, ShoppingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
@@ -48,9 +49,23 @@ def get_shop(request):
                 {'path': 'owner/items/add_item',
                  'shop_name': shop_name,
                  'button_text': 'Add Item'})
+            render_add_discount = loader.render_to_string(
+                'components/owner_manager_options.html',
+                {'path': 'owner/add_discount',
+                 'shop_name': shop_name,
+                 'button_text': 'Add Discount'})
+            render_delete_discount = loader.render_to_string(
+                'components/owner_manager_options.html',
+                {'path': 'owner/delete_discount',
+                 'shop_name': shop_name,
+                 'button_text': 'Delete Discount'})
 
             if UsersLogic.is_owner_of_shop(username, shop_name):
-                owner_manager_options += render_purchase_history + render_edit_remove + render_add_item
+                owner_manager_options += render_purchase_history + \
+                                         render_edit_remove + \
+                                         render_add_item + \
+                                         render_add_discount + \
+                                         render_delete_discount
             if UsersLogic.is_manager_of_shop(username, shop_name):
                 manager = UsersLogic.get_manager(username, shop_name)
                 if manager.permission_get_purchased_history == 1:
@@ -59,11 +74,13 @@ def get_shop(request):
                     owner_manager_options += render_edit_remove
                 if manager.permission_add_item == 1:
                     owner_manager_options += render_add_item
+                if manager.discount_permission == 1:
+                    owner_manager_options += render_add_discount + render_delete_discount
 
             context.update({'shop_name': shop.name,
-                       'shop_status': shop.status,
-                       'products': products,
-                       'owner_manager_options': owner_manager_options})
+                            'shop_status': shop.status,
+                            'products': products,
+                            'owner_manager_options': owner_manager_options})
             return render(request, 'shop.html', context=context)
         else:
             login = request.COOKIES.get('login_hash')
@@ -218,6 +235,64 @@ def add_item_to_shop(request):
                     return HttpResponse('no permission to add item')
             else:
                 return HttpResponse('fail')  # not manager not owner
-        every_html = {'top_bar':  Topbar_Navbar.get_top_bar(login), 'nav_bar': Topbar_Navbar.get_nav_bar(login, guest)}
+        every_html = {'top_bar': Topbar_Navbar.get_top_bar(login), 'nav_bar': Topbar_Navbar.get_nav_bar(login, guest)}
         return render(request, 'shop_add_item.html',
                       context={'every_html': every_html, 'shop_name': shop_name})
+
+
+def add_discount_page(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+        login = request.COOKIES.get('login_hash')
+        guest = request.COOKIES.get('guest_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is None:
+                return HttpResponse(error_login_owner)
+        else:
+            return HttpResponse(error_login_owner)
+        if not UsersLogic.is_owner_of_shop(username, shop_name):
+            if UsersLogic.is_manager_of_shop(username, shop_name):
+                manager = UsersLogic.get_manager(username, shop_name)
+                if manager.discount_permission is not 1:  # no permission
+                    return HttpResponse('no permission to add discount')
+            else:
+                return HttpResponse('fail')  # not manager not owner
+        every_html = {'top_bar': Topbar_Navbar.get_top_bar(login), 'nav_bar': Topbar_Navbar.get_nav_bar(login, guest)}
+        return render(request, 'shop_add_discount.html',
+                      context={'every_html': every_html, 'shop_name': shop_name})
+
+
+def delete_discount(request):
+    if request.method == 'GET':
+        shop_name = request.GET.get('shop_name')
+        login = request.COOKIES.get('login_hash')
+        guest = request.COOKIES.get('guest_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is None:
+                return HttpResponse(error_login_owner)
+        else:
+            return HttpResponse(error_login_owner)
+        if not UsersLogic.is_owner_of_shop(username, shop_name):
+            if UsersLogic.is_manager_of_shop(username, shop_name):
+                manager = UsersLogic.get_manager(username, shop_name)
+                if manager.discount_permission is not 1:  # no permission
+                    return HttpResponse('no permission to add discount')
+            else:
+                return HttpResponse('fail')  # not manager not owner
+
+        # TODO: get all visible discounts
+        shop_discounts = ShoppingLogic.get_visible_discount(shop_name)
+        string_discounts = ""
+        for discount in shop_discounts:
+            string_discounts += loader.render_to_string(
+                'components/discount.html',
+                {'shop_name': shop_name,
+                 'item_id': discount.item_id,
+                 'from_date': discount.from_date,
+                 })
+
+        every_html = {'top_bar': Topbar_Navbar.get_top_bar(login), 'nav_bar': Topbar_Navbar.get_nav_bar(login, guest)}
+        return render(request, 'shop_delete_discount.html',
+                      context={'every_html': every_html, 'shop_name': shop_name, 'discounts': string_discounts})

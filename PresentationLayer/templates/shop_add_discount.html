@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <BASE href="http://localhost:8000/static/">
+
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Obaju e-commerce template">
+    <meta name="author" content="Ondrej Svestka | ondrejsvestka.cz">
+    <meta name="keywords" content="">
+
+    <title>
+        uTrade
+    </title>
+
+    <meta name="keywords" content="">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/owl.carousel.css" rel="stylesheet">
+    <link href="css/owl.theme.css" rel="stylesheet">
+
+    <!-- theme stylesheet -->
+    <link href="css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- your stylesheet with modifications -->
+    <link href="css/custom.css" rel="stylesheet">
+
+    <script src="js/respond.min.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/shop_owner_actions.js"></script>
+
+    <link rel="shortcut icon" href="favicon.png">
+
+
+    <!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/web_sockets.js"></script>
+
+    <script>
+        function change_kind() {
+            let kind_element = document.getElementById("kind");
+            let selected_kind = kind_element.options[kind_element.selectedIndex].value;
+            let kind_box = document.getElementById("kind_box");
+            let what_to_add = "";
+            let item_id_div = document.getElementById("item_id_div");
+            if (selected_kind === "visible_item") {
+                kind_box.innerHTML = "";
+                item_id_div.innerHTML = '\
+                            <div id="item_id_div" class="form-group">\
+                                <label id="label_item_id" for="item_id">* Item ID</label>\
+                                <input required name="item_id" id="item_id" type="number" class="form-control">\
+                            </div>';
+            } else if (selected_kind === "invisible_item") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="code">* code (8 chars)</label>\
+                                <input required name="code" id="code" maxlength="8" class="form-control">\
+                            </div>';
+                item_id_div.innerHTML = '\
+                            <div id="item_id_div" class="form-group">\
+                                <label id="label_item_id" for="item_id">* Item ID</label>\
+                                <input required name="item_id" id="item_id" type="number" class="form-control">\
+                            </div>';
+            } else if (selected_kind === "visible_category") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="category">* Category</label>\
+                                <input required name="category" id="category" type="text" class="form-control">\
+                            </div>';
+                item_id_div.innerHTML = "";
+            } else if (selected_kind === "invisible_category") {
+                kind_box.innerHTML = '\
+                            <div class="form-group">\
+                                <label for="category">* Category</label>\
+                                <input required name="category" id="category" type="text" class="form-control">\
+                            </div>\
+                            <div class="form-group">\
+                                <label for="code">* code (8 chars)</label>\
+                                <input required name="code" id="code" maxlength="8" class="form-control">\
+                            </div>';
+                item_id_div.innerHTML = "";
+            }
+
+        }
+    </script>
+
+</head>
+
+<body onload="change_kind()">
+
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+{% autoescape off %}
+    {{ every_html.top_bar }}
+{% endautoescape %}
+
+<!-- *** TOP BAR END *** -->
+
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+
+            <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
+                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
+                </a>
+            </div>
+        </div>
+        <!--/.navbar-header -->
+
+        <!--/.nav-collapse -->
+
+        {% autoescape off %}
+            {{ every_html.nav_bar }}
+        {% endautoescape %}
+        <!--/.nav-collapse -->
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
+
+<div id="all">
+
+    <div id="content">
+
+        <div class="container">
+
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="../app/home">Home</a></li>
+                    <li><a href="../app/shop/?shop_name={{ shop_name }}">{{ shop_name }}</a></li>
+                    <li>Add Discount</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12">
+                <div class="box">
+                    <h1>Add Discount To {{ shop_name }}</h1>
+                    <h5 style="color: #00b478">(*) required field</h5>
+                </div>
+
+                <div class="box info-bar" style="position: relative">
+                    <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
+                        <form action="javascript:addDiscount('{{ shop_name }}')">
+                            <div class="form-group">
+
+                                <div id="item_id_div"></div>
+                                <div class="form-group">
+                                    <label id="label_percent" for="percent">* Percent (%)</label>
+                                    <input required name="percent" id="percent" type="number" min="1" max="100"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label id="label_duration" for="duration">* Discount Duration</label>
+                                    <input required name="duration" id="duration" type="number" min="1"
+                                           class="form-control">
+                                </div>
+                                <label for="kind">* Kind</label>
+                                <select name="kind" id="kind" class="form-control" onchange="change_kind()">
+                                    <option value="visible_item">Visible - Item</option>
+                                    <option value="invisible_item">Invisible - Item</option>
+                                    <option value="visible_category">Visible - Category</option>
+                                    <option value="invisible_category">Invisible - Category</option>
+                                </select>
+                            </div>
+                            <div style="margin: 10px" id="kind_box"></div>
+
+
+                            <div style="margin: 10px" class="text-center">
+                                <input value="Add Discount" type="submit" class="btn btn-primary">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.col-md-9 -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#content -->
+</div>
+<!-- /#all -->
+
+
+</body>
+
+</html>

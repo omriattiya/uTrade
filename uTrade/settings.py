@@ -88,7 +88,7 @@ DATABASES = {
         'USER': 'kutigolberg',  # Not used with sqlite3.
         'PASSWORD': 'kuti1997',  # Not used with sqlite3.
         'HOST': '132.73.201.156',  # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                 # Set to empty string for default. Not used with sqlite3.
+        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     },
     'tests': {
         'ENGINE': 'django.db.backends.sqlite3',  # 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.

@@ -105,6 +105,9 @@ shop_page_urlpatterns = [
     path('shop/owner/items/add_item/', Shop.add_item_to_shop),
     path('shop/owner/items/add_item/post', ItemsService.add_item_to_shop),
     path('shop/owner/purchase_history/', Shop.watch_purchase_history),
+    path('shop/owner/add_discount/', Shop.add_discount_page),
+    path('shop/owner/add_discount/post', ShopsService.add_discount),
+    path('shop/owner/delete_discount/', Shop.delete_discount),
 
 ]
 

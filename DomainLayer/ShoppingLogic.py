@@ -1,15 +1,12 @@
 from datetime import datetime
 
-from DatabaseLayer import ShoppingCartDB, RegisteredUsers, PurchasedItems, Purchases, Owners
+from DatabaseLayer import ShoppingCartDB, RegisteredUsers, Purchases
 from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
-from DatabaseLayer.Purchases import update_purchase_total_price
-from DomainLayer import ItemsLogic, LotteryLogic
-from ExternalSystems import PaymentSystem, SupplySystem
-from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
-from DomainLayer import ShoppingPolicyLogic
 from DatabaseLayer.UserDetails import is_meet_conditions
+from DomainLayer import ItemsLogic, LotteryLogic
+from DomainLayer import ShoppingPolicyLogic
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -154,11 +151,6 @@ def get_purchased_items_by_purchase_id(purchase_id):
 
 def get_purchase(purchase_id):
     return Purchases.get_purchase(purchase_id)
-
-
-def order_of_guest(username):
-    cart_items = get_guest_shopping_cart_item(username)
-    return order_helper(cart_items)
 
 
 def order_of_user(username):
