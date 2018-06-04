@@ -176,10 +176,10 @@ def check_stock_for_shopping_cart(cart_items):
 def check_lottery_ticket(item, cart_item, username):
     if item.kind == 'ticket':
         lottery = get_lottery(item.id)
-        final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
+        final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d %H:%M')
         if final_date > datetime.now():
             lottery_sum = get_lottery_sum(lottery.lotto_id)
-            if lottery_sum + cart_item.item_quantity * item.price < lottery.max_price:
+            if float(lottery_sum) + float(cart_item.item_quantity) * item.price < lottery.max_price:
                 lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
                                                                            username,
                                                                            cart_item.item_quantity * item.price)

@@ -109,8 +109,6 @@ function addItem(shop_name) {
         var toDecide = new Date(document.getElementById("sale_date").value);
         toDecide.setHours(parseInt(document.getElementById("sale_hour").value));
         toDecide.setMinutes(parseInt(document.getElementById("sale_minutes").value));
-        alert(toDecide);
-        alert(today);
         if(toDecide.getTime() < today.getTime())
         {
             alert("Sale date must be bigger than today.");

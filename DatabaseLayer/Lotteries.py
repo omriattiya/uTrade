@@ -105,7 +105,7 @@ def get_lottery_sum(lottery_id):
     number = fetch_integer(select_command(sql_query))
     if number[0] is None:
         return 0
-    return number
+    return number[0]
 
 
 def get_prize(lottery_id):
@@ -116,4 +116,4 @@ def get_prize(lottery_id):
     number = fetch_integer(select_command(sql_query))
     if number[0] is None:
         return 0
-    return number
+    return number[0]

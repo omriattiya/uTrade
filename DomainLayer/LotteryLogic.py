@@ -42,7 +42,7 @@ def add_lottery_and_items_and_return_id(prize, ticket, ticket_price, final_date,
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
             if ticket_id is not False:
-                lottery = Lottery(ticket_id, ticket_price, final_date, None, None, item_id)
+                lottery = Lottery(ticket_id, ticket_price * ticket.quantity, final_date, None, None, item_id)
                 status = Lotteries.add_lottery(lottery)
                 if status is not False:
                     return ticket_id
