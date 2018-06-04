@@ -1,5 +1,5 @@
 
 
 class SupplyInterface:
-    def supply_a_purchase(username, purchase_id):
+    def supply_a_purchase(self,username, purchase_id):
         pass

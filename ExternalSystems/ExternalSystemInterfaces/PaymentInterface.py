@@ -1,6 +1,6 @@
 
 
 class PaymentInterface:
-    def pay(total_cost, username):
+    def pay(self,total_cost, username):
         pass
 

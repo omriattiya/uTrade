@@ -4,7 +4,7 @@ from ExternalSystems.ExternalSystemInterfaces.PaymentInterface import PaymentInt
 
 
 class PaymentSystem(PaymentInterface):
-    def pay(total_cost, username):
+    def pay(self,total_cost, username):
         purchase_time = datetime.now()
         if total_cost > 0 and username is not None and username != "":
             if username[0:5] == 'guest':

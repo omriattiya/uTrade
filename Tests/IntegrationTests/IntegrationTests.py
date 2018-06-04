@@ -291,7 +291,6 @@ class IntegrationTests(unittest.TestCase):
         UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 2, 3, None))
         UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 7, None))
         status = UserShoppingCartLogic.pay_all(access_token)
-        print(status)
         self.assertFalse(StoB(status))
 
     def tearDown(self):

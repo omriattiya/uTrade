@@ -2,5 +2,5 @@ from ExternalSystems.ExternalSystemInterfaces.PaymentInterface import PaymentInt
 
 
 class ProxyPaymentSystem(PaymentInterface):
-    def pay(total_cost, username):
+    def pay(self,total_cost, username):
         return False
