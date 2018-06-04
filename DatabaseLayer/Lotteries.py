@@ -24,6 +24,13 @@ def fetch_lottery_customer(result):
     return LotteryCustomer(result[0], result[1], result[2])
 
 
+def fetch_lottery_customers(result):
+    arr = []
+    for cus in result:
+        cus.append(LotteryCustomer(cus[0], cus[1], cus[2]))
+    return arr
+
+
 def fetch_integer(result):
     if len(result) == 0:
         return False
@@ -63,6 +70,15 @@ def get_lottery_customer(purchased_item, user_id):
     return fetch_lottery_customer(select_command(sql_query))
 
 
+def get_lottery_customers(purchased_item):
+    sql_query = """
+                    SELECT *
+                    FROM CustomersInLotteries
+                    WHERE lotto_id = '{}'
+                """.format(purchased_item)
+    return fetch_lottery_customers(select_command(sql_query))
+
+
 def get_lottery(lottery_id):
     sql_query = """
                     SELECT *
@@ -89,4 +105,15 @@ def get_lottery_sum(lottery_id):
     number = fetch_integer(select_command(sql_query))
     if number[0] is None:
         return 0
-    return number
+    return number[0]
+
+
+def get_prize(lottery_id):
+    sql_query = """ SELECT prize_item_id
+                        FROM Lotteries
+                        WHERE lotto_id = '{}'
+                    """.format(lottery_id)
+    number = fetch_integer(select_command(sql_query))
+    if number[0] is None:
+        return 0
+    return number[0]

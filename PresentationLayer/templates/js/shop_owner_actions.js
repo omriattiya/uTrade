@@ -95,9 +95,23 @@ function addItem(shop_name) {
     let item_kind = document.getElementById("kind").value;
     if (item_kind === 'prize')
     {
-        if(document.getElementById("sale_date").value  == '')
+        if(document.getElementById("sale_hour").value == '')
         {
-            alert("Field Sale Duration Must Not Be Empty");
+            alert('Field sale hour must not be empty')
+            return;
+        }
+        if(document.getElementById("sale_minutes").value == '')
+        {
+            alert('Field sale minutes must not be empty')
+            return;
+        }
+        var today = new Date();
+        var toDecide = new Date(document.getElementById("sale_date").value);
+        toDecide.setHours(parseInt(document.getElementById("sale_hour").value));
+        toDecide.setMinutes(parseInt(document.getElementById("sale_minutes").value));
+        if(toDecide.getTime() < today.getTime())
+        {
+            alert("Sale date must be bigger than today.");
             return;
         }
     }

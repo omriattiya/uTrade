@@ -1,10 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import ItemsLogic, UserShoppingCartLogic, GuestShoppingCartLogic
+from DomainLayer import UserShoppingCartLogic, GuestShoppingCartLogic
 
-from DomainLayer import ShoppingLogic, ItemsLogic
-from ServiceLayer.services.LiveAlerts import Consumer
+from DomainLayer import ItemsLogic
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from ServiceLayer.services.LiveAlerts import Consumer
 

@@ -1,5 +1,7 @@
 import datetime
-
+import random
+import threading
+from datetime import datetime
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -73,11 +75,32 @@ def add_item_to_shop(request):
                          item_price, 1, item_kind, item_url, 0, 0, 0)
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
                           item_price, item_quantity, 'ticket', item_url, 0, 0, 0)
-            status = LotteryLogic.add_lottery_and_items(prize, ticket, ticket.price,
+            status = LotteryLogic.add_lottery_and_items_and_return_id(prize, ticket, ticket.price,
                                                         sale_date + ' ' + sale_hour + ':' + sale_minutes, username)
         if status is False:
             return HttpResponse('could not add item')
+        if item_kind == 'prize':
+            lottery_date = datetime.strptime(sale_date + ' ' + sale_hour + ':' + sale_minutes, '%Y-%m-%d %H:%M')
+            today = datetime.now()
+            subtraction = lottery_date - today
+            threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
         return HttpResponse('success')
+
+
+def lottery_timer(lottery_id):
+    lottery_customers = LotteryLogic.get_lottery_customers(lottery_id)
+    prize_id = LotteryLogic.get_prize_id(lottery_id)
+    numbers = []
+    i = 0
+    for cus in lottery_customers:
+        numbers.append(i + lottery_customers.price - 1)
+        i += lottery_customers.price
+    winner = random.randint(0, i - 1)
+    index = 0
+    while index < len(numbers):
+        if numbers[index] >= winner:
+            LotteryLogic.win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
+        index = index + 1
 
 
 @csrf_exempt
