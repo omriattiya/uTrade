@@ -64,7 +64,7 @@ def update_lottery_item(purchased_item, user_id, price, number_of_tickets):
 def update_lottery_real_date(purchased_item, end_date):
     sql_query = """
                 UPDATE Lotteries SET real_end_date = '{}'
-                WHERE lotto_id = {})
+                WHERE lotto_id = {}
                 """.format(end_date, purchased_item)
     return commit_command(sql_query)
 

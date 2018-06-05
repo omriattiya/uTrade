@@ -75,9 +75,10 @@ def start_lottery(status, sale_date, sale_hour, sale_minutes):
 
 
 def lottery_timer(lottery_id):
-    ticket = ItemsLogic.get_item(lottery_id)
-    if not type(ticket) == Item:
+    lottery = Lotteries.get_lottery(lottery_id)
+    if lottery.real_end_date is not None:
         return
+    ticket = ItemsLogic.get_item(lottery_id)
     if ticket.quantity > 0:
         Lotteries.update_lottery_real_date(lottery_id, datetime.now().strftime("%Y-%m-%d %H:%M"))
         return

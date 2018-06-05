@@ -67,24 +67,6 @@ def check_stock_for_shopping_cart(cart_items):
     return True
 
 
-def check_lottery_ticket(item, cart_item, username):
-    if item.kind == 'ticket':
-        lottery = get_lottery(item.id)
-        final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
-        if final_date > datetime.now():
-            lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
-                                                                           username,
-                                                                           cart_item.item_quantity * item.price,
-                                                                           cart_item.item_quantity)
-            if lotto_status is False:
-                return 'Something went wrong with the lottery ticket'
-            else:
-                return 'Purchase violates lottery policy'
-        else:
-            return 'Lottery has ended'
-    return True
-
-
 def remove_shopping_cart(username):
     if username is not None:
         return ShoppingCartDB.remove_shopping_cart(username)

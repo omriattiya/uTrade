@@ -87,8 +87,7 @@ def check_empty_cart_user(login_token):
 
 def lottery_ending_check(lotteries):
     for lottery in lotteries:
-        if lottery.quantity == 0:
-            LotteryLogic.lottery_timer(lottery.id)
+        LotteryLogic.lottery_timer(lottery)
 
 
 def pay_all(login_token):
@@ -131,8 +130,6 @@ def pay_all(login_token):
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
                 if lottery_message is not True:
                     return lottery_message
-                if item.kind == 'ticket':
-                    lotteries.append(item)
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
                 if to_create_purchase is True:
                     to_create_purchase = False
@@ -148,6 +145,9 @@ def pay_all(login_token):
                 if status is False:
                     return 'Something went wrong with the purchase'
                 new_quantity = item.quantity - shopping_cart_item.item_quantity
+                if item.kind == 'ticket':
+                    if new_quantity == 0:
+                        lotteries.append(item.id)
                 status = ItemsLogic.update_stock(item.id, new_quantity)
                 if status is False:
                     return 'Something went wrong with the purchase'
@@ -186,18 +186,13 @@ def check_stock_for_shopping_cart(cart_items):
 def check_lottery_ticket(item, cart_item, username):
     if item.kind == 'ticket':
         lottery = get_lottery(item.id)
-        final_date = datetime.strptime(lottery.real_end_date, '%Y-%m-%d %H:%M')
-        if final_date > datetime.now():
-            lottery_sum = get_lottery_sum(lottery.lotto_id)
-            if float(lottery_sum) + float(cart_item.item_quantity) * item.price < lottery.max_price:
-                lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
+        if lottery.real_end_date is None:
+            lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
                                                                            username,
                                                                            cart_item.item_quantity * item.price,
                                                                            cart_item.item_quantity)
-                if lotto_status is False:
-                    return 'Something went wrong with the lottery ticket'
-            else:
-                return 'Purchase violates lottery policy'
+            if lotto_status is False:
+                return 'Something went wrong with the lottery ticket'
         else:
             return 'Lottery has ended'
     return True
