@@ -59,10 +59,6 @@ def check_empty_cart_user(username):
     return ShoppingCartDB.check_empty(username)
 
 
-def check_empty_cart_guest(username):
-    return ShoppingCartDB.check_empty_guest(username)
-
-
 def check_stock_for_shopping_cart(cart_items):
     for cart_item in cart_items:
         if ItemsLogic.check_in_stock(cart_item.item_id, cart_item.item_quantity) is False:
@@ -76,64 +72,17 @@ def check_lottery_ticket(item, cart_item, username):
         lottery = get_lottery(item.id)
         final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
         if final_date > datetime.now():
-            lottery_sum = get_lottery_sum(lottery.lotto_id)
-            if lottery_sum + cart_item.item_quantity * item.price < lottery.max_price:
-                lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
+            lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
                                                                            username,
-                                                                           cart_item.item_quantity * item.price)
-                if lotto_status is False:
-                    return 'Something went wrong with the lottery ticket'
+                                                                           cart_item.item_quantity * item.price,
+                                                                           cart_item.item_quantity)
+            if lotto_status is False:
+                return 'Something went wrong with the lottery ticket'
             else:
                 return 'Purchase violates lottery policy'
         else:
             return 'Lottery has ended'
     return True
-
-
-def get_cart_cost(username):
-    empty = ShoppingCartDB.check_empty(username)
-    if empty is not True:
-        #  if so, check foreach item if the requested amount exist
-        cart_items = get_cart_items(username)
-        # cart_items is a array consist of shopping_cart objects
-        for shopping_cart_item in cart_items:
-            if ItemsLogic.check_in_stock(shopping_cart_item.item_id, shopping_cart_item.item_quantity) is False:
-                return False
-        # if so, sum all items costs, get from costumer his credentials
-        total_cost = 0
-        # for each item, calculate visible_discount
-        for shopping_cart_item in cart_items:
-            item = get_item(shopping_cart_item.item_id)
-            if shopping_cart_item.item_quantity > item.quantity:
-                return False
-            discount = get_visible_discount(item.id, item.shop_name)
-            percentage = 0
-            if discount is not False:
-                percentage = discount.percentage
-            new_price = item.price * (1 - percentage)
-            if shopping_cart_item.code is not None:
-                discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
-                if discount is not False:
-                    percentage = discount.percentage
-                new_price = new_price * (1 - percentage)
-            lottery = get_lottery(item.id)
-            if item.kind == 'ticket':
-                final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
-                if final_date > datetime.now():
-                    lottery_sum = get_lottery_sum(lottery.lotto_id)
-                    if lottery_sum + shopping_cart_item.item_quantity * item.price < lottery.max_price:
-                        lotto_status = LotteryLogic.add_or_update_lottery_customer(shopping_cart_item.item_id,
-                                                                                   username,
-                                                                                   shopping_cart_item.item_quantity * item.price)
-                        if lotto_status is False:
-                            return False
-                    else:
-                        return False
-                else:
-                    return False
-            total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-        return total_cost
-    return False
 
 
 def remove_shopping_cart(username):
@@ -188,14 +137,6 @@ def order_helper(cart_items):
         if cart_items is not False:
             return {'total_price': total_price,
                     'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
-
-
-def get_new_guest_name():
-        name = ShoppingCartDB.get_new_guest_name()
-        if name is False:
-            return 1
-        else:
-            return name.username + 1
 
 
 def shopping_policy_check(username, cart_items):

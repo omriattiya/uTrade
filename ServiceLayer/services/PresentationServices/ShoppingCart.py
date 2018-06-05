@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from DomainLayer import UserShoppingCartLogic, GuestShoppingCartLogic
-from ExternalSystems import PaymentSystem, SupplySystem
+from ExternalSystems import PaymentSystem, SupplySystem, ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
@@ -41,8 +41,8 @@ def show_receipt(request):
             if guest is not None:
                 name = guest
         context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}
-        payment = PaymentSystem.pay(float(amount), name)
-        delivery = SupplySystem.supply_a_purchase(name, int(purchase_id))
+        payment = ExternalSystems.payment.pay(float(amount), name)
+        delivery = ExternalSystems.supply.supply_a_purchase(name, int(purchase_id))
         context['payment'] = payment
         context['delivery'] = delivery
         return render(request, 'receipt.html', context=context)

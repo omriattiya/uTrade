@@ -80,27 +80,8 @@ def add_item_to_shop(request):
         if status is False:
             return HttpResponse('could not add item')
         if item_kind == 'prize':
-            lottery_date = datetime.strptime(sale_date + ' ' + sale_hour + ':' + sale_minutes, '%Y-%m-%d %H:%M')
-            today = datetime.now()
-            subtraction = lottery_date - today
-            threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
+            LotteryLogic.start_lottery(status, sale_date, sale_hour, sale_minutes)
         return HttpResponse('success')
-
-
-def lottery_timer(lottery_id):
-    lottery_customers = LotteryLogic.get_lottery_customers(lottery_id)
-    prize_id = LotteryLogic.get_prize_id(lottery_id)
-    numbers = []
-    i = 0
-    for cus in lottery_customers:
-        numbers.append(i + lottery_customers.price - 1)
-        i += lottery_customers.price
-    winner = random.randint(0, i - 1)
-    index = 0
-    while index < len(numbers):
-        if numbers[index] >= winner:
-            LotteryLogic.win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
-        index = index + 1
 
 
 @csrf_exempt

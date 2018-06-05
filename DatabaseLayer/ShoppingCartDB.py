@@ -78,28 +78,9 @@ def check_empty(username):
     return len(items) == 0
 
 
-def check_empty_guest(username):
-    sql_query = """
-                SELECT *
-                FROM GuestShoppingCartItem
-                WHERE userName = {}
-              """.format(username)
-    items = select_command(sql_query)
-    return len(items) == 0
-
-
 def remove_shopping_cart(username):
     sql_query = """
                 DELETE FROM ShoppingCartItem
                 WHERE userName = '{}'
               """.format(username)
     return commit_command(sql_query)
-
-
-def get_new_guest_name():
-    sql_query = """
-                    SELECT *
-                    FROM GuestShoppingCartItem
-                    ORDER BY userName DESC
-                  """
-    return fetch_cart_item(select_command(sql_query))

@@ -6,7 +6,7 @@ from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic, UserShoppingCartLogic
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
-from ExternalSystems import PaymentSystem, SupplySystem
+from ExternalSystems import PaymentSystem, SupplySystem, ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
@@ -29,7 +29,6 @@ def pay_all_guest(guest):
         #  check if cart has items
         empty = check_empty_cart_guest(guest)
         if empty is not True:
-            toCreatePurchase = True
             purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = Consumer.guestShoppingCart[guest]
@@ -72,10 +71,10 @@ def pay_all_guest(guest):
                                                          '<strong>' + guest + '</strong> has bought item <a href="http://localhost:8000/app/item/?item_id=' + str(
                                                              item.id) + '"># <strong>' + str(
                                                              item.id) + '</strong></a> from your shop')
-            pay_confirmation = PaymentSystem.pay(total_cost, guest)
+            pay_confirmation = ExternalSystems.payment.pay(total_cost, guest)
             if pay_confirmation is False:
                 return 'Payment System Denied.'
-            sup_confirmation = SupplySystem.supply_a_purchase(guest, purchase_id)
+            sup_confirmation = ExternalSystems.supply.supply_a_purchase(guest, purchase_id)
             if sup_confirmation is False:
                 return 'Supply System Denied.'
             status = remove_shopping_cart_guest(guest)

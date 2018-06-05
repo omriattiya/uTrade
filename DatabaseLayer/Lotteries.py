@@ -7,13 +7,13 @@ def fetch_lottery(result):
     if len(result) == 0:
         return False
     result = result[0]
-    return Lottery(result[0], result[1], result[2], result[3], result[4], result[5])
+    return Lottery(result[0], result[1], result[2], result[3])
 
 
 def fetch_lotteries(lotteries):
     lotteries_arr = []
     for item in lotteries:
-        lotteries_arr.append(Lottery(item[0], item[1], item[2], item[3], item[4], item[5]))
+        lotteries_arr.append(Lottery(item[0], item[1], item[2], item[3]))
     return lotteries_arr
 
 
@@ -21,13 +21,13 @@ def fetch_lottery_customer(result):
     if len(result) == 0:
         return False
     result = result[0]
-    return LotteryCustomer(result[0], result[1], result[2])
+    return LotteryCustomer(result[0], result[1], result[2], result[3])
 
 
 def fetch_lottery_customers(result):
     arr = []
     for cus in result:
-        cus.append(LotteryCustomer(cus[0], cus[1], cus[2]))
+        arr.append(LotteryCustomer(cus[0], cus[1], cus[2], cus[3]))
     return arr
 
 
@@ -39,25 +39,33 @@ def fetch_integer(result):
 
 def add_lottery(lottery):
     sql_query = """
-                INSERT INTO Lotteries(lotto_id,max_price,final_date,prize_item_id)
-                VALUES ('{}','{}','{}','{}')
-                """.format(lottery.lotto_id, lottery.max_price, lottery.final_date,lottery.prize_item_id)
-    return commit_command(sql_query)
-
-
-def add_lottery_item(purchased_item, user_id, price):
-    sql_query = """
-                INSERT INTO CustomersInLotteries(lotto_id,username,price)
+                INSERT INTO Lotteries(lotto_id,final_date,prize_item_id)
                 VALUES ('{}','{}','{}')
-                """.format(purchased_item, user_id, price)
+                """.format(lottery.lotto_id, lottery.final_date, lottery.prize_item_id)
     return commit_command(sql_query)
 
 
-def update_lottery_item(purchased_item, user_id, price):
+def add_lottery_item(purchased_item, user_id, price, number_of_tickets):
     sql_query = """
-                UPDATE CustomersInLotteries SET price = price + {}
+                INSERT INTO CustomersInLotteries(lotto_id,username,price,number_of_tickets)
+                VALUES ('{}','{}','{}','{}')
+                """.format(purchased_item, user_id, price, number_of_tickets)
+    return commit_command(sql_query)
+
+
+def update_lottery_item(purchased_item, user_id, price, number_of_tickets):
+    sql_query = """
+                UPDATE CustomersInLotteries SET price = price + {} AND number_of_tickets = number_of_tickets + {}
                 WHERE lotto_id = {} AND username ={})
-                """.format(price, purchased_item, user_id)
+                """.format(price, number_of_tickets, purchased_item, user_id)
+    return commit_command(sql_query)
+
+
+def update_lottery_real_date(purchased_item, end_date):
+    sql_query = """
+                UPDATE Lotteries SET real_end_date = '{}'
+                WHERE lotto_id = {})
+                """.format(end_date, purchased_item)
     return commit_command(sql_query)
 
 
