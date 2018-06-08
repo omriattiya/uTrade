@@ -6,7 +6,7 @@ from django.template import loader
 
 from DatabaseLayer import Lotteries, ReviewsOnItems
 from DomainLayer import ItemsLogic
-from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DomainLayer import ShoppingLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
@@ -49,8 +49,8 @@ def get_item(request):
                 headline = "Discount on Product"
                 discount = get_visible_discount(item.id, item.shop_name)
                 if discount is not False:
-                    policy_or_percentage = discount.from_date
-                    deadline_or_start_date = discount.percentage
+                    deadline_or_start_date  = discount.from_date
+                    policy_or_percentage = discount.percentage
                     real_end_time_or_end_date = discount.end_date
 
             login = request.COOKIES.get('login_hash')

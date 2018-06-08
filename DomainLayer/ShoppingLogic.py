@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from DatabaseLayer import ShoppingCartDB, RegisteredUsers, Purchases
-from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.UserDetails import is_meet_conditions

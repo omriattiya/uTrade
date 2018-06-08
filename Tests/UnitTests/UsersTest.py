@@ -4,6 +4,7 @@ import unittest
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.SystemManagers import add_system_manager
 from DatabaseLayer.initializeDatabase import init_database
+from DomainLayer import DiscountLogic
 from DomainLayer.UsersLogic import register, edit_password, remove_user, login
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.SystemManager import SystemManager
@@ -124,6 +125,10 @@ class UsersTest(unittest.TestCase):
         # get purchased history
         # assertEqual(ans, [])
         self.assertEqual(user, user)
+
+    def test_yoni_stam(self):
+        print(DiscountLogic.make_date_from_elements("yoni"))
+        self.assertFalse(False)
 
     def tearDown(self):
         os.remove('db.sqlite3')

@@ -204,36 +204,6 @@ def add_system_manager(system_manager):
         return SystemManagers.add_system_manager(system_manager)
 
 
-def add_visible_discount(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
-        is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
-            return Discount.add_visible_discount(disc)
-    return False
-
-
-def add_invisible_discount(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
-        is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
-            return Discount.add_invisible_discount(disc)
-    return False
-
-
-def get_visible_discount(item_id, shop_name):
-    if item_id is not None and shop_name is not None:
-        return Discount.get_visible_discount(item_id, shop_name)
-    return False
-
-
-def get_invisible_discount(item_id, shop_name, text):
-    if item_id is not None and shop_name is not None and text is not None:
-        return Discount.get_invisible_discount(item_id, shop_name, text)
-    return False
-
-
 def get_owned_shops(username):
     return Owners.get_shops_by_owner(username)
 

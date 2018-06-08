@@ -2,10 +2,10 @@ import unittest, os
 
 from datetime import date
 from DatabaseLayer.initializeDatabase import init_database
-from DatabaseLayer.Discount import add_visible_discount
-from DatabaseLayer.Discount import add_invisible_discount
-from DatabaseLayer.Discount import get_visible_discount
-from DatabaseLayer.Discount import get_invisible_discount
+from DomainLayer.DiscountLogic import add_visible_discount
+from DomainLayer.DiscountLogic import add_invisible_discount
+from DomainLayer.DiscountLogic import get_visible_discount
+from DomainLayer.DiscountLogic import get_invisible_discount
 from DomainLayer import ShopLogic, ItemsLogic, UsersLogic
 from DomainLayer.UsersLogic import register
 from SharedClasses.Item import Item
@@ -25,10 +25,10 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, 0.5, date(2018, 12, 26), date(2019, 12, 26))
+        disc = VisibleDiscount(item1.id, shop.name, 50, date(2018, 12, 26), date(2019, 12, 26))
         self.assertTrue(add_visible_discount(disc))
 
     def test_add_invisible_discount(self):
@@ -36,7 +36,7 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO',item1.id, shop.name, 0.5, date(2018, 12, 26), date(2019, 12, 26))
@@ -47,7 +47,7 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         disc = VisibleDiscount(item1.id, shop.name, 0.5, date(2017, 12, 26), date(2019, 12, 26))
@@ -62,7 +62,7 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
         invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO', item1.id, shop.name, 0.5, date(2017, 12, 26), date(2019, 12, 26))

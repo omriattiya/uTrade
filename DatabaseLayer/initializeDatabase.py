@@ -159,6 +159,7 @@ tables_sql = [
           getAllMessagePermission INTEGER NOT NULL,
           getPurchaseHistoryPermission INTEGER NOT NULL,
           discountPermission INTEGER NOT NULL,
+          setPolicyPermission INTEGER NOT NULL,
           FOREIGN KEY (username) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
           PRIMARY KEY(username,shop_name),
           CONSTRAINT username_size CHECK(length(username) <= 30)
@@ -169,8 +170,8 @@ tables_sql = [
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
-          from_date DATE,
-          end_date DATE,
+          from_date TEXT,
+          end_date TEXT,
           PRIMARY KEY(item_id, from_date)
         )
     """,
@@ -180,8 +181,8 @@ tables_sql = [
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
-          from_date DATE,
-          end_date DATE,
+          from_date TEXT,
+          end_date TEXT,
           PRIMARY KEY(code),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
@@ -190,14 +191,13 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS GlobalDiscountInShop(
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE,
           percentage REAL,
-          from_date DATE,
-          end_date DATE,
+          from_date TEXT,
+          end_date TEXT,
           code CHAR(15),
           PRIMARY KEY(shop_name, from_date),
           CONSTRAINT code_size CHECK(length(code) <= 15)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS Lotteries(
           lotto_id INTEGER REFERENCES Items(id),
@@ -209,7 +209,6 @@ tables_sql = [
           PRIMARY KEY(lotto_id)
         )
     """,
-
     """
         CREATE TABLE IF NOT EXISTS CustomersInLotteries(
           lotto_id INTEGER REFERENCES Lotteries(lotto_id) ON DELETE CASCADE ,

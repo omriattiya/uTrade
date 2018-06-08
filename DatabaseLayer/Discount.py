@@ -10,21 +10,22 @@ def fetch_discount(discount_tuples):
         return False
     if len(discount_tuples) == 0:
         return False
-    discount_tuple = discount_tuples[0]
-    if len(discount_tuple) == 5:
-        discount = VisibleDiscount(discount_tuple[0],
-                                   discount_tuple[1],
-                                   discount_tuple[2],
-                                   discount_tuple[3],
-                                   discount_tuple[4])
-    else:
-        discount = InvisibleDiscount(discount_tuple[0],
-                                     discount_tuple[1],
-                                     discount_tuple[2],
-                                     discount_tuple[3],
-                                     discount_tuple[4],
-                                     discount_tuple[5])
-    return discount
+    discounts_arr = []
+    for discount_tuple in discount_tuples:
+        if len(discount_tuple) == 5:
+            discounts_arr.append(VisibleDiscount(discount_tuple[0],
+                                                 discount_tuple[1],
+                                                 discount_tuple[2],
+                                                 discount_tuple[3],
+                                                 discount_tuple[4]))
+        else:
+            discounts_arr.append(InvisibleDiscount(discount_tuple[0],
+                                                   discount_tuple[1],
+                                                   discount_tuple[2],
+                                                   discount_tuple[3],
+                                                   discount_tuple[4],
+                                                   discount_tuple[5]))
+    return discounts_arr
 
 
 def add_visible_discount(visible_discount):
@@ -51,28 +52,22 @@ def add_invisible_discount(invisible_discount):
 
 
 def get_visible_discount(item_id, shop_name):
-    now = datetime.now()
     sql_query = """
                 SELECT *
                 FROM VisibleDiscounts
                 WHERE item_id = '{}' AND 
-                      shop_name = '{}' AND 
-                      '{}' >= from_date AND 
-                      '{}' <= end_date
-              """.format(item_id, shop_name, date(now.year, now.month, now.day), date(now.year, now.month, now.day))
+                      shop_name = '{}'
+              """.format(item_id, shop_name)
     return fetch_discount(select_command(sql_query))
 
 
 def get_invisible_discount(item_id, shop_name, text):
-    now = datetime.now()
     sql_query = """
                 SELECT *
                 FROM InvisibleDiscounts
                 WHERE item_id = '{}' AND 
                       shop_name = '{}' AND 
-                      '{}' >= from_date AND 
-                      '{}' <= end_date AND
                       '{}' = code
-              """.format(item_id, shop_name,  date(now.year, now.month, now.day), date(now.year, now.month, now.day), text)
+              """.format(item_id, shop_name, text)
     return fetch_discount(select_command(sql_query))
 

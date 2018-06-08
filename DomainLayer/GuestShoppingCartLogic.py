@@ -2,7 +2,7 @@ from datetime import datetime
 
 import SharedClasses
 from DatabaseLayer import RegisteredUsers, PurchasedItems, Purchases, Owners, ShoppingCartDB
-from DatabaseLayer.Discount import get_visible_discount, get_invisible_discount
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic, UserShoppingCartLogic
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
