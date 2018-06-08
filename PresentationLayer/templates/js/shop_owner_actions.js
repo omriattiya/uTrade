@@ -1,5 +1,4 @@
-function updateItem(item_id, shop_name)
-{
+function updateItem(item_id, shop_name) {
     let data = new FormData();
     data.append('item_id', item_id);
     data.append('item_quantity', document.getElementById("quantity" + item_id.toString()).value);
@@ -54,63 +53,51 @@ function removeItem(item_id, shop_name) {
 }
 
 function addItem(shop_name) {
-    if(document.getElementById("name").value == '')
-    {
+    if (document.getElementById("name").value == '') {
         alert("Field Name Must Not Be Empty");
         return;
     }
-    if(document.getElementById("quantity").value  == '')
-    {
+    if (document.getElementById("quantity").value == '') {
         alert("Field Quantity Must Not Be Empty");
         return;
     }
-    if(document.getElementById("category").value  == '')
-    {
+    if (document.getElementById("category").value == '') {
         alert("Field Quantity Must Not Be Empty");
         return;
     }
-    else
-    {
+    else {
         var re = new RegExp("^([a-zA-Z]{1,20})$");
-        if(!re.test(document.getElementById("category").value ))
-        {
+        if (!re.test(document.getElementById("category").value)) {
             alert("Field Category Must Contain Only Letters");
             return;
         }
     }
-    if(document.getElementById("price").value  == '')
-    {
+    if (document.getElementById("price").value == '') {
         alert("Field Price Must Not Be Empty");
         return;
     }
-    else
-    {
+    else {
         var reg = new RegExp('([0-9]*[.])?[0-9]+');
-        if(!reg.test(document.getElementById("price").value))
-        {
+        if (!reg.test(document.getElementById("price").value)) {
             alert("Field Price Must A Number");
             return;
         }
     }
     let item_kind = document.getElementById("kind").value;
-    if (item_kind === 'prize')
-    {
-        if(document.getElementById("sale_hour").value == '')
-        {
-            alert('Field sale hour must not be empty')
+    if (item_kind === 'prize') {
+        if (document.getElementById("sale_hour").value == '') {
+            alert('Field sale hour must not be empty');
             return;
         }
-        if(document.getElementById("sale_minutes").value == '')
-        {
-            alert('Field sale minutes must not be empty')
+        if (document.getElementById("sale_minutes").value == '') {
+            alert('Field sale minutes must not be empty');
             return;
         }
         var today = new Date();
         var toDecide = new Date(document.getElementById("sale_date").value);
         toDecide.setHours(parseInt(document.getElementById("sale_hour").value));
         toDecide.setMinutes(parseInt(document.getElementById("sale_minutes").value));
-        if(toDecide.getTime() < today.getTime())
-        {
+        if (toDecide.getTime() < today.getTime()) {
             alert("Sale date must be bigger than today.");
             return;
         }
@@ -124,8 +111,7 @@ function addItem(shop_name) {
     data.append('item_price', document.getElementById("price").value);
     data.append('item_url', document.getElementById("url").value);
     data.append('item_kind', item_kind);
-    if (item_kind === 'prize')
-    {
+    if (item_kind === 'prize') {
         data.append('sale_date', document.getElementById("sale_date").value);
         data.append('sale_hour', document.getElementById("sale_hour").value);
         data.append('sale_minutes', document.getElementById("sale_minutes").value);
@@ -156,7 +142,7 @@ function addDiscount(shop_name) {
     let kind = document.getElementById("kind").value;
     data.append('shop_name', shop_name);
     data.append('percent', document.getElementById("percent").value);
-    data.append('duration', document.getElementById("duration").value);
+    data.append('duration', document.getElementById("duration").value.split('-'));
     data.append('kind', kind);
 
     switch (kind) {
@@ -175,6 +161,20 @@ function addDiscount(shop_name) {
             data.append('code', document.getElementById("code").value);
             break;
     }
+
+    // CURRENT DAY
+    today = new Date();
+    dd = today.getDate();
+    mm = today.getMonth() + 1; //January is 0!
+    yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = yyyy + '-' + dd + '-' + mm;
+    data.append('start_date', today);
 
     let loadHTML = new XMLHttpRequest();
     loadHTML.shop_name = shop_name;

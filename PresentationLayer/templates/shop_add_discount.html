@@ -54,6 +54,37 @@ _________________________________________________________ -->
     <script src="js/web_sockets.js"></script>
 
     <script>
+        function check_date(shop_name) {
+            today = new Date();
+            dd = today.getDate();
+            mm = today.getMonth() + 1; //January is 0!
+            yyyy = today.getFullYear();
+
+            date = document.getElementById("duration").value.split('-');
+            v_yyyy = parseInt(date[0]);
+            v_mm = parseInt(date[1]);
+            v_dd = parseInt(date[2]);
+            msg = 'invalid date, must be after today!';
+            if (v_yyyy === yyyy) {
+                if (v_mm === mm) {
+                    if (v_dd < dd) {
+                        alert(msg);
+                        return;
+                    }
+                }
+                else if (v_mm < mm) {
+                    alert(msg);
+                    return;
+                }
+            }
+            else if (v_yyyy < yyyy) {
+                alert(msg);
+                return;
+            }
+            addDiscount(shop_name);
+
+        }
+
         function change_kind() {
             let kind_element = document.getElementById("kind");
             let selected_kind = kind_element.options[kind_element.selectedIndex].value;
@@ -176,7 +207,7 @@ _________________________________________________________ -->
 
                 <div class="box info-bar" style="position: relative">
                     <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
-                        <form action="javascript:addDiscount('{{ shop_name }}')">
+                        <form action="javascript:check_date('{{ shop_name }}')">
                             <div class="form-group">
 
                                 <div id="item_id_div"></div>
@@ -186,9 +217,9 @@ _________________________________________________________ -->
                                            class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label id="label_duration" for="duration">* Discount Duration</label>
-                                    <input required name="duration" id="duration" type="number" min="1"
-                                           class="form-control">
+                                    <label id="label_duration" for="duration">* Discount Duration (from today
+                                        to..)</label>
+                                    <input required name="duration" id="duration" type="date" class="form-control">
                                 </div>
                                 <label for="kind">* Kind</label>
                                 <select name="kind" id="kind" class="form-control" onchange="change_kind()">

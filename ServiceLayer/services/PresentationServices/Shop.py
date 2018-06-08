@@ -12,6 +12,17 @@ error_login_owner = 'must be logged in as owner'
 error_login = 'must be logged in'
 
 
+# TODO: get_visible_category_discount
+def percent_of_discount(id, category, shop_name):
+    item_discount = ShoppingLogic.get_visible_discount(id, shop_name)
+    if item_discount != -1:
+        return item_discount / 100
+    category_discount = ShoppingLogic.get_visible_category_discount(category, shop_name)
+    if category_discount != -1:
+        return category_discount / 100
+    return 1
+
+
 def get_shop(request):
     if request.method == 'GET':
         shop_name = request.GET.get('shop_name')
@@ -30,7 +41,7 @@ def get_shop(request):
                     continue
                 products += loader.render_to_string(
                     'components/item.html',
-                    {'name': item.name, 'price': item.price,
+                    {'name': item.name, 'price': item.price * percent_of_discount(item.id, item.category, shop_name),
                      'url': item.url, 'item_id': item.id}, None,
                     None)
             owner_manager_options = ""
