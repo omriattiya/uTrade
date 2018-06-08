@@ -223,10 +223,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS Lotteries(
           lotto_id INTEGER REFERENCES Items(id),
-          max_price INTEGER,
-          final_date DATE,
-          real_end_date DATE,
-          winner CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL ,
+          final_date TEXT,
+          real_end_date TEXT,
           prize_item_id INTEGER REFERENCES Items(id) ON DELETE SET NULL,
           PRIMARY KEY(lotto_id)
         )
@@ -235,7 +233,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS CustomersInLotteries(
           lotto_id INTEGER REFERENCES Lotteries(lotto_id) ON DELETE CASCADE ,
           username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
-          price INTEGER,
+          price REAL,
           PRIMARY KEY(lotto_id,username)
         )
     """,
@@ -244,10 +242,10 @@ tables_sql = [
           historyId INTEGER PRIMARY KEY AUTOINCREMENT,
           appointingUser CHAR(30) REFERENCES RegisteredUsers(username),
           appointedUser CHAR(30) REFERENCES RegisteredUsers(username),
-          position CHAR(10),
+          position TEXT,
           shop_name CHAR(30) REFERENCES Shops(name),
           date CHAR(30),
-          permissions CHAR(30)
+          permissions TEXT
         )
     """,
     """
