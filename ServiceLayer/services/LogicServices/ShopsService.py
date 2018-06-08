@@ -8,6 +8,8 @@ from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
 from SharedClasses.VisibleDiscount import VisibleDiscount
+from SharedClasses.VisibleDiscountCategory import VisibleDiscountCategory
+from SharedClasses.InvisibleDiscountCategory import InvisibleDiscountCategory
 
 
 @csrf_exempt
@@ -110,22 +112,22 @@ def add_discount(request):
         if kind == "visible_item":
             item_id = request.POST.get('item_id')
             discount = VisibleDiscount(item_id, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_visible_discount(discount, username)
+            result = DiscountLogic.add_visible_discount_category(discount, username)
         elif kind == "invisible_item":
             item_id = request.POST.get('item_id')
             code = request.POST.get('code')
             discount = InvisibleDiscount(code, item_id, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_invisible_discount(discount, username)
+            result = DiscountLogic.add_invisible_discount_category(discount, username)
         # TODO: category YONI fix
         elif kind == "visible_category":
             category = request.POST.get('category')
             discount = VisibleDiscountCategory(category, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_visible_discount(discount, username)
+            result = DiscountLogic.add_visible_discount_category(discount, username)
         elif kind == "invisible_category":
             category = request.POST.get('category')
             code = request.POST.get('code')
             discount = InvisibleDiscountCategory(code, category, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_invisible_discount(discount, username)
+            result = DiscountLogic.add_invisible_discount_category(discount, username)
 
         if result:
             return HttpResponse('success')
@@ -133,11 +135,3 @@ def add_discount(request):
             return HttpResponse('discount error..')
     else:
         return HttpResponse('FAIL: not post request')
-
-
-def VisibleDiscountCategory(a, b, c, d, e):
-    return "TODO implement"
-
-
-def InvisibleDiscountCategory(a, b, c, d, e, f):
-    return "TODO implement"

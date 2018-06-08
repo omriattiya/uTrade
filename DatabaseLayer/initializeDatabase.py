@@ -176,9 +176,31 @@ tables_sql = [
         )
     """,
     """
+        CREATE TABLE IF NOT EXISTS VisibleDiscountsCategory(
+          category TEXT,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
+          percentage REAL,
+          from_date TEXT,
+          end_date TEXT,
+          PRIMARY KEY(category, from_date)
+        )
+    """,
+    """
         CREATE TABLE IF NOT EXISTS InvisibleDiscounts(
           code CHAR(15),
           item_id INTEGER REFERENCES Items(id) ON DELETE CASCADE ,
+          shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
+          percentage REAL,
+          from_date TEXT,
+          end_date TEXT,
+          PRIMARY KEY(code),
+          CONSTRAINT code_size CHECK(length(code) <= 15)
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS InvisibleDiscountsCategory(
+          code CHAR(15),
+          category TEXT,
           shop_name CHAR(30) REFERENCES Shops(name) ON DELETE CASCADE ,
           percentage REAL,
           from_date TEXT,
