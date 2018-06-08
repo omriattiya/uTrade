@@ -97,12 +97,12 @@ function addItem(shop_name) {
     {
         if(document.getElementById("sale_hour").value == '')
         {
-            alert('Field sale hour must not be empty')
+            alert('Field sale hour must not be empty');
             return;
         }
         if(document.getElementById("sale_minutes").value == '')
         {
-            alert('Field sale minutes must not be empty')
+            alert('Field sale minutes must not be empty');
             return;
         }
         var today = new Date();
@@ -156,7 +156,7 @@ function addDiscount(shop_name) {
     let kind = document.getElementById("kind").value;
     data.append('shop_name', shop_name);
     data.append('percent', document.getElementById("percent").value);
-    data.append('duration', document.getElementById("duration").value);
+    data.append('duration', document.getElementById("duration").value.split('-'));
     data.append('kind', kind);
 
     switch (kind) {

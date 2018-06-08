@@ -103,9 +103,8 @@ def add_discount(request):
             else:
                 return HttpResponse('not owner or manager in this shop')  # not manager not owner
 
-        # TODO: add real dates
         start_date = 0
-        end_date = 1
+        end_date = request.POST.get('duration')  # array: [0:yyyy],[1:mm],[2:dd]
 
         if kind == "visible_item":
             item_id = request.POST.get('item_id')
