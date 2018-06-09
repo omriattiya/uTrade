@@ -142,7 +142,7 @@ function addDiscount(shop_name) {
     let kind = document.getElementById("kind").value;
     data.append('shop_name', shop_name);
     data.append('percent', document.getElementById("percent").value);
-    data.append('duration', document.getElementById("duration").value.split('-'));
+    data.append('duration', document.getElementById("duration").value);
     data.append('kind', kind);
 
     switch (kind) {
@@ -173,7 +173,7 @@ function addDiscount(shop_name) {
     if (mm < 10) {
         mm = '0' + mm
     }
-    today = yyyy + '-' + dd + '-' + mm;
+    today = yyyy + '-' + mm + '-' + dd;
     data.append('start_date', today);
 
     let loadHTML = new XMLHttpRequest();

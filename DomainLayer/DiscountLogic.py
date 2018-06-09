@@ -1,13 +1,14 @@
-from DatabaseLayer import Owners, Discount
-import time
 import datetime
+import time
+
+from DatabaseLayer import Owners, Discount, StoreManagers
 
 
 def add_visible_discount(disc, username):
     if disc is not None and username is not None and disc.percentage >= 0:
         is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
+        is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
+        if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
             return Discount.add_visible_discount(disc)
     return False
 
@@ -15,8 +16,8 @@ def add_visible_discount(disc, username):
 def add_invisible_discount(disc, username):
     if disc is not None and username is not None and disc.percentage >= 0:
         is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
+        is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
+        if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
             return Discount.add_invisible_discount(disc)
     return False
 
@@ -25,7 +26,7 @@ def get_visible_discount(item_id, shop_name):
     if item_id is not None and shop_name is not None:
         discounts_arr = Discount.get_visible_discount(item_id, shop_name)
         if discounts_arr is False:
-            return "FAILED: Discount retrieval failed."
+            return False
         now_time = time.time()
         for discount in discounts_arr:
             start_time = make_date_from_elements(discount.from_date)
@@ -56,8 +57,8 @@ def get_invisible_discount(item_id, shop_name, text):
 def add_visible_discount_category(disc, username):
     if disc is not None and username is not None and disc.percentage >= 0:
         is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
+        is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
+        if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
             return Discount.add_visible_discount_category(disc)
     return False
 
@@ -65,8 +66,8 @@ def add_visible_discount_category(disc, username):
 def add_invisible_discount_category(disc, username):
     if disc is not None and username is not None and disc.percentage >= 0:
         is_owner = Owners.get_owner(username, disc.shop_name)
-        is_store = Owners.get_owner(username, disc.shop_name)
-        if is_owner is not False or is_store is not False:
+        is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
+        if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
             return Discount.add_invisible_discount_category(disc)
     return False
 

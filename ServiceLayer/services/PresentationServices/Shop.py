@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import ShopLogic, UsersLogic, ShoppingLogic
+from DomainLayer import ShopLogic, UsersLogic, ShoppingLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
@@ -14,12 +14,12 @@ error_login = 'must be logged in'
 
 # TODO: get_visible_category_discount
 def percent_of_discount(id, category, shop_name):
-    item_discount = ShoppingLogic.get_visible_discount(id, shop_name)
-    if item_discount != -1:
-        return item_discount / 100
-    category_discount = ShoppingLogic.get_visible_category_discount(category, shop_name)
-    if category_discount != -1:
-        return category_discount / 100
+    item_discount = DiscountLogic.get_visible_discount(id, shop_name)
+    if item_discount is not False:
+        return 1.0 - item_discount.percentage / 100
+    category_discount = DiscountLogic.get_visible_discount_category(category, shop_name)
+    if category_discount is not False:
+        return 1.0 - category_discount.percentage / 100
     return 1
 
 

@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from DatabaseLayer import ShoppingCartDB, RegisteredUsers, PurchasedItems, Purchases, Owners
-from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DatabaseLayer.UserDetails import is_meet_conditions
 from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from ExternalSystems import ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 
@@ -120,12 +120,12 @@ def pay_all(login_token):
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
-                    percentage = discount.percentage
+                    percentage = discount.percentage / 100
                 new_price = item.price * (1 - percentage)
                 if shopping_cart_item.code is not None:
                     discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
                     if discount is not False:
-                        percentage = discount.percentage
+                        percentage = discount.percentage / 100
                     new_price = new_price * (1 - percentage)
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
                 if lottery_message is not True:
@@ -225,12 +225,12 @@ def get_cart_cost(login_token):
             discount = get_visible_discount(item.id, item.shop_name)
             percentage = 0
             if discount is not False:
-                percentage = discount.percentage
+                percentage = discount.percentage / 100
             new_price = item.price * (1 - percentage)
             if shopping_cart_item.code is not None:
                 discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
                 if discount is not False:
-                    percentage = discount.percentage
+                    percentage = discount.percentage / 100
                 new_price = new_price * (1 - percentage)
             lottery = get_lottery(item.id)
             if item.kind == 'ticket':
@@ -277,10 +277,10 @@ def order_helper(cart_items):
             percentage_visible = 0
             percentage_invisible = 0
             if visible_discount is not False:
-                percentage_visible = visible_discount.percentage
+                percentage_visible = visible_discount.percentage / 100
             if cart_items[i].code is not None:
                 invisible_discount = get_invisible_discount(item.id, item.shop_name, cart_items[i].code)
-                percentage_invisible = invisible_discount.percentage
+                percentage_invisible = invisible_discount.percentage / 100
             discount_money = percentage_visible * item.price + percentage_invisible * (
                         1 - percentage_visible) * item.price
             discount_prices.append(discount_money)

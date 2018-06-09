@@ -5,11 +5,11 @@ from DomainLayer import ItemsLogic, UsersLogic
 from DomainLayer import ShopLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
+from SharedClasses.InvisibleDiscountCategory import InvisibleDiscountCategory
 from SharedClasses.Shop import Shop
 from SharedClasses.ShopReview import ShopReview
 from SharedClasses.VisibleDiscount import VisibleDiscount
 from SharedClasses.VisibleDiscountCategory import VisibleDiscountCategory
-from SharedClasses.InvisibleDiscountCategory import InvisibleDiscountCategory
 
 
 @csrf_exempt
@@ -86,8 +86,13 @@ def add_discount(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         percent = int(request.POST.get('percent'))
-        duration = request.POST.get('duration')
         kind = request.POST.get('kind')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('duration')
+        end_date = end_date.split(',')
+        end_date = end_date[0] + '-' + end_date[1] + '-' + end_date[2]
+        start_date = start_date.split('-')
+        start_date = start_date[0] + '-' + start_date[2] + '-' + start_date[1]
 
         if shop_name is None or ShopLogic.search_shop(shop_name) is False:
             return HttpResponse('invalid shop')
@@ -105,19 +110,15 @@ def add_discount(request):
             else:
                 return HttpResponse('not owner or manager in this shop')  # not manager not owner
 
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('duration')
-
         if kind == "visible_item":
             item_id = request.POST.get('item_id')
             discount = VisibleDiscount(item_id, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_visible_discount_category(discount, username)
+            result = DiscountLogic.add_visible_discount(discount, username)
         elif kind == "invisible_item":
             item_id = request.POST.get('item_id')
             code = request.POST.get('code')
             discount = InvisibleDiscount(code, item_id, shop_name, percent, start_date, end_date)
-            result = DiscountLogic.add_invisible_discount_category(discount, username)
-        # TODO: category YONI fix
+            result = DiscountLogic.add_invisible_discount(discount, username)
         elif kind == "visible_category":
             category = request.POST.get('category')
             discount = VisibleDiscountCategory(category, shop_name, percent, start_date, end_date)
@@ -131,6 +132,6 @@ def add_discount(request):
         if result:
             return HttpResponse('success')
         else:
-            return HttpResponse('discount error..')
+            return HttpResponse('discount already exist for this item/category!')
     else:
         return HttpResponse('FAIL: not post request')

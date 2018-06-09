@@ -1,12 +1,9 @@
-from datetime import datetime
-
-import SharedClasses
-from DatabaseLayer import RegisteredUsers, PurchasedItems, Purchases, Owners, ShoppingCartDB
-from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
+from DatabaseLayer import Owners
 from DatabaseLayer.Items import get_item
 from DomainLayer import ItemsLogic, UserShoppingCartLogic
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
-from ExternalSystems import PaymentSystem, SupplySystem, ExternalSystems
+from ExternalSystems import ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
@@ -47,12 +44,12 @@ def pay_all_guest(guest):
                 discount = get_visible_discount(item.id, item.shop_name)
                 percentage = 0
                 if discount is not False:
-                    percentage = discount.percentage
+                    percentage = discount.percentage / 100
                 new_price = item.price * (1 - percentage)
                 if shopping_cart_item.code is not None:
                     discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
                     if discount is not False:
-                        percentage = discount.percentage
+                        percentage = discount.percentage / 100
                     new_price = new_price * (1 - percentage)
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, guest)
                 if lottery_message is not True:
