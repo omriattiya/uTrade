@@ -1,14 +1,10 @@
-import datetime
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DatabaseLayer import Lotteries, ReviewsOnItems
+from DatabaseLayer import Lotteries
 from DomainLayer import ItemsLogic
-from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
-from DomainLayer import ShoppingLogic
-from ServiceLayer.services.LiveAlerts import Consumer
+from DomainLayer.DiscountLogic import get_visible_discount
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
 shop_not_exist = 'item does not exist'
@@ -43,13 +39,14 @@ def get_item(request):
                 right3 = "Actual Rnd Time"
                 if lottery.real_end_date is not None:
                     real_end_time_or_end_date = lottery.real_end_date
-                else: real_end_time_or_end_date = "---------"
+                else:
+                    real_end_time_or_end_date = "---------"
                 quantity_icon = 'tickets-icon.png'
             else:
                 headline = "Discount on Product"
                 discount = get_visible_discount(item.id, item.shop_name)
                 if discount is not False:
-                    deadline_or_start_date  = discount.from_date
+                    deadline_or_start_date = discount.from_date
                     policy_or_percentage = discount.percentage
                     real_end_time_or_end_date = discount.end_date
 
@@ -62,23 +59,23 @@ def get_item(request):
             else:
                 item_rank = str(item_rank)
             context.update({'item_id': item.id,
-                       'item_name': item.name,
-                       'shop_name': item.shop_name,
-                       'category': item.category,
-                       'keyWords': item.keyWords,
-                       'price': item.price,
-                       'quantity': item.quantity,
-                       'kind': item.kind,
-                       'item_rank': item_rank,
-                       'url': item.url,
-                       'policy_or_percentage': policy_or_percentage,
-                        'headline': headline,
-                       'deadline_or_start_date': deadline_or_start_date,
-                       'real_end_time_or_end_date': real_end_time_or_end_date,
-                        'right1': right1,
-                        'right2': right2,
-                        'right3': right3,
-                        'quantity_icon': quantity_icon})
+                            'item_name': item.name,
+                            'shop_name': item.shop_name,
+                            'category': item.category,
+                            'keyWords': item.keyWords,
+                            'price': item.price,
+                            'quantity': item.quantity,
+                            'kind': item.kind,
+                            'item_rank': item_rank,
+                            'url': item.url,
+                            'policy_or_percentage': policy_or_percentage,
+                            'headline': headline,
+                            'deadline_or_start_date': deadline_or_start_date,
+                            'real_end_time_or_end_date': real_end_time_or_end_date,
+                            'right1': right1,
+                            'right2': right2,
+                            'right3': right3,
+                            'quantity_icon': quantity_icon})
             return render(request, 'detail.html', context=context)
         else:
             return HttpResponse(shop_not_exist)
@@ -95,12 +92,12 @@ def get_reviews(request):
             for review in reviews:
                 string_reviews += loader.render_to_string(
                     'component/../../../PresentationLayer/templates/components/review.html',
-                    {'writer_name': review.writerId, 'rank': review.rank, 'description': review.description}, None, None)
+                    {'writer_name': review.writerId, 'rank': review.rank, 'description': review.description}, None,
+                    None)
             login = request.COOKIES.get('login_hash')
             guest = request.COOKIES.get('guest_hash')
             context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}
-            context.update({'item_name': item.name,'shop_name': item.shop_name, 'reviews': string_reviews})
+            context.update({'item_name': item.name, 'shop_name': item.shop_name, 'reviews': string_reviews})
             return render(request, 'item_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)
-

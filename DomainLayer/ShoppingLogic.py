@@ -1,12 +1,10 @@
-from datetime import datetime
-
 from DatabaseLayer import ShoppingCartDB, RegisteredUsers, Purchases
-from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DatabaseLayer.Items import get_item
-from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.UserDetails import is_meet_conditions
-from DomainLayer import ItemsLogic, LotteryLogic
+from DomainLayer import ItemsLogic
 from DomainLayer import ShoppingPolicyLogic
+from DomainLayer.UserShoppingCartLogic import visible_discount_percent_item, visible_discount_percent_category, \
+    invisible_discount_percent
 
 
 def remove_item_shopping_cart(username, item_id):
@@ -100,17 +98,16 @@ def order_helper(cart_items):
         total_price = 0
         for i in range(0, len(cart_items)):
             item = get_item(cart_items[i].item_id)
-            visible_discount = get_visible_discount(item.id, item.shop_name)
-            percentage_visible = 0
-            percentage_invisible = 0
-            if visible_discount is not False:
-                percentage_visible = visible_discount.percentage
+
+            percentage_item_visible = visible_discount_percent_item(item)
+            percentage_category_visible = visible_discount_percent_category(item)
+            percentage_invisible = 1
             if cart_items[i].code is not None:
-                invisible_discount = get_invisible_discount(item.id, item.shop_name, cart_items[i].code)
-                percentage_invisible = invisible_discount.percentage
-            discount_money = percentage_visible * item.price + percentage_invisible * (
-                        1 - percentage_visible) * item.price
+                percentage_invisible = invisible_discount_percent(item, cart_items[i].code)
+
+            discount_money = item.price * percentage_item_visible * percentage_category_visible * percentage_invisible
             discount_prices.append(discount_money)
+
             items.append(item)
             total_prices.append(item.price * cart_items[i].item_quantity - discount_money * cart_items[i].item_quantity)
             total_price = total_price + item.price * cart_items[i].item_quantity - discount_money * cart_items[

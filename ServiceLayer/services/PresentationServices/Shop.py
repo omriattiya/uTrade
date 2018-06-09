@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import ShopLogic, UsersLogic, ShoppingLogic, DiscountLogic
+from DomainLayer import ShopLogic, UsersLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 
@@ -12,15 +12,18 @@ error_login_owner = 'must be logged in as owner'
 error_login = 'must be logged in'
 
 
-# TODO: get_visible_category_discount
-def percent_of_discount(id, category, shop_name):
-    item_discount = DiscountLogic.get_visible_discount(id, shop_name)
-    if item_discount is not False:
-        return 1.0 - item_discount.percentage / 100
-    category_discount = DiscountLogic.get_visible_discount_category(category, shop_name)
-    if category_discount is not False:
-        return 1.0 - category_discount.percentage / 100
-    return 1
+def item_discount(item_id, shop_name):
+    discount = DiscountLogic.get_visible_discount(item_id, shop_name)
+    if discount is not False:
+        return 1.0 - discount.percentage / 100
+    return 1.0
+
+
+def category_discount(category, shop_name):
+    discount = DiscountLogic.get_visible_discount_category(category, shop_name)
+    if discount is not False:
+        return 1.0 - discount.percentage / 100
+    return 1.0
 
 
 def get_shop(request):
@@ -41,7 +44,9 @@ def get_shop(request):
                     continue
                 products += loader.render_to_string(
                     'components/item.html',
-                    {'name': item.name, 'price': item.price * percent_of_discount(item.id, item.category, shop_name),
+                    {'name': item.name,
+                     'price': item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                                 shop_name),
                      'url': item.url, 'item_id': item.id}, None,
                     None)
             owner_manager_options = ""
@@ -293,15 +298,60 @@ def delete_discount(request):
             else:
                 return HttpResponse('fail')  # not manager not owner
 
-        # TODO: get all visible discounts
-        shop_discounts = ShoppingLogic.get_visible_discount(shop_name)
+        shop_discounts = DiscountLogic.get_all_visible_discounts_items(shop_name)
         string_discounts = ""
         for discount in shop_discounts:
             string_discounts += loader.render_to_string(
                 'components/discount.html',
                 {'shop_name': shop_name,
                  'item_id': discount.item_id,
+                 'category': '----',
                  'from_date': discount.from_date,
+                 'to_date': discount.end_date,
+                 'percents': discount.percentage,
+                 'type': 1,
+                 'code': '----'
+                 })
+        shop_discounts = DiscountLogic.get_all_visible_discounts_categories(shop_name)
+        for discount in shop_discounts:
+            string_discounts += loader.render_to_string(
+                'components/discount.html',
+                {'shop_name': shop_name,
+                 'category': discount.category,
+                 'item_id': 0,
+                 'from_date': discount.from_date,
+                 'to_date': discount.end_date,
+                 'percents': discount.percentage,
+                 'type': 2,
+                 'code': '----'
+                 })
+
+        shop_discounts = DiscountLogic.get_all_invisible_discounts_items(shop_name)
+        for discount in shop_discounts:
+            string_discounts += loader.render_to_string(
+                'components/discount.html',
+                {'shop_name': shop_name,
+                 'item_id': discount.item_id,
+                 'category': '----',
+                 'from_date': discount.from_date,
+                 'to_date': discount.end_date,
+                 'percents': discount.percentage,
+                 'type': 3,
+                 'code': discount.code
+                 })
+
+        shop_discounts = DiscountLogic.get_all_invisible_discounts_categories(shop_name)
+        for discount in shop_discounts:
+            string_discounts += loader.render_to_string(
+                'components/discount.html',
+                {'shop_name': shop_name,
+                 'item_id': 0,
+                 'category': discount.category,
+                 'from_date': discount.from_date,
+                 'to_date': discount.end_date,
+                 'percents': discount.percentage,
+                 'type': 4,
+                 'code': discount.code
                  })
 
         every_html = {'top_bar': Topbar_Navbar.get_top_bar(login), 'nav_bar': Topbar_Navbar.get_nav_bar(login, guest)}

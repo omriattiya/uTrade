@@ -89,8 +89,8 @@ def add_discount(request):
         kind = request.POST.get('kind')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('duration')
-        end_date = end_date.split(',')
-        end_date = end_date[0] + '-' + end_date[1] + '-' + end_date[2]
+        end_date = end_date.split('-')
+        end_date = end_date[0] + '-' + end_date[2] + '-' + end_date[1]
         start_date = start_date.split('-')
         start_date = start_date[0] + '-' + start_date[2] + '-' + start_date[1]
 
@@ -135,3 +135,28 @@ def add_discount(request):
             return HttpResponse('discount already exist for this item/category!')
     else:
         return HttpResponse('FAIL: not post request')
+
+
+@csrf_exempt
+def delete_discount(request):
+    if request.method == 'POST':
+        item_id = int(request.POST.get('item_id'))
+        from_date = request.POST.get('from_date')
+        shop_name = request.POST.get('shop_name')
+        category = request.POST.get('category')
+        type = int(request.POST.get('type'))
+        code = request.POST.get('code')
+
+        result_delete = False
+        if type == 1:
+            result_delete = DiscountLogic.delete_visible_item_discount(item_id, shop_name, from_date)
+        if type == 2:
+            result_delete = DiscountLogic.delete_visible_category_discount(category, shop_name, from_date)
+        if type == 3:
+            result_delete = DiscountLogic.delete_invisible_item_discount(item_id, shop_name, from_date, code)
+        if type == 4:
+            result_delete = DiscountLogic.delete_invisible_category_discount(category, shop_name, from_date, code)
+
+        if result_delete is not False:
+            return HttpResponse('success')
+        return HttpResponse('TYPE DOES NOT EXIST')

@@ -91,6 +91,39 @@ def get_invisible_discount(item_id, shop_name, text):
     return fetch_discount_item(select_command(sql_query))
 
 
+def get_all_visible_item(shop_name):
+    sql_query = """
+                  SELECT *
+                  FROM VisibleDiscounts
+                  WHERE shop_name = '{}'
+                """.format(shop_name)
+    return fetch_discount_item(select_command(sql_query))
+
+
+def get_all_invisible_item(shop_name):
+    sql_query = """
+                  SELECT *
+                  FROM InvisibleDiscounts
+                  WHERE shop_name = '{}'
+                """.format(shop_name)
+    return fetch_discount_item(select_command(sql_query))
+
+
+def delete_visible_item_discount(item_id, shop_name, from_date):
+    sql_query = """
+                DELETE FROM VisibleDiscounts
+                WHERE item_id={} AND shop_name = '{}' AND from_date='{}'
+              """.format(item_id, shop_name, from_date)
+    return commit_command(sql_query)
+
+
+def delete_invisible_item_discount(item_id, shop_name, from_date, code):
+    sql_query = """
+                DELETE FROM InvisibleDiscounts
+                WHERE item_id={} AND shop_name = '{}' AND from_date='{}' AND code='{}'
+              """.format(item_id, shop_name, from_date, code)
+    return commit_command(sql_query)
+
 # ___________________________________________ CATEGORY __________________________________________________________
 
 
@@ -137,3 +170,36 @@ def get_invisible_discount_category(category, shop_name, text):
               """.format(category, shop_name, text)
     return fetch_discount_category(select_command(sql_query))
 
+
+def get_all_visible_category(shop_name):
+    sql_query = """
+                SELECT *
+                FROM VisibleDiscountsCategory
+                WHERE shop_name = '{}'
+              """.format(shop_name)
+    return fetch_discount_category(select_command(sql_query))
+
+
+def get_all_invisible_category(shop_name):
+    sql_query = """
+                SELECT *
+                FROM InvisibleDiscountsCategory
+                WHERE shop_name = '{}'
+              """.format(shop_name)
+    return fetch_discount_category(select_command(sql_query))
+
+
+def delete_visible_category_discount(category, shop_name, from_date):
+    sql_query = """
+                    DELETE FROM VisibleDiscountsCategory
+                    WHERE category='{}' AND shop_name = '{}' AND from_date='{}'
+                  """.format(category, shop_name, from_date)
+    return commit_command(sql_query)
+
+
+def delete_invisible_category_discount(category, shop_name, from_date, code):
+    sql_query = """
+                    DELETE FROM InvisibleDiscountsCategory
+                    WHERE category='{}' AND shop_name = '{}' AND from_date='{}' AND code='{}'
+                  """.format(category, shop_name, from_date, code)
+    return commit_command(sql_query)

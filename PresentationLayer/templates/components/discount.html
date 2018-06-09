@@ -1,10 +1,16 @@
 <div class="box info-bar">
     <div class="row" style="margin-left: 2%">
-        <h5>Discount on: {{ item_id }}</h5>
+        <h5>Item ID : {{ item_id }}</h5>
+        <h5>Category : {{ category }}</h5>
+        <h6>Start Date: {{ from_date }}</h6>
+        <h6>End Date: {{ to_date }}</h6>
+        <h6>Percentage: {{ percents }}%</h6>
+        <h6>Code (if exist): {{ code }}</h6>
         <div class="text-center">
             <button type="button" class="btn btn-primary"
                     style="background-color: #c9302c; margin-top: 2%"
-                    onclick="deleteDiscount({{ item_id }},'{{ shop_name }}','{{ from_date }}');">Delete Discount
+                    onclick="deleteDiscount({{ item_id }},'{{ shop_name }}','{{ from_date }}', {{ type }}, '{{ code }}', '{{ category }}');">
+                Delete Discount
             </button>
         </div>
 

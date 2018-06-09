@@ -108,6 +108,7 @@ shop_page_urlpatterns = [
     path('shop/owner/add_discount/', Shop.add_discount_page),
     path('shop/owner/add_discount/post', ShopsService.add_discount),
     path('shop/owner/delete_discount/', Shop.delete_discount),
+    path('shop/owner/delete_discount/post', ShopsService.delete_discount),
 
 ]
 

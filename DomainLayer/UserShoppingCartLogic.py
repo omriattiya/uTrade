@@ -6,7 +6,8 @@ from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DatabaseLayer.UserDetails import is_meet_conditions
 from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic
-from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
+from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount, get_visible_discount_category, \
+    get_invisible_discount_category
 from ExternalSystems import ExternalSystems
 from ServiceLayer.services.LiveAlerts import Consumer, PurchasesAlerts
 
@@ -117,16 +118,16 @@ def pay_all(login_token):
             # for each item, calculate visible_discount
             for shopping_cart_item in cart_items:
                 item = get_item(shopping_cart_item.item_id)
-                discount = get_visible_discount(item.id, item.shop_name)
-                percentage = 0
-                if discount is not False:
-                    percentage = discount.percentage / 100
-                new_price = item.price * (1 - percentage)
+
+                percentage_item_visible = visible_discount_percent_item(item)
+                percentage_category_visible = visible_discount_percent_category(item)
+                percentage_invisible = 1
                 if shopping_cart_item.code is not None:
-                    discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
-                    if discount is not False:
-                        percentage = discount.percentage / 100
-                    new_price = new_price * (1 - percentage)
+                    percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
+
+                new_price = item.price - (
+                        item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
+
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
                 if lottery_message is not True:
                     return lottery_message
@@ -188,9 +189,9 @@ def check_lottery_ticket(item, cart_item, username):
         lottery = get_lottery(item.id)
         if lottery.real_end_date is None:
             lotto_status = LotteryLogic.add_or_update_lottery_customer(cart_item.item_id,
-                                                                           username,
-                                                                           cart_item.item_quantity * item.price,
-                                                                           cart_item.item_quantity)
+                                                                       username,
+                                                                       cart_item.item_quantity * item.price,
+                                                                       cart_item.item_quantity)
             if lotto_status is False:
                 return 'Something went wrong with the lottery ticket'
         else:
@@ -222,16 +223,16 @@ def get_cart_cost(login_token):
             item = get_item(shopping_cart_item.item_id)
             if shopping_cart_item.item_quantity > item.quantity:
                 return False
-            discount = get_visible_discount(item.id, item.shop_name)
-            percentage = 0
-            if discount is not False:
-                percentage = discount.percentage / 100
-            new_price = item.price * (1 - percentage)
+
+            percentage_item_visible = visible_discount_percent_item(item)
+            percentage_category_visible = visible_discount_percent_category(item)
+            percentage_invisible = 1
             if shopping_cart_item.code is not None:
-                discount = get_invisible_discount(item.id, item.shop_name, shopping_cart_item.code)
-                if discount is not False:
-                    percentage = discount.percentage / 100
-                new_price = new_price * (1 - percentage)
+                percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
+
+            new_price = item.price - (
+                    item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
+
             lottery = get_lottery(item.id)
             if item.kind == 'ticket':
                 final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
@@ -262,6 +263,34 @@ def order_of_user(login_token):
     return order_helper(cart_items)
 
 
+def visible_discount_percent_item(item):
+    percentage_item_visible = 100
+    item_visible_discount = get_visible_discount(item.id, item.shop_name)
+    if item_visible_discount is not False:
+        percentage_item_visible = item_visible_discount.percentage
+    return percentage_item_visible / 100
+
+
+def visible_discount_percent_category(item):
+    percentage_item_visible = 100
+    category_visible_discount = get_visible_discount_category(item.category, item.shop_name)
+    if category_visible_discount is not False:
+        percentage_item_visible = category_visible_discount.percentage
+    return percentage_item_visible / 100
+
+
+def invisible_discount_percent(item, code):
+    percentage_invisible = 100
+    invisible_discount = get_invisible_discount(item.id, item.shop_name, code)
+    if invisible_discount is False:
+        invisible_discount = get_invisible_discount_category(item.category, item.shop_name, code)
+        if invisible_discount is not False:
+            percentage_invisible = invisible_discount.percentage
+    else:
+        percentage_invisible = invisible_discount.percentage
+    return percentage_invisible / 100
+
+
 def order_helper(cart_items):
     items = []
     discount_prices = []
@@ -273,16 +302,15 @@ def order_helper(cart_items):
         total_price = 0
         for i in range(0, len(cart_items)):
             item = get_item(cart_items[i].item_id)
-            visible_discount = get_visible_discount(item.id, item.shop_name)
-            percentage_visible = 0
-            percentage_invisible = 0
-            if visible_discount is not False:
-                percentage_visible = visible_discount.percentage / 100
+
+            percentage_item_visible = visible_discount_percent_item(item)
+            percentage_category_visible = visible_discount_percent_category(item)
+            percentage_invisible = 1
             if cart_items[i].code is not None:
-                invisible_discount = get_invisible_discount(item.id, item.shop_name, cart_items[i].code)
-                percentage_invisible = invisible_discount.percentage / 100
-            discount_money = percentage_visible * item.price + percentage_invisible * (
-                        1 - percentage_visible) * item.price
+                percentage_invisible = invisible_discount_percent(item, cart_items[i].code)
+
+            discount_money = item.price - (
+                    item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
             discount_prices.append(discount_money)
             items.append(item)
             total_prices.append(item.price * cart_items[i].item_quantity - discount_money * cart_items[i].item_quantity)
@@ -291,7 +319,8 @@ def order_helper(cart_items):
             number_of_items = number_of_items + cart_items[i].item_quantity
         if cart_items is not False:
             return {'total_price': total_price,
-                    'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
+                    'cart_items_combined': zip(cart_items, items, discount_prices, total_prices),
+                    'number_of_items': number_of_items}
 
 
 def add_all_shopping_cart_to_user(shopping_cart):
@@ -368,13 +397,16 @@ def check_items_shopping_policies(username, cart_items):
                 relevant = True
         if items_policy.restriction == 'AL':
             if relevant and num_of_items < items_policy.quantity:
-                return "FAILED: Not enough " + cart_item_name + " items in cart; You allowed at least " + str(items_policy.quantity)
+                return "FAILED: Not enough " + cart_item_name + " items in cart; You allowed at least " + str(
+                    items_policy.quantity)
         elif items_policy.restriction == 'E':
             if relevant and num_of_items != items_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + str(items_policy.quantity)
+                return "FAILED: Not exact num of " + cart_item_name + " items in cart; You allowed exactly " + str(
+                    items_policy.quantity)
         elif items_policy.restriction == 'UT':
             if relevant and num_of_items > items_policy.quantity:
-                return "FAILED: Too much " + cart_item_name + " items in cart; You allowed at most " + str(items_policy.quantity)
+                return "FAILED: Too much " + cart_item_name + " items in cart; You allowed at most " + str(
+                    items_policy.quantity)
     return True
 
 
@@ -396,18 +428,20 @@ def check_category_shopping_policies(username, cart_items):
                 relevant = True
         if category_policy.restriction == 'AL':
             if relevant and num_of_items < category_policy.quantity:
-                return "FAILED: Not enough " + cart_item_category + " items in cart; You allowed at least " + str(category_policy.quantity)
+                return "FAILED: Not enough " + cart_item_category + " items in cart; You allowed at least " + str(
+                    category_policy.quantity)
         elif category_policy.restriction == 'E':
             if relevant and num_of_items != category_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + str(category_policy.quantity)
+                return "FAILED: Not exact num of " + cart_item_category + " items in cart; You allowed exactly " + str(
+                    category_policy.quantity)
         elif category_policy.restriction == 'UT':
             if relevant and num_of_items > category_policy.quantity:
-                return "FAILED: Too much " + cart_item_category + " items in cart; You allowed at most " + str(category_policy.quantity)
+                return "FAILED: Too much " + cart_item_category + " items in cart; You allowed at most " + str(
+                    category_policy.quantity)
     return True
 
 
 def check_shop_shopping_policies(username, cart_items):
-
     shop_policies = ShoppingPolicyLogic.get_all_shops_shopping_policies()
     for shop_policy in shop_policies:
         if not (username == "guest"):
@@ -425,11 +459,14 @@ def check_shop_shopping_policies(username, cart_items):
                 relevant = True
         if shop_policy.restriction == 'AL':
             if relevant and num_of_items < shop_policy.quantity:
-                return "FAILED: Not enough " + cart_item_shop + " items in cart; You allowed at least " + str(shop_policy.quantity)
+                return "FAILED: Not enough " + cart_item_shop + " items in cart; You allowed at least " + str(
+                    shop_policy.quantity)
         elif shop_policy.restriction == 'E':
             if relevant and num_of_items != shop_policy.quantity:
-                return "FAILED: Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + str(shop_policy.quantity)
+                return "FAILED: Not exact num of " + cart_item_shop + " items in cart; You allowed exactly " + str(
+                    shop_policy.quantity)
         elif shop_policy.restriction == 'UT':
             if relevant and num_of_items > shop_policy.quantity:
-                return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + str(shop_policy.quantity)
+                return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + str(
+                    shop_policy.quantity)
     return True

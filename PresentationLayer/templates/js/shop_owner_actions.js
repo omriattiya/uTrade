@@ -197,10 +197,14 @@ function addDiscount(shop_name) {
     loadHTML.send(data);
 }
 
-function deleteDiscount(item_id, shop_name, from_date) {
+function deleteDiscount(item_id, shop_name, from_date, type, code, category) {
     let data = new FormData();
     data.append('item_id', item_id);
     data.append('from_date', from_date);
+    data.append('shop_name', shop_name);
+    data.append('type', type);
+    data.append('code', code);
+    data.append('category', category);
 
     let loadHTML = new XMLHttpRequest();
     loadHTML.shop_name = shop_name;
@@ -210,15 +214,13 @@ function deleteDiscount(item_id, shop_name, from_date) {
                 alert("Failed");
                 window.location.reload(true)
             }
-            else if (loadHTML.responseText === 'no permission to remove item') {
-                alert(loadHTML.responseText);
-            }
             else if (loadHTML.responseText === 'success') {
-                alert("Item Removed Successfully");
+                alert("Discount Removed Successfully");
                 window.location.href = "../app/shop/?shop_name=" + loadHTML.shop_name;
             }
+            else alert(loadHTML.responseText);
         }
     };
-    loadHTML.open("POST", "../app/shop/owner/delete_discount/", true);
+    loadHTML.open("POST", "../app/shop/owner/delete_discount/post", true);
     loadHTML.send(data);
 }

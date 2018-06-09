@@ -51,6 +51,7 @@ def get_invisible_discount(item_id, shop_name, text):
         return False
     return "FAILED: One (or more) of the parameters is None"
 
+
 # ___________________________________________ CATEGORY __________________________________________________________
 
 
@@ -103,6 +104,38 @@ def get_invisible_discount_category(category, shop_name, text):
 
 
 def make_date_from_elements(date_string):
-    dt = datetime.datetime.strptime(date_string, '%Y-%m-%d')
+    dt = datetime.datetime.strptime(date_string, '%Y-%d-%m')
     date_time = time.mktime(dt.timetuple())
     return date_time
+
+
+def get_all_visible_discounts_items(shop_name):
+    return Discount.get_all_visible_item(shop_name)
+
+
+def get_all_invisible_discounts_items(shop_name):
+    return Discount.get_all_invisible_item(shop_name)
+
+
+def get_all_visible_discounts_categories(shop_name):
+    return Discount.get_all_visible_category(shop_name)
+
+
+def get_all_invisible_discounts_categories(shop_name):
+    return Discount.get_all_invisible_category(shop_name)
+
+
+def delete_visible_item_discount(item_id, shop_name, from_date):
+    return Discount.delete_visible_item_discount(item_id, shop_name, from_date)
+
+
+def delete_visible_category_discount(category, shop_name, from_date):
+    return Discount.delete_visible_category_discount(category, shop_name, from_date)
+
+
+def delete_invisible_category_discount(category, shop_name, from_date, code):
+    return Discount.delete_invisible_category_discount(category, shop_name, from_date, code)
+
+
+def delete_invisible_item_discount(item_id, shop_name, from_date, code):
+    return Discount.delete_invisible_item_discount(item_id, shop_name, from_date, code)
