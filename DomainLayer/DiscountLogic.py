@@ -5,7 +5,7 @@ from DatabaseLayer import Owners, Discount, StoreManagers
 
 
 def add_visible_discount(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
+    if disc is not None and username is not None and 0 <= disc.percentage <= 100:
         is_owner = Owners.get_owner(username, disc.shop_name)
         is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
         if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
@@ -14,7 +14,7 @@ def add_visible_discount(disc, username):
 
 
 def add_invisible_discount(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
+    if disc is not None and username is not None and 0 <= disc.percentage <= 100:
         is_owner = Owners.get_owner(username, disc.shop_name)
         is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
         if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
@@ -56,7 +56,7 @@ def get_invisible_discount(item_id, shop_name, text):
 
 
 def add_visible_discount_category(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
+    if disc is not None and username is not None and 0 <= disc.percentage <= 100:
         is_owner = Owners.get_owner(username, disc.shop_name)
         is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
         if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
@@ -65,7 +65,7 @@ def add_visible_discount_category(disc, username):
 
 
 def add_invisible_discount_category(disc, username):
-    if disc is not None and username is not None and disc.percentage >= 0:
+    if disc is not None and username is not None and 0 <= disc.percentage <= 100:
         is_owner = Owners.get_owner(username, disc.shop_name)
         is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
         if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
