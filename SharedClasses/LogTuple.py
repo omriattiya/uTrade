@@ -17,3 +17,10 @@ class LoginTuple:
     def __init__(self, username, time):
         self.username = username
         self.time = time
+
+
+class SecurityTuple:
+    def __init__(self, time, event, additional_details):
+        self.additional_details = additional_details
+        self.event = event
+        self.time = time

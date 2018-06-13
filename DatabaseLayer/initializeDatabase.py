@@ -294,7 +294,7 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS Event_Logs(
+        CREATE TABLE IF NOT EXISTS EventLogs(
           log_id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT,
           time TEXT,
@@ -302,7 +302,7 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS Error_Logs(
+        CREATE TABLE IF NOT EXISTS ErrorLogs(
           log_id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT,
           time TEXT,
@@ -311,12 +311,20 @@ tables_sql = [
         )
     """,
     """
-        CREATE TABLE IF NOT EXISTS Login_Logs(
+        CREATE TABLE IF NOT EXISTS LoginLogs(
           log_id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT REFERENCES RegisteredUsers(username),
           time TEXT
         )
     """,
+    """
+       CREATE TABLE IF NOT EXISTS SecurityLogs(
+         log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+         time TEXT,
+         event TEXT,
+         additional_details TEXT
+       )
+       """,
 ]
 values_sql = [
 

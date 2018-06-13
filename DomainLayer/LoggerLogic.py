@@ -1,7 +1,7 @@
 from time import gmtime, strftime
 
 from DatabaseLayer import Logger
-from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple
+from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple, SecurityTuple
 
 
 def now_time():
@@ -29,6 +29,10 @@ def add_login_log(username):
     return Logger.add_login_log(LoginTuple(username, now_time()))
 
 
+def add_security_log(event, additional_details):
+    return Logger.add_security_log(SecurityTuple(now_time(), event, additional_details))
+
+
 #      _____ ______ _______ _______ ______ _____   _____
 #    / ____|  ____|__   __|__   __|  ____|  __ \ / ____|
 #   | |  __| |__     | |     | |  | |__  | |__) | (___
@@ -49,6 +53,10 @@ def get_all_error_logs():
 
 def get_all_login_logs():
     return Logger.get_all_login_logs()
+
+
+def get_all_security_logs():
+    return Logger.get_all_security_logs()
 
 
 #     _____ ______ _______ _______ ______ _____   _____   ______     __

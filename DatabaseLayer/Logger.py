@@ -1,5 +1,5 @@
 from DatabaseLayer.getConn import commit_command, select_command
-from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple
+from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple, SecurityTuple
 
 
 #    ______ ______ _______ _____ _    _ ______ _____   _____
@@ -33,6 +33,13 @@ def fetch_login_tuples(results):
     return array
 
 
+def fetch_security_tuples(results):
+    array = []
+    for item in results:
+        array.append(SecurityTuple(item[1], item[2], item[3]))
+    return array
+
+
 #    ________      ________ _   _ _______   _      ____   _____  _____
 #   |  ____\ \    / /  ____| \ | |__   __| | |    / __ \ / ____|/ ____|
 #   | |__   \ \  / /| |__  |  \| |  | |    | |   | |  | | |  __| (___
@@ -45,7 +52,7 @@ def fetch_login_tuples(results):
 
 def add_event_log(tuple_log):
     sql_query = """
-            INSERT INTO Event_Logs (username, time, event)  
+            INSERT INTO EventLogs (username, time, event)  
             VALUES ('{}', '{}', '{}');
           """.format(tuple_log.username, tuple_log.time, tuple_log.event)
     return commit_command(sql_query)
@@ -53,13 +60,13 @@ def add_event_log(tuple_log):
 
 def get_event_logs_by_event(event):
     sql_query = """
-            SELECT * FROM Event_Logs WHERE event = '{}'
+            SELECT * FROM EventLogs WHERE event = '{}'
         """.format(event)
     return fetch_event_tuples(select_command(sql_query))
 
 
 def get_all_event_logs():
-    sql_query = """ SELECT * FROM Event_Logs """
+    sql_query = """ SELECT * FROM EventLogs """
     return fetch_event_tuples(select_command(sql_query))
 
 
@@ -74,7 +81,7 @@ def get_all_event_logs():
 
 def add_error_log(tuple_log):
     sql_query = """
-            INSERT INTO Error_Logs (username, time, event, additional_details)  
+            INSERT INTO ErrorLogs (username, time, event, additional_details)  
             VALUES ('{}', '{}', '{}', '{}');
           """.format(tuple_log.username, tuple_log.time, tuple_log.event, tuple_log.additional_details)
     return commit_command(sql_query)
@@ -82,13 +89,13 @@ def add_error_log(tuple_log):
 
 def get_error_logs_by_event(event):
     sql_query = """
-            SELECT * FROM Error_Logs WHERE event = '{}'
+            SELECT * FROM ErrorLogs WHERE event = '{}'
         """.format(event)
     return fetch_error_tuples(select_command(sql_query))
 
 
 def get_all_error_logs():
-    sql_query = """ SELECT * FROM Error_Logs """
+    sql_query = """ SELECT * FROM ErrorLogs """
     return fetch_error_tuples(select_command(sql_query))
 
 
@@ -103,12 +110,34 @@ def get_all_error_logs():
 
 def add_login_log(tuple_log):
     sql_query = """
-            INSERT INTO Login_Logs (username, time)  
+            INSERT INTO LoginLogs (username, time)  
             VALUES ('{}', '{}');
           """.format(tuple_log.username, tuple_log.time)
     return commit_command(sql_query)
 
 
 def get_all_login_logs():
-    sql_query = """ SELECT * FROM Login_Logs """
+    sql_query = """ SELECT * FROM LoginLogs """
     return fetch_login_tuples(select_command(sql_query))
+
+
+#     _____  ______  _____  _    _  _____   _____  _______ __     __   _       ____    _____   _____
+#    / ____||  ____|/ ____|| |  | ||  __ \ |_   _||__   __|\ \   / /  | |     / __ \  / ____| / ____|
+#   | (___  | |__  | |     | |  | || |__) |  | |     | |    \ \_/ /   | |    | |  | || |  __ | (___
+#    \___ \ |  __| | |     | |  | ||  _  /   | |     | |     \   /    | |    | |  | || | |_ | \___ \
+#    ____) || |____| |____ | |__| || | \ \  _| |_    | |      | |     | |____| |__| || |__| | ____) |
+#   |_____/ |______|\_____| \____/ |_|  \_\|_____|   |_|      |_|     |______|\____/  \_____||_____/
+#
+#
+
+def add_security_log(tuple_log):
+    sql_query = """
+            INSERT INTO SecurityLogs (time, event, additional_details)  
+            VALUES ('{}', '{}', '{}');
+          """.format(tuple_log.time, tuple_log.event, tuple_log.additional_details)
+    return commit_command(sql_query)
+
+
+def get_all_security_logs():
+    sql_query = """ SELECT * FROM SecurityLogs """
+    return fetch_security_tuples(select_command(sql_query))
