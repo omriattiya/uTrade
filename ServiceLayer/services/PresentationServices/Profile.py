@@ -82,7 +82,6 @@ def get_shops(request):
                         'GPHP': yes_no_array[managed_shop.permission_get_purchased_history],
                         'DP': yes_no_array[managed_shop.discount_permission],
                         'SP': yes_no_array[managed_shop.permission_set_policy],
-                        'checked': checked
                     })
                 context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, None)}
                 context.update({'owned_shops': owned_shops_html, 'managed_shops': managed_shops_html})
