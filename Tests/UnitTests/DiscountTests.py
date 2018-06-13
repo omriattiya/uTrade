@@ -79,6 +79,32 @@ class ShoppingTests(unittest.TestCase):
         self.assertEqual(getted.shop_name, disc.shop_name)
         self.assertEqual(getted.percentage, disc.percentage)
 
+    def test_get_visible_discount_bad(self):
+        register(RegisteredUser('YoniYoni', '1234567878'))
+        register(RegisteredUser('StoreManager1', '1234567878'))
+        shop = Shop('My Shop', 'Active')
+        shop1 = Shop('My Shop1', 'Active')
+        ShopLogic.create_shop(shop, 'YoniYoni')
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
+        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
+        self.assertFalse(get_visible_discount(item1.id, shop1.name))
+
+    def test_get_visible_discount_bad_item(self):
+        register(RegisteredUser('YoniYoni', '1234567878'))
+        register(RegisteredUser('StoreManager1', '1234567878'))
+        shop = Shop('My Shop', 'Active')
+        ShopLogic.create_shop(shop, 'YoniYoni')
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
+        item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
+        item2 = Item(2, 'My Shop', 'milk1', 'diary1', 'good', 12, 100, 'regular', None, 0, 0, 0)
+        ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
+        self.assertFalse(get_visible_discount(item2.id, shop.name))
+
     def test_get_invisible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
         register(RegisteredUser('StoreManager1', '1234567878'))
