@@ -230,8 +230,9 @@ def get_cart_cost(login_token):
             if shopping_cart_item.code is not None:
                 percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
 
-            new_price = item.price - (
-                    item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
+            new_price_visible = item.price - (item.price * percentage_item_visible)
+            new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
+            new_price = new_price_category - (new_price_category * percentage_invisible)
 
             lottery = get_lottery(item.id)
             if item.kind == 'ticket':
@@ -264,7 +265,7 @@ def order_of_user(login_token):
 
 
 def visible_discount_percent_item(item):
-    percentage_item_visible = 100
+    percentage_item_visible = 0
     item_visible_discount = get_visible_discount(item.id, item.shop_name)
     if item_visible_discount is not False:
         percentage_item_visible = item_visible_discount.percentage
@@ -272,7 +273,7 @@ def visible_discount_percent_item(item):
 
 
 def visible_discount_percent_category(item):
-    percentage_item_visible = 100
+    percentage_item_visible = 0
     category_visible_discount = get_visible_discount_category(item.category, item.shop_name)
     if category_visible_discount is not False:
         percentage_item_visible = category_visible_discount.percentage
@@ -280,7 +281,7 @@ def visible_discount_percent_category(item):
 
 
 def invisible_discount_percent(item, code):
-    percentage_invisible = 100
+    percentage_invisible = 0
     invisible_discount = get_invisible_discount(item.id, item.shop_name, code)
     if invisible_discount is False:
         invisible_discount = get_invisible_discount_category(item.category, item.shop_name, code)
@@ -307,15 +308,19 @@ def order_helper(cart_items):
             percentage_category_visible = visible_discount_percent_category(item)
             percentage_invisible = 1
             if cart_items[i].code is not None:
-                percentage_invisible = invisible_discount_percent(item, cart_items[i].code)
+                percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
 
-            discount_money = item.price - (
-                    item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
-            discount_prices.append(discount_money)
+            new_price_visible = item.price - (item.price * percentage_item_visible)
+            new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
+            new_price = new_price_category - (new_price_category * percentage_invisible)
+
+            discount_money = item.price - new_price
+
+            discount_prices.append(discount_money * cart_items[i].item_quantity)
             items.append(item)
-            total_prices.append(item.price * cart_items[i].item_quantity - discount_money * cart_items[i].item_quantity)
-            total_price = total_price + item.price * cart_items[i].item_quantity - discount_money * cart_items[
-                i].item_quantity
+            total_prices.append(new_price * cart_items[i].item_quantity)
+            total_price = total_price + new_price * cart_items[i].item_quantity
+
             number_of_items = number_of_items + cart_items[i].item_quantity
         if cart_items is not False:
             return {'total_price': total_price,
