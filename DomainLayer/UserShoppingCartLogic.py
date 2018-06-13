@@ -125,8 +125,9 @@ def pay_all(login_token):
                 if shopping_cart_item.code is not None:
                     percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
 
-                new_price = item.price - (
-                        item.price * percentage_item_visible * percentage_category_visible * percentage_invisible)
+                new_price_visible = item.price - (item.price * percentage_item_visible)
+                new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
+                new_price = new_price_category - (new_price_category * percentage_invisible)
 
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
                 if lottery_message is not True:
