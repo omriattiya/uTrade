@@ -15,21 +15,21 @@ from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple
 def fetch_event_tuples(results):
     array = []
     for item in results:
-        array.append(EventTuple(item[0], item[1], item[2]))
+        array.append(EventTuple(item[1], item[2], item[3]))
     return array
 
 
 def fetch_error_tuples(results):
     array = []
     for item in results:
-        array.append(ErrorTuple(item[0], item[1], item[2], item[3]))
+        array.append(ErrorTuple(item[1], item[2], item[3], item[4]))
     return array
 
 
 def fetch_login_tuples(results):
     array = []
     for item in results:
-        array.append(LoginTuple(item[0], item[1]))
+        array.append(LoginTuple(item[1], item[2]))
     return array
 
 
