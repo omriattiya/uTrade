@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+
 is_test = False
 
 
@@ -290,6 +291,30 @@ tables_sql = [
           conditions TEXT,
           restriction TEXT,
           quantity INTEGER
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS Event_Logs(
+          log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT,
+          time TEXT,
+          event TEXT
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS Error_Logs(
+          log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT,
+          time TEXT,
+          event TEXT,
+          additional_details TEXT
+        )
+    """,
+    """
+        CREATE TABLE IF NOT EXISTS Login_Logs(
+          log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT REFERENCES RegisteredUsers(username),
+          time TEXT
         )
     """,
 ]

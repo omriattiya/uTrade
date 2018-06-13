@@ -1,7 +1,5 @@
 from sqlite3 import Error
 
-from DatabaseLayer.ReviewsOnItems import get_item_rank
-from DatabaseLayer.ReviewsOnShops import get_shop_rank
 from DatabaseLayer.getConn import commit_command, select_command, get_conn
 from SharedClasses.Item import Item
 
