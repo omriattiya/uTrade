@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from DomainLayer import UserShoppingCartLogic, GuestShoppingCartLogic
 
 from DomainLayer import ItemsLogic
-from SharedClasses.ShoppingCartItem import ShoppingCartItem
+from DomainLayer import UserShoppingCartLogic, GuestShoppingCartLogic, LoggerLogic
 from ServiceLayer.services.LiveAlerts import Consumer
+from SharedClasses.ShoppingCartItem import ShoppingCartItem
 
 
 @csrf_exempt
@@ -131,6 +131,7 @@ def update_code_shopping_cart(request):
 
 @csrf_exempt
 def pay_all(request):
+    global username
     if request.method == 'POST':
         login = request.COOKIES.get('login_hash')
         if login is None:
@@ -144,6 +145,7 @@ def pay_all(request):
                 message = UserShoppingCartLogic.pay_all(login)
             else:
                 guest = request.COOKIES.get('guest_hash')
+                username = "GUEST"
                 if guest is None:
                     return HttpResponse('fail')
                 message = GuestShoppingCartLogic.pay_all_guest(guest)
@@ -151,6 +153,7 @@ def pay_all(request):
             to_send = 'OK' + str(message[0]) + '}' + str(message[1])
             return HttpResponse(to_send)
         else:
+            LoggerLogic.add_error_log(username, "PAY ALL", message)
             return HttpResponse(message)
 
 

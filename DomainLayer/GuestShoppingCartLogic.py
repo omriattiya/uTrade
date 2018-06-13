@@ -1,6 +1,6 @@
 from DatabaseLayer import Owners
 from DatabaseLayer.Items import get_item
-from DomainLayer import ItemsLogic, UserShoppingCartLogic
+from DomainLayer import ItemsLogic, UserShoppingCartLogic, LoggerLogic
 from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
 from ExternalSystems import ExternalSystems
@@ -77,6 +77,7 @@ def pay_all_guest(guest):
             status = remove_shopping_cart_guest(guest)
             if status is False:
                 return 'Something went wrong with the purchase'
+            LoggerLogic.add_event_log("GUEST", "PAY ALL")
             return [purchase_id, total_cost]
     return 'Shopping cart is empty'
 

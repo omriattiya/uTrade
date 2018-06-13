@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from DomainLayer import LoggerLogic
 from ExternalSystems.ExternalSystemInterfaces.PaymentInterface import PaymentInterface
 
 
@@ -15,4 +16,5 @@ class PaymentSystem(PaymentInterface):
                     total_cost) + " was made by the user:" + \
                        username + " and APPROVED by the Payment System."
         else:
+            LoggerLogic.add_error_log(username, "EXTERNAL SYSTEM: PAYMENT SYSTEM", "total cost <= 0")
             return False

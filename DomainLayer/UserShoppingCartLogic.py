@@ -5,7 +5,7 @@ from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
 from DatabaseLayer.UserDetails import is_meet_conditions
-from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic
+from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic, LoggerLogic
 from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount, get_visible_discount_category, \
     get_invisible_discount_category
 from ExternalSystems import ExternalSystems
@@ -172,6 +172,7 @@ def pay_all(login_token):
             status = ShoppingCartDB.remove_shopping_cart(username)
             lottery_ending_check(lotteries)
             if status:
+                LoggerLogic.add_event_log(username, "PAY ALL")
                 return [purchase_id, total_cost]
     return 'Shopping cart is empty'
 

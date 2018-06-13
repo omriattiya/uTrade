@@ -1,6 +1,7 @@
 from DatabaseLayer import Items
 from DatabaseLayer import Shops, StoreManagers, PurchasedItems, SystemManagers, Owners, ReviewsOnShops
 from DatabaseLayer.PurchasedItems import get_purchased_item_by_shop_and_username
+from DomainLayer import LoggerLogic
 from DomainLayer.SearchLogic import search_shop
 from SharedClasses.Owner import Owner
 
@@ -10,6 +11,7 @@ def create_shop(shop, username):
         if Shops.search_shop(shop.name) is False:
             if Shops.create_shop(shop):
                 if Owners.add_owner(Owner(username, shop.name, None)):
+                    LoggerLogic.add_event_log(username, "OPEN SHOP")
                     return "SUCCESS"
                 return "FAILED: Adding Owner"
             return "FAILED: Adding Shop"

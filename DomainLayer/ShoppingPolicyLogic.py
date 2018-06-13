@@ -1,11 +1,10 @@
 import sqlite3
 
+from DatabaseLayer import Owners
 from DatabaseLayer import ShoppingPolicies, StoreManagers
 from DatabaseLayer import SystemManagers
-from DatabaseLayer import Owners
-
-
 #    ____________________________________   GET ALL     ___________________________________________________
+from DomainLayer import LoggerLogic
 
 
 def get_all_shopping_policy_on_shop(shop_name):
@@ -41,6 +40,7 @@ def add_shopping_policy_on_items(username, item_name, conditions, restriction, q
             if SystemManagers.is_system_manager(username) is not False:
                 if not ShoppingPolicies.add_shopping_policy_on_items(item_name, conditions, restriction, quantity):
                     return "FAILED: DB error."
+                LoggerLogic.add_event_log(username, "POLICY: ADD ITEM SHOPPING POLICY")
                 return True
             return 'FAILED: you are not a System Manager'
         return "FAILED: One (or more) of the parameters is None"
@@ -57,6 +57,7 @@ def add_shopping_policy_on_category(username, category, conditions, restriction,
             if SystemManagers.is_system_manager(username) is not False:
                 if not ShoppingPolicies.add_shopping_policy_on_category(category, conditions, restriction, quantity):
                     return "FAILED: DB error."
+                LoggerLogic.add_event_log(username, "POLICY: ADD CATEGORY SHOPPING POLICY")
                 return True
             return 'FAILED: you are not a System Manager'
         return "FAILED: One (or more) of the parameters is None"
@@ -73,12 +74,14 @@ def add_shopping_policy_on_shop(username, shop_name, conditions, restriction, qu
             if Owners.get_owner(username, shop_name) is not False:
                 if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
                     return "FAILED: DB error."
+                LoggerLogic.add_event_log(username, "POLICY: ADD SHOP SHOPPING POLICY")
                 return True
             manager = StoreManagers.get_store_manager(username,shop_name)
             if manager is not False:
                 if manager.permission_set_policy > 0:
                     if not ShoppingPolicies.add_shopping_policy_on_shop(shop_name, conditions, restriction, quantity):
                         return "FAILED: DB error."
+                    LoggerLogic.add_event_log(username, "POLICY: ADD SHOP SHOPPING POLICY")
                     return True
                 return 'FAILED: no permissions!'
             return 'FAILED: you are not a the Owner of the shop'
@@ -95,6 +98,7 @@ def add_shopping_policy_on_identity(username, conditions, restriction, quantity)
         if SystemManagers.is_system_manager(username) is not False:
             if not ShoppingPolicies.add_shopping_policy_on_identity(conditions, restriction, quantity):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: ADD IDENTITY SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: One (or more) of the parameters is None"
@@ -108,6 +112,7 @@ def remove_shopping_policy_on_identity(username, policy_id):
         if SystemManagers.is_system_manager(username) is not False:
             if not ShoppingPolicies.remove_shopping_policy_on_identity(policy_id):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: REMOVE IDENTITY SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: Invalid id of Policy"
@@ -118,6 +123,7 @@ def remove_shopping_policy_on_shop(username, policy_id, shop_name):
         if Owners.get_owner(username, shop_name) is not False:
             if not ShoppingPolicies.remove_shopping_policy_on_shop(policy_id):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: REMOVE SHOP SHOPPING POLICY")
             return True
         return 'FAILED: you are not a the Owner of the shop'
     return "FAILED: Invalid id of Policy"
@@ -128,6 +134,7 @@ def remove_shopping_policy_on_items(username, policy_id):
         if SystemManagers.is_system_manager(username) is not False:
             if not ShoppingPolicies.remove_shopping_policy_on_items(policy_id):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: REMOVE ITEM SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: Invalid id of Policy"
@@ -138,6 +145,7 @@ def remove_shopping_policy_on_category(username, policy_id):
         if SystemManagers.is_system_manager(username) is not False:
             if not ShoppingPolicies.remove_shopping_policy_on_category(policy_id):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: REMOVE CATEGORY SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: Invalid id of Policy"
@@ -160,6 +168,7 @@ def update_shopping_policy_on_identity(username, policy_id, field_name, new_valu
 
             if not ShoppingPolicies.update_shopping_policy_on_identity(policy_id, field_name, new_value):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: UPDATE IDENTITY SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: One (or more) of the parameters is None"
@@ -179,6 +188,7 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
 
             if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: UPDATE SHOP SHOPPING POLICY")
             return True
         manager = StoreManagers.get_store_manager(username, shop_name)
         if manager is not False:
@@ -190,6 +200,7 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
 
                 if not ShoppingPolicies.update_shopping_policy_on_shop(policy_id, field_name, new_value):
                     return "FAILED: DB error."
+                LoggerLogic.add_event_log(username, "POLICY: UPDATE SHOP SHOPPING POLICY")
                 return True
             return 'FAILED: no permissions!'
         return 'FAILED: you are not a the Owner of the shop'
@@ -210,6 +221,7 @@ def update_shopping_policy_on_items(username, policy_id, field_name, new_value):
 
             if not ShoppingPolicies.update_shopping_policy_on_items(policy_id, field_name, new_value):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: UPDATE ITEM SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: One (or more) of the parameters is None"
@@ -229,6 +241,7 @@ def update_shopping_policy_on_category(username, policy_id, field_name, new_valu
 
             if not ShoppingPolicies.update_shopping_policy_on_category(policy_id, field_name, new_value):
                 return "FAILED: DB error."
+            LoggerLogic.add_event_log(username, "POLICY: UPDATE CATEGORY SHOPPING POLICY")
             return True
         return 'FAILED: you are not a System Manager'
     return "FAILED: One (or more) of the parameters is None"

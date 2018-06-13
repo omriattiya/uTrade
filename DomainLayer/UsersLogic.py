@@ -1,8 +1,10 @@
 import hashlib
 import re
 from time import gmtime, strftime
-from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, Discount, UserDetails, \
+
+from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, UserDetails, \
     HistoryAppointings
+from DomainLayer import LoggerLogic
 
 min_password_len = 6
 
@@ -18,6 +20,7 @@ def register(user):
                     return 'FAILED: Username is already taken'
                 if RegisteredUsers.add_user(user):
                     UserDetails.insert(user.username)
+                    LoggerLogic.add_event_log(user.username, "REGISTER")
                     return 'SUCCESS'
                 return 'FAILED'
             else:
@@ -57,11 +60,13 @@ def edit_password(user):
 
 def login(user):
     if SystemManagers.login(user.username, hashlib.sha256(user.password.encode()).hexdigest()):
+        LoggerLogic.add_login_log(user.username)
         return "SUCCESS"
     if user.username is not None and user.password is not None:
         if RegisteredUsers.is_user_exists(user.username):
             user.password = hashlib.sha256(user.password.encode()).hexdigest()
             if RegisteredUsers.login(user):
+                LoggerLogic.add_login_log(user.username)
                 return "SUCCESS"
             return "FAILED:Password in incorrect"
         return "FAILED: Username is incorrect"
@@ -84,7 +89,10 @@ def remove_user(username, registered_user):
                     else:
                         if is_owner is not False:
                             result_delete = Owners.remove_owner(registered_user.username)
-                    return result_delete and RegisteredUsers.remove_user(registered_user.username)
+                    final_result = result_delete and RegisteredUsers.remove_user(registered_user.username)
+                    if final_result:
+                        LoggerLogic.add_event_log(username, "DELETE USER")
+                    return final_result
             return False
     return False
 
@@ -179,7 +187,10 @@ def add_manager(username, store_manager):
 def close_shop(username, shop_name):
     owner_of_shop = Owners.get_owner(username, shop_name)
     if owner_of_shop is not False:
-        return Shops.close_shop(shop_name)
+        result = Shops.close_shop(shop_name)
+        if result:
+            LoggerLogic.add_event_log(username, "SHOP STATUS CHANGED - CLOSE")
+        return result
     else:
         return False
 
@@ -187,7 +198,10 @@ def close_shop(username, shop_name):
 def re_open_shop(username, shop_name):
     owner_of_shop = Owners.get_owner(username, shop_name)
     if owner_of_shop is not False:
-        return Shops.re_open_shop(shop_name)
+        result = Shops.re_open_shop(shop_name)
+        if result:
+            LoggerLogic.add_event_log(username, "SHOP STATUS CHANGED - RE-OPEN")
+        return result
     else:
         return False
 
