@@ -1,10 +1,11 @@
 import sqlite3
 from sqlite3 import Error
+from time import strftime, gmtime
 
 from django.db import connection
 
 from DatabaseLayer import initializeDatabase
-from DomainLayer import LoggerLogic
+from SharedClasses.LogTuple import ErrorTuple
 
 
 def get_conn():
@@ -26,7 +27,7 @@ def commit_command(sql_query):
         conn.close()
         return True
     except Error as e:
-        LoggerLogic.add_error_log("DB ERROR", "COMMIT COMMAND", str(e))
+        add_error_log(ErrorTuple("DB ERROR", now_time(), "COMMIT COMMAND", str(e)))
         conn.close()
         return False
 
@@ -41,6 +42,18 @@ def select_command(sql_query):
         return results
     except Error as e:
         print(e)
-        LoggerLogic.add_error_log("DB ERROR", "SELECT COMMAND", str(e))
+        add_error_log(ErrorTuple("DB ERROR", now_time(), "SELECT COMMAND", str(e)))
         conn.close()
         return []
+
+
+def add_error_log(tuple_log):
+    sql_query = """
+            INSERT INTO ErrorLogs (username, time, event, additional_details)  
+            VALUES ('{}', '{}', '{}', '{}');
+          """.format(tuple_log.username, tuple_log.time, tuple_log.event, tuple_log.additional_details)
+    return commit_command(sql_query)
+
+
+def now_time():
+    return strftime("%Y-%m-%d %H:%M:%S", gmtime())
