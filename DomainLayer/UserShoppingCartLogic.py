@@ -91,17 +91,24 @@ def lottery_ending_check(lotteries):
         LotteryLogic.lottery_timer(lottery)
 
 
+def get_new_price_for_item(item, shopping_cart_item):
+    percentage_item_visible = visible_discount_percent_item(item)
+    percentage_category_visible = visible_discount_percent_category(item)
+    percentage_invisible = 0
+    if shopping_cart_item.code is not None:
+        percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
+    new_price_visible = item.price - (item.price * percentage_item_visible)
+    new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
+    return new_price_category - (new_price_category * percentage_invisible)
+
+
 def pay_all(login_token):
-    pay_confirmation = ''
-    sup_confirmation = ''
     lotteries = []
     if login_token is not None:
         #  check if cart has items
         empty = check_empty_cart_user(login_token)
         if empty is not True:
             username = Consumer.loggedInUsers[login_token]
-            to_create_purchase = True
-            purchase_id = 0
             #  if so, check foreach item if the requested amount exist
             cart_items = get_cart_items(login_token)
 
@@ -116,28 +123,16 @@ def pay_all(login_token):
             # if so, sum all items costs, get from costumer his credentials
             total_cost = 0
             # for each item, calculate visible_discount
+            purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
+            if purchase_id is False:
+                return 'Something went wrong with the purchase'
             for shopping_cart_item in cart_items:
                 item = get_item(shopping_cart_item.item_id)
-
-                percentage_item_visible = visible_discount_percent_item(item)
-                percentage_category_visible = visible_discount_percent_category(item)
-                percentage_invisible = 1
-                if shopping_cart_item.code is not None:
-                    percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
-
-                new_price_visible = item.price - (item.price * percentage_item_visible)
-                new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
-                new_price = new_price_category - (new_price_category * percentage_invisible)
-
+                new_price = get_new_price_for_item(item, shopping_cart_item)
                 lottery_message = check_lottery_ticket(item, shopping_cart_item, username)
                 if lottery_message is not True:
                     return lottery_message
                 total_cost = total_cost + shopping_cart_item.item_quantity * new_price
-                if to_create_purchase is True:
-                    to_create_purchase = False
-                    purchase_id = Purchases.add_purchase_and_return_id(datetime.now(), username, 0)
-                    if purchase_id is False:
-                        return 'Something went wrong with the purchase'
                 status = PurchasedItems.add_purchased_item(purchase_id, shopping_cart_item.item_id,
                                                            shopping_cart_item.item_quantity,
                                                            shopping_cart_item.item_quantity * new_price)
@@ -225,17 +220,7 @@ def get_cart_cost(login_token):
             item = get_item(shopping_cart_item.item_id)
             if shopping_cart_item.item_quantity > item.quantity:
                 return False
-
-            percentage_item_visible = visible_discount_percent_item(item)
-            percentage_category_visible = visible_discount_percent_category(item)
-            percentage_invisible = 1
-            if shopping_cart_item.code is not None:
-                percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
-
-            new_price_visible = item.price - (item.price * percentage_item_visible)
-            new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
-            new_price = new_price_category - (new_price_category * percentage_invisible)
-
+            new_price = get_new_price_for_item(item, shopping_cart_item)
             lottery = get_lottery(item.id)
             if item.kind == 'ticket':
                 final_date = datetime.strptime(lottery.final_date, '%Y-%m-%d')
@@ -305,24 +290,12 @@ def order_helper(cart_items):
         total_price = 0
         for i in range(0, len(cart_items)):
             item = get_item(cart_items[i].item_id)
-
-            percentage_item_visible = visible_discount_percent_item(item)
-            percentage_category_visible = visible_discount_percent_category(item)
-            percentage_invisible = 1
-            if cart_items[i].code is not None:
-                percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
-
-            new_price_visible = item.price - (item.price * percentage_item_visible)
-            new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
-            new_price = new_price_category - (new_price_category * percentage_invisible)
-
+            new_price = get_new_price_for_item(item, cart_items[i])
             discount_money = item.price - new_price
-
             discount_prices.append(discount_money * cart_items[i].item_quantity)
             items.append(item)
             total_prices.append(new_price * cart_items[i].item_quantity)
             total_price = total_price + new_price * cart_items[i].item_quantity
-
             number_of_items = number_of_items + cart_items[i].item_quantity
         if cart_items is not False:
             return {'total_price': total_price,
