@@ -50,12 +50,59 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
-    <script src="js/system-shops.js"></script>
     <script src="js/web_sockets.js"></script>
 
+    <script>
+        function insert_log_tuples(type) {
+            let loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let tbody = document.getElementById("log_items");
+                    tbody.innerHTML = loadHTML.responseText
+                }
+            };
+            loadHTML.open("GET", "../app/system/logger/" + type + "/", true);
+            loadHTML.send();
+        }
+
+        function change_type() {
+            let type = document.getElementById("type");
+            type = type.options[type.selectedIndex].value;
+            let tr = document.getElementById("checkpoint");
+            switch (type) {
+                case "event":
+                    tr.innerHTML = '<tr id="checkpoint">\
+                                        <th>USERNAME</th>\
+                                        <th>TIME</th>\
+                                        <th>EVENT</th>\
+                                    </tr>';
+                    break;
+                case "error":
+                    tr.innerHTML = '<tr id="checkpoint">\
+                                        <th>USERNAME</th>\
+                                        <th>TIME</th>\
+                                        <th>EVENT</th>\
+                                        <th>DETAILS</th>\
+                                    </tr>';
+                    break;
+                case "login":
+                    tr.innerHTML = '<th>USERNAME</th>\
+                                    <th>TIME</th>';
+                    break;
+                case "security":
+                    tr.innerHTML = '\
+                                    <th>TIME</th>\
+                                    <th>EVENT</th>\
+                                    <th>DETAILS</th>';
+                    break;
+            }
+            insert_log_tuples(type);
+        }
+
+    </script>
 </head>
 
-<body>
+<body onload="change_type()">
 {% autoescape off %}
     {{ topbar }}
 {% endautoescape %}
@@ -113,6 +160,7 @@ _________________________________________________________ -->
 _________________________________________________________ -->
                 <div class="panel panel-default sidebar-menu">
 
+
                     <div class="panel-body">
 
                         <ul class="nav nav-pills nav-stacked">
@@ -122,13 +170,13 @@ _________________________________________________________ -->
                             <li>
                                 <a href="../app/system/history/"><i class="fa fa-heart"></i> History</a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a href="../app/system/shops/"><i class="fa fa-user"></i> Shops</a>
                             </li>
                             <li>
                                 <a href="../app/system/policies/"><i class="fa fa-user"></i> Policies</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="../app/system/logger/"><i class="fa fa-user"></i> Loggers</a>
                             </li>
                             <li>
@@ -146,31 +194,35 @@ _________________________________________________________ -->
 
             <div class="col-md-9">
                 <div class="box">
-                    <h1>Shops</h1>
-                    <p class="lead">Here you can see every shop in the system</p>
-
+                    <h1>Loggers</h1>
+                    <p class="lead">Here you can see the system logs.</p>
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <label for="type">Type</label>
+                        <select style="width: 20%" name="type" id="type" class="form-control" onchange="change_type()">
+                            <option value="event">Event</option>
+                            <option value="error">Error</option>
+                            <option value="login">Login</option>
+                            <option value="security">Security</option>
+                        </select>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table id="event" class="table table-hover">
                             <thead>
-                            <tr>
-                                <th>Shop Name</th>
-                                <th>Owners</th>
-                                <th>Managers</th>
-                                <th>Status</th>
-                                <th></th>
-                                <th></th>
+                            <tr id="checkpoint">
                             </tr>
                             </thead>
-                            <tbody>
-                            {% autoescape off %}
-                                {{ shops }}
-                            {% endautoescape %}
+                            <tbody id="log_items">
+
+
                             </tbody>
                         </table>
                     </div>
 
+
                 </div>
+
             </div>
+
 
         </div>
         <!-- /.container -->

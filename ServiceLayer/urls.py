@@ -120,7 +120,14 @@ item_page_urlpatterns = [
 system_urlpatterns = [
     path('system/shops/', Profile.get_system_shops),
     path('system/users/', Profile.get_system_users),
-    path('system/history/', Profile.get_system_history)
+    path('system/history/', Profile.get_system_history),
+    path('system/logger/', Profile.get_system_log),
+    path('system/logger/event/', Profile.get_system_log_event),
+    path('system/logger/error/', Profile.get_system_log_error),
+    path('system/logger/login/', Profile.get_system_log_login),
+    path('system/logger/security/', Profile.get_system_log_security),
+    path('system/con_reporting/', Profile.continuous_reporting),
+    path('system/con_reporting/login_gap/', Profile.login_gap),
 ]
 
 policies_urlpatterns = [

@@ -60,13 +60,13 @@ def add_event_log(tuple_log):
 
 def get_event_logs_by_event(event):
     sql_query = """
-            SELECT * FROM EventLogs WHERE event = '{}'
+            SELECT * FROM EventLogs WHERE event = '{}' ORDER BY log_id DESC 
         """.format(event)
     return fetch_event_tuples(select_command(sql_query))
 
 
 def get_all_event_logs():
-    sql_query = """ SELECT * FROM EventLogs """
+    sql_query = """ SELECT * FROM EventLogs ORDER BY log_id DESC"""
     return fetch_event_tuples(select_command(sql_query))
 
 
@@ -89,13 +89,13 @@ def add_error_log(tuple_log):
 
 def get_error_logs_by_event(event):
     sql_query = """
-            SELECT * FROM ErrorLogs WHERE event = '{}'
+            SELECT * FROM ErrorLogs WHERE event = '{}' ORDER BY log_id DESC
         """.format(event)
     return fetch_error_tuples(select_command(sql_query))
 
 
 def get_all_error_logs():
-    sql_query = """ SELECT * FROM ErrorLogs """
+    sql_query = """ SELECT * FROM ErrorLogs ORDER BY log_id DESC"""
     return fetch_error_tuples(select_command(sql_query))
 
 
@@ -117,7 +117,7 @@ def add_login_log(tuple_log):
 
 
 def get_all_login_logs():
-    sql_query = """ SELECT * FROM LoginLogs """
+    sql_query = """ SELECT * FROM LoginLogs ORDER BY log_id DESC"""
     return fetch_login_tuples(select_command(sql_query))
 
 
@@ -139,5 +139,5 @@ def add_security_log(tuple_log):
 
 
 def get_all_security_logs():
-    sql_query = """ SELECT * FROM SecurityLogs """
+    sql_query = """ SELECT * FROM SecurityLogs ORDER BY log_id DESC"""
     return fetch_security_tuples(select_command(sql_query))

@@ -1,6 +1,6 @@
+import datetime
 import sqlite3
 from sqlite3 import Error
-from time import strftime, gmtime
 
 from django.db import connection
 
@@ -56,4 +56,4 @@ def add_error_log(tuple_log):
 
 
 def now_time():
-    return strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

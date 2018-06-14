@@ -1,11 +1,11 @@
-from time import gmtime, strftime
+import datetime
 
 from DatabaseLayer import Logger
 from SharedClasses.LogTuple import ErrorTuple, EventTuple, LoginTuple, SecurityTuple
 
 
 def now_time():
-    return strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 #             _____  _____  ______ _____   _____

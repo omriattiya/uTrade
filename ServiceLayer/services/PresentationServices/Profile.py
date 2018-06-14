@@ -2,7 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic, ShoppingPolicyLogic
+from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, HistoryAppointingLogic, ShoppingPolicyLogic, \
+    LoggerLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 from SharedClasses.Item import Item
@@ -364,3 +365,130 @@ def get_history_appoitings(request):
                     })
                 return HttpResponse(history_html)
     return HttpResponse('fail')
+
+
+def get_system_log(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    logs_html = ""
+                    log_items = LoggerLogic.get_all_event_logs()
+                    for log_item in log_items:
+                        logs_html += loader.render_to_string('components/log_table_event.html', context={
+                            'username': log_item.username,
+                            'time': log_item.time,
+                            'event': log_item.event
+                        })
+
+                    context = {'topbar': Topbar_Navbar.get_top_bar(login),
+                               'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                    return render(request, 'system-logger.html', context=context)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def get_system_log_event(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    logs_html = ""
+                    log_items = LoggerLogic.get_all_event_logs()
+                    for log_item in log_items:
+                        logs_html += loader.render_to_string('components/log_table_event.html', context={
+                            'username': log_item.username,
+                            'time': log_item.time,
+                            'event': log_item.event
+                        })
+                    return HttpResponse(logs_html)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def get_system_log_error(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    logs_html = ""
+                    log_items = LoggerLogic.get_all_error_logs()
+                    for log_item in log_items:
+                        logs_html += loader.render_to_string('components/log_table_error.html', context={
+                            'username': log_item.username,
+                            'time': log_item.time,
+                            'event': log_item.event,
+                            'additional_details': log_item.additional_details,
+                        })
+                    return HttpResponse(logs_html)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def get_system_log_login(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    logs_html = ""
+                    log_items = LoggerLogic.get_all_login_logs()
+                    for log_item in log_items:
+                        logs_html += loader.render_to_string('components/log_table_login.html', context={
+                            'username': log_item.username,
+                            'time': log_item.time
+                        })
+                    return HttpResponse(logs_html)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def get_system_log_security(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    logs_html = ""
+                    log_items = LoggerLogic.get_all_security_logs()
+                    for log_item in log_items:
+                        logs_html += loader.render_to_string('components/log_table_security.html', context={
+                            'time': log_item.time,
+                            'event': log_item.event,
+                            'additional_details': log_item.additional_details
+                        })
+                    return HttpResponse(logs_html)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def continuous_reporting(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                context = {'topbar': Topbar_Navbar.get_top_bar(login),
+                           'navbar': Topbar_Navbar.get_nav_bar(login, None)}
+                return render(request, 'system-cont-report.html', context=context)
+        return HttpResponse("You don't have the privilege to be here")
+
+
+def login_gap(request):
+    if request.method == 'GET':
+        login = request.COOKIES.get('login_hash')
+        if login is not None:
+            username = Consumer.loggedInUsers.get(login)
+            if username is not None:
+                if UsersLogic.is_system_manager(username):
+                    return HttpResponse(len(Consumer.loggedInUsers))
+        return HttpResponse("You don't have the privilege to be here")

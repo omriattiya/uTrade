@@ -50,12 +50,74 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
     <script src="js/search.js"></script>
-    <script src="js/system-shops.js"></script>
     <script src="js/web_sockets.js"></script>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        var seconds = 0; //how much time passed
+        var last = 0;
+        var interval = 1; //interval time
+        setInterval(drawChart, interval * 1000);
+
+        var row1 = [0, 0];
+        var row2 = [0, 0];
+        var row3 = [0, 0];
+        var row4 = [0, 0];
+
+        function update_rows() {
+            seconds += interval;
+            row1[0] = row2[0];
+            row2[0] = row3[0];
+            row3[0] = row4[0];
+            row4[0] = seconds;
+
+            new_users_count();
+            row1[1] = row2[1];
+            row2[1] = row3[1];
+            row3[1] = row4[1];
+            row4[1] = last;
+        }
+
+        function new_users_count() {
+            let loadHTML = new XMLHttpRequest();
+            loadHTML.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    last = parseInt(loadHTML.responseText);
+                }
+            };
+            loadHTML.open("GET", "../app/system/con_reporting/login_gap/", true);
+            loadHTML.send();
+        }
+
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['seconds', 'users'],
+                [row1[0], row1[1]],
+                [row2[0], row2[1]],
+                [row3[0], row3[1]],
+                [row4[0], row4[1]]
+            ]);
+
+            var options = {
+                title: 'Users Logged In',
+                curveType: 'function',
+                legend: {position: 'bottom'}
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+            update_rows();
+        }
+    </script>
 
 </head>
 
-<body>
+<body onload="change_type()">
 {% autoescape off %}
     {{ topbar }}
 {% endautoescape %}
@@ -113,6 +175,7 @@ _________________________________________________________ -->
 _________________________________________________________ -->
                 <div class="panel panel-default sidebar-menu">
 
+
                     <div class="panel-body">
 
                         <ul class="nav nav-pills nav-stacked">
@@ -122,7 +185,7 @@ _________________________________________________________ -->
                             <li>
                                 <a href="../app/system/history/"><i class="fa fa-heart"></i> History</a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a href="../app/system/shops/"><i class="fa fa-user"></i> Shops</a>
                             </li>
                             <li>
@@ -131,7 +194,7 @@ _________________________________________________________ -->
                             <li>
                                 <a href="../app/system/logger/"><i class="fa fa-user"></i> Loggers</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="../app/system/con_reporting/"><i class="fa fa-user"></i> Continuous
                                     Reporting</a>
                             </li>
@@ -146,31 +209,16 @@ _________________________________________________________ -->
 
             <div class="col-md-9">
                 <div class="box">
-                    <h1>Shops</h1>
-                    <p class="lead">Here you can see every shop in the system</p>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Shop Name</th>
-                                <th>Owners</th>
-                                <th>Managers</th>
-                                <th>Status</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% autoescape off %}
-                                {{ shops }}
-                            {% endautoescape %}
-                            </tbody>
-                        </table>
+                    <h1>Loggers</h1>
+                    <p class="lead">Here you can see the system logs.</p>
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <div id="curve_chart" style="width: 100%; height: 500px"></div>
                     </div>
 
                 </div>
+
             </div>
+
 
         </div>
         <!-- /.container -->
