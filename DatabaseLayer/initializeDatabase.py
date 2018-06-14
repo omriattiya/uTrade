@@ -319,3 +319,4 @@ def init_database(path):
 
 if __name__ == '__main__':
     init_database('../db.sqlite3')
+
