@@ -12,15 +12,16 @@ from SharedClasses.LogTuple import ErrorTuple
 
 
 def get_conn():
-    if os.environ.get('test_flag') is None or os.environ.get('test_flag') == "True":
+    if os.environ.get('test_flag') == "True":
         if os.environ.get('test_flag') is None:
             conn = sqlite3.connect('../../db.sqlite3')
+            return conn
         elif os.environ.get('test_flag') == "True":
             conn = sqlite3.connect('db.sqlite3')
-        conn.execute("""
+            conn.execute("""
                               PRAGMA foreign_keys = ON
                       """)
-        return conn
+            return conn
     else:
         return connection
 

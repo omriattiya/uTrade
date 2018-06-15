@@ -12,6 +12,11 @@ function addToCart(item_id)
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200)
         {
+            if(loadHTML.responseText === 'guest ticket')
+            {
+                alert("A guest can't buy lottery tickets.")
+                return;
+            }
             if (loadHTML.responseText === 'Stock_Error')
             {
                 alert("The Quantity You Chose Doesn't Exist In Stock");
