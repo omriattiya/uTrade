@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import ItemsLogic, UsersLogic
+from DomainLayer import ItemsLogic, UsersLogic, LoggerLogic
 from DomainLayer import ShopLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
@@ -18,6 +18,14 @@ def create_shop(request):
         # return HttpResponse('item added')
         shop_name = request.POST.get('name')
         shop_status = request.POST.get('status')
+
+        event = "ADD SHOP"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_status, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
         login = request.COOKIES.get('login_hash')
         if login is None:
@@ -46,6 +54,14 @@ def add_review_on_shop(request):
         description = request.POST.get('description')
         rank = int(request.POST.get('rank'))
 
+        event = "ADD REVIEW ON SHOP"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(description, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             writer_id = Consumer.loggedInUsers.get(login)
@@ -56,16 +72,10 @@ def add_review_on_shop(request):
         return HttpResponse('fail')
 
 
-def search_shop_purchase_history(request):
-    if request.method == 'GET':
-        return HttpResponse('no GUI yet')
-
-
 @csrf_exempt
 def close_shop_permanently(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
@@ -75,18 +85,21 @@ def close_shop_permanently(request):
 
 
 @csrf_exempt
-def shop_page(request):
-    if request.method == 'POST':
-        shop_name = request.POST.get('shop_name')
-
-
-@csrf_exempt
 def add_discount(request):
     global result
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         percent = int(request.POST.get('percent'))
         kind = request.POST.get('kind')
+
+        event = "ADD DISCOUNT"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(kind, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('duration')
         end_date = end_date.split('-')
@@ -112,20 +125,44 @@ def add_discount(request):
 
         if kind == "visible_item":
             item_id = request.POST.get('item_id')
+
+            if LoggerLogic.identify_sql_injection(item_id, event):
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
             discount = VisibleDiscount(item_id, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_visible_discount(discount, username)
         elif kind == "invisible_item":
             item_id = request.POST.get('item_id')
             code = request.POST.get('code')
+
+            suspect_sql_injection = False
+            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
+            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(code, event)
+
+            if suspect_sql_injection:
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
             discount = InvisibleDiscount(code, item_id, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_invisible_discount(discount, username)
         elif kind == "visible_category":
             category = request.POST.get('category')
+
+            if LoggerLogic.identify_sql_injection(category, event):
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
             discount = VisibleDiscountCategory(category, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_visible_discount_category(discount, username)
         elif kind == "invisible_category":
             category = request.POST.get('category')
             code = request.POST.get('code')
+
+            suspect_sql_injection = False
+            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(category, event)
+            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(code, event)
+
+            if suspect_sql_injection:
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
             discount = InvisibleDiscountCategory(code, category, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_invisible_discount_category(discount, username)
 

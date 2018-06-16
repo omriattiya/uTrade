@@ -1,11 +1,8 @@
-import datetime
-import random
-import threading
-from datetime import datetime
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import ItemsLogic, UsersLogic, ShopLogic, LotteryLogic
+from DomainLayer import ItemsLogic, UsersLogic, ShopLogic, LotteryLogic, LoggerLogic
+from DomainLayer.LoggerLogic import MESSAGE_SQL_INJECTION
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Item import Item
 from SharedClasses.ItemReview import ItemReview
@@ -22,8 +19,6 @@ def add_item_to_shop(request):
         item_price = float(request.POST.get('item_price'))
         item_url = request.POST.get('item_url')
         item_kind = request.POST.get('item_kind')
-        if shop_name is None or ShopLogic.search_shop(shop_name) is False:
-            return HttpResponse('invalid shop')
 
         if item_name is None or item_name == '':
             return HttpResponse('invalid item name')
@@ -39,6 +34,20 @@ def add_item_to_shop(request):
 
         if item_price <= 0:
             return HttpResponse('invalid price')
+
+        event = "ADD ITEM"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_category, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_keywords, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_url, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_kind, event)
+        if suspect_sql_injection:
+            return HttpResponse(MESSAGE_SQL_INJECTION)
+
+        if shop_name is None or ShopLogic.search_shop(shop_name) is False:
+            return HttpResponse('invalid shop')
 
         if item_url == '':
             item_url = None
@@ -76,7 +85,8 @@ def add_item_to_shop(request):
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
                           item_price, item_quantity, 'ticket', item_url, 0, 0, 0)
             status = LotteryLogic.add_lottery_and_items_and_return_id(prize, ticket, ticket.price,
-                                                        sale_date + ' ' + sale_hour + ':' + sale_minutes, username)
+                                                                      sale_date + ' ' + sale_hour + ':' + sale_minutes,
+                                                                      username)
         if status is False:
             return HttpResponse('could not add item')
         if item_kind == 'prize':
@@ -120,6 +130,14 @@ def add_review_on_item(request):
         description = request.POST.get('description')
         rank = request.POST.get('rank')
 
+        event = "ADD REVIEW"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(description, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(rank, event)
+        if suspect_sql_injection:
+            return HttpResponse(MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             writer_name = Consumer.loggedInUsers.get(login)
@@ -141,6 +159,23 @@ def edit_shop_item(request):
                 return HttpResponse('fail')
         item_id = request.POST.get('item_id')
 
+        fields = ['quantity', 'category', 'keywords', 'price', 'url']
+        new_values = [request.POST.get('item_quantity'),
+                      request.POST.get('item_category'),
+                      request.POST.get('item_keywords'),
+                      request.POST.get('item_price'),
+                      request.POST.get('item_url')]
+
+        event = "EDIT ITEM"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[0], event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[1], event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[2], event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[3], event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[4], event)
+        if suspect_sql_injection:
+            return HttpResponse(MESSAGE_SQL_INJECTION)
+
         item = ItemsLogic.get_item(item_id)
         if item is False:
             return HttpResponse('fail')
@@ -152,12 +187,6 @@ def edit_shop_item(request):
             else:
                 return HttpResponse('fail')  # not manager not owner
 
-        fields = ['quantity', 'category', 'keywords', 'price', 'url']
-        new_values = [request.POST.get('item_quantity'),
-                      request.POST.get('item_category'),
-                      request.POST.get('item_keywords'),
-                      request.POST.get('item_price'),
-                      request.POST.get('item_url')]
         for i in range(0, len(fields)):
             status = ItemsLogic.edit_shop_item(username, item_id, fields[i], new_values[i])
             if status is False:

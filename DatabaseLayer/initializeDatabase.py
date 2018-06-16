@@ -313,7 +313,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS LoginLogs(
           log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          username TEXT REFERENCES RegisteredUsers(username),
+          username TEXT,
           time TEXT
         )
     """,

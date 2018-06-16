@@ -46,7 +46,8 @@ def add_shopping_policy_on_items(request):
             conditions = request.POST.get('conditions')
             restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_items(username, item_name, conditions, restriction, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_items(username, item_name, conditions, restriction,
+                                                                      quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -66,7 +67,8 @@ def add_shopping_policy_on_category(request):
             conditions = request.POST.get('conditions')
             restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_category(username, category, conditions, restriction, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_category(username, category, conditions, restriction,
+                                                                         quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -86,7 +88,8 @@ def add_shopping_policy_on_shop(request):
             conditions = request.POST.get('conditions')
             restriction = request.POST.get('restriction')
             quantity = request.POST.get('quantity')
-            status = ShoppingPolicyLogic.add_shopping_policy_on_shop(username, shop_name, conditions, restriction, quantity)
+            status = ShoppingPolicyLogic.add_shopping_policy_on_shop(username, shop_name, conditions, restriction,
+                                                                     quantity)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')
@@ -218,7 +221,8 @@ def update_shopping_policy_on_shop(request):
             field_name = request.POST.get('field_name')
             new_value = request.POST.get('new_value')
             shop_name = request.POST.get('shop_name')
-            status = ShoppingPolicyLogic.update_shopping_policy_on_shop(username, policy_id, field_name, new_value, shop_name)
+            status = ShoppingPolicyLogic. \
+                update_shopping_policy_on_shop(username, policy_id, field_name, new_value, shop_name)
             if status is not True:
                 return HttpResponse(status)
             return HttpResponse('SUCCESS')

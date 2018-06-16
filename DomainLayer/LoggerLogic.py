@@ -75,3 +75,23 @@ def get_event_logs_by_event(event):
 
 def get_error_logs_by_event(event):
     return Logger.get_error_logs_by_event(event)
+
+
+def check_injection(original_input, substring, event):
+    if original_input.lower().count(substring.lower()) > 0:
+        add_security_log(event, "INPUT CONTAINS " + substring + ". ORIGIN: " + original_input)
+        return False
+    return True
+
+
+def identify_sql_injection(original_input, event):
+    is_suspected = False
+    # TAKEN FROM :  https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
+    cheat_sheet = ["--", "#", "1/0", "IF(", "0x", "||", "CONCAT", "LOAD_FILE", "CHAR", "ASCII", "Hex", "MD5",
+                   "ORDER BY", "INSERT INTO", "LIMIT", "UNION", "BENCHMARK", "sleep(", "DELETE", "DROP"]
+    for substring in cheat_sheet:
+        is_suspected = is_suspected or check_injection(original_input, substring, event)
+    return is_suspected
+
+
+MESSAGE_SQL_INJECTION = "FAIL: suspect sql injection"

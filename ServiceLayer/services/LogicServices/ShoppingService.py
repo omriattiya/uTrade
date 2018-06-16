@@ -44,7 +44,9 @@ def add_item_to_cart(request):
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
-                status = UserShoppingCartLogic.add_item_shopping_cart(login, ShoppingCartItem(username, item_id, quantity, None))
+                status = UserShoppingCartLogic.add_item_shopping_cart(login,
+                                                                      ShoppingCartItem(username, item_id, quantity,
+                                                                                       None))
                 if status is False:
                     return HttpResponse('fail')
                 else:
@@ -105,6 +107,13 @@ def update_code_shopping_cart(request):
         login = request.COOKIES.get('login_hash')
         username = Consumer.loggedInUsers.get(login)
         code = request.POST.get("code")
+
+        event = "UPDATE CODE SHOPPING CART"
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(code, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         item = ItemsLogic.get_item_by_code(code)
         if item is False:
             return HttpResponse('fail')
@@ -177,10 +186,3 @@ def check_empty_cart(request):
         return HttpResponse('fail')
     else:
         return HttpResponse('OK')
-
-
-
-
-
-
-

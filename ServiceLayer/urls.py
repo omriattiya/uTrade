@@ -44,7 +44,6 @@ items_urlpatterns = [
 shops_urlpatterns = [
     path('shops/create_shop/', ShopsService.create_shop),
     path('shops/add_review_on_shop/', ShopsService.add_review_on_shop),
-    path('shops/get_purchase_history/', ShopsService.search_shop_purchase_history),
     path('shops/close_shop_permanently/', ShopsService.close_shop_permanently),
 ]
 

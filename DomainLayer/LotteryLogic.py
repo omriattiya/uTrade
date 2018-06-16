@@ -4,7 +4,6 @@ from datetime import datetime
 
 from DatabaseLayer import Lotteries, RegisteredUsers, Purchases, PurchasedItems
 from DomainLayer import ItemsLogic
-from SharedClasses import Item
 from SharedClasses.Lottery import Lottery
 
 

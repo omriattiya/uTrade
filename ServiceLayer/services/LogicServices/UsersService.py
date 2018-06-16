@@ -3,15 +3,14 @@ import hashlib
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import UsersLogic, UserShoppingCartLogic
+from DomainLayer import UserShoppingCartLogic, LoggerLogic
+from DomainLayer import UsersLogic, ShoppingLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.Owner import Owner
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
-from DomainLayer import UsersLogic, ShoppingLogic, DiscountLogic
-from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.VisibleDiscount import VisibleDiscount
 
 
@@ -29,6 +28,17 @@ def register(request):
         state = request.POST.get('state')
         age = request.POST.get('age')
         sex = request.POST.get('sex')
+
+        event = "REGISTER"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(password, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(state, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(age, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(sex, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
         return HttpResponse(UsersLogic.register_with_user_detail(RegisteredUser(username, password), state, age, sex))
 
@@ -56,6 +66,14 @@ def edit_password(request):
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
 
+        event = "EDIT PASSWORD"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(current_password, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_password, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
@@ -71,6 +89,15 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        event = "LOGIN"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(password, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         user = RegisteredUser(username, password)
         result = UsersLogic.login(user)
         if result[:7] == 'SUCCESS':
@@ -103,6 +130,15 @@ def update_details(request):
         age = request.POST.get('age')
         sex = request.POST.get('sex')
 
+        event = "UPDATE USER DETAILS"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(state, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(age, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(sex, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
@@ -126,6 +162,14 @@ def add_owner(request):
         target_id = request.POST.get('target_id')
         owner = Owner(target_id, shop_name, None)
 
+        event = "ADD OWNER"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(target_id, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
@@ -138,6 +182,14 @@ def add_manager(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
+
+        event = "ADD MANAGER"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(target_id, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
         login = request.COOKIES.get('login_hash')
         if login is not None:
@@ -178,6 +230,14 @@ def update_permissions(request):
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         target_id = request.POST.get('target_id')
+
+        event = "UPDATE PERMISSIONS"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(target_id, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
         login = request.COOKIES.get('login_hash')
         if login is not None:
@@ -245,6 +305,17 @@ def add_visible_discount(request):
         end_date = request.POST.get('end_date')
         disc = VisibleDiscount(item_id, shop_name, percentage, from_date, end_date)
         username = request.POST.get('username')
+
+        event = "ADD VISIBLE DISCOUNT"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(percentage, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         return DiscountLogic.add_visible_discount(disc, username)
 
 
@@ -258,6 +329,18 @@ def add_invisible_discount(request):
         code = request.POST.get('code')
         disc = InvisibleDiscount(item_id, shop_name, percentage, from_date, end_date, code)
         username = request.POST.get('username')
+
+        event = "ADD VISIBLE DISCOUNT"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(percentage, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(code, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         return DiscountLogic.add_invisible_discount(disc, username)
 
 
@@ -280,6 +363,15 @@ def add_system_manager(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        event = "ADD VISIBLE DISCOUNT"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(password, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         added_successfully = UsersLogic.add_system_manager(SystemManager(username, password))
         if added_successfully:
             return HttpResponse('added')

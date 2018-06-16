@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import MessagingLogic
+from DomainLayer import MessagingLogic, LoggerLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from SharedClasses.Message import Message
 
@@ -11,6 +11,15 @@ def send_message(request):
     if request.method == 'POST':
         message_to = request.POST.get('to')
         content = request.POST.get('content')
+
+        event = "SEND MESSAGE"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(message_to, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(content, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
         login = request.COOKIES.get('login_hash')
         if login is not None:
             message_from = Consumer.loggedInUsers.get(login)
@@ -39,6 +48,15 @@ def send_message_from_shop(request):
         content = request.POST.get('content')
         from_shop = request.POST.get('from')
         to = request.POST.get('to')
+
+        event = "SEND MESSAGE FROM SHOP"
+        suspect_sql_injection = False
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(content, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(from_shop, event)
+        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(to, event)
+
+        if suspect_sql_injection:
+            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
         login = request.COOKIES.get('login_hash')
         if login is not None:
