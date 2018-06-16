@@ -14,8 +14,8 @@ def send_message(request):
 
         event = "SEND MESSAGE"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(message_to, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(content, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(message_to, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(content, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -51,9 +51,9 @@ def send_message_from_shop(request):
 
         event = "SEND MESSAGE FROM SHOP"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(content, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(from_shop, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(to, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(content, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(from_shop, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(to, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)

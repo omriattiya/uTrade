@@ -21,8 +21,8 @@ def create_shop(request):
 
         event = "ADD SHOP"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_status, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_status, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -56,8 +56,8 @@ def add_review_on_shop(request):
 
         event = "ADD REVIEW ON SHOP"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(description, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(description, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -94,8 +94,8 @@ def add_discount(request):
 
         event = "ADD DISCOUNT"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(kind, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(kind, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -136,8 +136,8 @@ def add_discount(request):
             code = request.POST.get('code')
 
             suspect_sql_injection = False
-            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
-            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(code, event)
+            suspect_sql_injection = LoggerLogic.identify_sql_injection(item_id, event) and suspect_sql_injection
+            suspect_sql_injection = LoggerLogic.identify_sql_injection(code, event) and suspect_sql_injection
 
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -157,8 +157,8 @@ def add_discount(request):
             code = request.POST.get('code')
 
             suspect_sql_injection = False
-            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(category, event)
-            suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(code, event)
+            suspect_sql_injection = LoggerLogic.identify_sql_injection(category, event) and suspect_sql_injection
+            suspect_sql_injection = LoggerLogic.identify_sql_injection(code, event) and suspect_sql_injection
 
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)

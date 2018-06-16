@@ -135,8 +135,8 @@ def search_item_in_shop(request):
 
         event = "SEARCH ITEM IN SHOP"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)

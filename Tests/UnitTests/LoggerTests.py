@@ -108,24 +108,22 @@ class LoggerTests(unittest.TestCase):
         self.assertEqual(login_log.username, "user2user2")
 
     def test_add_security(self):
-        self.assertTrue(LoggerLogic.add_security_log("sql injection", "input1"))
+        self.assertTrue(LoggerLogic.add_security_log("sql injection", "event1"))
         logs = Logger.get_all_security_logs()
         self.assertTrue(len(logs) == 1)
         security_log = logs[0]
         self.assertEqual(security_log.event, "sql injection")
-        self.assertEqual(security_log.additional_details, "input1")
+        self.assertEqual(security_log.additional_details, "event1")
 
     def test_get_all_security(self):
-        LoggerLogic.add_security_log("sql injection", "input1")
-        LoggerLogic.add_security_log("sql injection", "input2")
+        LoggerLogic.identify_sql_injection("#", "event1")
+        LoggerLogic.identify_sql_injection("'SELECT * FROM Items;--", "event2")
         logs = Logger.get_all_security_logs()
         self.assertTrue(len(logs) == 2)
-        security_log = logs[0]
-        self.assertEqual(security_log.event, "sql injection")
-        self.assertEqual(security_log.additional_details, "input1")
         security_log = logs[1]
-        self.assertEqual(security_log.event, "sql injection")
-        self.assertEqual(security_log.additional_details, "input2")
+        self.assertEqual(security_log.event, "event1")
+        security_log = logs[0]
+        self.assertEqual(security_log.event, "event2")
 
     def tearDown(self):
         os.remove(DB_NAME)

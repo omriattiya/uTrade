@@ -37,12 +37,12 @@ def add_item_to_shop(request):
 
         event = "ADD ITEM"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_category, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_keywords, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_url, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_kind, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_category, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_keywords, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_url, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_kind, event) and suspect_sql_injection
         if suspect_sql_injection:
             return HttpResponse(MESSAGE_SQL_INJECTION)
 
@@ -132,9 +132,9 @@ def add_review_on_item(request):
 
         event = "ADD REVIEW"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_id, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(description, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(rank, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_id, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(description, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(rank, event) and suspect_sql_injection
         if suspect_sql_injection:
             return HttpResponse(MESSAGE_SQL_INJECTION)
 
@@ -168,11 +168,11 @@ def edit_shop_item(request):
 
         event = "EDIT ITEM"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[0], event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[1], event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[2], event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[3], event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(new_values[4], event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(new_values[0], event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(new_values[1], event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(new_values[2], event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(new_values[3], event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(new_values[4], event) and suspect_sql_injection
         if suspect_sql_injection:
             return HttpResponse(MESSAGE_SQL_INJECTION)
 

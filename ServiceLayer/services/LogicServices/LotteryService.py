@@ -23,14 +23,14 @@ def add_lottery_item_to_shop(request):
 
         event = "ADD LOTTERY ITEM"
         suspect_sql_injection = False
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_category, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_keywords, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(item_price, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(ticket_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(ticket_price, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(shop_name, event)
-        suspect_sql_injection = suspect_sql_injection and LoggerLogic.identify_sql_injection(username, event)
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_category, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_keywords, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_price, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(ticket_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(ticket_price, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) and suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(MESSAGE_SQL_INJECTION)
