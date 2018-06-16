@@ -78,10 +78,18 @@ def lottery_timer(lottery_id):
     if lottery.real_end_date is not None:
         return
     ticket = ItemsLogic.get_item(lottery_id)
+    lottery_customers = get_lottery_customers(lottery_id)
     if ticket.quantity > 0:
         Lotteries.update_lottery_real_date(lottery_id, datetime.now().strftime("%Y-%m-%d %H:%M"))
+        customer_names = []
+        for customer in lottery_customers:
+            # TODO add live alert to customers
+            customer_names.append(customer.username)
+        '''PurchasesAlerts.notify_purchasing_alerts(customer_names,
+                                                 'Lottery for item  <a href="http://localhost:8000/app/item/?item_id='
+                                                 + str(lottery_id) + '"># <strong>' + str(
+                                                     lottery_id) + '</strong></a> has been canceled.')'''
         return
-    lottery_customers = get_lottery_customers(lottery_id)
     prize_id = get_prize_id(lottery_id)
     numbers = []
     i = 0
@@ -92,6 +100,11 @@ def lottery_timer(lottery_id):
     index = 0
     while index < len(numbers):
         if numbers[index] >= winner:
+            # TODO add live alert to winner customer
+            '''PurchasesAlerts.notify_purchasing_alerts([lottery_customers[index].username],
+                                         'You have won item  <a href="http://localhost:8000/app/item/?item_id='
+                                         + str(lottery_id) + '"># <strong>' + str(
+                                             lottery_id) + '</strong></a> in a lottery.')'''
             win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
             break
         index = index + 1

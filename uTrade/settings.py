@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     #'pipeline',
     #'corsheaders',
-    #'channels',
+    'channels',
     'ServiceLayer',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'uTrade.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'utradedb',
+        'ENGINE': 'django.db.backends.sqlite3',  # 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'USER': 'kutigolberg',  # Not used with sqlite3.
         'PASSWORD': 'kuti1997',  # Not used with sqlite3.
-        'HOST': '132.73.194.145',  # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '10.0.0.17',  # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     },
     'tests': {

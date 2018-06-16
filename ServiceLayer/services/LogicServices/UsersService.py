@@ -56,6 +56,7 @@ def remove_user(request):
                 for k, v in Consumer.loggedInUsers.items():
                     if v == registered_user:
                         del Consumer.loggedInUsers[k]
+                        del Consumer.loggedInUsersShoppingCart[k]
                 return HttpResponse('success')
         return HttpResponse('fail')
 

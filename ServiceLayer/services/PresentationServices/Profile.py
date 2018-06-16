@@ -12,7 +12,8 @@ from SharedClasses.Item import Item
 def get_account(request):
     if request.method == 'GET':
         login = request.COOKIES.get('login_hash')
-
+        if login is None:
+            login = request.GET.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:

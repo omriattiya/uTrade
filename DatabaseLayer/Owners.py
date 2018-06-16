@@ -28,7 +28,7 @@ def modify_notifications(owner_username, should_notify, shop_name):
     sql = """
             UPDATE Owners SET shouldNotify = {}
             WHERE username = '{}' AND shop_name = '{}'
-            """.format(should_notify, owner_username,shop_name)
+            """.format(should_notify, owner_username, shop_name)
     return commit_command(sql)
 
 
@@ -65,9 +65,10 @@ def remove_owner(username):
             results = select_command(sql)
             if len(results) == 0:
                 sql = """
-                            DELETE FROM Shops
-                            WHERE name = '{}'
-                          """.format(shops_array[i][0])
+                            UPDATE Shops 
+                            SET status='Permanently_closed'
+                            WHERE name='{}'
+            """.format(shops_array[i][0])
                 if not commit_command(sql):
                     return False
     else:
@@ -91,7 +92,7 @@ def is_owner_on_shop(username, shop_name):
                         SELECT *
                         FROM Owners
                         WHERE username = '{}' AND shop_name = '{}'
-                      """.format(username,shop_name)
+                      """.format(username, shop_name)
     owned_shop = select_command(sql_query)
     return fetch_owner(owned_shop)
 

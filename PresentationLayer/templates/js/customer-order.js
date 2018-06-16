@@ -29,6 +29,11 @@ function reviewShop() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            if(loadHTML.responseText === 'has reviews')
+            {
+                alert('You have already reviewed this shop');
+                return;
+            }
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
@@ -44,8 +49,18 @@ function reviewShop() {
 
 function reviewItem()
 {
+    if(isNaN(document.getElementById('message-to-modal').value))
+    {
+        alert("Review rank must be a number.")
+        return;
+    }
     if (!checkRank(Number(document.getElementById('message-to-modal').value)))
     {
+        return;
+    }
+    if(document.getElementById('message-content-modal').value == '')
+    {
+        alert("Message content must not be empty.")
         return;
     }
     var data = new FormData();
@@ -56,6 +71,11 @@ function reviewItem()
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            if(loadHTML.responseText === 'has reviews')
+            {
+                alert('You have already reviewed this item');
+                return;
+            }
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
@@ -71,9 +91,9 @@ function reviewItem()
 
 function checkRank(rank)
 {
-    if (rank < 0 || rank > 10)
+    if (rank < 1 || rank > 10)
     {
-        alert('Rank is invalid');
+        alert('Rank must be between 1 to 10');
         return false;
     }
     return true;
