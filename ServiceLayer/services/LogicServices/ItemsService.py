@@ -123,8 +123,10 @@ def add_review_on_item(request):
         login = request.COOKIES.get('login_hash')
         if login is not None:
             writer_name = Consumer.loggedInUsers.get(login)
+            old_review = ItemsLogic.get_item_review_with_writer(item_id, writer_name)
+            if old_review is not False:
+                return HttpResponse('has reviews')
             review = ItemReview(writer_name, item_id, description, rank)
-
             if ItemsLogic.add_review_on_item(review):
                 return HttpResponse('success')
         return HttpResponse('fail')

@@ -101,6 +101,10 @@ def get_all_reviews_on_item(item_id):
             return ReviewsOnItems.get_all_reviews_on_item(item_id)
 
 
+def get_item_review_with_writer(item_id, writer_id):
+    return ReviewsOnItems.get_reviews_on_item_by_writer(item_id, writer_id)
+
+
 def update_rating(item_id, rank):
     if item_id is not None and 0 <= int(rank) <= 10:
         sum = Items.get_item(item_id).sum_of_rankings + int(rank)

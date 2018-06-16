@@ -145,8 +145,8 @@ def get_item_by_code(code):
 
 def get_top_five_ranked_items():
     sql = """
-            SELECT * FROM Items 
-            WHERE Items.kind <> 'prize'
+            SELECT Items.* FROM Items,Shops 
+            WHERE Items.kind <> 'prize' AND Items.shop_name = Shops.name AND Shops.status = 'Active'
             ORDER BY item_rating DESC limit 5
             """
     return fetch_items(select_command(sql))

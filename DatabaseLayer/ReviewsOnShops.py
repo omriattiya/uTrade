@@ -33,6 +33,15 @@ def get_all_reviews_on_shop(shop_name):
     return fetch_reviews(select_command(sql_query))
 
 
+def get_review_on_shop_by_writer(shop_name, writer_id):
+    sql_query = """
+                SELECT *
+                FROM ReviewsOnShops
+                WHERE shop_name = '{}' AND writerId = '{}'
+              """.format(shop_name,writer_id)
+    return fetch_review(select_command(sql_query))
+
+
 def get_shop_rank(shop_name):
     sql_query = """
                 SELECT AVG(rank)

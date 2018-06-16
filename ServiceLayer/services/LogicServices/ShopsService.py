@@ -50,7 +50,9 @@ def add_review_on_shop(request):
         if login is not None:
             writer_id = Consumer.loggedInUsers.get(login)
             shop_review = ShopReview(writer_id, description, rank, shop_name)
-
+            old_review = ShopLogic.get_shop_review_with_writer(shop_name, writer_id)
+            if old_review is not False:
+                return HttpResponse('has reviews')
             if ShopLogic.add_review_on_shop(shop_review):
                 return HttpResponse('success')
         return HttpResponse('fail')
