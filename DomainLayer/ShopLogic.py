@@ -73,3 +73,7 @@ def get_all_shops():
 
 def get_store_owners(shop_name):
     return Owners.get_owners_by_shop(shop_name)
+
+
+def get_shop_review_with_writer(shop_name, writer_id):
+    return ReviewsOnShops.get_review_on_shop_by_writer(shop_name, writer_id)

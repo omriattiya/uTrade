@@ -17,9 +17,6 @@ def get_conn():
             conn = sqlite3.connect('../../db.sqlite3')
         elif os.environ.get('test_flag') == "True":
             conn = sqlite3.connect('db.sqlite3')
-        else:
-            return connection
-
         conn.execute("""
                               PRAGMA foreign_keys = ON
                       """)

@@ -124,7 +124,7 @@ def get_reviews(request):
                     {'writer_name': review.writerId,
                      'rank': review.rank,
                      'description': review.description}, None, None)
-            context.update({'shop_name': shop_name, 'reviews': string_reviews})
+                context.update({'shop_name': shop_name, 'reviews': string_reviews})
             return render(request, 'shop_reviews.html', context=context)
         return HttpResponse(shop_not_exist)
     return HttpResponse(not_get_request)

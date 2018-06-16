@@ -34,6 +34,15 @@ def get_all_reviews_on_item(item_id):
     return fetch_reviews(select_command(sql_query))
 
 
+def get_reviews_on_item_by_writer(item_id, writer_id):
+    sql_query = """
+                SELECT *
+                FROM ReviewsOnItems
+                WHERE itemId = '{}' AND writerId = '{}'
+              """.format(item_id,writer_id)
+    return fetch_review(select_command(sql_query))
+
+
 def get_item_rank(item_id):
     sql_query = """
                 SELECT AVG(rank)

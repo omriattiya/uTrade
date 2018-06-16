@@ -3,8 +3,7 @@ import hashlib
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from DomainLayer import UsersLogic, UserShoppingCartLogic
-from ServiceLayer.services.LiveAlerts import Consumer
+from DomainLayer import UserShoppingCartLogic
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.Owner import Owner
 from SharedClasses.RegisteredUser import RegisteredUser
@@ -46,6 +45,7 @@ def remove_user(request):
                 for k, v in Consumer.loggedInUsers.items():
                     if v == registered_user:
                         del Consumer.loggedInUsers[k]
+                        del Consumer.loggedInUsersShoppingCart[k]
                 return HttpResponse('success')
         return HttpResponse('fail')
 
