@@ -313,7 +313,7 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS LoginLogs(
           log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          username TEXT REFERENCES RegisteredUsers(username),
+          username TEXT,
           time TEXT
         )
     """,
@@ -335,11 +335,11 @@ values_sql = [
     #  ( (_| ( (/ /| | ( ( | | |_| | | |__   | | | | | | |__
     #   \____|\____)_|  \_||_|\____|_|\___)  |_|_| |_|_|\___)
     #
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_OmriOmri','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_ShaharShahar','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_TomerTomer','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_YoniYoni','ADMINISTRATOR'); """,
-    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_KutiKuti','ADMINISTRATOR'); """
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_OmriOmri','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_ShaharShahar','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_TomerTomer','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_YoniYoni','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'); """,
+    """ INSERT INTO SystemManagers (username, password) VALUES ('Ultimate_KutiKuti','ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'); """
 ]
 
 
@@ -352,4 +352,3 @@ def init_database(path):
 
 if __name__ == '__main__':
     init_database('../db.sqlite3')
-

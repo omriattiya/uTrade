@@ -306,7 +306,7 @@ def checkConditionsSyntax(conditions):
                                       username CHAR(30), 
                                       state CHAR(30) DEFAULT NULL,
                                       age INTEGER DEFAULT NULL,
-                                      sex INTEGER DEFAULT NULL,
+                                      sex CHAR(10) DEFAULT NULL,
                                       PRIMARY KEY(username)
                                     )""")
         c.execute("""SELECT *

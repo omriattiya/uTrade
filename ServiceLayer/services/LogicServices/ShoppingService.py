@@ -41,6 +41,8 @@ def add_item_to_cart(request):
         if item.quantity < quantity:
             return HttpResponse('Stock_Error')
         login = request.COOKIES.get('login_hash')
+        if login is None:
+            login = request.POST.get('login_hash')
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
             if username is not None:
@@ -134,6 +136,8 @@ def pay_all(request):
     global username
     if request.method == 'POST':
         login = request.COOKIES.get('login_hash')
+        if login is None:
+            login = request.POST.get('login_hash')
         if login is None:
             guest = request.COOKIES.get('guest_hash')
             if guest is None:

@@ -52,6 +52,8 @@ def add_item_to_shop(request):
             sale_minutes = request.POST.get('sale_minutes')
 
         login = request.COOKIES.get('login_hash')
+        if login is None:
+            login = request.POST.get('login_hash')
         username = None
         if login is not None:
             username = Consumer.loggedInUsers.get(login)
@@ -76,7 +78,8 @@ def add_item_to_shop(request):
             ticket = Item(None, shop_name, 'Ticket for ' + item_name, item_category, item_keywords,
                           item_price, item_quantity, 'ticket', item_url, 0, 0, 0)
             status = LotteryLogic.add_lottery_and_items_and_return_id(prize, ticket, ticket.price,
-                                                        sale_date + ' ' + sale_hour + ':' + sale_minutes, username)
+                                                                      sale_date + ' ' + sale_hour + ':' + sale_minutes,
+                                                                      username)
         if status is False:
             return HttpResponse('could not add item')
         if item_kind == 'prize':
@@ -169,3 +172,12 @@ def get_all_purchased_items(request):
     if request.method == 'GET':
         username = request.GET.get('username')
         return ItemsLogic.get_all_purchased_items(username)
+
+
+def get_id_by_name(request):
+    if request.method == 'GET':
+        item_name = request.GET.get('item_name')
+
+        id = ItemsLogic.get_id_by_name(item_name)
+        print(id)
+        return HttpResponse(str(id))

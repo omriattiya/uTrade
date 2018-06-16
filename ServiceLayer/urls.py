@@ -38,7 +38,8 @@ items_urlpatterns = [
     path('items/add_item_to_shop/', ItemsService.add_item_to_shop),
     path('items/remove_item_from_shop/', ItemsService.remove_item_from_shop),
     path('items/add_review_on_item/', ItemsService.add_review_on_item),
-    path('items/edit_shop_item', ItemsService.edit_shop_item)
+    path('items/edit_shop_item/', ItemsService.edit_shop_item),
+    path('items/get_id_by_name/',ItemsService.get_id_by_name)
 ]
 
 shops_urlpatterns = [

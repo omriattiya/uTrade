@@ -108,3 +108,7 @@ def update_rating(item_id, rank):
         return Items.update_item(item_id, 'sum_of_rankings', sum) and \
                Items.update_item(item_id, 'num_of_reviews', num) and \
                Items.update_item(item_id, 'item_rating', sum / num)
+
+
+def get_id_by_name(item_name):
+    return Items.get_id_by_name(item_name)

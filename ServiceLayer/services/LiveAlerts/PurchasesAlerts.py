@@ -19,8 +19,8 @@ def messaging_live_alerts():
         for alert in purchases_alerts_queue:
             users = alert.get('users')
             for user in users:
-                #connected_user = Consumer.connectedUsers.get(user)
-                #if connected_user is not None:
+                # connected_user = Consumer.connectedUsers.get(user)
+                # if connected_user is not None:
                 user_box = Consumer.user_alerts_box.get(user)
                 if user_box is None:
                     Consumer.user_alerts_box[user] = []

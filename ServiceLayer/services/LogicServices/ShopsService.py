@@ -21,6 +21,8 @@ def create_shop(request):
 
         login = request.COOKIES.get('login_hash')
         if login is None:
+            login = request.POST.get('login_hash')
+        if login is None:
             return HttpResponse('FAILED: You are not logged in')
         username = Consumer.loggedInUsers.get(login)
         if username is None:
