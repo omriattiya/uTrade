@@ -128,3 +128,6 @@ def search_for_unfinished_lotteries():
             else:
                 start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
 
+
+search_for_unfinished_lotteries()
+

@@ -4,6 +4,7 @@ from DatabaseLayer import ShoppingCartDB, RegisteredUsers, PurchasedItems, Purch
 from DatabaseLayer.Items import get_item
 from DatabaseLayer.Lotteries import get_lottery, get_lottery_sum
 from DatabaseLayer.Purchases import update_purchase_total_price
+from DatabaseLayer.Shops import search_shop
 from DatabaseLayer.UserDetails import is_meet_conditions
 from DomainLayer import ItemsLogic, LotteryLogic, ShoppingPolicyLogic, LoggerLogic
 from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount, get_visible_discount_category, \
@@ -459,7 +460,8 @@ def check_valid_cart(login):
         return 'Shopping Cart Is Empty'
     while i < len(shopping_cart):
         item = get_item(shopping_cart[i].item_id)
-        if item.shop_name != 'Active':
+        shop = search_shop(item.shop_name)
+        if shop.status != 'Active':
             return 'Item ', item.name, ' Is Unavailable Because Shop is Not Active'
         i = i + 1
     return True
