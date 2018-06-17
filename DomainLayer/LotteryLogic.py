@@ -29,6 +29,10 @@ def add_or_update_lottery_customer(purchased_item, username, price, number_of_ti
 def add_lottery_and_items(prize, ticket, ticket_price, final_date, username):
     if prize is not None and ticket is not None and ticket_price is not None and final_date is not None and username is not None:
         item_id = ItemsLogic.add_item_to_shop_and_return_id(prize, username)
+        lottery_date = datetime.strptime(final_date, '%Y-%m-%d %H:%M')
+        date = datetime.now()
+        if date > lottery_date:
+            return False
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
             if ticket_id is not False:
@@ -42,12 +46,16 @@ def add_lottery_and_items(prize, ticket, ticket_price, final_date, username):
 def add_lottery_and_items_and_return_id(prize, ticket, ticket_price, final_date, username):
     if prize is not None and ticket is not None and ticket_price is not None and final_date is not None and username is not None:
         item_id = ItemsLogic.add_item_to_shop_and_return_id(prize, username)
+        lottery_date = datetime.strptime(final_date, '%Y-%m-%d %H:%M')
+        if datetime.now() > lottery_date:
+            return False
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
             if ticket_id is not False:
                 lottery = Lottery(ticket_id, final_date, None, item_id)
                 status = Lotteries.add_lottery(lottery)
                 if status is not False:
+                    start_lottery(status, final_date)
                     return ticket_id
     return False
 
@@ -67,8 +75,8 @@ def get_prize_id(lottery_id):
     return Lotteries.get_prize(lottery_id)
 
 
-def start_lottery(status, sale_date, sale_hour, sale_minutes):
-    lottery_date = datetime.strptime(str(sale_date) + ' ' + str(sale_hour) + ':' + str(sale_minutes), '%Y-%m-%d %H:%M')
+def start_lottery(status, date):
+    lottery_date = datetime.strptime(date, '%Y-%m-%d %H:%M')
     today = datetime.now()
     subtraction = lottery_date - today
     threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
@@ -126,4 +134,8 @@ def search_for_unfinished_lotteries():
             if datetime.now() > lottery_date:
                 Lotteries.update_lottery_real_date(lottery.lotto_id, lottery_date)
             else:
-                start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
+                start_lottery(lottery.lotto_id, lottery.final_date)
+
+
+#search_for_unfinished_lotteries()
+

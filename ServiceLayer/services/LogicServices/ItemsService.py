@@ -91,8 +91,6 @@ def add_item_to_shop(request):
                                                                       username)
         if status is False:
             return HttpResponse('could not add item')
-        if item_kind == 'prize':
-            LotteryLogic.start_lottery(status, sale_date, sale_hour, sale_minutes)
         return HttpResponse('success')
 
 

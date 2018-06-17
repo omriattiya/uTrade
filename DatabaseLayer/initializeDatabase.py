@@ -235,6 +235,7 @@ tables_sql = [
           lotto_id INTEGER REFERENCES Lotteries(lotto_id) ON DELETE CASCADE ,
           username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE CASCADE ,
           price REAL,
+          number_of_tickets INTEGER,
           PRIMARY KEY(lotto_id,username)
         )
     """,

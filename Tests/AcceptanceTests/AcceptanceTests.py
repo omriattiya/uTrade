@@ -17,7 +17,7 @@ class CusTomerTomer(unittest.TestCase):
         self.assertTrue(is_added)
         # sad scenario
         is_added = Bridge.register_user('SHALOMSHALOM', '12345678')
-        self.assertEqual(is_added,'FAILED: Username is already taken')
+        self.assertEqual(is_added, 'FAILED: Username is already taken')
 
     def test_login(self):  # 1.8
         Bridge.register_user('SHALOMSHALOM', '12345678')
@@ -26,7 +26,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # sad scenario
         is_logged = Bridge.login('SHALOMSHALOM', '123456789')
-        self.assertEqual(is_logged,'FAILED:Password in incorrect')
+        self.assertEqual(is_logged, 'FAILED:Password in incorrect')
 
     def test_open_shop(self):  # 1.9
         # register user
@@ -40,7 +40,7 @@ class CusTomerTomer(unittest.TestCase):
 
         # sad scenario - existing shop name
         is_opened = Bridge.open_shop('username', 'shop_name')
-        self.assertEqual(is_opened,'FAILED: Shop name is taken')
+        self.assertEqual(is_opened, 'FAILED: Shop name is taken')
 
     def test_cart_items(self):  # 1.5
         # open shop
@@ -50,8 +50,8 @@ class CusTomerTomer(unittest.TestCase):
         # item is = 1
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name1',
                                 item_category='item_category', keywords='keywords', price=10,
-                                quantity=100, username='username', kind='regular', url=None ,
-                                item_rating = 0, sum_of_ranking = 0, num_of_reviews = 0)
+                                quantity=100, username='username', kind='regular', url=None,
+                                item_rating=0, sum_of_ranking=0, num_of_reviews=0)
         # item is = 2
         Bridge.add_item_to_shop(shop_name='shop_name', item_name='item_name2',
                                 item_category='item_category', keywords='keywords', price=10,
@@ -73,12 +73,14 @@ class CusTomerTomer(unittest.TestCase):
         self.assertTrue(Bridge.is_item_bought(login_token=access_token, item_id=2))
 
         Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=3, quantity=10)
-        self.assertTrue(Bridge.is_item_bought(login_token=access_token,  item_id=3))
+        self.assertTrue(Bridge.is_item_bought(login_token=access_token, item_id=3))
 
-        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=4, quantity=10)
+        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=4,
+                                    quantity=10)
         self.assertFalse(is_bought)
 
-        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=3, quantity=150)
+        is_bought = Bridge.buy_item(login_token=access_token, username='username', shop_name='shop_name', item_id=3,
+                                    quantity=150)
         self.assertFalse(is_bought)
 
         # remove item from cart
@@ -193,14 +195,15 @@ class CusTomerTomer(unittest.TestCase):
 
     def test_system_remove(self):  # 5.2
         # check sys manager really exist
-        self.assertTrue(Bridge.is_system_manager('Ultimate_OmriOmri', 'ADMINISTRATOR'))
+        self.assertTrue(Bridge.is_system_manager('Ultimate_OmriOmri',
+                                                 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'))
 
         # add a normal user
         self.assertTrue(Bridge.register_user('normalUser', 'password'))
 
         # delete the normal user
         self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='normalUser'))
-        self.assertEqual(Bridge.login('normalUser', 'password'),'FAILED: Username is incorrect')
+        self.assertEqual(Bridge.login('normalUser', 'password'), 'FAILED: Username is incorrect')
 
         # add owner of store
         Bridge.register_user('ownerUser', 'password')
@@ -208,9 +211,10 @@ class CusTomerTomer(unittest.TestCase):
 
         # delete owner and its shop
         self.assertTrue(Bridge.delete_user(by='Ultimate_OmriOmri', who='ownerUser'))
-        self.assertEqual(Bridge.login('normalUser', 'password'),'FAILED: Username is incorrect')
+        self.assertEqual(Bridge.login('normalUser', 'password'), 'FAILED: Username is incorrect')
 
-        self.assertFalse(Bridge.search_shop('myShop'))
+        shop = Bridge.search_shop('myShop')
+        self.assertEqual(shop.status, "Permanently_closed")
 
     def tearDown(self):
         os.remove('db.sqlite3')

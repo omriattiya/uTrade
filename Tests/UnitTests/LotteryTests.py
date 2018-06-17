@@ -2,9 +2,10 @@ import hashlib
 import os
 import unittest
 from datetime import date
-
+from time import sleep
 
 from DatabaseLayer.Lotteries import get_lotteries, get_lottery_customer
+from DatabaseLayer.Purchases import get_user_purchases
 from DatabaseLayer.RegisteredUsers import get_user
 from DatabaseLayer.ShoppingCartDB import add_item_shopping_cart
 from DatabaseLayer.SystemManagers import add_system_manager
@@ -29,7 +30,7 @@ class LotteryTest(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
 
     def test_add_lottery(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
@@ -39,7 +40,7 @@ class LotteryTest(unittest.TestCase):
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'prize', None, 0, 0, 0)
         item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'ticket', None, 0, 0, 0)
-        add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
+        add_lottery_and_items(item1, item2, 500, '2019-12-26 17:38', 'YoniYoni')
         lst = get_lotteries()
         self.assertTrue(len(lst) > 0)
 
@@ -51,7 +52,7 @@ class LotteryTest(unittest.TestCase):
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'prize', None, 0, 0, 0)
         item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'ticket', None, 0, 0, 0)
-        add_lottery_and_items(item1, item2, 500, date(2019, 12, 26), 'YoniYoni')
+        add_lottery_and_items(item1, item2, 500, '2019-12-26 17:38', 'YoniYoni')
         lst = get_lotteries()
         lottery = lst[0]
         username = 'NoniNoni'
@@ -59,9 +60,11 @@ class LotteryTest(unittest.TestCase):
         Consumer.loggedInUsers[access_token] = username
         Consumer.loggedInUsersShoppingCart[access_token] = []
         UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all(access_token)
+        message = pay_all(access_token)
         customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
         self.assertTrue(customer_lottery is not False)
+        sleep(3)
+        self.assertTrue(len(get_user_purchases('NoniNoni')) > 0)
 
     def test_bad_date(self):
         register(RegisteredUser('ToniToniToniToni', '12121212'))
@@ -71,37 +74,9 @@ class LotteryTest(unittest.TestCase):
         add_system_manager(SystemManager(user.username, user.password))
         item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'prize', None, 0, 0, 0)
         item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'ticket', None, 0, 0, 0)
-        add_lottery_and_items(item1, item2, 500, date(2016, 12, 26), 'YoniYoni')
+        add_lottery_and_items(item1, item2, 500, '2016-12-26 17:38', 'YoniYoni')
         lst = get_lotteries()
-        lottery = lst[0]
-        username = 'NoniNoni'
-        access_token = hashlib.md5(username.encode()).hexdigest()
-        Consumer.loggedInUsers[access_token] = username
-        Consumer.loggedInUsersShoppingCart[access_token] = []
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all(access_token)
-        customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
-        self.assertFalse(customer_lottery is not False)
-
-    def test_bad_money(self):
-        register(RegisteredUser('ToniToniToniToni', '12121212'))
-        register(RegisteredUser('NoniNoni', '12121212'))
-        user = get_user('ToniToniToniToni')
-        user1user1 = get_user('NoniNoni')
-        add_system_manager(SystemManager(user.username, user.password))
-        item1 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'prize', None, 0, 0, 0)
-        item2 = Item(1, 'My Shop', 'banana', 'vegas', 'good', 10, 500, 'ticket', None, 0, 0, 0)
-        add_lottery_and_items(item1, item2, 1, date(2016, 12, 26), 'YoniYoni')
-        lst = get_lotteries()
-        lottery = lst[0]
-        username = 'NoniNoni'
-        access_token = hashlib.md5(username.encode()).hexdigest()
-        Consumer.loggedInUsers[access_token] = username
-        Consumer.loggedInUsersShoppingCart[access_token] = []
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('NoniNoni', lottery.lotto_id, 3, None))
-        pay_all(access_token)
-        customer_lottery = get_lottery_customer(lottery.lotto_id, 'NoniNoni')
-        self.assertFalse(customer_lottery is not False)
+        self.assertTrue(len(lst) == 0)
 
     def tearDown(self):
         os.remove('db.sqlite3')
