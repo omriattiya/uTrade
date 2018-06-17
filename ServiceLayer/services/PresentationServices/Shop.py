@@ -45,8 +45,9 @@ def get_shop(request):
                 products += loader.render_to_string(
                     'components/item.html',
                     {'name': item.name,
-                     'price': item.price * item_discount(item.id, shop_name) * category_discount(item.category,
-                                                                                                 shop_name),
+                     'price': "{0:.2f}".format(
+                         item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                            shop_name)),
                      'url': item.url, 'item_id': item.id}, None,
                     None)
             owner_manager_options = ""
