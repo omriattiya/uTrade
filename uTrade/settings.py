@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'utradedb',
         'USER': 'kutigolberg',  # Not used with sqlite3.
         'PASSWORD': 'kuti1997',  # Not used with sqlite3.
-        'HOST': '10.0.0.17',  # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '132.73.194.145',  # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     },
     'tests': {

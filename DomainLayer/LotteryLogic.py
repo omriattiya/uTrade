@@ -4,8 +4,8 @@ from datetime import datetime
 
 from DatabaseLayer import Lotteries, RegisteredUsers, Purchases, PurchasedItems
 from DomainLayer import ItemsLogic
-from SharedClasses import Item
 from SharedClasses.Lottery import Lottery
+from ServiceLayer.services.LiveAlerts import LoterryAlerts
 
 
 def add_or_update_lottery_customer(purchased_item, username, price, number_of_tickets):
@@ -86,10 +86,10 @@ def lottery_timer(lottery_id):
         for customer in lottery_customers:
             # TODO add live alert to customers
             customer_names.append(customer.username)
-        '''PurchasesAlerts.notify_purchasing_alerts(customer_names,
-                                                 'Lottery for item  <a href="http://localhost:8000/app/item/?item_id='
-                                                 + str(lottery_id) + '"># <strong>' + str(
-                                                     lottery_id) + '</strong></a> has been canceled.')'''
+        LoterryAlerts.notify_lottery_alerts(customer_names,
+                                             'Lottery for item  <a href="http://localhost:8000/app/item/?item_id='
+                                             + str(lottery_id) + '"># <strong>' + str(
+                                                 lottery_id) + '</strong></a> has been canceled.')
         return
     prize_id = get_prize_id(lottery_id)
     numbers = []
@@ -102,10 +102,10 @@ def lottery_timer(lottery_id):
     while index < len(numbers):
         if numbers[index] >= winner:
             # TODO add live alert to winner customer
-            '''PurchasesAlerts.notify_purchasing_alerts([lottery_customers[index].username],
+            LoterryAlerts.notify_lottery_alerts([lottery_customers[index].username],
                                          'You have won item  <a href="http://localhost:8000/app/item/?item_id='
                                          + str(lottery_id) + '"># <strong>' + str(
-                                             lottery_id) + '</strong></a> in a lottery.')'''
+                                             lottery_id) + '</strong></a> in a lottery.')
             win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
             break
         index = index + 1

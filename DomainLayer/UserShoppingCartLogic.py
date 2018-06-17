@@ -70,7 +70,7 @@ def update_item_shopping_cart(login_token, item_id, new_quantity):
 
 def update_code_shopping_cart(login_token, item_id, code):
     if login_token is not None and item_id is not None and code is not None:
-        if len(code) == 15 and isinstance(code, str):
+        if isinstance(code, str):
             shopping_cart = Consumer.loggedInUsersShoppingCart[login_token]
             i = 0
             while i < len(shopping_cart):
@@ -99,7 +99,7 @@ def get_new_price_for_item(item, shopping_cart_item):
         percentage_invisible = invisible_discount_percent(item, shopping_cart_item.code)
     new_price_visible = item.price - (item.price * percentage_item_visible)
     new_price_category = new_price_visible - (new_price_visible * percentage_category_visible)
-    return new_price_category - (new_price_category * percentage_invisible)
+    return round((new_price_category - (new_price_category * percentage_invisible)),2)
 
 
 def pay_all(login_token):
@@ -292,7 +292,7 @@ def order_helper(cart_items):
             item = get_item(cart_items[i].item_id)
             new_price = get_new_price_for_item(item, cart_items[i])
             discount_money = item.price - new_price
-            discount_prices.append(discount_money * cart_items[i].item_quantity)
+            discount_prices.append(discount_money)
             items.append(item)
             total_prices.append(new_price * cart_items[i].item_quantity)
             total_price = total_price + new_price * cart_items[i].item_quantity
