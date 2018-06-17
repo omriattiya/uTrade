@@ -129,5 +129,5 @@ def search_for_unfinished_lotteries():
                 start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
 
 
-search_for_unfinished_lotteries()
+#search_for_unfinished_lotteries()
 
