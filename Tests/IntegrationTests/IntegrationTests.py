@@ -12,10 +12,14 @@ from SharedClasses.Owner import Owner
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.Item import Item
 from SharedClasses.Message import Message
+from SharedClasses.VisibleDiscount import VisibleDiscount
+from SharedClasses.VisibleDiscountCategory import VisibleDiscountCategory
+from SharedClasses.InvisibleDiscountCategory import InvisibleDiscountCategory
+from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.ShoppingCartItem import ShoppingCartItem
 from SharedClasses.ItemReview import ItemReview
 from DomainLayer import UsersLogic, ShopLogic, ShoppingLogic, ItemsLogic, SearchLogic, MessagingLogic, \
-    UserShoppingCartLogic, ShoppingPolicyLogic
+    UserShoppingCartLogic, ShoppingPolicyLogic, DiscountLogic
 
 
 def StoB(status):
@@ -294,31 +298,103 @@ class IntegrationTests(unittest.TestCase):
         self.assertFalse(StoB(status))
 
     def test_discounts_torture(self):
-        UsersLogic.register(RegisteredUser('ShaharBenS', "SsS0897SsS"))
-        UsersLogic.update_details('ShaharBenS', 'AFG', 20, 'Male')
+        status = UsersLogic.register(RegisteredUser('YoniYoni', "SsS0897SsS"))
+        self.assertEqual(status, "SUCCESS")
+        status = UsersLogic.update_details('YoniYoni', 'AFG', 20, 'Male')
+        self.assertEqual(status, "SUCCESS")
 
-        UsersLogic.register(RegisteredUser('ShaharBenS2', "SsS0897SsS"))
-        UsersLogic.update_details('ShaharBenS2', 'ZMB', 20, 'Male')
+        status = UsersLogic.register(RegisteredUser('YoniYoni2', "SsS0897SsS"))
+        self.assertEqual(status, "SUCCESS")
+        status = UsersLogic.update_details('YoniYoni2', 'ZMB', 20, 'Male')
+        self.assertEqual(status, "SUCCESS")
 
-        UsersLogic.register(RegisteredUser('ShaharBenS3', "SsS0897SsS"))
-        UsersLogic.update_details('ShaharBenS2', 'ISR', 100, 'Female')
+        status = UsersLogic.register(RegisteredUser('YoniYoni3', "SsS0897SsS"))
+        self.assertEqual(status, "SUCCESS")
+        status = UsersLogic.update_details('YoniYoni3', 'ISR', 100, 'Female')
+        self.assertEqual(status, "SUCCESS")
 
-        ShopLogic.create_shop(Shop('eBay', "Active"), 'ShaharBenS2')
-        ShopLogic.create_shop(Shop('Amazon', "Active"), 'ShaharBenS2')
+        status = ShopLogic.create_shop(Shop('eBay', "Active"), 'YoniYoni')
+        self.assertEqual(status, "SUCCESS")
+        status = ShopLogic.create_shop(Shop('Amazon', "Active"), 'YoniYoni2')
+        self.assertEqual(status, "SUCCESS")
+        status = ShopLogic.create_shop(Shop('Carmel', "Active"), 'YoniYoni3')
+        self.assertEqual(status, "SUCCESS")
 
         item1 = Item(1, 'eBay', 'carrot', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
         item2 = Item(2, 'Amazon', 'apple', 'fruits', 'good', 10, 500, 'regular', None, 0, 0, 0)
-        status = ItemsLogic.add_item_to_shop(item1, 'ShaharBenS2')
+        item3 = Item(3, 'Carmel', 'Kipa', 'Yudaika', 'good', 10, 500, 'regular', None, 0, 0, 0)
+
+        status = ItemsLogic.add_item_to_shop(item1, 'YoniYoni')
         self.assertTrue(status)
-        status = ItemsLogic.add_item_to_shop(item2, 'ShaharBenS2')
+        status = ItemsLogic.add_item_to_shop(item2, 'YoniYoni2')
+        self.assertTrue(status)
+        status = ItemsLogic.add_item_to_shop(item3, 'YoniYoni3')
         self.assertTrue(status)
 
-        access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()
-        Consumer.loggedInUsers[access_token] = 'ShaharBenS'
+        disc1 = VisibleDiscount(item1.id, item1.shop_name, 10, '2018-17-06', '2019-21-03')
+        disc2 = VisibleDiscount(item2.id, item2.shop_name, 20, '2018-17-06', '2019-22-03')
+        disc3 = VisibleDiscount(item3.id, item3.shop_name, 30, '2018-17-06', '2019-23-03')
+
+        status = DiscountLogic.add_visible_discount(disc1, 'YoniYoni')
+        self.assertTrue(status)
+        status = DiscountLogic.add_visible_discount(disc2, 'YoniYoni2')
+        self.assertTrue(status)
+        status = DiscountLogic.add_visible_discount(disc3, 'YoniYoni3')
+        self.assertTrue(status)
+
+        disc1 = VisibleDiscountCategory(item1.category, item1.shop_name, 10, '2018-17-06', '2019-21-03')
+        disc2 = VisibleDiscountCategory(item2.category, item2.shop_name, 20, '2018-17-06', '2019-22-03')
+        disc3 = VisibleDiscountCategory(item3.category, item3.shop_name, 30, '2018-17-06', '2019-23-03')
+
+        status = DiscountLogic.add_visible_discount_category(disc1, 'YoniYoni')
+        self.assertTrue(status)
+        status = DiscountLogic.add_visible_discount_category(disc2, 'YoniYoni2')
+        self.assertTrue(status)
+        status = DiscountLogic.add_visible_discount_category(disc3, 'YoniYoni3')
+        self.assertTrue(status)
+
+        access_token = hashlib.md5('YoniYoni'.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = 'YoniYoni'
         Consumer.loggedInUsersShoppingCart[access_token] = []
 
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 2, 3, None))
-        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 7, None))
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni', 2, 10, None))
+        self.assertTrue(status)
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni', 3, 10, None))
+        self.assertTrue(status)
+
+        status = UserShoppingCartLogic.get_cart_cost(access_token)
+        self.assertEqual(status, 113)
+
+        status = UserShoppingCartLogic.pay_all(access_token)
+        self.assertFalse(StoB(status))
+
+        access_token = hashlib.md5('YoniYoni2'.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = 'YoniYoni2'
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni2', 1, 10, None))
+        self.assertTrue(status)
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni2', 3, 10, None))
+        self.assertTrue(status)
+
+        status = UserShoppingCartLogic.get_cart_cost(access_token)
+        self.assertEqual(status, 130)
+
+        status = UserShoppingCartLogic.pay_all(access_token)
+        self.assertFalse(StoB(status))
+
+        access_token = hashlib.md5('YoniYoni3'.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = 'YoniYoni3'
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni3', 2, 10, None))
+        self.assertTrue(status)
+        status = UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('YoniYoni3', 1, 10, None))
+        self.assertTrue(status)
+
+        status = UserShoppingCartLogic.get_cart_cost(access_token)
+        self.assertEqual(status, 145)
+
         status = UserShoppingCartLogic.pay_all(access_token)
         self.assertFalse(StoB(status))
 
