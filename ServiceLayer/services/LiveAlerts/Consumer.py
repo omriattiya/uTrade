@@ -17,8 +17,8 @@ MessagingAlerts.init_thread()
 PurchasesAlerts.init_thread()
 LoterryAlerts.init_thread()
 
-'''
-class Consumer(WebsocketConsumer):
+
+'''class Consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
 
@@ -38,6 +38,5 @@ class Consumer(WebsocketConsumer):
         username = connectedConsumers.get(self)
         if username is not None:
             del connectedConsumers[self]
-            del connectedUsers[username]
+            del connectedUsers[username]'''
 
-'''

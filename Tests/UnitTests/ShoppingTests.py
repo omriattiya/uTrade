@@ -20,7 +20,7 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager1', '1234567878'))
         shop = Shop('My Shop', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni')
-        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular',
                      "https://cdn3.iconfinder.com/data/icons/user-interface-icons-bundle-18/32/910-512.png", 0, 0, 0)
         item2 = Item(2, 'My Shop', 'steak', 'meat', 'bad', 12, 100, 'regular',
@@ -49,7 +49,7 @@ class ShoppingTests(unittest.TestCase):
         register(RegisteredUser('StoreManager11', '1234567878'))
         shop = Shop('My Shop1', 'Active')
         ShopLogic.create_shop(shop, 'YoniYoni1')
-        UsersLogic.add_manager('YoniYoni1', StoreManager('StoreManager11', 'My Shop1', 1, 1, 1, 1, 1, 1, 1))
+        UsersLogic.add_manager('YoniYoni1', StoreManager('StoreManager11', 'My Shop1', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop1', 'milk', 'diary', 'good', 12, 100, 'regular',
                      "https://cdn3.iconfinder.com/data/icons/user-interface-icons-bundle-18/32/910-512.png", 0, 0, 0)
         item2 = Item(2, 'My Shop1', 'steak', 'meat', 'bad', 12, 100, 'regular',

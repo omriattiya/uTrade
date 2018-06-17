@@ -126,6 +126,7 @@ class UsersTest(unittest.TestCase):
         # assertEqual(ans, [])
         self.assertEqual(user, user)
 
+
     def tearDown(self):
         os.remove('db.sqlite3')
 
