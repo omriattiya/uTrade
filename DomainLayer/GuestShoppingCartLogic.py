@@ -1,5 +1,6 @@
 from DatabaseLayer import Owners
 from DatabaseLayer.Items import get_item
+from DatabaseLayer.Shops import search_shop
 from DomainLayer import ItemsLogic, UserShoppingCartLogic, LoggerLogic
 from DomainLayer.DiscountLogic import get_visible_discount, get_invisible_discount
 from DomainLayer.UserShoppingCartLogic import order_helper, check_lottery_ticket, check_stock_for_shopping_cart
@@ -167,7 +168,8 @@ def check_valid_cart(guest):
         return 'Shopping Cart Is Empty'
     while i < len(shopping_cart):
         item = get_item(shopping_cart[i].item_id)
-        if item.shop_name != 'Active':
+        shop = search_shop(item.shop_name)
+        if shop.status != 'Active':
             return 'Item ', item.name, ' Is Unavailable Because Shop is Not Active'
         i = i + 1
     return True
