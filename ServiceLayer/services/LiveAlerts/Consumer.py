@@ -1,4 +1,4 @@
-#from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from ServiceLayer.services.LiveAlerts import MessagingAlerts, PurchasesAlerts, LoterryAlerts
 
 loggedInUsers = {}
@@ -18,7 +18,7 @@ PurchasesAlerts.init_thread()
 LoterryAlerts.init_thread()
 
 
-'''class Consumer(WebsocketConsumer):
+class Consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
 
@@ -38,5 +38,5 @@ LoterryAlerts.init_thread()
         username = connectedConsumers.get(self)
         if username is not None:
             del connectedConsumers[self]
-            del connectedUsers[username]'''
+            del connectedUsers[username]
 
