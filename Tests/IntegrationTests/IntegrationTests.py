@@ -366,7 +366,7 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(status, 113)
 
         status = UserShoppingCartLogic.pay_all(access_token)
-        self.assertFalse(StoB(status))
+        self.assertTrue(StoB(status))
 
         access_token = hashlib.md5('YoniYoni2'.encode()).hexdigest()
         Consumer.loggedInUsers[access_token] = 'YoniYoni2'
@@ -381,7 +381,7 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(status, 130)
 
         status = UserShoppingCartLogic.pay_all(access_token)
-        self.assertFalse(StoB(status))
+        self.assertTrue(StoB(status))
 
         access_token = hashlib.md5('YoniYoni3'.encode()).hexdigest()
         Consumer.loggedInUsers[access_token] = 'YoniYoni3'
@@ -396,7 +396,7 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(status, 145)
 
         status = UserShoppingCartLogic.pay_all(access_token)
-        self.assertFalse(StoB(status))
+        self.assertTrue(StoB(status))
 
     def tearDown(self):
         os.remove('db.sqlite3')

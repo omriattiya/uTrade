@@ -1,5 +1,5 @@
 #from channels.generic.websocket import WebsocketConsumer
-from ServiceLayer.services.LiveAlerts import MessagingAlerts, PurchasesAlerts
+from ServiceLayer.services.LiveAlerts import MessagingAlerts, PurchasesAlerts, LoterryAlerts
 
 loggedInUsers = {}
 loggedInUsersShoppingCart = {}

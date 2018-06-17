@@ -126,10 +126,6 @@ class UsersTest(unittest.TestCase):
         # assertEqual(ans, [])
         self.assertEqual(user, user)
 
-    def test_yoni_stam(self):
-        print(DiscountLogic.make_date_from_elements("yoni"))
-        self.assertFalse(False)
-
     def tearDown(self):
         os.remove('db.sqlite3')
 
