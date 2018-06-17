@@ -31,7 +31,7 @@ def add_lottery_and_items(prize, ticket, ticket_price, final_date, username):
         item_id = ItemsLogic.add_item_to_shop_and_return_id(prize, username)
         lottery_date = datetime.strptime(final_date, '%Y-%m-%d %H:%M')
         date = datetime.now()
-        if date < lottery_date:
+        if date > lottery_date:
             return False
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
@@ -47,7 +47,7 @@ def add_lottery_and_items_and_return_id(prize, ticket, ticket_price, final_date,
     if prize is not None and ticket is not None and ticket_price is not None and final_date is not None and username is not None:
         item_id = ItemsLogic.add_item_to_shop_and_return_id(prize, username)
         lottery_date = datetime.strptime(final_date, '%Y-%m-%d %H:%M')
-        if datetime.now() < lottery_date:
+        if datetime.now() > lottery_date:
             return False
         if item_id is not False:
             ticket_id = ItemsLogic.add_item_to_shop_and_return_id(ticket, username)
