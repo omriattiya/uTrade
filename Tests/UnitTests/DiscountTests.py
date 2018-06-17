@@ -16,7 +16,7 @@ from SharedClasses.VisibleDiscount import VisibleDiscount
 from SharedClasses.InvisibleDiscount import InvisibleDiscount
 
 
-class ShoppingTests(unittest.TestCase):
+class DiscountTests(unittest.TestCase):
     def setUp(self):
         init_database('db.sqlite3')
 
@@ -28,7 +28,7 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
 
     def test_add_visible_discount_bad(self):
@@ -39,8 +39,8 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, -1, '2018-12-26', '2019-12-26')
-        self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
+        disc = VisibleDiscount(item1.id, shop.name, -1, '2018-12-01', '2019-12-01')
+        self.assertFalse(add_visible_discount(disc, 'YoniYoni'))
 
     def test_add_invisible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
@@ -50,7 +50,7 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO',item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO',item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_invisible_discount(invdisc, 'YoniYoni'))
 
     def test_add_invisible_discount_bad(self):
@@ -61,8 +61,8 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO',item1.id, shop.name, -1, '2018-12-26', '2019-12-26')
-        self.assertTrue(add_invisible_discount(invdisc, 'YoniYoni'))
+        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO',item1.id, shop.name, -1, '2018-12-01', '2019-12-01')
+        self.assertFalse(add_invisible_discount(invdisc, 'YoniYoni'))
 
     def test_get_visible_discount(self):
         register(RegisteredUser('YoniYoni', '1234567878'))
@@ -72,7 +72,7 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
         getted = get_visible_discount(item1.id, shop.name)
         self.assertEqual(getted.item_id, disc.item_id)
@@ -88,7 +88,7 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
         self.assertFalse(get_visible_discount(item1.id, shop1.name))
 
@@ -101,7 +101,7 @@ class ShoppingTests(unittest.TestCase):
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         item2 = Item(2, 'My Shop', 'milk1', 'diary1', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-26', '2019-12-26')
+        disc = VisibleDiscount(item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_visible_discount(disc, 'YoniYoni'))
         self.assertFalse(get_visible_discount(item2.id, shop.name))
 
@@ -113,7 +113,7 @@ class ShoppingTests(unittest.TestCase):
         UsersLogic.add_manager('YoniYoni', StoreManager('StoreManager1', 'My Shop', 1, 1, 1, 1, 1, 1, 1, 1))
         item1 = Item(1, 'My Shop', 'milk', 'diary', 'good', 12, 100, 'regular', None, 0, 0, 0)
         ItemsLogic.add_item_to_shop(item1, 'StoreManager1')
-        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO', item1.id, shop.name, 0.5, '2018-12-26', '2019-12-26')
+        invdisc = InvisibleDiscount('ABCDEFGHIJKLMNO', item1.id, shop.name, 50, '2018-12-01', '2019-12-01')
         self.assertTrue(add_invisible_discount(invdisc, 'YoniYoni'))
         getted = get_invisible_discount(item1.id, shop.name, 'ABCDEFGHIJKLMNO')
         self.assertEqual(getted.item_id, invdisc.item_id)
