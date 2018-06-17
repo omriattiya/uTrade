@@ -114,7 +114,7 @@ def order_helper(cart_items):
                 i].item_quantity
             number_of_items = number_of_items + cart_items[i].item_quantity
         if cart_items is not False:
-            return {'total_price': total_price,
+            return {'total_price': round(total_price, 2),
                     'cart_items_combined': zip(cart_items, items, discount_prices, total_prices), 'number_of_items': number_of_items}
 
 
