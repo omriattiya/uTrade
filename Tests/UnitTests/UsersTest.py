@@ -76,7 +76,7 @@ class UsersTest(unittest.TestCase):
 
     def test_bad_edit_profile(self):
         register(RegisteredUser('TomerTomerLev', 'TomerTomer6969'))
-        status = edit_password(RegisteredUser('ShaharShahar', '1234567878'))
+        status = edit_password(RegisteredUser('ShaharShahar', '123456'))
         self.assertFalse(returnStringToBoolean(status))
 
     def test_remove_user(self):

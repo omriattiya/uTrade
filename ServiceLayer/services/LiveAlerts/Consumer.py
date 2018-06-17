@@ -15,6 +15,7 @@ user_alerts_box = {}
 
 MessagingAlerts.init_thread()
 PurchasesAlerts.init_thread()
+LoterryAlerts.init_thread()
 
 '''
 class Consumer(WebsocketConsumer):

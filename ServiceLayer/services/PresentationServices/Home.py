@@ -14,8 +14,8 @@ def get_home(request):
         items = SearchLogic.get_top_five_ranked_items()
         for item in items:
             shop_name = item.shop_name
-            item.price = (item.price * item_discount(item.id, shop_name) * category_discount(item.category,
-                                                                                             shop_name))
+            item.price = (round(item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                                   shop_name), 2))
         context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest),
                    'items': items}
         return render(request, 'index.html', context=context)

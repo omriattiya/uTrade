@@ -68,7 +68,7 @@ def get_prize_id(lottery_id):
 
 
 def start_lottery(status, sale_date, sale_hour, sale_minutes):
-    lottery_date = datetime.strptime(sale_date + ' ' + sale_hour + ':' + sale_minutes, '%Y-%m-%d %H:%M')
+    lottery_date = datetime.strptime(str(sale_date) + ' ' + str(sale_hour) + ':' + str(sale_minutes), '%Y-%m-%d %H:%M')
     today = datetime.now()
     subtraction = lottery_date - today
     threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
@@ -90,7 +90,13 @@ def lottery_timer(lottery_id):
                                              'Lottery for item  <a href="http://localhost:8000/app/item/?item_id='
                                              + str(lottery_id) + '"># <strong>' + str(
                                                  lottery_id) + '</strong></a> has been canceled.')
+
+
+def activate_lottery(lottery_id):
+    lottery = Lotteries.get_lottery(lottery_id)
+    if lottery.real_end_date is not None:
         return
+    lottery_customers = get_lottery_customers(lottery_id)
     prize_id = get_prize_id(lottery_id)
     numbers = []
     i = 0
@@ -103,9 +109,9 @@ def lottery_timer(lottery_id):
         if numbers[index] >= winner:
             # TODO add live alert to winner customer
             LoterryAlerts.notify_lottery_alerts([lottery_customers[index].username],
-                                         'You have won item  <a href="http://localhost:8000/app/item/?item_id='
-                                         + str(lottery_id) + '"># <strong>' + str(
-                                             lottery_id) + '</strong></a> in a lottery.')
+                                                'You have won item  <a href="http://localhost:8000/app/item/?item_id='
+                                                + str(lottery_id) + '"># <strong>' + str(
+                                                    lottery_id) + '</strong></a> in a lottery.')
             win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
             break
         index = index + 1
@@ -121,3 +127,4 @@ def search_for_unfinished_lotteries():
                 Lotteries.update_lottery_real_date(lottery.lotto_id, lottery_date)
             else:
                 start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
+

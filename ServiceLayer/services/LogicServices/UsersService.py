@@ -53,10 +53,10 @@ def remove_user(request):
             username = Consumer.loggedInUsers.get(login)
 
             if UsersLogic.remove_user(username, RegisteredUser(registered_user, None)):
-                for k, v in Consumer.loggedInUsers.items():
-                    if v == registered_user:
-                        del Consumer.loggedInUsers[k]
-                        del Consumer.loggedInUsersShoppingCart[k]
+                #for k, v in Consumer.loggedInUsers.items():
+                #    if v == registered_user:
+                #         del Consumer.loggedInUsers[k]
+                 #       del Consumer.loggedInUsersShoppingCart[k]
                 return HttpResponse('success')
         return HttpResponse('fail')
 

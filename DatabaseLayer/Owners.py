@@ -1,4 +1,6 @@
+from DatabaseLayer.Lotteries import get_lotteries_by_shop
 from DatabaseLayer.getConn import commit_command, select_command
+from DomainLayer.LotteryLogic import lottery_timer
 from SharedClasses.Owner import Owner
 
 
@@ -64,6 +66,9 @@ def remove_owner(username):
             """.format(shops_array[i][0])
             results = select_command(sql)
             if len(results) == 0:
+                lotteries = get_lotteries_by_shop(shops_array[i][0])
+                for lottery in lotteries:
+                    lottery_timer(lottery.id)
                 sql = """
                             UPDATE Shops 
                             SET status='Permanently_closed'
