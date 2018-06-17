@@ -35,10 +35,7 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(name)
-                if len(words) != 0:
-                    words = words[:5]
-                else:
-                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+                words = words[:5]
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_name(each_item)
@@ -64,10 +61,7 @@ def search_item(request):
                     return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(category)
-                if len(words) != 0:
-                    words = words[:5]
-                else:
-                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+                words = words[:5]
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_category(each_item)
@@ -93,10 +87,7 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(keywords)
-                if len(words) != 0:
-                    words = words[:5]
-                else:
-                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+                words = words[:5]
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_keywords(each_item)
@@ -131,10 +122,7 @@ def search_shop(request):
             return render(request, 'shop.html', context)
         else:
             words = SearchLogic.get_similar_words(name)
-            if len(words) != 0:
-                words = words[:5]
-            else:
-                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+            words = words[:5]
             context = {'topbar': topbar, 'words': words}
             return render(request, 'ItemsNotFound.html', context)
 
