@@ -52,13 +52,8 @@ def shopping_cart_items_helper(request):
     login = request.COOKIES.get('login_hash')
     guest = request.COOKIES.get('guest_hash')
     context = {'topbar': Topbar_Navbar.get_top_bar(login), 'navbar': Topbar_Navbar.get_nav_bar(login, guest)}
-    if login is not None:
-        username = Consumer.loggedInUsers.get(login)
-        if username is not None:
-            context.update(UserShoppingCartLogic.order_of_user(login))
-        else:
-            if guest is not None:
-                context.update(GuestShoppingCartLogic.order_of_guest(guest))
+    if login is not None and Consumer.loggedInUsers.get(login) is not None:
+        context.update(UserShoppingCartLogic.order_of_user(login))
     else:
         if guest is not None:
             context.update(GuestShoppingCartLogic.order_of_guest(guest))
