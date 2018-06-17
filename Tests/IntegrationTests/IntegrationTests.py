@@ -265,7 +265,7 @@ class IntegrationTests(unittest.TestCase):
 
         self.assertTrue('Nadav Ha Gever')
 
-    def test_policies(self):
+    def test_policies_torture(self):
         UsersLogic.register(RegisteredUser('ShaharBenS', "SsS0897SsS"))
         UsersLogic.update_details('ShaharBenS', 'AFG', 20, 'Male')
 
@@ -283,6 +283,35 @@ class IntegrationTests(unittest.TestCase):
         ShoppingPolicyLogic.add_shopping_policy_on_category('Ultimate_ShaharShahar', "vegas", "state = ''AFG''", "UT",
                                                             5)
         ShoppingPolicyLogic.add_shopping_policy_on_items('Ultimate_ShaharShahar', "apple", "state != ''AFG''", "E", 2)
+
+        access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()
+        Consumer.loggedInUsers[access_token] = 'ShaharBenS'
+        Consumer.loggedInUsersShoppingCart[access_token] = []
+
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 2, 3, None))
+        UserShoppingCartLogic.add_item_shopping_cart(access_token, ShoppingCartItem('ShaharBenS', 1, 7, None))
+        status = UserShoppingCartLogic.pay_all(access_token)
+        self.assertFalse(StoB(status))
+
+    def test_discounts_torture(self):
+        UsersLogic.register(RegisteredUser('ShaharBenS', "SsS0897SsS"))
+        UsersLogic.update_details('ShaharBenS', 'AFG', 20, 'Male')
+
+        UsersLogic.register(RegisteredUser('ShaharBenS2', "SsS0897SsS"))
+        UsersLogic.update_details('ShaharBenS2', 'ZMB', 20, 'Male')
+
+        UsersLogic.register(RegisteredUser('ShaharBenS3', "SsS0897SsS"))
+        UsersLogic.update_details('ShaharBenS2', 'ISR', 100, 'Female')
+
+        ShopLogic.create_shop(Shop('eBay', "Active"), 'ShaharBenS2')
+        ShopLogic.create_shop(Shop('Amazon', "Active"), 'ShaharBenS2')
+
+        item1 = Item(1, 'eBay', 'carrot', 'vegas', 'good', 10, 500, 'regular', None, 0, 0, 0)
+        item2 = Item(2, 'Amazon', 'apple', 'fruits', 'good', 10, 500, 'regular', None, 0, 0, 0)
+        status = ItemsLogic.add_item_to_shop(item1, 'ShaharBenS2')
+        self.assertTrue(status)
+        status = ItemsLogic.add_item_to_shop(item2, 'ShaharBenS2')
+        self.assertTrue(status)
 
         access_token = hashlib.md5('ShaharBenS'.encode()).hexdigest()
         Consumer.loggedInUsers[access_token] = 'ShaharBenS'

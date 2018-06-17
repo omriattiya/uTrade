@@ -1,4 +1,4 @@
-from channels.generic.websocket import WebsocketConsumer
+#from channels.generic.websocket import WebsocketConsumer
 from ServiceLayer.services.LiveAlerts import MessagingAlerts, PurchasesAlerts
 
 loggedInUsers = {}
@@ -16,7 +16,7 @@ user_alerts_box = {}
 MessagingAlerts.init_thread()
 PurchasesAlerts.init_thread()
 
-
+'''
 class Consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
@@ -39,13 +39,4 @@ class Consumer(WebsocketConsumer):
             del connectedConsumers[self]
             del connectedUsers[username]
 
-
-def init_lists():
-
-    loggedInUsers = {}
-    loggedInUsersShoppingCart = {}
-    connectedUsers = {}
-    connectedConsumers = {}
-    guestShoppingCart = {}
-    guestIndex = 0
-    user_alerts_box = {}
+'''

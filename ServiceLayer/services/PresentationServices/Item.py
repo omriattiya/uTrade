@@ -33,9 +33,11 @@ def get_item(request):
             headline = "Purchase Policy"
             price = item.price
             former_price = ""
+            visibility_quantity = "visible"
+            visibility_add_to_cart = "visible"
             lottery = Lotteries.get_lottery(item_id)
-            invisible = ""
             header_of_table = "Category Discount"
+            invisible = ""
             lottery_margin_left = 0
             quantity_icon = 'icon-inventory.png'
             if lottery is not False:
@@ -50,6 +52,8 @@ def get_item(request):
                 lottery_margin_left = 30
                 if lottery.real_end_date is not None:
                     real_end_time_or_end_date = lottery.real_end_date
+                    visibility_quantity = "hidden"
+                    visibility_add_to_cart = "hidden"
                 else:
                     real_end_time_or_end_date = "---------"
                 quantity_icon = 'tickets-icon.png'
@@ -77,6 +81,8 @@ def get_item(request):
                 item_rank = "-----"
             else:
                 item_rank = str(item_rank)
+            if item.quantity < 1:
+                visibility_add_to_cart = "hidden"
             context.update({'item_id': item.id,
                             'item_name': item.name,
                             'shop_name': item.shop_name,
@@ -95,12 +101,14 @@ def get_item(request):
                             'right1': right1,
                             'right2': right2,
                             'right3': right3,
-                            'header_of_table': header_of_table,
                             'invisible': invisible,
+                            'header_of_table': header_of_table,
                             'lottery_margin_left': lottery_margin_left,
                             'item_percentage': item_percentage,
                             'item_start_date': item_start_date,
                             'item_end_date': item_end_date,
+                            'visibility_quantity': visibility_quantity,
+                            'visibility_add_to_cart': visibility_add_to_cart,
                             'quantity_icon': quantity_icon})
             return render(request, 'detail.html', context=context)
         else:
