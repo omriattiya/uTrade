@@ -124,7 +124,7 @@ _________________________________________________________ -->
 
         <!-- *** HOT PRODUCT SLIDESHOW ***
 _________________________________________________________ -->
-
+        
         <div id="hot">
 
             <div class="box">
@@ -149,18 +149,18 @@ _________________________________________________________ -->
                                             </a>
                                         </div>
                                     </div>
-                                </div>
-                                <a href="../app/item/?item_id={{ item.id }}" class="invisible">
-                                    <img src="{{ item.url }}" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="../app/item/?item_id={{ item.id }}">{{ item.name }}</a></h3>
-                                    <p class="price">${{ item.price }}</p>
-                                </div>
-                                <!-- /.text -->
                             </div>
-                            <!-- /.product -->
+                            <a href="../app/item/?item_id={{ item.id }}" class="invisible">
+                                <img src="{{item.url}}" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a id="enter_item_page" href="../app/item/?item_id={{ item.id }}">{{ item.name }}</a></h3>
+                                <p class="price">${{ item.price }}</p>
+                            </div>
+                            <!-- /.text -->
                         </div>
+                        <!-- /.product -->
+                    </div>
                     {% endfor %}
                 </div>
                 <!-- /.product-slider -->

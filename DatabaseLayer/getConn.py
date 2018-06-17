@@ -68,11 +68,14 @@ def now_time():
 def delete_content():
     delete_sql_texts = []
     delete_sql_texts.append("DELETE FROM CustomersInLotteries")
+    delete_sql_texts.append("DELETE FROM ErrorLogs")
+    delete_sql_texts.append("DELETE FROM EventLogs")
     delete_sql_texts.append("DELETE FROM GlobalDiscountInShop")
     delete_sql_texts.append("DELETE FROM HistoryOfAppointing")
     delete_sql_texts.append("DELETE FROM InvisibleDiscounts")
     delete_sql_texts.append("DELETE FROM InvisibleDiscountsCategory")
     delete_sql_texts.append("DELETE FROM Items")
+    delete_sql_texts.append("DELETE FROM LoginLogs")
     delete_sql_texts.append("DELETE FROM Lotteries")
     delete_sql_texts.append("DELETE FROM Messages")
     delete_sql_texts.append("DELETE FROM Owners")
@@ -82,6 +85,7 @@ def delete_content():
     delete_sql_texts.append("DELETE FROM RegisteredUsers")
     delete_sql_texts.append("DELETE FROM ReviewsOnItems")
     delete_sql_texts.append("DELETE FROM ReviewsOnShops")
+    delete_sql_texts.append("DELETE FROM SecurityLogs")
     delete_sql_texts.append("DELETE FROM ShoppingCartItem")
     delete_sql_texts.append("DELETE FROM ShoppingPolicyOnCategory")
     delete_sql_texts.append("DELETE FROM ShoppingPolicyOnIdentity")
