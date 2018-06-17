@@ -84,11 +84,11 @@ class OwnerTests(unittest.TestCase):
 
     def test_modify_notifications(self):
         ShopLogic.create_shop(SHOP, USERNAME)
-        UsersLogic.modify_notifications(USERNAME, 0)
+        UsersLogic.modify_notifications(USERNAME, 0, SHOP.name)
         owner = Owners.get_owner(USERNAME, SHOP_NAME)
         self.assertEqual(0, owner.should_notify)
 
-        UsersLogic.modify_notifications(USERNAME, 1)
+        UsersLogic.modify_notifications(USERNAME, 1, SHOP.name)
         owner = Owners.get_owner(USERNAME, SHOP_NAME)
         self.assertEqual(1, owner.should_notify)
 
