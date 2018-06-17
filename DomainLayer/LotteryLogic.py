@@ -137,5 +137,5 @@ def search_for_unfinished_lotteries():
                 start_lottery(lottery.lotto_id, lottery.final_date)
 
 
-search_for_unfinished_lotteries()
+#search_for_unfinished_lotteries()
 

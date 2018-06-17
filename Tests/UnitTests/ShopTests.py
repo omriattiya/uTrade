@@ -85,17 +85,6 @@ class ShopTests(unittest.TestCase):
         answer = len(reviews) == 1
         self.assertTrue(answer)
 
-    def test_review_on_shop_bad(self):
-        register(RegisteredUser('TomerTomer', '1234567878'))
-        user = get_user('TomerTomer')
-        shop = Shop('My Shop', 'Active')
-        ShopLogic.create_shop(shop, user)
-        shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
-        ShopLogic.add_review_on_shop(shop_review)
-        reviews = get_all_reviews_on_shop('My Shop')
-        result = len(reviews)
-        self.assertEqual(result, 0)
-
     def tearDown(self):
         os.remove('db.sqlite3')
 

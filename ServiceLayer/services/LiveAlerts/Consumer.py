@@ -7,7 +7,6 @@ loggedInUsersShoppingCart = {}
 connectedUsers = {}
 connectedConsumers = {}
 
-
 guestShoppingCart = {}
 guestIndex = 0
 user_alerts_box = {}
@@ -17,8 +16,8 @@ MessagingAlerts.init_thread()
 PurchasesAlerts.init_thread()
 LoterryAlerts.init_thread()
 
-
-'''class Consumer(WebsocketConsumer):
+'''
+class Consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
 
@@ -38,5 +37,14 @@ LoterryAlerts.init_thread()
         username = connectedConsumers.get(self)
         if username is not None:
             del connectedConsumers[self]
-            del connectedUsers[username]'''
+            del connectedUsers[username]
+'''
 
+def init_lists():
+    loggedInUsers = {}
+    loggedInUsersShoppingCart = {}
+    connectedUsers = {}
+    connectedConsumers = {}
+    guestShoppingCart = {}
+    guestIndex = 0
+    user_alerts_box = {}

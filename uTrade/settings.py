@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     #'pipeline',
     #'corsheaders',
-    #'channels',
+ #   'channels',
     'ServiceLayer',
     'django.contrib.admin',
     'django.contrib.auth',
