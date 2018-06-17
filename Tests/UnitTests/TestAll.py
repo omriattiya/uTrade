@@ -1,6 +1,7 @@
 import unittest
 
 # import your test modules
+#from ServiceLayer.services.LiveAlerts import Consumer
 from Tests.UnitTests import SearchTests, ShopTests, MessagesTests, UsersTest, OwnerTests, ItemsTests, ShoppingCartTests, \
     StoreManagersTests, ShoppingTests, LotteryTests
 

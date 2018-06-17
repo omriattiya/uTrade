@@ -1,4 +1,13 @@
 import threading
+
+def init_thread():
+    try:
+        live_alerts_thread = threading.Thread(None, lottery_live_alerts, "Lottery_Live_Alerts")
+        live_alerts_thread.start()
+    except:
+        print("Can't start lottery alerts thread")
+
+
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.LiveAlerts.Messages.Lottery import LotteryMessage
 
@@ -34,10 +43,3 @@ def lottery_live_alerts():
 
         event.clear()
 
-
-def init_thread():
-    try:
-        live_alerts_thread = threading.Thread(None, lottery_live_alerts, "Lottery_Live_Alerts")
-        live_alerts_thread.start()
-    except:
-        print("Can't start lottery alerts thread")

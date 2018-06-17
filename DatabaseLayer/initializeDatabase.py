@@ -89,7 +89,7 @@ tables_sql = [
         CREATE TABLE IF NOT EXISTS Purchases(
           purchaseId INTEGER PRIMARY KEY AUTOINCREMENT ,
           purchaseDate DATE,
-          username CHAR(30) REFERENCES RegisteredUsers(username),
+          username CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
           totalPrice REAL,
           CONSTRAINT username_size CHECK(length(username) <= 30)
         )
@@ -241,8 +241,8 @@ tables_sql = [
     """
         CREATE TABLE IF NOT EXISTS HistoryOfAppointing(
           historyId INTEGER PRIMARY KEY AUTOINCREMENT,
-          appointingUser CHAR(30) REFERENCES RegisteredUsers(username),
-          appointedUser CHAR(30) REFERENCES RegisteredUsers(username),
+          appointingUser CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
+          appointedUser CHAR(30) REFERENCES RegisteredUsers(username) ON DELETE SET NULL,
           position TEXT,
           shop_name CHAR(30) REFERENCES Shops(name),
           date CHAR(30),
