@@ -27,8 +27,6 @@ def search_item(request):
             suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event)
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-
-            items = SearchLogic.search_by_name(name)
             if len(items) != 0:
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
                 return render(request, 'SearchView.html', context)
@@ -50,10 +48,14 @@ def search_item(request):
             suspect_sql_injection = LoggerLogic.identify_sql_injection(category, event)
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-            items = SearchLogic.search_by_category(category)
-            if len(items) != 0:
-                context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
-                return render(request, 'SearchView.html', context)
+            items = SearchLogic.search_by_category(request.GET.get('category'))
+            for item in items:
+                shop_name = item.shop_name
+                item.price = (item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                                 shop_name))
+                if len(items) != 0:
+                    context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
+                    return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(category)
                 words = words[:5]
@@ -73,6 +75,10 @@ def search_item(request):
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
             items = SearchLogic.search_by_keywords(keywords)
+            for item in items:
+                shop_name = item.shop_name
+                item.price = (item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                                 shop_name))
             if len(items) != 0:
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
                 return render(request, 'SearchView.html', context)
