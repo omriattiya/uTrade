@@ -116,3 +116,10 @@ def update_rating(item_id, rank):
 
 def get_id_by_name(item_name):
     return Items.get_id_by_name(item_name)
+
+
+def get_item_without_lottery(item_id):
+    item = Items.get_item(item_id)
+    if item is False or item.kind == "ticket":
+        return False
+    return item

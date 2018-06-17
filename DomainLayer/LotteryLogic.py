@@ -4,8 +4,8 @@ from datetime import datetime
 
 from DatabaseLayer import Lotteries, RegisteredUsers, Purchases, PurchasedItems
 from DomainLayer import ItemsLogic
-from SharedClasses.Lottery import Lottery
 from ServiceLayer.services.LiveAlerts import LoterryAlerts
+from SharedClasses.Lottery import Lottery
 
 
 def add_or_update_lottery_customer(purchased_item, username, price, number_of_tickets):
@@ -68,7 +68,7 @@ def get_prize_id(lottery_id):
 
 
 def start_lottery(status, sale_date, sale_hour, sale_minutes):
-    lottery_date = datetime.strptime(sale_date + ' ' + sale_hour + ':' + sale_minutes, '%Y-%m-%d %H:%M')
+    lottery_date = datetime.strptime(str(sale_date) + ' ' + str(sale_hour) + ':' + str(sale_minutes), '%Y-%m-%d %H:%M')
     today = datetime.now()
     subtraction = lottery_date - today
     threading.Timer(subtraction.total_seconds(), lottery_timer, [status]).start()
@@ -121,6 +121,3 @@ def search_for_unfinished_lotteries():
                 Lotteries.update_lottery_real_date(lottery.lotto_id, lottery_date)
             else:
                 start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
-
-
-search_for_unfinished_lotteries()

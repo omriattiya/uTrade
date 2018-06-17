@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
-from DomainLayer import SearchLogic, ShoppingLogic, LoggerLogic
+
+from DomainLayer import SearchLogic, LoggerLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
 from ServiceLayer.services.PresentationServices.Shop import item_discount, category_discount

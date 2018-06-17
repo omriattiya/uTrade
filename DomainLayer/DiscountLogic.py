@@ -32,7 +32,7 @@ def get_visible_discount(item_id, shop_name):
         for discount in discounts_arr:
             start_time = make_date_from_elements(discount.from_date)
             end_time = make_date_from_elements(discount.end_date)
-            if start_time <= now_time < end_time:
+            if start_time <= now_time <= end_time:
                 return discount
         return False
     return "FAILED: One (or more) of the parameters is None"
