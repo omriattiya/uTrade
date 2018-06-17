@@ -41,6 +41,8 @@ def getShopShoppingPolicyConditions(request):
         shop_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_shop(shop_name)
         for SP in shop_policies:
             if SP.policy_id == int(policy_id):
+                if SP.conditions == "1=1":
+                    return HttpResponse("")
                 return HttpResponse(SP.conditions.replace("'", "''"))
         return HttpResponse("FAILED: Can't find that policy")
 
@@ -51,6 +53,8 @@ def getItemShoppingPolicyConditions(request):
         item_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_items()
         for SP in item_policies:
             if SP.policy_id == int(policy_id):
+                if SP.conditions == "1=1":
+                    return HttpResponse("")
                 return HttpResponse(SP.conditions.replace("'", "''"))
         return HttpResponse("FAILED: Can't find that policy")
 
@@ -61,6 +65,8 @@ def getCategoryShoppingPolicyConditions(request):
         category_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_category()
         for CP in category_policies:
             if CP.policy_id == int(policy_id):
+                if CP.conditions == "1=1":
+                    return HttpResponse("")
                 return HttpResponse(CP.conditions.replace("'", "''"))
         return HttpResponse("FAILED: Can't find that policy")
 
@@ -71,5 +77,7 @@ def getGlobalShoppingPolicyConditions(request):
         global_policies = ShoppingPolicyLogic.get_all_shopping_policy_on_identity()
         for GP in global_policies:
             if GP.policy_id == int(policy_id):
+                if GP.conditions == "1=1":
+                    return HttpResponse("")
                 return HttpResponse(GP.conditions.replace("'", "''"))
         return HttpResponse("FAILED: Can't find that policy")

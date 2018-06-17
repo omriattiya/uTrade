@@ -41,3 +41,4 @@ def init_thread():
         live_alerts_thread.start()
     except:
         print("Can't start messaging alerts thread")
+

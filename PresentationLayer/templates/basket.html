@@ -55,7 +55,12 @@
                     window.location.href = "../app/shopping_cart/addressing/";
             }
             else {
-                 alert('Shopping cart is empty');
+                if (loadHTML.responseText === 'fail') {
+                    alert('Shopping cart is empty');
+                }
+                else{
+                    alert(loadHTML.responseText);
+                }
             }
         }
         };
@@ -215,7 +220,7 @@ _________________________________________________________ -->
                                             <th colspan="2">Product</th>
                                             <th>Quantity</th>
                                             <th>Unit price</th>
-                                            <th>Discount</th>
+                                            <th>Unit Discount</th>
                                             <th colspan="2">Total</th>
                                         </tr>
                                     </thead>
@@ -258,7 +263,6 @@ _________________________________________________________ -->
                                         Continue shopping</a>
                                 </div>
                                 <div class="pull-right">
-                                    <button class="btn btn-default"><i class="fa fa-refresh"></i> Update basket</button>
                                     <button id="proceed" type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i>
                                     </button>
                                 </div>

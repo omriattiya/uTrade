@@ -163,6 +163,8 @@ def update_shopping_policy_on_identity(username, policy_id, field_name, new_valu
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:
                 status = checkConditionsSyntax(new_value)
+                if new_value == "":
+                    new_value = "1=1"
                 if status is not True:
                     return status
 
@@ -183,6 +185,8 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
         if Owners.get_owner(username, shop_name) is not False:
             if field_name in ['conditions']:
                 status = checkConditionsSyntax(new_value)
+                if new_value == "":
+                    new_value = "1=1"
                 if status is not True:
                     return status
 
@@ -195,6 +199,8 @@ def update_shopping_policy_on_shop(username, policy_id, field_name, new_value, s
             if manager.permission_set_policy > 0:
                 if field_name in ['conditions']:
                     status = checkConditionsSyntax(new_value)
+                    if new_value == "":
+                        new_value = "1=1"
                     if status is not True:
                         return status
 
@@ -216,6 +222,8 @@ def update_shopping_policy_on_items(username, policy_id, field_name, new_value):
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:
                 status = checkConditionsSyntax(new_value)
+                if new_value == "":
+                    new_value = "1=1"
                 if status is not True:
                     return status
 
@@ -236,6 +244,8 @@ def update_shopping_policy_on_category(username, policy_id, field_name, new_valu
         if SystemManagers.is_system_manager(username) is not False:
             if field_name in ['conditions']:
                 status = checkConditionsSyntax(new_value)
+                if new_value == "":
+                    new_value = "1=1"
                 if status is not True:
                     return status
 
@@ -276,7 +286,10 @@ states = ["'AFG'", "'ALA'", "'ALB'", "'DZA'", "'ASM'", "'AND'", "'AGO'", "'AIA'"
 
 
 def checkConditionsSyntax(conditions):
-    # WHAT I'M DOING HERE IS DUMB IN SO MANY WAYS. DON'T EVER DO THAT
+
+    if conditions == "":
+        return True
+
     replaced_conditions = conditions.replace("''", "'")
     without_parentheses_conditions = replaced_conditions.replace("(", "")
     without_parentheses_conditions = without_parentheses_conditions.replace(")", "")
