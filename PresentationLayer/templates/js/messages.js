@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     $('#send-message-form').submit(function () {
         return false;
@@ -19,12 +18,16 @@ function sendMessage() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
-            else if (loadHTML.responseText.substring(0,7) === 'SUCCESS') {
+            else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Message Sent!");
                 window.location.href = "../app/home/messages/?content=sent"
+            }
+            else {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home";
             }
         }
     };

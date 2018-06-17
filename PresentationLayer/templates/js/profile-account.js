@@ -32,6 +32,10 @@ function changePassword() {
                 alert("Updated successfully");
                 window.location.reload();
             }
+            else {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home";
+            }
         }
     };
     loadHTML.open("POST", "../app/users/edit_password/", true);
