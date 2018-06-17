@@ -24,10 +24,10 @@ class LoggerTests(unittest.TestCase):
         LoggerLogic.add_event_log("omri2", "payAll")
         logs = Logger.get_all_event_logs()
         self.assertTrue(len(logs) == 2)
-        event_log = logs[0]
+        event_log = logs[1]
         self.assertEqual(event_log.username, "omri")
         self.assertEqual(event_log.event, "open shop")
-        event_log = logs[1]
+        event_log = logs[0]
         self.assertEqual(event_log.username, "omri2")
         self.assertEqual(event_log.event, "payAll")
 
@@ -102,9 +102,9 @@ class LoggerTests(unittest.TestCase):
         LoggerLogic.add_login_log("user2user2")
         logs = Logger.get_all_login_logs()
         self.assertTrue(len(logs) == 2)
-        login_log = logs[0]
-        self.assertEqual(login_log.username, "user1user1")
         login_log = logs[1]
+        self.assertEqual(login_log.username, "user1user1")
+        login_log = logs[0]
         self.assertEqual(login_log.username, "user2user2")
 
     def test_add_security(self):

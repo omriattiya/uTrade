@@ -1,6 +1,5 @@
 import os
 import unittest
-
 from datetime import datetime
 
 from DatabaseLayer import Shops, PurchasedItems
@@ -69,7 +68,7 @@ class ShopTests(unittest.TestCase):
         shop_founded = Shops.search_shop('My Shop')
         self.assertTrue(shop_founded.name == 'My Shop')
         status = ShopLogic.create_shop(shop, 'TomerTomer')
-        self.assertEqual(status,'FAILED: Shop name is taken')
+        self.assertEqual(status, 'FAILED: Shop name is taken')
 
     def test_review_on_shop(self):
         register(RegisteredUser('TomerTomer', '1234567878'))
@@ -94,7 +93,8 @@ class ShopTests(unittest.TestCase):
         shop_review = ShopReview('TomerTomer', 'Best', 10, 'My Shop')
         ShopLogic.add_review_on_shop(shop_review)
         reviews = get_all_reviews_on_shop('My Shop')
-        self.assertTrue(len(reviews) == 0)
+        result = len(reviews)
+        self.assertEqual(result, 0)
 
     def tearDown(self):
         os.remove('db.sqlite3')
