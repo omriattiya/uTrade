@@ -7,7 +7,6 @@ loggedInUsersShoppingCart = {}
 connectedUsers = {}
 connectedConsumers = {}
 
-
 guestShoppingCart = {}
 guestIndex = 0
 user_alerts_box = {}
@@ -39,5 +38,13 @@ class Consumer(WebsocketConsumer):
         if username is not None:
             del connectedConsumers[self]
             del connectedUsers[username]
-
 '''
+
+def init_lists():
+    loggedInUsers = {}
+    loggedInUsersShoppingCart = {}
+    connectedUsers = {}
+    connectedConsumers = {}
+    guestShoppingCart = {}
+    guestIndex = 0
+    user_alerts_box = {}
