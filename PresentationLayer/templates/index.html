@@ -124,7 +124,7 @@ _________________________________________________________ -->
 
         <!-- *** HOT PRODUCT SLIDESHOW ***
 _________________________________________________________ -->
-        
+
         <div id="hot">
 
             <div class="box">
@@ -139,28 +139,28 @@ _________________________________________________________ -->
                 <div class="product-slider">
                     <!-- /.col-md-4 -->
                     {% for item in items %}
-                    <div class="item">
-                        <div class="product">
-                            <div class="flip-container">
+                        <div class="item">
+                            <div class="product">
+                                <div class="flip-container">
                                     <div class="flipper">
                                         <div class="front">
                                             <a href="../app/item/?item_id={{ item.id }}">
-                                                <img src="{{item.url}}" alt="" class="img-responsive">
+                                                <img src="{{ item.url }}" alt="" class="img-responsive">
                                             </a>
                                         </div>
                                     </div>
+                                </div>
+                                <a href="../app/item/?item_id={{ item.id }}" class="invisible">
+                                    <img src="{{ item.url }}" alt="" class="img-responsive">
+                                </a>
+                                <div class="text">
+                                    <h3><a href="../app/item/?item_id={{ item.id }}">{{ item.name }}</a></h3>
+                                    <p class="price">${{ item.price }}</p>
+                                </div>
+                                <!-- /.text -->
                             </div>
-                            <a href="../app/item/?item_id={{ item.id }}" class="invisible">
-                                <img src="{{item.url}}" alt="" class="img-responsive">
-                            </a>
-                            <div class="text">
-                                <h3><a href="../app/item/?item_id={{ item.id }}">{{ item.name }}</a></h3>
-                                <p class="price">${{ item.price }}</p>
-                            </div>
-                            <!-- /.text -->
+                            <!-- /.product -->
                         </div>
-                        <!-- /.product -->
-                    </div>
                     {% endfor %}
                 </div>
                 <!-- /.product-slider -->

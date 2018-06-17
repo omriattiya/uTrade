@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
-
-from DomainLayer import SearchLogic, LoggerLogic
+from DomainLayer import SearchLogic, ShoppingLogic, LoggerLogic
 from ServiceLayer.services.LiveAlerts import Consumer
 from ServiceLayer.services.PresentationServices import Topbar_Navbar
+from ServiceLayer.services.PresentationServices.Shop import item_discount, category_discount
 
 
 def search_item(request):
@@ -16,12 +16,14 @@ def search_item(request):
         search_by = request.GET.get('searchBy')
         items = []
         words = []
-
         event = "SEARCH ITEM"
-
         if search_by == 'name':
+            items = SearchLogic.search_by_name(request.GET.get('name'))
+            for item in items:
+                shop_name = item.shop_name
+                item.price = (item.price * item_discount(item.id, shop_name) * category_discount(item.category,
+                                                                                                 shop_name))
             name = request.GET.get('name')
-
             suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event)
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -45,11 +47,9 @@ def search_item(request):
                     return render(request, 'ItemNotFoundNoSuggestions.html', context)
         if search_by == 'category':
             category = request.GET.get('category')
-
             suspect_sql_injection = LoggerLogic.identify_sql_injection(category, event)
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-
             items = SearchLogic.search_by_category(category)
             if len(items) != 0:
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
@@ -69,11 +69,9 @@ def search_item(request):
                     return render(request, 'ItemNotFoundNoSuggestions.html', context)
         if search_by == 'keywords':
             keywords = request.GET.get('keywords')
-
             suspect_sql_injection = LoggerLogic.identify_sql_injection(keywords, event)
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-
             items = SearchLogic.search_by_keywords(keywords)
             if len(items) != 0:
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}

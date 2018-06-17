@@ -66,9 +66,6 @@ class SearchTests(unittest.TestCase):
         items_founded = SearchLogic.search_by_keywords('best')
         self.assertTrue(items_founded[0].name == 'banana')
         self.assertTrue(items_founded[0].category == 'fruit')
-        # items_founded = SearchLogic.search_by_keywords('one;two')
-        # self.assertTrue(items_founded[0].name == 'water')
-        # self.assertTrue(items_founded[0].category == 'drinks')
 
     def test_suggest_word(self):
         arr = get_similar_words('banaan')

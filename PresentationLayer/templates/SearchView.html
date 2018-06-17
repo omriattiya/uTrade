@@ -73,24 +73,25 @@ _________________________________________________________ -->
     <div class="container">
         <div class="navbar-header">
 
-                <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
-                    <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
-                    <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            <a class="navbar-brand home" href="../app/home/" data-animate-hover="bounce">
+                <img src="img/logo.png" alt="Obaju logo" class="hidden-xs">
+                <img src="img/logo-small.png" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
+                    <i class="fa fa-shopping-cart"></i> <span
+                        class="hidden-xs"> {{ number_of_items }} items in cart</span>
                 </a>
-                <div class="navbar-buttons">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-align-justify"></i>
-                    </button>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
-                        <span class="sr-only">Toggle search</span>
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <a class="btn btn-default navbar-toggle" href="../app/shopping_cart/get_cart_items/">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs"> {{number_of_items}} items in cart</span>
-                    </a>
-                </div>
             </div>
+        </div>
         <!--/.navbar-header -->
 
         <!--/.nav-collapse -->
@@ -111,128 +112,131 @@ _________________________________________________________ -->
 
 <div id="all">
 
-        <div id="content">
-            <div class="container">
+    <div id="content">
+        <div class="container">
 
-                <div class="col-md-12">
+            <div class="col-md-12">
 
-                					<!-- BEGIN FILTERS -->
-					<div class="col-md-3">
-                        <div class="box">
-						<h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
-						<hr>
+                <!-- BEGIN FILTERS -->
+                <div class="col-md-3">
+                    <div class="box">
+                        <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+                        <hr>
 
-						<!-- BEGIN FILTER BY CATEGORY -->
-						<h4>By Category:</h4>
+                        <!-- BEGIN FILTER BY CATEGORY -->
+                        <h4>By Category:</h4>
 
                         <form class="navbar-form" role="search" action="javascript:filterByCategory()">
-                        <div class="input-group">
-                        <input type="text" id="SearchForm5" class="form-control" placeholder="Search By Category">
-                        </div>
-                        <span class="input-group-btn">
+                            <div class="input-group">
+                                <input type="text" id="SearchForm5" class="form-control"
+                                       placeholder="Search By Category">
+                            </div>
+                            <span class="input-group-btn">
                         <div class="col-md-12 text-center">
 			            <button type="submit" class="btn btn-primary " style="margin:6px;"><i
-                        class="fa fa-search"></i></button>
+                                class="fa fa-search"></i></button>
                         </div>
 		                </span>
                         </form>
 
-						<!-- END FILTER BY CATEGORY -->
+                        <!-- END FILTER BY CATEGORY -->
 
-						<!-- BEGIN FILTER BY DATE -->
-						<h4>By Price:</h4>
+                        <!-- BEGIN FILTER BY DATE -->
+                        <h4>By Price:</h4>
 
                         <form class="navbar-form" role="search" action="javascript:filterByPrice()">
-                        <div class="input-group">
-                        <div style="padding-bottom:6px;">From</div>
-                        <input type="text" id="SearchForm6" class="form-control" placeholder="From Price :">
-                        <span class="input-group-btn">
+                            <div class="input-group">
+                                <div style="padding-bottom:6px;">From</div>
+                                <input type="text" id="SearchForm6" class="form-control" placeholder="From Price :">
+                                <span class="input-group-btn">
 		                </span>
-                        </div>
+                            </div>
 
-                        <div style="padding-bottom:6px; padding-top:4px;">To</div>
-                        <div class="input-group">
-                        <input type="text" id="SearchForm7" class="form-control" placeholder="To Price :">
-                        </div>
-                        <span class="input-group-btn">
+                            <div style="padding-bottom:6px; padding-top:4px;">To</div>
+                            <div class="input-group">
+                                <input type="text" id="SearchForm7" class="form-control" placeholder="To Price :">
+                            </div>
+                            <span class="input-group-btn">
                         <div class="col-md-12 text-center">
 			            <button type="submit" class="btn btn-primary " style="margin:6px;"><i
-                        class="fa fa-search"></i></button>
+                                class="fa fa-search"></i></button>
                         </div>
 		                </span>
                         </form>
-						<input type="hidden" id="dtp_input2" value="">
+                        <input type="hidden" id="dtp_input2" value="">
 
                         <h4>By Item Rating:</h4>
 
                         <form class="navbar-form" role="search" action="javascript:filterByItemRanking()">
-                        <div class="input-group">
-                        <div style="padding-bottom:6px;">From</div>
-                        <input type="text" id="SearchForm8" class="form-control" placeholder="From Rating :">
-                        <span class="input-group-btn">
+                            <div class="input-group">
+                                <div style="padding-bottom:6px;">From</div>
+                                <input type="text" id="SearchForm8" class="form-control" placeholder="From Rating :">
+                                <span class="input-group-btn">
 		                </span>
-                        </div>
+                            </div>
 
-                        <div style="padding-bottom:6px; padding-top:4px;">To</div>
-                        <div class="input-group">
-                        <input type="text" id="SearchForm9" class="form-control" placeholder="To Rating :">
-                        </div>
-                        <span class="input-group-btn">
+                            <div style="padding-bottom:6px; padding-top:4px;">To</div>
+                            <div class="input-group">
+                                <input type="text" id="SearchForm9" class="form-control" placeholder="To Rating :">
+                            </div>
+                            <span class="input-group-btn">
                         <div class="col-md-12 text-center">
-			            <button type="submit" class="btn btn-primary "style="margin:6px;"><i
-                        class="fa fa-search"></i></button>
+			            <button type="submit" class="btn btn-primary " style="margin:6px;"><i
+                                class="fa fa-search"></i></button>
                         </div>
 		                </span>
                         </form>
-					</div>
+                    </div>
                 </div>
-					<!-- END FILTERS -->
+                <!-- END FILTERS -->
                 <div class="col-md-9">
                     <div class="box">
                         <h2>Here is the products we have found for you :</h2>
                     </div>
                     <div class="row products">
                         {% for item in items %}
-                        <div class="itemJS" price = {{item.price}} category = {{item.category}} item_rating = {{ item.item_rating }}>
-                        <div class="col-md-3 col-sm-4">
-                            <div class="product">
-                                <div class="flip-container">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <a href="../app/item/?item_id={{ item.id }}">
-                                                <img src="{{item.url}}" alt="" class="img-responsive">
-                                            </a>
+                            <div class="itemJS" price={{ item.price }} category = {{ item.category }} item_rating =
+                            {{ item.item_rating }}>
+                            <div class="col-md-3 col-sm-4">
+                                <div class="product">
+                                    <div class="flip-container">
+                                        <div class="flipper">
+                                            <div class="front">
+                                                <a href="../app/item/?item_id={{ item.id }}">
+                                                    <img src="{{ item.url }}" alt="" class="img-responsive">
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <a href="detail.html" class="invisible">
-                                    <img src="img/product3.jpg" alt="" class="img-responsive">
-                                </a>
-                                <div class="text">
-                                    <h3><a href="detail.html">{{item.name}}</a></h3>
-                                    <p class="price">${{item.price}}</p>
-                                    <p class="buttons">
-                                        <a href="../app/item/?item_id={{ item.id }}" class="btn btn-default">View detail</a>
-                                    </p>
+                                    <a href="detail.html" class="invisible">
+                                        <img src="img/product3.jpg" alt="" class="img-responsive">
+                                    </a>
+                                    <div class="text">
+                                        <h3><a href="detail.html">{{ item.name }}</a></h3>
+                                        <p class="price">${{ item.price }}</p>
+                                        <p class="buttons">
+                                            <a href="../app/item/?item_id={{ item.id }}" class="btn btn-default">View
+                                                detail</a>
+                                        </p>
 
+                                    </div>
+                                    <!-- /.text -->
                                 </div>
-                                <!-- /.text -->
+                                <!-- /.product -->
                             </div>
-                            <!-- /.product -->
-                        </div>
-                        </div>
+                            </div>
                         {% endfor %}
-                    </div>
                 </div>
-                    <!-- /.products -->
-                </div>
-                <!-- /.col-md-9 -->
             </div>
-            <!-- /.container -->
+            <!-- /.products -->
         </div>
-        <!-- /#content -->
+        <!-- /.col-md-9 -->
     </div>
-    <!-- /#all -->
+    <!-- /.container -->
+</div>
+<!-- /#content -->
+</div>
+<!-- /#all -->
 </body>
 </html>
