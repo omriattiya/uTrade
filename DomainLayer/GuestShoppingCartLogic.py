@@ -158,3 +158,17 @@ def update_item_shopping_cart_guest(guest, item_id, new_quantity):
                     return True
             i = i + 1
     return False
+
+
+def check_valid_cart(guest):
+    shopping_cart = Consumer.guestShoppingCart[guest]
+    i = 0
+    if len(shopping_cart) == 0:
+        return 'Shopping Cart Is Empty'
+    while i < len(shopping_cart):
+        item = get_item(shopping_cart[i].item_id)
+        if item.shop_name != 'Active':
+            return 'Item ', item.name, ' Is Unavailable Because Shop is Not Active'
+        i = i + 1
+    return True
+

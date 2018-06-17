@@ -90,7 +90,13 @@ def lottery_timer(lottery_id):
                                              'Lottery for item  <a href="http://localhost:8000/app/item/?item_id='
                                              + str(lottery_id) + '"># <strong>' + str(
                                                  lottery_id) + '</strong></a> has been canceled.')
+
+
+def activate_lottery(lottery_id):
+    lottery = Lotteries.get_lottery(lottery_id)
+    if lottery.real_end_date is not None:
         return
+    lottery_customers = get_lottery_customers(lottery_id)
     prize_id = get_prize_id(lottery_id)
     numbers = []
     i = 0
@@ -103,9 +109,9 @@ def lottery_timer(lottery_id):
         if numbers[index] >= winner:
             # TODO add live alert to winner customer
             LoterryAlerts.notify_lottery_alerts([lottery_customers[index].username],
-                                         'You have won item  <a href="http://localhost:8000/app/item/?item_id='
-                                         + str(lottery_id) + '"># <strong>' + str(
-                                             lottery_id) + '</strong></a> in a lottery.')
+                                                'You have won item  <a href="http://localhost:8000/app/item/?item_id='
+                                                + str(lottery_id) + '"># <strong>' + str(
+                                                    lottery_id) + '</strong></a> in a lottery.')
             win_lottery(lottery_customers[index].username, prize_id, lottery_customers[index].price)
             break
         index = index + 1
@@ -122,5 +128,3 @@ def search_for_unfinished_lotteries():
             else:
                 start_lottery(lottery.lotto_id, lottery_date.strftime("%Y-%m-%d"), lottery_date.hour, lottery_date.minute)
 
-
-search_for_unfinished_lotteries()

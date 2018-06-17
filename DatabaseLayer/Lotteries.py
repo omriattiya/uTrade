@@ -1,6 +1,15 @@
 from DatabaseLayer.getConn import select_command, commit_command
+from SharedClasses.Item import Item
 from SharedClasses.Lottery import Lottery
 from SharedClasses.LotteryCustomer import LotteryCustomer
+
+
+def fetch_items(items):
+    items_arr = []
+    for item in items:
+        items_arr.append(Item(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9],
+                              item[10], item[11]))
+    return items_arr
 
 
 def fetch_lottery(result):
@@ -125,3 +134,11 @@ def get_prize(lottery_id):
     if number[0] is None:
         return 0
     return number[0]
+
+
+def get_lotteries_by_shop(shop_name):
+    sql_query = """ SELECT *
+                            FROM Items
+                            WHERE shop_name = '{}' AND kind = 'ticket'
+                        """.format(shop_name)
+    return fetch_items(select_command(sql_query))

@@ -88,7 +88,7 @@ def check_empty_cart_user(login_token):
 
 def lottery_ending_check(lotteries):
     for lottery in lotteries:
-        LotteryLogic.lottery_timer(lottery)
+        LotteryLogic.activate_lottery(lottery)
 
 
 def get_new_price_for_item(item, shopping_cart_item):
@@ -449,4 +449,17 @@ def check_shop_shopping_policies(username, cart_items):
             if relevant and num_of_items > shop_policy.quantity:
                 return "FAILED: Too much " + cart_item_shop + " items in cart; You allowed at most " + str(
                     shop_policy.quantity)
+    return True
+
+
+def check_valid_cart(login):
+    shopping_cart = Consumer.loggedInUsersShoppingCart[login]
+    i = 0
+    if len(shopping_cart) == 0:
+        return 'Shopping Cart Is Empty'
+    while i < len(shopping_cart):
+        item = get_item(shopping_cart[i].item_id)
+        if item.shop_name != 'Active':
+            return 'Item ', item.name, ' Is Unavailable Because Shop is Not Active'
+        i = i + 1
     return True
