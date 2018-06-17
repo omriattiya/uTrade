@@ -69,7 +69,7 @@ shoppingcart_urlpatterns = [
     path('shopping_cart/pay_all/', ShoppingService.pay_all),
     path('shopping_cart/addressing/', ShoppingCart.address),
     path('shopping_cart/review_order/', ShoppingCart.review_order),
-    path('shopping_cart/check_empty_cart/', ShoppingService.check_empty_cart),
+    path('shopping_cart/check_empty_cart/', ShoppingService.check_valid_cart),
     path('shopping_cart/receipt/', ShoppingCart.show_receipt)
 ]
 

@@ -128,16 +128,28 @@ def pay_all(request):
             return HttpResponse(message)
 
 
-def check_empty_cart(request):
+def check_valid_cart(request):
     login = request.COOKIES.get('login_hash')
     if login is None or Consumer.loggedInUsers.get(login) is None:
         guest = request.COOKIES.get('guest_hash')
         if guest is None:
             return HttpResponse('fail')
         status = GuestShoppingCartLogic.check_empty_cart_guest(guest)
+        if not status:
+            status = GuestShoppingCartLogic.check_valid_cart(guest)
+            if status is True:
+                return HttpResponse('OK')
+            else:
+                return HttpResponse(status)
+        else:
+            return HttpResponse('fail')
     else:
         status = UserShoppingCartLogic.check_empty_cart_user(login)
-    if status is True:
-        return HttpResponse('fail')
-    else:
-        return HttpResponse('OK')
+        if not status:
+            status = UserShoppingCartLogic.check_valid_cart(login)
+            if status is True:
+                return HttpResponse('OK')
+            else:
+                return HttpResponse(status)
+        else:
+            return HttpResponse('fail')

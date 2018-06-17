@@ -4,7 +4,9 @@ from time import gmtime, strftime
 
 from DatabaseLayer import RegisteredUsers, Owners, StoreManagers, Shops, SystemManagers, UserDetails, \
     HistoryAppointings
+from DatabaseLayer.Lotteries import get_lotteries_by_shop
 from DomainLayer import LoggerLogic
+from DomainLayer.LotteryLogic import lottery_timer
 
 min_password_len = 6
 
@@ -189,6 +191,9 @@ def close_shop(username, shop_name):
     if owner_of_shop is not False:
         result = Shops.close_shop(shop_name)
         if result:
+            lotteries = get_lotteries_by_shop(shop_name)
+            for lottery in lotteries:
+                lottery_timer(lottery.id)
             LoggerLogic.add_event_log(username, "SHOP STATUS CHANGED - CLOSE")
         return result
     else:
@@ -319,3 +324,4 @@ def get_manager(username, shop_name):
 
 def get_user_details(username):
     return UserDetails.get(username)
+
