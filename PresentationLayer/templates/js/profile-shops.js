@@ -39,6 +39,7 @@ function addManager() {
                 alert("Manager has been added!");
                 window.location.reload();
             }
+
         }
     };
     loadHTML.open("POST", "../app/users/owner/add_manager/", true);
@@ -59,6 +60,10 @@ function removeManager(manager_name) {
             else if (loadHTML.responseText === 'success') {
                 alert("Manager has been removed!");
                 window.location.href = "../app/my/shops/"
+            }
+            else {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home";
             }
         }
     };
@@ -90,6 +95,10 @@ function applyPermissions(manager_name) {
                 alert("Manager permissions has been updated!");
                 window.location.href = "../app/my/shops/"
             }
+            else {
+                alert(loadHTML.responseText);
+                window.location.href = "../app/home";
+            }
         }
     };
     loadHTML.open("POST", "../app/users/owner/update_permissions/", true);
@@ -110,9 +119,12 @@ function createShop() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
-            else {
+            else if (loadHTML.responseText.toLowerCase() === 'success') {
                 alert("Your shop has been opened!");
                 window.location.reload();
+            }
+            else {
+                alert(loadHTML.responseText);
             }
         }
     };
@@ -152,11 +164,11 @@ function setStatus(shop_name) {
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'fail') {
-                alert("Failed")
-            }
-            else if (loadHTML.responseText === 'success') {
+            if (loadHTML.responseText === 'success') {
                 window.location.href = "../app/my/shops/"
+            }
+            else {
+                alert(loadHTML.responseText);
             }
         }
     };
@@ -404,9 +416,9 @@ function insertAtCursor(myField, myValue) {
 }
 
 
-function changeNotification(shop_name){
+function changeNotification(shop_name) {
     let data = new FormData();
-    data.append('modify_notifications', shop_name +"_notify");
+    data.append('modify_notifications', shop_name + "_notify");
     data.append('shop_name', shop_name);
 
     let loadHTML = new XMLHttpRequest();

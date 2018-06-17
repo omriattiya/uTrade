@@ -20,8 +20,6 @@ users_urlpatterns = [
     path('users/owner/close_shop/', UsersService.close_shop),
     path('users/owner/re_open_shop/', UsersService.re_open_shop),
     path('users/owner/modify_notifications/', UsersService.modify_notifications),
-    path('users/add_visible_discount', UsersService.add_visible_discount),
-    path('users/add_invisible_discount', UsersService.add_invisible_discount),
     path('users/get_visible_discount', UsersService.get_visible_discount),
     path('users/get_invisible_discount', UsersService.get_invisible_discount),
     path('users/get_purchase_history/', UsersService.get_purchase_history),

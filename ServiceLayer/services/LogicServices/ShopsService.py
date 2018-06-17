@@ -133,6 +133,9 @@ def add_discount(request):
             if LoggerLogic.identify_sql_injection(item_id, event):
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
 
+            item = ItemsLogic.get_item_without_lottery(item_id)
+            if item is False or item.shop_name != shop_name:
+                return HttpResponse("item with id=" + item_id + " doesnt exist in this shop or a ticket")
             discount = VisibleDiscount(item_id, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_visible_discount(discount, username)
         elif kind == "invisible_item":
@@ -145,6 +148,10 @@ def add_discount(request):
 
             if suspect_sql_injection:
                 return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
+            item = ItemsLogic.get_item_without_lottery(item_id)
+            if item is False or item.shop_name != shop_name:
+                return HttpResponse("item with id=" + item_id + " doesnt exist in this shop or a ticket")
 
             discount = InvisibleDiscount(code, item_id, shop_name, percent, start_date, end_date)
             result = DiscountLogic.add_invisible_discount(discount, username)

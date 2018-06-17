@@ -6,12 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 from DomainLayer import UserShoppingCartLogic, LoggerLogic
 from DomainLayer import UsersLogic, ShoppingLogic, DiscountLogic
 from ServiceLayer.services.LiveAlerts import Consumer
-from SharedClasses.InvisibleDiscount import InvisibleDiscount
 from SharedClasses.Owner import Owner
 from SharedClasses.RegisteredUser import RegisteredUser
 from SharedClasses.StoreManager import StoreManager
 from SharedClasses.SystemManager import SystemManager
-from SharedClasses.VisibleDiscount import VisibleDiscount
 
 
 def get_purchase_history(request):
@@ -295,54 +293,6 @@ def modify_notifications(request):
             if UsersLogic.modify_notifications(username, should_notify, shop_name):
                 return HttpResponse('success')
         return HttpResponse('fail')
-
-
-def add_visible_discount(request):
-    if request.method == 'POST':
-        item_id = request.POST.get('item_id')
-        shop_name = request.POST.get('shop_name')
-        percentage = request.POST.get('percentage')
-        from_date = request.POST.get('from_date')
-        end_date = request.POST.get('end_date')
-        disc = VisibleDiscount(item_id, shop_name, percentage, from_date, end_date)
-        username = request.POST.get('username')
-
-        event = "ADD VISIBLE DISCOUNT"
-        suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_id, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(percentage, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) and suspect_sql_injection
-
-        if suspect_sql_injection:
-            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-
-        return DiscountLogic.add_visible_discount(disc, username)
-
-
-def add_invisible_discount(request):
-    if request.method == 'POST':
-        item_id = request.POST.get('item_id')
-        shop_name = request.POST.get('shop_name')
-        percentage = request.POST.get('percentage')
-        from_date = request.POST.get('from_date')
-        end_date = request.POST.get('end_date')
-        code = request.POST.get('code')
-        disc = InvisibleDiscount(item_id, shop_name, percentage, from_date, end_date, code)
-        username = request.POST.get('username')
-
-        event = "ADD VISIBLE DISCOUNT"
-        suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(item_id, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(percentage, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(code, event) and suspect_sql_injection
-
-        if suspect_sql_injection:
-            return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
-
-        return DiscountLogic.add_invisible_discount(disc, username)
 
 
 def get_visible_discount(request):
