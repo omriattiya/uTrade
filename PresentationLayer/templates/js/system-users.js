@@ -8,6 +8,8 @@ function deleteUser(username) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText === 'success') {
                 alert("User has been removed.");
                 location.reload()

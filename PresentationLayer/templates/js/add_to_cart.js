@@ -1,7 +1,5 @@
-function addToCart(item_id)
-{
-    if(document.getElementById("quantity_input").value === '')
-    {
+function addToCart(item_id) {
+    if (document.getElementById("quantity_input").value === '') {
         alert("Item Quantity Should Not Be Empty");
         return;
     }
@@ -10,28 +8,23 @@ function addToCart(item_id)
     data.append('quantity', document.getElementById("quantity_input").value);
     let loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200)
-        {
-            if(loadHTML.responseText === 'guest ticket')
-            {
-                alert("A guest can't buy lottery tickets.")
+        if (this.readyState === 4 && this.status === 200) {
+            if (loadHTML.responseText === 'guest ticket') {
+                alert("A guest can't buy lottery tickets.");
                 return;
             }
-            if (loadHTML.responseText === 'Stock_Error')
-            {
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
+            if (loadHTML.responseText === 'Stock_Error') {
                 alert("The Quantity You Chose Doesn't Exist In Stock");
                 return;
             }
-            if (loadHTML.responseText === 'fail')
-            {
+            if (loadHTML.responseText === 'fail') {
                 alert("add to cart fail");
             }
-            else
-            {
-                if (loadHTML.responseText !== 'OK')
-                {
-                    if (getCookie('guest_hash') === '')
-                    {
+            else {
+                if (loadHTML.responseText !== 'OK') {
+                    if (getCookie('guest_hash') === '') {
                         setCookie('guest_hash', loadHTML.responseText, 7);
                     }
                 }

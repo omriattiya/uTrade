@@ -8,6 +8,8 @@ function closeShop(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText === 'success') {
                 alert("Shop has been closed.");
                 location.reload()
@@ -25,6 +27,8 @@ function showOwners(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 alert(loadHTML.responseText);
             }
@@ -41,6 +45,8 @@ function showManagers(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 alert(loadHTML.responseText);
             }

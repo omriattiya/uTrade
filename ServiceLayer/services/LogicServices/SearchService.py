@@ -19,21 +19,26 @@ def search_item(request):
         words = []
         event = "SEARCH ITEM"
         if search_by == 'name':
-            items = SearchLogic.search_by_name(request.GET.get('name'))
+            name = request.GET.get('name')
+
+            suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event)
+            if suspect_sql_injection:
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
+
+            items = SearchLogic.search_by_name(name)
             for item in items:
                 shop_name = item.shop_name
                 item.price = (round(item.price * item_discount(item.id, shop_name) * category_discount(item.category,
                                                                                                        shop_name), 2))
-            name = request.GET.get('name')
-            suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event)
-            if suspect_sql_injection:
-                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
             if len(items) != 0:
                 context = {'topbar': topbar, 'items': items, 'navbar': navbar, 'len': len(items)}
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(name)
-                words = words[:5]
+                if len(words) != 0:
+                    words = words[:5]
+                else:
+                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_name(each_item)
@@ -59,7 +64,10 @@ def search_item(request):
                     return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(category)
-                words = words[:5]
+                if len(words) != 0:
+                    words = words[:5]
+                else:
+                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_category(each_item)
@@ -85,7 +93,10 @@ def search_item(request):
                 return render(request, 'SearchView.html', context)
             else:
                 words = SearchLogic.get_similar_words(keywords)
-                words = words[:5]
+                if len(words) != 0:
+                    words = words[:5]
+                else:
+                    return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
                 items_names_that_exists = []
                 for each_item in words:
                     item = SearchLogic.search_by_keywords(each_item)
@@ -120,7 +131,10 @@ def search_shop(request):
             return render(request, 'shop.html', context)
         else:
             words = SearchLogic.get_similar_words(name)
-            words = words[:5]
+            if len(words) != 0:
+                words = words[:5]
+            else:
+                return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
             context = {'topbar': topbar, 'words': words}
             return render(request, 'ItemsNotFound.html', context)
 
@@ -140,8 +154,8 @@ def search_item_in_shop(request):
 
         event = "SEARCH ITEM IN SHOP"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(name, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)

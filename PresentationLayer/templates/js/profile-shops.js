@@ -119,6 +119,8 @@ function createShop() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.toLowerCase() === 'success') {
                 alert("Your shop has been opened!");
                 window.location.reload();
@@ -167,6 +169,8 @@ function setStatus(shop_name) {
             if (loadHTML.responseText === 'success') {
                 window.location.href = "../app/my/shops/"
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 alert(loadHTML.responseText);
             }
@@ -188,6 +192,8 @@ function shopModalOpened(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 document.getElementById('edit-managers-modal-body').innerHTML = loadHTML.responseText;
             }
@@ -213,6 +219,8 @@ function shoppingPoliciesOpened(shop_name) {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 document.getElementById("shop-policies-modal-body").innerHTML = loadHTML.responseText;
             }
@@ -237,6 +245,8 @@ function addNewPolicy() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("new policy has been added");
                 window.location.reload();
@@ -265,6 +275,8 @@ function qualifierChanged(id) {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
             }
         }
@@ -290,6 +302,8 @@ function quantityChange(id) {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
             }
         }
@@ -310,6 +324,8 @@ function addOwner() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Owner has been added!");
                 window.location.reload();
@@ -327,6 +343,8 @@ function gotoMessages(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("No Permissions!")
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 window.location.href = "http://localhost:8000/app/shop/messages/?content=received&shop_name=" + shop_name;
             }
@@ -343,6 +361,8 @@ function getHistory(shop_name) {
             if (loadHTML.responseText === 'fail') {
                 alert("Failed");
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 document.getElementById('show-history-appointings-body').innerHTML = loadHTML.responseText;
             }
@@ -363,6 +383,8 @@ function logicOpened(id) {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 document.getElementById("expressions-modal-body").innerHTML = loadHTML.responseText;
             }
@@ -386,6 +408,8 @@ function SavePolicyChanges() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Rules saved!");
                 //window.location.reload();
@@ -427,6 +451,8 @@ function changeNotification(shop_name) {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Rules saved!");
                 window.location.reload();

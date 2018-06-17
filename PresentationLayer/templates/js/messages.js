@@ -25,6 +25,8 @@ function sendMessage() {
                 alert("Message Sent!");
                 window.location.href = "../app/home/messages/?content=sent"
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else {
                 alert(loadHTML.responseText);
                 window.location.href = "../app/home";

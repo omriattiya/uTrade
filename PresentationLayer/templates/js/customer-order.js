@@ -32,6 +32,8 @@ function reviewShop() {
                 alert('You have already reviewed this shop');
                 return;
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
@@ -73,6 +75,8 @@ function reviewItem() {
                 alert('You have already reviewed this item');
                 return;
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             if (loadHTML.responseText === 'fail') {
                 alert("Failed")
             }
@@ -109,6 +113,8 @@ function reportItem() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Reported successfully!");
                 location.reload()

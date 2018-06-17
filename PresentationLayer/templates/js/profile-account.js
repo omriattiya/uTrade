@@ -28,6 +28,8 @@ function changePassword() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Updated successfully");
                 window.location.reload();
@@ -66,6 +68,8 @@ function updateDetails() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText.substring(0, 7) === 'SUCCESS') {
                 alert("Updated successfully");
                 window.location.reload();

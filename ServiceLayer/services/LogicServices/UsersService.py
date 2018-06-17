@@ -91,8 +91,8 @@ def login(request):
 
         event = "LOGIN"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(password, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(password, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -131,9 +131,9 @@ def update_details(request):
 
         event = "UPDATE USER DETAILS"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(state, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(age, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(sex, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(state, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(age, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(sex, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -163,8 +163,8 @@ def add_owner(request):
 
         event = "ADD OWNER"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -184,8 +184,8 @@ def add_manager(request):
 
         event = "ADD MANAGER"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -232,8 +232,8 @@ def update_permissions(request):
 
         event = "UPDATE PERMISSIONS"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(shop_name, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(target_id, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)
@@ -317,8 +317,8 @@ def add_system_manager(request):
 
         event = "ADD VISIBLE DISCOUNT"
         suspect_sql_injection = False
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) and suspect_sql_injection
-        suspect_sql_injection = LoggerLogic.identify_sql_injection(password, event) and suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(username, event) or suspect_sql_injection
+        suspect_sql_injection = LoggerLogic.identify_sql_injection(password, event) or suspect_sql_injection
 
         if suspect_sql_injection:
             return HttpResponse(LoggerLogic.MESSAGE_SQL_INJECTION)

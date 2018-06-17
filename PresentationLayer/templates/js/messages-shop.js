@@ -22,6 +22,8 @@ function sendMessage() {
             if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
             else if (loadHTML.responseText === 'SUCCESS') {
                 alert("Message Sent!");
                 window.location.href = "../app/shop/messages/?content=sent&shop_name=" + document.getElementById('shop-name').innerHTML;

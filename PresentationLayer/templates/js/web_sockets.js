@@ -50,7 +50,7 @@ function login() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText.substring(0,6) === 'FAILED') {
+            if (loadHTML.responseText.substring(0, 6) === 'FAILED') {
                 alert(loadHTML.responseText);
             }
             else {
@@ -74,6 +74,8 @@ function logout() {
                     window.location.href = "../app/home/"
                 }, 200)
             }
+            else if (loadHTML.responseText === 'FAIL: suspect sql injection')
+                alert(loadHTML.responseText);
         }
     };
     loadHTML.open("POST", "../app/users/logout/", true);
@@ -84,7 +86,7 @@ function clearAlerts() {
     var loadHTML = new XMLHttpRequest();
     loadHTML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (loadHTML.responseText === 'success'){
+            if (loadHTML.responseText === 'success') {
                 location.reload()
             }
             else {
