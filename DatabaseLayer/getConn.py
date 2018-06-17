@@ -14,7 +14,10 @@ from SharedClasses.LogTuple import ErrorTuple
 def get_conn():
     if os.environ.get('test_flag') is None or os.environ.get('test_flag') == "True":
         if os.environ.get('test_flag') is None:
-            conn = sqlite3.connect('../../db.sqlite3')
+            if os.environ.get('selenium') is None:
+                conn = sqlite3.connect('db.sqlite3')
+            else:
+                conn = sqlite3.connect('../../db.sqlite3')
         elif os.environ.get('test_flag') == "True":
             conn = sqlite3.connect('db.sqlite3')
         conn.execute("""
