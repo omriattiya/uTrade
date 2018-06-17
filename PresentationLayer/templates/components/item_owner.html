@@ -1,7 +1,7 @@
 <div class="box info-bar" style="position: relative">
     <div class="row" style="margin-left: 2%; margin-right: 2%; width: 50%;">
         <h2>{{ item_name }}</h2>
-        <h4>ITEM ID: {{ item_id }}</h4>
+        <h4 id="item_id_id">ITEM ID: {{ item_id }}</h4>
         <form action="javascript:updateItem({{ item_id }}, '{{ shop_name }}')">
             <div class="form-group">
                 <label for="quantity{{item_id}}">* Update Quantity</label>

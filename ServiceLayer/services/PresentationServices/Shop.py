@@ -53,26 +53,31 @@ def get_shop(request):
             render_edit_remove = loader.render_to_string(
                 'components/owner_manager_options.html',
                 {'path': 'owner/items',
+                 'id_param': 'edit_remove',
                  'shop_name': shop_name,
                  'button_text': 'Edit & Remove Items'})
             render_purchase_history = loader.render_to_string(
                 'components/owner_manager_options.html',
                 {'path': 'owner/purchase_history',
+                 'id_param': 'purchase_history',
                  'shop_name': shop_name,
                  'button_text': 'Purchase History'})
             render_add_item = loader.render_to_string(
                 'components/owner_manager_options.html',
                 {'path': 'owner/items/add_item',
+                 'id_param': 'add_item',
                  'shop_name': shop_name,
                  'button_text': 'Add Item'})
             render_add_discount = loader.render_to_string(
                 'components/owner_manager_options.html',
                 {'path': 'owner/add_discount',
+                 'id_param': 'add_discount',
                  'shop_name': shop_name,
                  'button_text': 'Add Discount'})
             render_delete_discount = loader.render_to_string(
                 'components/owner_manager_options.html',
                 {'path': 'owner/delete_discount',
+                 'id_param': 'delete_discount',
                  'shop_name': shop_name,
                  'button_text': 'Delete Discount'})
 
