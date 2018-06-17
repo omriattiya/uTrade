@@ -9,7 +9,8 @@ def add_visible_discount(disc, username):
         is_owner = Owners.get_owner(username, disc.shop_name)
         is_manager = StoreManagers.get_store_manager(username, disc.shop_name)
         if is_owner is not False or (is_manager is not False and is_manager.discount_permission == 1):
-            return Discount.add_visible_discount(disc)
+            if get_visible_discount(disc.item_id, disc.shop_name) is False:
+                return Discount.add_visible_discount(disc)
     return False
 
 
